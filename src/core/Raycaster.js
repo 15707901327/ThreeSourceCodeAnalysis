@@ -32,10 +32,8 @@ function Raycaster( origin, direction, near, far ) {
 	Object.defineProperties( this.params, {
 		PointCloud: {
 			get: function () {
-
 				console.warn( 'THREE.Raycaster: params.PointCloud has been renamed to params.Points.' );
 				return this.Points;
-
 			}
 		}
 	} );
@@ -48,23 +46,14 @@ function ascSort( a, b ) {
 }
 
 function intersectObject( object, raycaster, intersects, recursive ) {
-
 	if ( object.visible === false ) return;
-
 	object.raycast( raycaster, intersects );
-
 	if ( recursive === true ) {
-
 		var children = object.children;
-
 		for ( var i = 0, l = children.length; i < l; i ++ ) {
-
 			intersectObject( children[ i ], raycaster, intersects, true );
-
 		}
-
 	}
-
 }
 
 Object.assign( Raycaster.prototype, {
@@ -99,18 +88,27 @@ Object.assign( Raycaster.prototype, {
 
 	},
 
+	/**
+	 * 参数：
+	 * 	object：检测该物体是否与射线相交
+	 * 	recursive：如果设置，则会检测物体所有的子代
+	 * 返回：
+	 * 	相交的结果会以一个数组的形式返回，其中的元素依照距离排序，越近的排在越前
+	 */
 	intersectObject: function ( object, recursive, optionalTarget ) {
-
 		var intersects = optionalTarget || [];
-
 		intersectObject( object, this, intersects, recursive );
-
 		intersects.sort( ascSort );
-
 		return intersects;
-
 	},
 
+    /**
+     * 参数：
+     * 	object：检测这些物体是否与射线相交
+     * 	recursive：如果设置，则会检测物体所有的子代
+     * 返回：
+     * 	相交的结果会以一个数组的形式返回，其中的元素依照距离排序，越近的排在越前
+     */
 	intersectObjects: function ( objects, recursive, optionalTarget ) {
 
 		var intersects = optionalTarget || [];
@@ -133,7 +131,6 @@ Object.assign( Raycaster.prototype, {
 		return intersects;
 
 	}
-
 } );
 
 export { Raycaster };
