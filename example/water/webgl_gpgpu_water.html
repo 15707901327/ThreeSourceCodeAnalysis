@@ -319,7 +319,7 @@
     // Material attributes from MeshPhongMaterial
     material.color = new THREE.Color(materialColor);
     // 镜面颜色
-    material.specular = new THREE.Color(0x333333);
+    material.specular = new THREE.Color(0x111111);
     material.shininess = 1;
     material.opacity = 0.4;
     material.transparent = true;
@@ -346,7 +346,7 @@
 
     // Mesh just for mouse raycasting
     var geometryRay = new THREE.PlaneBufferGeometry(BOUNDS, BOUNDS, 1, 1);
-    meshRay = new THREE.Mesh(geometryRay, new THREE.MeshBasicMaterial({color: 0xFFFFFF, visible: false}));
+    meshRay = new THREE.Mesh(geometryRay, new THREE.MeshBasicMaterial({color: 0xfefefe, visible: false}));
     meshRay.rotation.x = -Math.PI / 2;
     meshRay.matrixAutoUpdate = false;
     meshRay.updateMatrix();
@@ -366,13 +366,6 @@
     cube.castShadow = true;
     cube.receiveShadow = true;
     scene.add(cube);
-
-    var geometry2 = new THREE.BoxGeometry( 50, 50, 50 );
-    var material2 = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-    var cube2 = new THREE.Mesh( geometry2, material2 );
-    cube2.position.set(260,0,260);
-    cube2.castShadow = true;
-    scene.add( cube2 );
 
     // Creates the gpu computation class and sets it up
     gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
