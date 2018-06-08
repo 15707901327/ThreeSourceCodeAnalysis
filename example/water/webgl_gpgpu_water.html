@@ -298,7 +298,7 @@
   function initWater() {
 
     // 材质的颜色
-    var materialColor = 0x11516b;
+    var materialColor = 0xffffff;
 
     var geometry = new THREE.PlaneBufferGeometry(BOUNDS, BOUNDS, WIDTH - 1, WIDTH - 1);
 
@@ -320,8 +320,8 @@
     material.color = new THREE.Color(materialColor);
     // 镜面颜色
     material.specular = new THREE.Color(0x333333);
-    material.shininess = 50;
-    material.opacity = 0.2;
+    material.shininess = 1;
+    material.opacity = 0.4;
     material.transparent = true;
     material.side = THREE.DoubleSide;
 
