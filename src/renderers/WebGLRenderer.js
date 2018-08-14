@@ -55,12 +55,12 @@ import {WebVRManager} from './webvr/WebVRManager.js';
  * @param parameters{Object}
  *  canvas : canvas元素
  *  context  ：上下文
- *  alpha：
- *  depth：
- *  stencil：
- *  antialias：设置抗锯齿 false
- *  premultipliedAlpha：
- *  preserveDrawingBuffer：
+ *  alpha：如果它的值是 true，它提供了一个alpha缓冲区到画布上。默认情况下，它的值是 false
+ *  depth：如果它的值是true，会得到一个绘图的缓冲区，其中包含至少16位的深度缓冲。默认情况下，它的值是true
+ *  stencil：如果它的值是true，会得到一个绘图的缓冲区，其中包含至少8位的模板缓存。默认情况下，它的值是true
+ *  antialias：如果它的值是true，会得到一个绘图缓冲区，执行抗锯齿。默认情况下，它的值是false
+ *  premultipliedAlpha：如果它的值是true，会得到一个绘图缓冲区，其中包含的颜色与预乘alpha。默认情况下它的值是true
+ *  preserveDrawingBuffer：如果它的值是true，缓冲区将不会被清零，直到被清除或由作者改写将保留它们的值。默认情况下，它的值是false
  *  powerPreference：
  * @property domElement canvas元素
  */
@@ -245,8 +245,12 @@ function WebGLRenderer(parameters) {
 
   var utils;
 
+  /**
+   * 初始化WebGL的一些方法
+   */
   function initGLContext() {
 
+    // 开启WebGL支持的扩展功能
     extensions = new WebGLExtensions(_gl);
     extensions.get('WEBGL_depth_texture');
     extensions.get('OES_texture_float');

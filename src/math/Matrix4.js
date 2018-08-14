@@ -830,6 +830,16 @@ Object.assign( Matrix4.prototype, {
 
 	}(),
 
+  /**
+	 * 根据参数设置投影矩阵
+   * @param left
+   * @param right
+   * @param top
+   * @param bottom
+   * @param near
+   * @param far
+   * @return {makePerspective}
+   */
 	makePerspective: function ( left, right, top, bottom, near, far ) {
 
 		if ( far === undefined ) {
