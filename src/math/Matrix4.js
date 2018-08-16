@@ -292,11 +292,14 @@ Object.assign( Matrix4.prototype, {
 
 	},
 
+  /**
+	 * 根据四元数初始化一个矩阵
+   * @param q Quaternion实例
+   */
 	makeRotationFromQuaternion: function () {
 
 		var zero = new Vector3( 0, 0, 0 );
 		var one = new Vector3( 1, 1, 1 );
-
 		return function makeRotationFromQuaternion( q ) {
 
 			return this.compose( zero, q, one );
@@ -311,6 +314,11 @@ Object.assign( Matrix4.prototype, {
 		var y = new Vector3();
 		var z = new Vector3();
 
+    /**
+		 * @param eye 相机的位置
+		 * @param target 查看的位置
+		 * @param up 相机的上方向
+     */
 		return function lookAt( eye, target, up ) {
 
 			var te = this.elements;
@@ -535,6 +543,12 @@ Object.assign( Matrix4.prototype, {
 
 	},
 
+  /**
+	 * 使用此处概述的方法将此矩阵设置为传递的矩阵m的倒数。
+   * @param m 矩阵
+   * @param throwOnDegenerate
+   * @return {*}
+   */
 	getInverse: function ( m, throwOnDegenerate ) {
 
 		// based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
@@ -742,6 +756,13 @@ Object.assign( Matrix4.prototype, {
 
 	},
 
+  /**
+	 * 使用参数初始化当前的矩阵
+   * @param position
+   * @param quaternion
+   * @param scale
+   * @return {compose}
+   */
 	compose: function ( position, quaternion, scale ) {
 
 		var te = this.elements;

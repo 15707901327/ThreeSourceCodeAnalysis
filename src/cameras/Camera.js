@@ -15,7 +15,7 @@ function Camera() {
 
 	this.type = 'Camera';
 
-	this.matrixWorldInverse = new Matrix4();
+	this.matrixWorldInverse = new Matrix4(); // 相机位置矩阵的倒数矩阵
 	this.projectionMatrix = new Matrix4(); // 投影矩阵
 
 }
@@ -58,6 +58,11 @@ Camera.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 	}(),
 
+  /**
+	 * 更新相机以及相机子类的本地和世界坐标矩阵
+	 * 设置matrixWorld的倒数矩阵matrixWorldInverse
+   * @param force
+   */
 	updateMatrixWorld: function ( force ) {
 
 		Object3D.prototype.updateMatrixWorld.call( this, force );

@@ -7,6 +7,16 @@ import {Plane} from './Plane.js';
  * @author alteredq / http://alteredqualia.com/
  * @author bhouston / http://clara.io
  */
+/**
+ * 由六个平面组成的锥体
+ * @param p0
+ * @param p1
+ * @param p2
+ * @param p3
+ * @param p4
+ * @param p5
+ * @constructor
+ */
 function Frustum(p0, p1, p2, p3, p4, p5) {
 
   this.planes = [
@@ -59,6 +69,11 @@ Object.assign(Frustum.prototype, {
 
   },
 
+  /**
+   * WebGLRenderer使用它来从Camera的projectionMatrix和matrixWorldInverse设置Frustum。
+   * @param m
+   * @return {setFromMatrix}
+   */
   setFromMatrix: function (m) {
 
     var planes = this.planes;
@@ -79,6 +94,10 @@ Object.assign(Frustum.prototype, {
 
   },
 
+  /**
+   * 检查对象的边界球是否与Frustum相交。
+   * 请注意，对象必须具有Geometry或BufferGeometry，以便可以计算边界球。
+   */
   intersectsObject: function () {
 
     var sphere = new Sphere();
@@ -99,6 +118,9 @@ Object.assign(Frustum.prototype, {
 
   }(),
 
+  /**
+   * 检查精灵是否与Frustum相交
+   */
   intersectsSprite: function () {
 
     var sphere = new Sphere();
@@ -115,6 +137,11 @@ Object.assign(Frustum.prototype, {
 
   }(),
 
+  /**
+   * 如果球体与此平截头体相交，则返回true。
+   * @param sphere
+   * @return {boolean}
+   */
   intersectsSphere: function (sphere) {
 
     var planes = this.planes;
@@ -122,19 +149,13 @@ Object.assign(Frustum.prototype, {
     var negRadius = -sphere.radius;
 
     for (var i = 0; i < 6; i++) {
-
       var distance = planes[i].distanceToPoint(center);
 
       if (distance < negRadius) {
-
         return false;
-
       }
-
     }
-
     return true;
-
   },
 
   intersectsBox: function () {

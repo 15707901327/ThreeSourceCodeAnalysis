@@ -50,9 +50,7 @@ function WebVRManager( renderer ) {
 	//
 
 	function isPresenting() {
-
 		return device !== null && device.isPresenting === true;
-
 	}
 
 	var currentSize, currentPixelRatio;

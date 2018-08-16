@@ -13,6 +13,13 @@ import { Vector2 } from '../../math/Vector2.js';
 import { Matrix4 } from '../../math/Matrix4.js';
 import { Frustum } from '../../math/Frustum.js';
 
+/**
+ *
+ * @param _renderer
+ * @param _objects
+ * @param maxTextureSize
+ * @constructor
+ */
 function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
 
 	var _frustum = new Frustum(),

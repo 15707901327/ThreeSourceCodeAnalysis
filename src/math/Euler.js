@@ -130,6 +130,13 @@ Object.assign( Euler.prototype, {
 
 	},
 
+  /**
+	 * 根据参数，更新欧拉角
+   * @param m 矩阵
+   * @param order
+   * @param update
+   * @return {setFromRotationMatrix}
+   */
 	setFromRotationMatrix: function ( m, order, update ) {
 
 		var clamp = _Math.clamp;
@@ -253,6 +260,12 @@ Object.assign( Euler.prototype, {
 
 	},
 
+  /**
+	 * 使用四元数更新欧拉角
+   * @param q Quaternion实例
+   * @param order
+   * @param update
+   */
 	setFromQuaternion: function () {
 
 		var matrix = new Matrix4();

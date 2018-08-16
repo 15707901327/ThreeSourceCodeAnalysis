@@ -27,6 +27,13 @@ function WebGLClipping() {
 	this.numPlanes = 0;
 	this.numIntersection = 0;
 
+  /**
+	 *
+   * @param planes
+   * @param enableLocalClipping
+   * @param camera
+   * @return {boolean|*}
+   */
 	this.init = function ( planes, enableLocalClipping, camera ) {
 
 		var enabled =

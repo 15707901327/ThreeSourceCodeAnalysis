@@ -30,13 +30,19 @@ Object.assign(Plane.prototype, {
 
   },
 
+  /**
+   * 设置定义平面的各个组件。
+   * @param x
+   * @param y
+   * @param z
+   * @param w
+   * @return {setComponents}
+   */
   setComponents: function (x, y, z, w) {
-
     this.normal.set(x, y, z);
     this.constant = w;
 
     return this;
-
   },
 
   setFromNormalAndCoplanarPoint: function (normal, point) {

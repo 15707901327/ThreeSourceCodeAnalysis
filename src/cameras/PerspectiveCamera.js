@@ -3,12 +3,13 @@ import { Object3D } from '../core/Object3D.js';
 import { _Math } from '../math/Math.js';
 
 /**
- * @author mrdoob / http://mrdoob.com/
- * @author greggman / http://games.greggman.com/
- * @author zz85 / http://www.lab4games.net/zz85/blog
- * @author tschw
+ * 投影相机对象
+ * @param fov
+ * @param aspect
+ * @param near
+ * @param far
+ * @constructor
  */
-
 function PerspectiveCamera( fov, aspect, near, far ) {
 
 	Camera.call( this );

@@ -102,9 +102,7 @@ function WebGLGeometries( gl, attributes, info ) {
 		}
 
 		for ( var name in geometryAttributes ) {
-
 			attributes.update( geometryAttributes[ name ], gl.ARRAY_BUFFER );
-
 		}
 
 		// morph targets
@@ -112,17 +110,11 @@ function WebGLGeometries( gl, attributes, info ) {
 		var morphAttributes = geometry.morphAttributes;
 
 		for ( var name in morphAttributes ) {
-
 			var array = morphAttributes[ name ];
-
 			for ( var i = 0, l = array.length; i < l; i ++ ) {
-
 				attributes.update( array[ i ], gl.ARRAY_BUFFER );
-
 			}
-
 		}
-
 	}
 
 	function getWireframeAttribute( geometry ) {

@@ -3,11 +3,9 @@
  */
 
 function WebGLObjects( geometries, info ) {
-
 	var updateList = {};
 
 	function update( object ) {
-
 		var frame = info.render.frame;
 
 		var geometry = object.geometry;
@@ -30,7 +28,6 @@ function WebGLObjects( geometries, info ) {
 		}
 
 		return buffergeometry;
-
 	}
 
 	function dispose() {

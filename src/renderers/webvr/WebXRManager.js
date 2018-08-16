@@ -23,10 +23,7 @@ function WebXRManager( renderer ) {
 	var inputSources = [];
 
 	function isPresenting() {
-
 		return session !== null && frameOfRef !== null;
-
-
 	}
 
 	//

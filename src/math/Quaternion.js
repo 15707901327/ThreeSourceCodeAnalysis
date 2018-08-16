@@ -288,6 +288,11 @@ Object.assign( Quaternion.prototype, {
 
 	},
 
+  /**
+	 * 使用矩阵更新四元数
+   * @param m 矩阵实例
+   * @return {setFromRotationMatrix}
+   */
 	setFromRotationMatrix: function ( m ) {
 
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm

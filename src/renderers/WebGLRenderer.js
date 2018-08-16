@@ -8,7 +8,8 @@ import {
   TriangleStripDrawMode,
   TrianglesDrawMode,
   NoColors,
-  LinearToneMapping
+  LinearToneMapping,
+  BackSide
 } from '../constants.js';
 import {_Math} from '../math/Math.js';
 import {DataTexture} from '../textures/DataTexture.js';
@@ -19,6 +20,7 @@ import {UniformsLib} from './shaders/UniformsLib.js';
 import {UniformsUtils} from './shaders/UniformsUtils.js';
 import {Vector3} from '../math/Vector3.js';
 import {Vector4} from '../math/Vector4.js';
+import {WebGLAnimation} from './webgl/WebGLAnimation.js';
 import {WebGLAttributes} from './webgl/WebGLAttributes.js';
 import {WebGLBackground} from './webgl/WebGLBackground.js';
 import {WebGLBufferRenderer} from './webgl/WebGLBufferRenderer.js';
@@ -41,6 +43,7 @@ import {WebGLTextures} from './webgl/WebGLTextures.js';
 import {WebGLUniforms} from './webgl/WebGLUniforms.js';
 import {WebGLUtils} from './webgl/WebGLUtils.js';
 import {WebVRManager} from './webvr/WebVRManager.js';
+import {WebXRManager} from './webvr/WebXRManager.js';
 
 /**
  * @author supereggbert / http://www.paulbrunt.co.uk/
@@ -129,9 +132,12 @@ function WebGLRenderer(parameters) {
   // internal properties
 
   var _this = this,
-    _isContextLost = false, // 记录上下文是否丢失
+
+    _isContextLost = false,
 
     // internal state cache
+
+    _framebuffer = null,
 
     _currentRenderTarget = null,
     _currentFramebuffer = null,
@@ -149,7 +155,8 @@ function WebGLRenderer(parameters) {
 
     _usedTextureUnits = 0,
 
-    // canvas的长宽
+    //
+
     _width = _canvas.width,
     _height = _canvas.height,
 
@@ -280,7 +287,7 @@ function WebGLRenderer(parameters) {
     renderLists = new WebGLRenderLists();
     renderStates = new WebGLRenderStates();
 
-    background = new WebGLBackground(_this, state, geometries, _premultipliedAlpha);
+    background = new WebGLBackground(_this, state, objects, _premultipliedAlpha);
 
     bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info);
     indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info);
@@ -303,7 +310,7 @@ function WebGLRenderer(parameters) {
 
   // vr
 
-  var vr = new WebVRManager(_this);
+  var vr = ('xr' in navigator) ? new WebXRManager(_this) : new WebVRManager(_this);
 
   this.vr = vr;
 
@@ -347,14 +354,15 @@ function WebGLRenderer(parameters) {
 
   };
 
+  /**
+   * 更新场景的尺寸及视点
+   * @param value
+   */
   this.setPixelRatio = function (value) {
-
     if (value === undefined) return;
 
     _pixelRatio = value;
-
     this.setSize(_width, _height, false);
-
   };
 
   this.getSize = function () {
@@ -366,11 +374,15 @@ function WebGLRenderer(parameters) {
 
   };
 
+  /**
+   * 更新场景的尺寸_width、_height，以及视点
+   * @param width
+   * @param height
+   * @param updateStyle
+   */
   this.setSize = function (width, height, updateStyle) {
 
-    var device = vr.getDevice();
-
-    if (device && device.isPresenting) {
+    if (vr.isPresenting()) {
 
       console.warn('THREE.WebGLRenderer: Can\'t change size while VR device is presenting.');
       return;
@@ -423,11 +435,16 @@ function WebGLRenderer(parameters) {
 
   };
 
+  /**
+   * 更新视点
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   */
   this.setViewport = function (x, y, width, height) {
-
     _viewport.set(x, _height - y - height, width, height);
     state.viewport(_currentViewport.copy(_viewport).multiplyScalar(_pixelRatio));
-
   };
 
   this.setScissor = function (x, y, width, height) {
@@ -451,6 +468,7 @@ function WebGLRenderer(parameters) {
 
   };
 
+  // 设置背景颜色
   this.setClearColor = function () {
 
     background.setClearColor.apply(background, arguments);
@@ -469,6 +487,12 @@ function WebGLRenderer(parameters) {
 
   };
 
+  /**
+   * 根据参数清空颜色缓存区、深度缓存区、模版缓存区
+   * @param color
+   * @param depth
+   * @param stencil
+   */
   this.clear = function (color, depth, stencil) {
 
     var bits = 0;
@@ -520,7 +544,7 @@ function WebGLRenderer(parameters) {
 
     vr.dispose();
 
-    stopAnimation();
+    animation.stop();
 
   };
 
@@ -851,7 +875,7 @@ function WebGLRenderer(parameters) {
 
   };
 
-  function setupVertexAttributes(material, program, geometry, startIndex) {
+  function setupVertexAttributes(material, program, geometry) {
 
     if (geometry && geometry.isInstancedBufferGeometry) {
 
@@ -863,8 +887,6 @@ function WebGLRenderer(parameters) {
       }
 
     }
-
-    if (startIndex === undefined) startIndex = 0;
 
     state.initAttributes();
 
@@ -920,7 +942,7 @@ function WebGLRenderer(parameters) {
             }
 
             _gl.bindBuffer(_gl.ARRAY_BUFFER, buffer);
-            _gl.vertexAttribPointer(programAttribute, size, type, normalized, stride * bytesPerElement, (startIndex * stride + offset) * bytesPerElement);
+            _gl.vertexAttribPointer(programAttribute, size, type, normalized, stride * bytesPerElement, offset * bytesPerElement);
 
           } else {
 
@@ -941,7 +963,7 @@ function WebGLRenderer(parameters) {
             }
 
             _gl.bindBuffer(_gl.ARRAY_BUFFER, buffer);
-            _gl.vertexAttribPointer(programAttribute, size, type, normalized, 0, startIndex * size * bytesPerElement);
+            _gl.vertexAttribPointer(programAttribute, size, type, normalized, 0, 0);
 
           }
 
@@ -1033,62 +1055,33 @@ function WebGLRenderer(parameters) {
 
   // Animation Loop
 
-  var isAnimating = false;
-  var onAnimationFrame = null;
+  var onAnimationFrameCallback = null;
 
-  function startAnimation() {
+  function onAnimationFrame(time) {
 
-    if (isAnimating) return;
-
-    requestAnimationLoopFrame();
-
-    isAnimating = true;
+    if (vr.isPresenting()) return;
+    if (onAnimationFrameCallback) onAnimationFrameCallback(time);
 
   }
 
-  function stopAnimation() {
+  var animation = new WebGLAnimation();
+  animation.setAnimationLoop(onAnimationFrame);
 
-    isAnimating = false;
+  if (typeof window !== 'undefined') animation.setContext(window);
 
-  }
+  this.setAnimationLoop = function (callback) {
 
-  function requestAnimationLoopFrame() {
+    onAnimationFrameCallback = callback;
+    vr.setAnimationLoop(callback);
 
-    var device = vr.getDevice();
-
-    if (device && device.isPresenting) {
-
-      device.requestAnimationFrame(animationLoop);
-
-    } else {
-
-      window.requestAnimationFrame(animationLoop);
-
-    }
-
-  }
-
-  function animationLoop(time) {
-
-    if (isAnimating === false) return;
-
-    onAnimationFrame(time);
-
-    requestAnimationLoopFrame();
-
-  }
-
-  this.animate = function (callback) {
-
-    onAnimationFrame = callback;
-    onAnimationFrame !== null ? startAnimation() : stopAnimation();
+    animation.start();
 
   };
 
   // Rendering
-
   this.render = function (scene, camera, renderTarget, forceClear) {
 
+    // 检查相机
     if (!(camera && camera.isCamera)) {
 
       console.error('THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.');
@@ -1096,6 +1089,7 @@ function WebGLRenderer(parameters) {
 
     }
 
+    // 检查是否丢失上下文
     if (_isContextLost) return;
 
     // reset caching for this frame
@@ -1286,6 +1280,12 @@ function WebGLRenderer(parameters) {
   }
   */
 
+  /**
+   *
+   * @param object
+   * @param camera
+   * @param sortObjects
+   */
   function projectObject(object, camera, sortObjects) {
 
     if (object.visible === false) return;
@@ -1295,79 +1295,56 @@ function WebGLRenderer(parameters) {
     if (visible) {
 
       if (object.isLight) {
-
         currentRenderState.pushLight(object);
-
         if (object.castShadow) {
-
           currentRenderState.pushShadow(object);
-
         }
-
-      } else if (object.isSprite) {
-
+      }
+      else if (object.isSprite) {
         if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
-
           currentRenderState.pushSprite(object);
-
         }
-
-      } else if (object.isImmediateRenderObject) {
+      }
+      else if (object.isImmediateRenderObject) {
 
         if (sortObjects) {
-
           _vector3.setFromMatrixPosition(object.matrixWorld)
             .applyMatrix4(_projScreenMatrix);
-
         }
 
         currentRenderList.push(object, null, object.material, _vector3.z, null);
 
-      } else if (object.isMesh || object.isLine || object.isPoints) {
+      }
+      else if (object.isMesh || object.isLine || object.isPoints) {
 
         if (object.isSkinnedMesh) {
-
           object.skeleton.update();
-
         }
 
         if (!object.frustumCulled || _frustum.intersectsObject(object)) {
 
           if (sortObjects) {
-
             _vector3.setFromMatrixPosition(object.matrixWorld)
               .applyMatrix4(_projScreenMatrix);
-
           }
 
           var geometry = objects.update(object);
           var material = object.material;
 
           if (Array.isArray(material)) {
-
             var groups = geometry.groups;
-
             for (var i = 0, l = groups.length; i < l; i++) {
-
               var group = groups[i];
               var groupMaterial = material[group.materialIndex];
-
               if (groupMaterial && groupMaterial.visible) {
-
                 currentRenderList.push(object, geometry, groupMaterial, _vector3.z, group);
-
               }
-
             }
-
-          } else if (material.visible) {
-
-            currentRenderList.push(object, geometry, material, _vector3.z, null);
-
           }
-
+          else if (material.visible) {
+            currentRenderList.push(object, geometry, material, _vector3.z, null);
+          }
         }
-
       }
 
     }
@@ -1405,14 +1382,22 @@ function WebGLRenderer(parameters) {
 
           if (object.layers.test(camera2.layers)) {
 
-            var bounds = camera2.bounds;
+            if ('viewport' in camera2) { // XR
 
-            var x = bounds.x * _width;
-            var y = bounds.y * _height;
-            var width = bounds.z * _width;
-            var height = bounds.w * _height;
+              state.viewport(_currentViewport.copy(camera2.viewport));
 
-            state.viewport(_currentViewport.set(x, y, width, height).multiplyScalar(_pixelRatio));
+            } else {
+
+              var bounds = camera2.bounds;
+
+              var x = bounds.x * _width;
+              var y = bounds.y * _height;
+              var width = bounds.z * _width;
+              var height = bounds.w * _height;
+
+              state.viewport(_currentViewport.set(x, y, width, height).multiplyScalar(_pixelRatio));
+
+            }
 
             renderObject(object, scene, camera2, geometry, material, group);
 
@@ -2068,12 +2053,7 @@ function WebGLRenderer(parameters) {
 
       if (uvScaleMap.matrixAutoUpdate === true) {
 
-        var offset = uvScaleMap.offset;
-        var repeat = uvScaleMap.repeat;
-        var rotation = uvScaleMap.rotation;
-        var center = uvScaleMap.center;
-
-        uvScaleMap.matrix.setUvTransform(offset.x, offset.y, repeat.x, repeat.y, rotation, center.x, center.y);
+        uvScaleMap.updateMatrix();
 
       }
 
@@ -2111,12 +2091,7 @@ function WebGLRenderer(parameters) {
 
       if (material.map.matrixAutoUpdate === true) {
 
-        var offset = material.map.offset;
-        var repeat = material.map.repeat;
-        var rotation = material.map.rotation;
-        var center = material.map.center;
-
-        material.map.matrix.setUvTransform(offset.x, offset.y, repeat.x, repeat.y, rotation, center.x, center.y);
+        material.map.updateMatrix();
 
       }
 
@@ -2168,6 +2143,7 @@ function WebGLRenderer(parameters) {
 
       uniforms.bumpMap.value = material.bumpMap;
       uniforms.bumpScale.value = material.bumpScale;
+      if (material.side === BackSide) uniforms.bumpScale.value *= -1;
 
     }
 
@@ -2175,6 +2151,7 @@ function WebGLRenderer(parameters) {
 
       uniforms.normalMap.value = material.normalMap;
       uniforms.normalScale.value.copy(material.normalScale);
+      if (material.side === BackSide) uniforms.normalScale.value.negate();
 
     }
 
@@ -2227,6 +2204,7 @@ function WebGLRenderer(parameters) {
 
       uniforms.bumpMap.value = material.bumpMap;
       uniforms.bumpScale.value = material.bumpScale;
+      if (material.side === BackSide) uniforms.bumpScale.value *= -1;
 
     }
 
@@ -2234,6 +2212,7 @@ function WebGLRenderer(parameters) {
 
       uniforms.normalMap.value = material.normalMap;
       uniforms.normalScale.value.copy(material.normalScale);
+      if (material.side === BackSide) uniforms.normalScale.value.negate();
 
     }
 
@@ -2256,10 +2235,12 @@ function WebGLRenderer(parameters) {
 
   function refreshUniformsPhysical(uniforms, material) {
 
+    refreshUniformsStandard(uniforms, material);
+
+    uniforms.reflectivity.value = material.reflectivity; // also part of uniforms common
+
     uniforms.clearCoat.value = material.clearCoat;
     uniforms.clearCoatRoughness.value = material.clearCoatRoughness;
-
-    refreshUniformsStandard(uniforms, material);
 
   }
 
@@ -2297,6 +2278,7 @@ function WebGLRenderer(parameters) {
 
       uniforms.bumpMap.value = material.bumpMap;
       uniforms.bumpScale.value = material.bumpScale;
+      if (material.side === BackSide) uniforms.bumpScale.value *= -1;
 
     }
 
@@ -2304,6 +2286,7 @@ function WebGLRenderer(parameters) {
 
       uniforms.normalMap.value = material.normalMap;
       uniforms.normalScale.value.copy(material.normalScale);
+      if (material.side === BackSide) uniforms.normalScale.value.negate();
 
     }
 
@@ -2439,6 +2422,14 @@ function WebGLRenderer(parameters) {
 
   }());
 
+  //
+
+  this.setFramebuffer = function (value) {
+
+    _framebuffer = value;
+
+  };
+
   this.getRenderTarget = function () {
 
     return _currentRenderTarget;
@@ -2455,7 +2446,7 @@ function WebGLRenderer(parameters) {
 
     }
 
-    var framebuffer = null;
+    var framebuffer = _framebuffer;
     var isCube = false;
 
     if (renderTarget) {
@@ -2598,13 +2589,21 @@ function WebGLRenderer(parameters) {
     var height = srcTexture.image.height;
     var glFormat = utils.convert(dstTexture.format);
     var glType = utils.convert(dstTexture.type);
-    var pixels = srcTexture.isDataTexture ? srcTexture.image.data : srcTexture.image;
 
     this.setTexture2D(dstTexture, 0);
 
-    _gl.texSubImage2D(_gl.TEXTURE_2D, level || 0, position.x, position.y, width, height, glFormat, glType, pixels);
+    if (srcTexture.isDataTexture) {
+
+      _gl.texSubImage2D(_gl.TEXTURE_2D, level || 0, position.x, position.y, width, height, glFormat, glType, srcTexture.image.data);
+
+    } else {
+
+      _gl.texSubImage2D(_gl.TEXTURE_2D, level || 0, position.x, position.y, glFormat, glType, srcTexture.image);
+
+    }
 
   };
+
 }
 
 export {WebGLRenderer};
