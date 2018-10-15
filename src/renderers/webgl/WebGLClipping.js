@@ -171,5 +171,4 @@ function WebGLClipping() {
 
 }
 
-
 export { WebGLClipping };

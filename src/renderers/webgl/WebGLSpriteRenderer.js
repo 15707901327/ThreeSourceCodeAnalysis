@@ -383,5 +383,4 @@ function WebGLSpriteRenderer( renderer, gl, state, textures, capabilities ) {
 
 }
 
-
 export { WebGLSpriteRenderer };
