@@ -15,9 +15,9 @@ import { Frustum } from '../../math/Frustum.js';
 
 /**
  *
- * @param _renderer
+ * @param _renderer 上下文
  * @param _objects
- * @param maxTextureSize
+ * @param maxTextureSize 纹理的最大尺寸
  * @constructor
  */
 function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
@@ -26,7 +26,7 @@ function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
 		_projScreenMatrix = new Matrix4(),
 
 		_shadowMapSize = new Vector2(),
-		_maxShadowMapSize = new Vector2( maxTextureSize, maxTextureSize ),
+		_maxShadowMapSize = new Vector2( maxTextureSize, maxTextureSize ), // 最大阴影范围
 
 		_lookTarget = new Vector3(),
 		_lightPositionWorld = new Vector3(),

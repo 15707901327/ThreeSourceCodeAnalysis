@@ -116,15 +116,10 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
 		var precision = capabilities.precision;
 
 		if ( material.precision !== null ) {
-
 			precision = capabilities.getMaxPrecision( material.precision );
-
 			if ( precision !== material.precision ) {
-
 				console.warn( 'THREE.WebGLProgram.getParameters:', material.precision, 'not supported, using', precision, 'instead.' );
-
 			}
-
 		}
 
 		var currentRenderTarget = renderer.getRenderTarget();

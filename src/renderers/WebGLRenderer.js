@@ -162,7 +162,7 @@ function WebGLRenderer(parameters) {
 
     _pixelRatio = 1,
 
-    _viewport = new Vector4(0, 0, _width, _height),
+    _viewport = new Vector4(0, 0, _width, _height), // 设置绘图区域
     _scissor = new Vector4(0, 0, _width, _height),
     _scissorTest = false,
 
@@ -571,25 +571,16 @@ function WebGLRenderer(parameters) {
   }
 
   function onMaterialDispose(event) {
-
     var material = event.target;
-
     material.removeEventListener('dispose', onMaterialDispose);
-
     deallocateMaterial(material);
-
   }
 
   // Buffer deallocation
-
   function deallocateMaterial(material) {
-
     releaseMaterialProgramReference(material);
-
     properties.remove(material);
-
   }
-
 
   function releaseMaterialProgramReference(material) {
 
@@ -1161,7 +1152,6 @@ function WebGLRenderer(parameters) {
     this.setRenderTarget(renderTarget);
 
     //
-
     background.render(currentRenderList, scene, camera, forceClear);
 
     // render scene
@@ -1350,13 +1340,9 @@ function WebGLRenderer(parameters) {
     }
 
     var children = object.children;
-
     for (var i = 0, l = children.length; i < l; i++) {
-
       projectObject(children[i], camera, sortObjects);
-
     }
-
   }
 
   function renderObjects(renderList, scene, camera, overrideMaterial) {
@@ -1438,9 +1424,7 @@ function WebGLRenderer(parameters) {
       renderObjectImmediate(object, program, material);
 
     } else {
-
       _this.renderBufferDirect(camera, scene.fog, geometry, material, object, group);
-
     }
 
     object.onAfterRender(_this, scene, camera, geometry, material, group);
@@ -1464,10 +1448,8 @@ function WebGLRenderer(parameters) {
     var programChange = true;
 
     if (program === undefined) {
-
       // new material
       material.addEventListener('dispose', onMaterialDispose);
-
     } else if (program.code !== code) {
 
       // changed glsl or parameters
@@ -1491,27 +1473,21 @@ function WebGLRenderer(parameters) {
     }
 
     if (programChange) {
-
       if (parameters.shaderID) {
-
         var shader = ShaderLib[parameters.shaderID];
-
         materialProperties.shader = {
           name: material.type,
           uniforms: UniformsUtils.clone(shader.uniforms),
           vertexShader: shader.vertexShader,
           fragmentShader: shader.fragmentShader
         };
-
       } else {
-
         materialProperties.shader = {
           name: material.type,
           uniforms: material.uniforms,
           vertexShader: material.vertexShader,
           fragmentShader: material.fragmentShader
         };
-
       }
 
       material.onBeforeCompile(materialProperties.shader, _this);
@@ -2431,9 +2407,7 @@ function WebGLRenderer(parameters) {
   };
 
   this.getRenderTarget = function () {
-
     return _currentRenderTarget;
-
   };
 
   this.setRenderTarget = function (renderTarget) {

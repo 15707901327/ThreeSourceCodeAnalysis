@@ -21,13 +21,10 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 	var boxMesh;
 
 	function render( renderList, scene, camera, forceClear ) {
-
 		var background = scene.background;
 
 		if ( background === null ) {
-
 			setClear( clearColor, clearAlpha );
-
 		} else if ( background && background.isColor ) {
 
 			setClear( background, 1 );
@@ -100,10 +97,13 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 
 	}
 
+  /**
+   * 设置背景颜色
+   * @param color
+   * @param alpha
+   */
 	function setClear( color, alpha ) {
-
 		state.buffers.color.setClear( color.r, color.g, color.b, alpha, premultipliedAlpha );
-
 	}
 
 	return {

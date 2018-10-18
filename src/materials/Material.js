@@ -25,11 +25,12 @@ function Material() {
 	this.fog = true;
 	this.lights = true;
 
-	this.blending = NormalBlending;
-	this.side = FrontSide;
+	this.blending = NormalBlending; // 控制渲染时是否混合
+	this.side = FrontSide; // 控制渲染面
 	this.flatShading = false;
 	this.vertexColors = NoColors; // THREE.NoColors, THREE.VertexColors, THREE.FaceColors
 
+  // 控制透明度
 	this.opacity = 1;
 	this.transparent = false;
 
@@ -40,9 +41,9 @@ function Material() {
 	this.blendDstAlpha = null;
 	this.blendEquationAlpha = null;
 
-	this.depthFunc = LessEqualDepth;
-	this.depthTest = true;
-	this.depthWrite = true;
+	this.depthFunc = LessEqualDepth;// 指定了一个将传入像素深度与当前深度缓冲区值进行比较的函数
+	this.depthTest = true; // 设置是否启动隐藏面消除
+	this.depthWrite = true;  // 是否锁定深度
 
 	this.clippingPlanes = null;
 	this.clipIntersection = false;
@@ -50,10 +51,11 @@ function Material() {
 
 	this.shadowSide = null;
 
-	this.colorWrite = true;
+	this.colorWrite = true; // 是否锁定颜色
 
 	this.precision = null; // override the renderer's default precision for this material
 
+  // 设置多边形位移
 	this.polygonOffset = false;
 	this.polygonOffsetFactor = 0;
 	this.polygonOffsetUnits = 0;

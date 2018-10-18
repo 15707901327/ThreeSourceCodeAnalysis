@@ -96,7 +96,6 @@ function WebGLAttributes( gl ) {
 	}
 
 	//
-
 	function get( attribute ) {
 
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
@@ -142,13 +141,10 @@ function WebGLAttributes( gl ) {
 	}
 
 	return {
-
 		get: get,
 		remove: remove,
 		update: update
-
 	};
-
 }
 
 

@@ -63,5 +63,4 @@ var UniformsUtils = {
 
 };
 
-
 export { UniformsUtils };

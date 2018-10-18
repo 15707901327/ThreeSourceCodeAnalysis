@@ -1,7 +1,15 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
+import {WebGLInfo} from "./WebGLInfo";
 
+/**
+ *
+ * @param geometries
+ * @param info{WebGLInfo}
+ * @return {{update: update, dispose: dispose}}
+ * @constructor
+ */
 function WebGLObjects( geometries, info ) {
 	var updateList = {};
 
@@ -42,8 +50,6 @@ function WebGLObjects( geometries, info ) {
 		dispose: dispose
 
 	};
-
 }
-
 
 export { WebGLObjects };
