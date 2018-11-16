@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    text-indent: 2em;
+    line-height: 1.5;
+}
+
+table {
+    border-collapse: collapse;
+    margin-left: 30px;
+    text-align: center;
+}
+
+th, td {
+    padding: 5px;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+}
+
+.ul-1 {
+    margin-left: 20px;
+}
+
+.ul-1-num {
+    margin-left: 20px;
+    list-style: decimal;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 80%;
+    min-width: 800px;
+}
+
+.l-r-wrapper {
+    min-width: 800px;
+    min-height: 929px;
+    background-color: #f0f0f0;
+}
+
+.left {
+    width: 300px;
+    float: left;
+    overflow: hidden;
+}
+
+.right {
+    background-color: #fff;
+    overflow: hidden;
+    height: 100%;
+    min-height: 929px;
+}
+
+.section1 {
+    margin-top: 20px;
+    border-top: 1px dashed burlywood;
+}
+
+.section1 .title {
+    text-align: center;
+    font-size: 26px;
+    border-bottom: 1px dashed burlywood;
+    padding: 5px 0;
+}
+
+section .content {
+    margin-left: 2em;
+}
+
+.bg-1 {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+/******************************** 左侧目录开始 *********************************/
+.left_List{
+    padding: 14px;
+}
+.list_title{
+    padding: 13px 0;
+}
+/******************************** 左侧目录结束 *********************************/
