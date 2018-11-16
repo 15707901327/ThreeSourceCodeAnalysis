@@ -8,7 +8,8 @@ import { AnimationClip } from './AnimationClip.js';
 /**
  *
  * Player for AnimationClips.
- *
+ * 说明：
+ * 	AnimationMixer是场景中播放特定对象的动画播放器。当场景中多个对象动画独立时，可以为每个对象使用一个AnimationMixer。
  *
  * @author Ben Houston / http://clara.io/
  * @author David Sarno / http://lighthaus.us/
@@ -756,6 +757,5 @@ AnimationMixer.prototype = Object.assign( Object.create( EventDispatcher.prototy
 	}
 
 } );
-
 
 export { AnimationMixer };
