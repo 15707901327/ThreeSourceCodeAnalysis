@@ -9,6 +9,10 @@
   <div class="left">
     <h4><a href="#base">动画</a></h4>
     <h4><a href="example/index.html" target="_blank">实例</a></h4>
+    <h4>连接</h4>
+    <ul class="ul-1">
+      <li><a href="dat_gui_doc/gui.html">dat.gui.js基本用法</a></li>
+    </ul>
   </div>
   <div class="right">
     <section id="base" class="section1">
@@ -16,6 +20,16 @@
       <section>
         <h4>基本概念</h4>
         <div class="content">
+          <strong>Animation Clips(动画片段):</strong>
+          <p>每一个AnimationClip通常保存对象的某个活动的数据。</p>
+          <strong>Keyframe Tracks(关键帧轨道):</strong>
+          <p>在这样的Animation Clips中，每个动画属性的数据存储在单独的Keyframe Track中。</p>
+          <strong>Animation Mixer(动画混音器):</strong>
+          <p>存储的数据仅构成动画的基础 - 实际播放由AnimationMixer控制。</p>
+          <strong>Animation Actions(动画动作):</strong>
+          <p>AnimationMixer本身只有很少（通用）属性和方法，因为它可以由AnimationActions控制。
+            通过配置AnimationAction，您可以确定某个AnimationClip何时在其中一个混音器上播放，暂停或停止，
+            是否必须重复剪辑，是否应该使用淡入淡出或时间缩放，以及 其他的东西，比如交叉渐变或同步。</p>
         </div>
       </section>
     </section>

@@ -11,6 +11,7 @@
     <h4><a href="#BaseUse">基本用法</a></h4>
     <ul class="ul-1">
       <li><a href="#Folder">控制项分组</a></li>
+      <li><a href="#Control">各种类型的控件</a></li>
     </ul>
   </div>
   <div class="right">
@@ -47,12 +48,49 @@
         </div>
       </section>
       <section id="Folder">
-        <h4>创建项分组</h4>
-        <div class="content">
-          <p>var folder1 = panel.addFolder('Visibility');</p>
-          <p>folder1.open();// 展开分组项</p>
-        </div>
-      </section>
+      <h4>创建项分组</h4>
+      <div class="content">
+        <p>var folder1 = panel.addFolder('Visibility');</p>
+        <p>folder1.open();// 展开分组项</p>
+      </div>
+    </section>
+      <section id="Control">
+      <h4>各种类型的控件</h4>
+      <div class="content">
+        <strong>数字类型</strong>
+        <ul class="ul-1-num">
+          <li>
+            如果没有设置限制条件，则为一个 input 输入框。
+            <p>var gui = new dat.GUI();</p>
+            <p>gui.add(controls, 'rotationSpeed');</p>
+          </li>
+          <li>可以设置最小值最大值范围，则显示为 slider 滑块组件（当然右侧还是有 input 输入）
+            <p>var gui = new dat.GUI();</p>
+            <p>gui.add(controls, 'rotationSpeed', 0, 0.5);</p>
+          </li>
+          <li>可以设置最小值最大值范围同时设置步长，则显示为 slider 滑块组件（当然右侧还是有 input 输入）
+            <p>var gui = new dat.GUI();</p>
+            <p>gui.add(controls, 'rotationSpeed', 0, 0.5,0.01);</p>
+            <p><strong>说明：</strong>0.01为步长</p>
+          </li>
+          <li>还可以只单独限制最小值或者最大值，这个同样为一个 input 输入框。
+            <p>var gui = new dat.GUI();</p>
+            <p>gui.add(controls, 'rotationSpeedX').min(0);</p>
+            <p>gui.add(controls, 'rotationSpeedY').max(10);</p>
+          </li>
+          <li>可以配合 step 限制步长
+            <p>var gui = new dat.GUI();</p>
+            <p>gui.add(controls, 'rotationSpeedX').step(0.5);</p>
+            <p>gui.add(controls, 'rotationSpeedY', 0, 3).step(0.5);</p>
+            <p>gui.add(controls, 'rotationSpeedZ').max(10).step(0.5);</p>
+          </li>
+          <li>如果数字只是有限的几种固定值，那还可以使用下拉框的形式。
+            <p>var gui = new dat.GUI();</p>
+            <p>gui.add(controls, 'rotationSpeed', { Stopped: 0, Slow: 0.02, Fast: 5 });</p>
+          </li>
+        </ul>
+      </div>
+    </section>
     </section>
   </div>
 </div>

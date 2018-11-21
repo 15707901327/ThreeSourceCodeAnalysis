@@ -122,7 +122,6 @@
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.target.set(0, radius, 0);
         controls.update();
-
         // Create the control panel
         createPanel();
 
@@ -291,6 +290,9 @@
         });
       }
 
+      /**
+       * 取消所有动画的暂停
+       */
       function unPauseAllActions() {
         actions.forEach(function (action) {
           action.paused = false;
@@ -303,6 +305,12 @@
         sizeOfNextStep = settings['modify step size'];
       }
 
+      /**
+       * 准备交叉淡入淡出
+       * @param startAction
+       * @param endAction
+       * @param defaultDuration 交叉淡入淡出时间
+       */
       function prepareCrossFade(startAction, endAction, defaultDuration) {
 
         // Switch default / custom crossfade duration (according to the user's choice)
@@ -323,6 +331,11 @@
         }
       }
 
+      /**
+       * 获取交叉渐变持续时间
+       * @param defaultDuration
+       * @return {*}
+       */
       function setCrossFadeDuration(defaultDuration) {
         // Switch default crossfade duration <-> custom crossfade duration
         if (settings['use default duration']) {
