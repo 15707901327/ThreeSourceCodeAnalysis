@@ -1,20 +1,24 @@
 /**
  * @author spidersharma / http://eduperiment.com/
+ * @param resolution{THREE.Vector2}
+ * @param scene 场景
+ * @param camera 相机
+ * @param selectedObjects
+ * @constructor
  */
-
 THREE.OutlinePass = function ( resolution, scene, camera, selectedObjects ) {
 
 	this.renderScene = scene;
 	this.renderCamera = camera;
-	this.selectedObjects = selectedObjects !== undefined ? selectedObjects : [];
-	this.visibleEdgeColor = new THREE.Color( 1, 1, 1 );
-	this.hiddenEdgeColor = new THREE.Color( 0.1, 0.04, 0.02 );
-	this.edgeGlow = 0.0;
-	this.usePatternTexture = false;
-	this.edgeThickness = 1.0;
-	this.edgeStrength = 3.0;
+	this.selectedObjects = selectedObjects !== undefined ? selectedObjects : []; // 添加光晕的物体列表
+	this.visibleEdgeColor = new THREE.Color( 1, 1, 1 ); // 显示边缘颜色
+	this.hiddenEdgeColor = new THREE.Color( 0.1, 0.04, 0.02 ); // 隐藏边缘颜色
+	this.edgeGlow = 0.0; // 边缘发光
+	this.usePatternTexture = false; // 使用图案纹理
+	this.edgeThickness = 1.0; // 边缘厚度
+	this.edgeStrength = 3.0; // 边缘力量
 	this.downSampleRatio = 2;
-	this.pulsePeriod = 0;
+	this.pulsePeriod = 0; // 脉冲周期
 
 	THREE.Pass.call( this );
 

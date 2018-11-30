@@ -1,7 +1,8 @@
 /**
  * @author alteredq / http://alteredqualia.com/
+ * @param renderer：渲染器
+ * @param renderTarget
  */
-
 THREE.EffectComposer = function ( renderer, renderTarget ) {
 
 	this.renderer = renderer;
@@ -18,7 +19,6 @@ THREE.EffectComposer = function ( renderer, renderTarget ) {
 		var size = renderer.getDrawingBufferSize();
 		renderTarget = new THREE.WebGLRenderTarget( size.width, size.height, parameters );
 		renderTarget.texture.name = 'EffectComposer.rt1';
-
 	}
 
 	this.renderTarget1 = renderTarget;
@@ -31,21 +31,13 @@ THREE.EffectComposer = function ( renderer, renderTarget ) {
 	this.passes = [];
 
 	// dependencies
-
 	if ( THREE.CopyShader === undefined ) {
-
 		console.error( 'THREE.EffectComposer relies on THREE.CopyShader' );
-
 	}
-
 	if ( THREE.ShaderPass === undefined ) {
-
 		console.error( 'THREE.EffectComposer relies on THREE.ShaderPass' );
-
 	}
-
 	this.copyPass = new THREE.ShaderPass( THREE.CopyShader );
-
 };
 
 Object.assign( THREE.EffectComposer.prototype, {
@@ -158,7 +150,6 @@ Object.assign( THREE.EffectComposer.prototype, {
 	}
 
 } );
-
 
 THREE.Pass = function () {
 

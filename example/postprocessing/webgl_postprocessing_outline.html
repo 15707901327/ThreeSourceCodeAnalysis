@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>three.js webgl - post processing - Outline Pass</title>
+  <title>光晕效果</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <style>
@@ -51,10 +51,7 @@
 
 <div id="info">
   <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - Outline Pass by <a
-    href="http://eduperiment.com" target="_blank" rel="noopener">Prashant Sharma</a> and <a href="https://clara.io"
-                                                                                            target="_blank"
-                                                                                            rel="noopener">Ben
-  Houston</a><br/><br/>
+    href="http://eduperiment.com" target="_blank" rel="noopener">Prashant Sharma</a> and <a href="https://clara.io" target="_blank" rel="noopener">Ben Houston</a><br/><br/>
 </div>
 
 <script>
@@ -160,7 +157,6 @@
     scene.add(light);
 
     // model
-
     var manager = new THREE.LoadingManager();
     manager.onProgress = function (item, loaded, total) {
       console.log(item, loaded, total);
