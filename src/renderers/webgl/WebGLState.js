@@ -720,6 +720,10 @@ function WebGLState(gl, extensions, utils) {
 
   }
 
+  /**
+   * 剔除面
+   * @param cullFace 剔除模式
+   */
   function setCullFace(cullFace) {
 
     if (cullFace !== CullFaceNone) {

@@ -238,9 +238,7 @@
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
     };
-
     loader = new THREE.TextureLoader();
-
     loader.load('../textures/tri_pattern.jpg', onLoad);
 
     effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
