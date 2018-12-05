@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style type="text/css">
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+  <script src="../../build/three_r98.js"></script>
+  <script src="../js/controls/OrbitControls.js"></script>
+  <script src="../js/libs/stats.min.js"></script>
+  <script src="../js/libs/dat.gui.min.js"></script>
+  <script src="../js/PGL/PGL.js"></script>
+  <script>
+    window.onload = function (ev) {
+      var scene, renderer, camera;
+      var controls,stats;
+
+      init();
+
+      function init() {
+        renderer = PGL.initRender();
+        document.body.appendChild(renderer.domElement);
+        scene = PGL.initScene();
+        camera = PGL.initPerspectiveCamera();
+        PGL.initLight(scene);
+
+        controls = PGL.initOrbitControls(camera, renderer);
+
+        stats = new Stats();
+        document.body.appendChild(stats.dom);
+
+        window.onresize = onWindowResize;
+
+        //创建立方体的方法
+        var cubeMaterial = new THREE.MeshLambertMaterial({color: 0x00ff00, transparent: true, opacity: 0.8});
+        function addCube() {
+          var cubeSize = 1.0;
+          var cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+
+          var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+          cube.position.x = -100 + Math.round(Math.random() * 200);
+          cube.position.y = -100 + Math.round(Math.random() * 200);
+          cube.position.z = -100 + Math.round(Math.random() * 200);
+
+          return cube;
+        }
+
+        initGui();
+        function initGui() {
+          var gui = {
+            numberOfObjects: 500, //当前场景中模型的个数
+            combined: false, //是否合并模型
+            redraw: function () {
+              var i;
+              //删除场景内现有的立方体
+              var arr = [];
+              scene.traverse(function (e) {
+                if (e instanceof THREE.Mesh) arr.push(e);
+              });
+              arr.forEach(function (value) {
+                scene.remove(value);
+              });
+
+              //重新生成立方体
+              if (gui.combined) {
+                //合并模型，则使用merge方法合并
+                var geometry = new THREE.Geometry();
+                //merge方法将两个几何体对象或者Object3D里面的几何体对象合并,(使用对象的变换)将几何体的顶点,面,UV分别合并.
+                //THREE.GeometryUtils: .merge() has been moved to Geometry. Use geometry.merge( geometry2, matrix, materialIndexOffset ) instead.
+                for (i = 0; i < gui.numberOfObjects; i++) {
+                  var cube = addCube();
+                  cube.updateMatrix();
+                  geometry.merge(cube.geometry, cube.matrix);
+                }
+
+                scene.add(new THREE.Mesh(geometry, cubeMaterial));
+              }
+              else {
+                for (i = 0; i < gui.numberOfObjects; i++) {
+                  scene.add(addCube());
+                }
+              }
+            }
+          };
+          var datGui = new dat.GUI();
+          datGui.add(gui, "numberOfObjects", 0, 20000);
+          datGui.add(gui, "combined");
+          datGui.add(gui, "redraw");
+
+          gui.redraw();
+        }
+      }
+
+      animate();
+
+      function animate() {
+        render();
+
+        //更新性能插件
+        stats.update();
+
+        controls.update();
+
+        requestAnimationFrame(animate);
+      }
+
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        render();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
