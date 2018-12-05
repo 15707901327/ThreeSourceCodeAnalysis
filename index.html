@@ -8,6 +8,7 @@
 <div class="l-r-wrapper">
   <div class="left">
     <h4><a href="#base">动画</a></h4>
+    <h4><a href="#performanceOptimization">性能优化</a></h4>
     <h4><a href="example/index.html" target="_blank">实例</a></h4>
     <h4>连接</h4>
     <ul class="ul-1">
@@ -31,6 +32,57 @@
             通过配置AnimationAction，您可以确定某个AnimationClip何时在其中一个混音器上播放，暂停或停止，
             是否必须重复剪辑，是否应该使用淡入淡出或时间缩放，以及 其他的东西，比如交叉渐变或同步。</p>
         </div>
+      </section>
+    </section>
+    <section id="performanceOptimization" class="section1">
+      <div class="title">性能优化</div>
+      <section>
+        <h4>能用BufferGeometry代替Geometry的尽量用BufferGeometry</h4>
+        <div class="content">
+          <p>BufferGeometry 会缓存网格模型，性能要高效点。</p>
+          <strong>网格模型生成原理</strong>
+          <ul class="ul-1-num">
+            <li>Geometry 生成的模型是这样的 （代码）-> (CUP 进行数据处理，转化成虚拟3D数据) -> (GPU 进行数据组装，转化成像素点，准备渲染) -> 显示器<br>第二次操作时重复走这些流程。
+            </li>
+            <li>BufferGeometry 生成模型流程 (代码) -> (CUP 进行数据处理，转化成虚拟3D数据) -> (GPU 进行数据组装，转化成像素点，准备渲染) -> (丢入缓存区) -> 显示器<br>
+              第二次修改时，通过API直接修改缓存区数据，<br>
+              (代码) -> (CUP 进行数据处理，转化成虚拟3D数据) -> (修改缓存区数据) -> 显示器<br>
+              节约了GPU性能的运算性能。同时由于渲染时不用生成BufferGeometry，减少了内存的占用。
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section>
+        <h4>少在requestAnimationFrame()动画下面执行操作</h4>
+        <p>因为requestAnimationFrame（）每秒执行60次，你要是在里面加个for循环，你的代码就炸了。还要减少浮点计算，系统对浮点计算开支比较大，尽量写成小数乘法。</p>
+      </section>
+      <section>
+        <h4>使用clone()方法</h4>
+        <p>clone()返回一个新的几何体对象，返回新的几何体对象包含原来的几何体顶点数据、顶点索引数据、UV坐标数据。</p>
+        <div class="content">
+          <p>var box=new THREE.BoxGeometry(10,10,10);//创建一个立方体几何对象</p>
+          <p>var box2 = box.clone();//克隆几何体</p>
+          <p>box2.scale.set(2,2,2);//通过缩放调整大小</p>
+          <p>box2.scale.set(2,2,2);//通过缩放调整大小</p>
+        </div>
+      </section>
+      <section>
+        <h4>纹理图片尺寸一定得是2的幂次方，并尽可能的小</h4>
+        <p>使用 new THREE.TextureLoader().load( “water.jpg”
+          )加载纹理贴图时，如果不是2的幂次方，那么three.js就会自动转为最合适的2的幂次方尺寸，并在控制台打印出黄色警告。这个不是three.js设置的，是webgl限制的，是为了适合Mipmap（为了加快渲染速度和减少图像锯齿，贴图被处理成由一系列被预先计算和优化过的图片组成的文件）设置。
+          图片尽可能的小，合并，图片越大不代表越清晰，也会和纹理过滤等各属性有关。降低图片大小，减少内存占用。</p>
+      </section>
+      <section>
+        <h4>跳帧设置</h4>
+        <p>这样每到skip的时候跳过一次渲染执行，以减少渲染次数，在保证不影响用户体验的情况下，尽可能的多跳帧。</p>
+      </section>
+      <section>
+        <h4>对粒子群进行转换，而不是每个粒子</h4>
+        <p>使用THREE.Sprite时，可以更好地控制单个粒子，但是当使用大量的粒子的时候，这个方法的性能会降低，并且会更复杂。此时可以使用THREE.SpriteCloud，可以轻松地管理大量的粒子，进行整体操作，此时对单个粒子的控制能力会减弱。</p>
+      </section>
+      <section>
+        <h4>模型的面越少越好，模型过于细致会增加渲染开销</h4>
+        <p>three场景导入模型时，可以在保证最低清晰度的时候，降低模型的复杂度，面越多，模型越大，加载所需开销就越大</p>
       </section>
     </section>
   </div>
