@@ -76,6 +76,42 @@ var PGL = PGL || {};
 })(PGL);
 
 /**
+ * 矩阵
+ */
+(function (PGL) {
+  PGL.Matrix = {};
+  /**
+   * 随机生成矩阵
+   */
+  PGL.Matrix.randomizeMatrix = function () {
+
+    var position = new THREE.Vector3();
+    var rotation = new THREE.Euler();
+    var quaternion = new THREE.Quaternion();
+    var scale = new THREE.Vector3();
+
+    return function (matrix) {
+
+      position.x = Math.random() * 40 - 20;
+      position.y = Math.random() * 40 - 20;
+      position.z = Math.random() * 40 - 20;
+
+      rotation.x = Math.random() * 2 * Math.PI;
+      rotation.y = Math.random() * 2 * Math.PI;
+      rotation.z = Math.random() * 2 * Math.PI;
+
+      quaternion.setFromEuler(rotation, false);
+
+      scale.x = scale.y = scale.z = Math.random() * 1;
+
+      matrix.compose(position, quaternion, scale);
+
+    };
+
+  }()
+})(PGL);
+
+/**
  * 功能实现
  */
 (function (PGL) {
