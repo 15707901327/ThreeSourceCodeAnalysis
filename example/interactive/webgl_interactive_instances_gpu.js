@@ -583,8 +583,8 @@
         var object = new THREE.Object3D();
         this.objectCount++;
         object.applyMatrix(matrix);
-
         this.pickingData[i + 1] = object;
+
         vertices.set(pos.array, offset);
 
         for (var k = 0, l = offset; k < posLen; k += 3, l += 3) {
