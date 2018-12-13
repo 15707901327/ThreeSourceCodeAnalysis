@@ -2,58 +2,77 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLIndexedBufferRenderer( gl, extensions, info ) {
+function WebGLIndexedBufferRenderer(gl, extensions, info, capabilities) {
 
-	var mode;
+  var mode; // 绘制图形的方式
 
-	function setMode( value ) {
+  /**
+   * 设置绘制图形的方式
+   * @param value
+   */
+  function setMode(value) {
 
-		mode = value;
+    mode = value;
 
-	}
+  }
 
-	var type, bytesPerElement;
+  var type, bytesPerElement;
 
-	function setIndex( value ) {
+  function setIndex(value) {
 
-		type = value.type;
-		bytesPerElement = value.bytesPerElement;
+    type = value.type;
+    bytesPerElement = value.bytesPerElement;
 
-	}
+  }
 
-	function render( start, count ) {
+  /**
+   * 绘制图形，更新info信息
+   * @param start 从哪个顶点开始绘制
+   * @param count 指定绘制需要用到多少顶点
+   */
+  function render(start, count) {
 
-		gl.drawElements( mode, count, type, start * bytesPerElement );
+    gl.drawElements(mode, count, type, start * bytesPerElement);
 
-		info.update( count, mode );
+    info.update(count, mode);
 
-	}
+  }
 
-	function renderInstances( geometry, start, count ) {
+  function renderInstances(geometry, start, count) {
 
-		var extension = extensions.get( 'ANGLE_instanced_arrays' );
+    var extension;
 
-		if ( extension === null ) {
+    if (capabilities.isWebGL2) {
 
-			console.error( 'THREE.WebGLIndexedBufferRenderer: using THREE.InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.' );
-			return;
+      extension = gl;
 
-		}
+    } else {
 
-		extension.drawElementsInstancedANGLE( mode, count, type, start * bytesPerElement, geometry.maxInstancedCount );
+      var extension = extensions.get('ANGLE_instanced_arrays');
 
-		info.update( count, mode, geometry.maxInstancedCount );
+      if (extension === null) {
 
-	}
+        console.error('THREE.WebGLIndexedBufferRenderer: using THREE.InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.');
+        return;
 
-	//
+      }
 
-	this.setMode = setMode;
-	this.setIndex = setIndex;
-	this.render = render;
-	this.renderInstances = renderInstances;
+    }
+
+    extension[capabilities.isWebGL2 ? 'drawElementsInstanced' : 'drawElementsInstancedANGLE'](mode, count, type, start * bytesPerElement, geometry.maxInstancedCount);
+
+    info.update(count, mode, geometry.maxInstancedCount);
+
+  }
+
+  //
+
+  this.setMode = setMode;
+  this.setIndex = setIndex;
+  this.render = render;
+  this.renderInstances = renderInstances;
 
 }
 
 
-export { WebGLIndexedBufferRenderer };
+export {WebGLIndexedBufferRenderer};

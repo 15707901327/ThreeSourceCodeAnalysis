@@ -2,48 +2,63 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-function WebGLBufferRenderer( gl, extensions, info ) {
+function WebGLBufferRenderer(gl, extensions, info, capabilities) {
 
-	var mode;
+  var mode;
 
-	function setMode( value ) {
+  function setMode(value) {
 
-		mode = value;
+    mode = value;
 
-	}
+  }
 
-	function render( start, count ) {
+  /**
+   * 绘制图形，更新info信息
+   * @param start 从哪个顶点开始绘制
+   * @param count 指定绘制需要用到多少顶点
+   */
+  function render(start, count) {
 
-		gl.drawArrays( mode, start, count );
+    gl.drawArrays(mode, start, count);
 
-		info.update( count, mode );
+    info.update(count, mode);
 
-	}
+  }
 
-	function renderInstances( geometry, start, count ) {
+  function renderInstances(geometry, start, count) {
 
-		var extension = extensions.get( 'ANGLE_instanced_arrays' );
+    var extension;
 
-		if ( extension === null ) {
+    if (capabilities.isWebGL2) {
 
-			console.error( 'THREE.WebGLBufferRenderer: using THREE.InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.' );
-			return;
+      extension = gl;
 
-		}
+    } else {
 
-		extension.drawArraysInstancedANGLE( mode, start, count, geometry.maxInstancedCount );
+      extension = extensions.get('ANGLE_instanced_arrays');
 
-		info.update( count, mode, geometry.maxInstancedCount );
+      if (extension === null) {
 
-	}
+        console.error('THREE.WebGLBufferRenderer: using THREE.InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.');
+        return;
 
-	//
+      }
 
-	this.setMode = setMode;
-	this.render = render;
-	this.renderInstances = renderInstances;
+    }
+
+    extension[capabilities.isWebGL2 ? 'drawArraysInstanced' : 'drawArraysInstancedANGLE'](mode, start, count, geometry.maxInstancedCount);
+
+    info.update(count, mode, geometry.maxInstancedCount);
+
+  }
+
+  //
+
+  this.setMode = setMode;
+  this.render = render;
+  this.renderInstances = renderInstances;
 
 }
 
 
-export { WebGLBufferRenderer };
+export {WebGLBufferRenderer};
