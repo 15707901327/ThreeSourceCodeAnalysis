@@ -6,6 +6,10 @@ function WebGLProperties() {
 
 	var properties = new WeakMap();
 
+  /**
+	 * 获取map，如果未定义，设置为{}
+   * @param object
+   */
 	function get( object ) {
 
 		var map = properties.get( object );

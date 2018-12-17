@@ -710,6 +710,7 @@ function WebGLRenderer(parameters) {
 
     state.setMaterial(material, frontFaceCW);
 
+    // 设置着色器程序
     var program = setProgram(camera, fog, material, object);
 
     var updateBuffers = false;
@@ -1442,6 +1443,12 @@ function WebGLRenderer(parameters) {
 
   }
 
+  /**
+   * 创建着色器程序以及参数调整
+   * @param material 材质
+   * @param fog
+   * @param object mesh
+   */
   function initMaterial(material, fog, object) {
 
     var materialProperties = properties.get(material);
@@ -1529,6 +1536,7 @@ function WebGLRenderer(parameters) {
       // Computing code again as onBeforeCompile may have changed the shaders
       code = programCache.getProgramCode(material, parameters);
 
+      // 获得着色器程序
       program = programCache.acquireProgram(material, materialProperties.shader, parameters, code);
 
       materialProperties.program = program;
@@ -1697,6 +1705,7 @@ function WebGLRenderer(parameters) {
 
     if (material.needsUpdate) {
 
+      // 更新着色器程序
       initMaterial(material, fog, object);
       material.needsUpdate = false;
 
