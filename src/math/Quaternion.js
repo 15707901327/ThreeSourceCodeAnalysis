@@ -1,11 +1,12 @@
-import { Vector3 } from './Vector3.js';
-
 /**
  * @author mikael emtinger / http://gomo.se/
  * @author alteredq / http://alteredqualia.com/
  * @author WestLangley / http://github.com/WestLangley
  * @author bhouston / http://clara.io
  */
+
+import { _Math } from './Math.js';
+import { Vector3 } from './Vector3.js';
 
 function Quaternion( x, y, z, w ) {
 
@@ -162,6 +163,8 @@ Object.defineProperties( Quaternion.prototype, {
 
 Object.assign( Quaternion.prototype, {
 
+	isQuaternion: true,
+
 	set: function ( x, y, z, w ) {
 
 		this._x = x;
@@ -288,11 +291,6 @@ Object.assign( Quaternion.prototype, {
 
 	},
 
-  /**
-	 * 使用矩阵更新四元数
-   * @param m 矩阵实例
-   * @return {setFromRotationMatrix}
-   */
 	setFromRotationMatrix: function ( m ) {
 
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
@@ -397,6 +395,26 @@ Object.assign( Quaternion.prototype, {
 		};
 
 	}(),
+
+	angleTo: function ( q ) {
+
+		return 2 * Math.acos( Math.abs( _Math.clamp( this.dot( q ), - 1, 1 ) ) );
+
+	},
+
+	rotateTowards: function ( q, step ) {
+
+		var angle = this.angleTo( q );
+
+		if ( angle === 0 ) return this;
+
+		var t = Math.min( 1, step / angle );
+
+		this.slerp( q, t );
+
+		return this;
+
+	},
 
 	inverse: function () {
 
