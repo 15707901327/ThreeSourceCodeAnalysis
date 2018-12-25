@@ -92,7 +92,7 @@ function Object3D() {
   this.castShadow = false;
   this.receiveShadow = false;
 
-  this.frustumCulled = true;
+  this.frustumCulled = true; // 设置物体渲染之前，是否检查物体在可视范围之内，默认检查 true
   this.renderOrder = 0;
 
   this.userData = {};

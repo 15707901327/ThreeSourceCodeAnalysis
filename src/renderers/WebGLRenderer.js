@@ -1134,6 +1134,7 @@ function WebGLRenderer(parameters) {
     _localClippingEnabled = this.localClippingEnabled;
     _clippingEnabled = _clipping.init(this.clippingPlanes, _localClippingEnabled, camera);
 
+    // 初始化渲染列表
     currentRenderList = renderLists.get(scene, camera);
     currentRenderList.init();
 
@@ -1246,7 +1247,8 @@ function WebGLRenderer(parameters) {
 
         }
 
-      } else if (object.isSprite) {
+      }
+      else if (object.isSprite) {
 
         if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
 
@@ -1264,7 +1266,8 @@ function WebGLRenderer(parameters) {
 
         }
 
-      } else if (object.isImmediateRenderObject) {
+      }
+      else if (object.isImmediateRenderObject) {
 
         if (sortObjects) {
 
@@ -1275,7 +1278,8 @@ function WebGLRenderer(parameters) {
 
         currentRenderList.push(object, null, object.material, _vector3.z, null);
 
-      } else if (object.isMesh || object.isLine || object.isPoints) {
+      }
+      else if (object.isMesh || object.isLine || object.isPoints) {
 
         if (object.isSkinnedMesh) {
 
