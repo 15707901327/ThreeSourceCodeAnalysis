@@ -708,9 +708,10 @@ function WebGLRenderer(parameters) {
     // 控制缠绕方向 true 反转缠绕方向
     var frontFaceCW = (object.isMesh && object.normalMatrix.determinant() < 0);
 
+    // 根据材质设置绘制图形的方式（剔除、缠绕方向、混合、偏移）
     state.setMaterial(material, frontFaceCW);
 
-    // 设置着色器程序
+    // 设置着色器中的变量
     var program = setProgram(camera, fog, material, object);
 
     var updateBuffers = false;
@@ -761,6 +762,7 @@ function WebGLRenderer(parameters) {
 
     if (updateBuffers) {
 
+      // 设置顶点相关信息
       setupVertexAttributes(material, program, geometry);
 
       if (index !== null) {
@@ -801,13 +803,14 @@ function WebGLRenderer(parameters) {
     //
 
     if (object.isMesh) {
-
+      // 设置绘制的方式
       if (material.wireframe === true) {
 
         state.setLineWidth(material.wireframeLinewidth * getTargetPixelRatio());
         renderer.setMode(_gl.LINES);
 
-      } else {
+      }
+      else {
 
         switch (object.drawMode) {
 
@@ -828,7 +831,8 @@ function WebGLRenderer(parameters) {
       }
 
 
-    } else if (object.isLine) {
+    }
+    else if (object.isLine) {
 
       var lineWidth = material.linewidth;
 
@@ -850,11 +854,13 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else if (object.isPoints) {
+    }
+    else if (object.isPoints) {
 
       renderer.setMode(_gl.POINTS);
 
-    } else if (object.isSprite) {
+    }
+    else if (object.isSprite) {
 
       renderer.setMode(_gl.TRIANGLES);
 
@@ -876,6 +882,12 @@ function WebGLRenderer(parameters) {
 
   };
 
+  /**
+   * 设置顶点属性
+   * @param material 材质
+   * @param program 着色器
+   * @param geometry 几何体
+   */
   function setupVertexAttributes(material, program, geometry) {
 
     if (geometry && geometry.isInstancedBufferGeometry & !capabilities.isWebGL2) {
@@ -1463,6 +1475,7 @@ function WebGLRenderer(parameters) {
     var lightsHash = materialProperties.lightsHash;
     var lightsStateHash = lights.state.hash;
 
+    // 获取参数
     var parameters = programCache.getParameters(
       material, lights.state, shadowsArray, fog, _clipping.numPlanes, _clipping.numIntersection, object);
 
@@ -1641,7 +1654,7 @@ function WebGLRenderer(parameters) {
   }
 
   /**
-   *
+   * 设置着色器中的变量
    * @param camera 相机
    * @param fog
    * @param material 材质
@@ -1883,12 +1896,14 @@ function WebGLRenderer(parameters) {
 
         refreshUniformsCommon(m_uniforms, material);
 
-      } else if (material.isMeshLambertMaterial) {
+      }
+      else if (material.isMeshLambertMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsLambert(m_uniforms, material);
 
-      } else if (material.isMeshPhongMaterial) {
+      }
+      else if (material.isMeshPhongMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
 
@@ -1902,8 +1917,10 @@ function WebGLRenderer(parameters) {
 
         }
 
-      } else if (material.isMeshStandardMaterial) {
+      }
+      else if (material.isMeshStandardMaterial) {
 
+        // 刷新属性（opacity、color、map等）
         refreshUniformsCommon(m_uniforms, material);
 
         if (material.isMeshPhysicalMaterial) {
@@ -1912,32 +1929,38 @@ function WebGLRenderer(parameters) {
 
         } else {
 
+          // 刷新属性（roughness、metalness）
           refreshUniformsStandard(m_uniforms, material);
 
         }
 
-      } else if (material.isMeshMatcapMaterial) {
+      }
+      else if (material.isMeshMatcapMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
 
         refreshUniformsMatcap(m_uniforms, material);
 
-      } else if (material.isMeshDepthMaterial) {
+      }
+      else if (material.isMeshDepthMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsDepth(m_uniforms, material);
 
-      } else if (material.isMeshDistanceMaterial) {
+      }
+      else if (material.isMeshDistanceMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsDistance(m_uniforms, material);
 
-      } else if (material.isMeshNormalMaterial) {
+      }
+      else if (material.isMeshNormalMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsNormal(m_uniforms, material);
 
-      } else if (material.isLineBasicMaterial) {
+      }
+      else if (material.isLineBasicMaterial) {
 
         refreshUniformsLine(m_uniforms, material);
 
@@ -1947,15 +1970,18 @@ function WebGLRenderer(parameters) {
 
         }
 
-      } else if (material.isPointsMaterial) {
+      }
+      else if (material.isPointsMaterial) {
 
         refreshUniformsPoints(m_uniforms, material);
 
-      } else if (material.isSpriteMaterial) {
+      }
+      else if (material.isSpriteMaterial) {
 
         refreshUniformsSprites(m_uniforms, material);
 
-      } else if (material.isShadowMaterial) {
+      }
+      else if (material.isShadowMaterial) {
 
         m_uniforms.color.value = material.color;
         m_uniforms.opacity.value = material.opacity;
@@ -1996,7 +2022,11 @@ function WebGLRenderer(parameters) {
   }
 
   // Uniforms (refresh uniforms objects)
-
+  /**
+   * 刷新uniform属性（opacity、color、map等）
+   * @param uniforms 属性
+   * @param material 当前材质
+   */
   function refreshUniformsCommon(uniforms, material) {
 
     uniforms.opacity.value = material.opacity;
@@ -2076,35 +2106,43 @@ function WebGLRenderer(parameters) {
 
       uvScaleMap = material.map;
 
-    } else if (material.specularMap) {
+    }
+    else if (material.specularMap) {
 
       uvScaleMap = material.specularMap;
 
-    } else if (material.displacementMap) {
+    }
+    else if (material.displacementMap) {
 
       uvScaleMap = material.displacementMap;
 
-    } else if (material.normalMap) {
+    }
+    else if (material.normalMap) {
 
       uvScaleMap = material.normalMap;
 
-    } else if (material.bumpMap) {
+    }
+    else if (material.bumpMap) {
 
       uvScaleMap = material.bumpMap;
 
-    } else if (material.roughnessMap) {
+    }
+    else if (material.roughnessMap) {
 
       uvScaleMap = material.roughnessMap;
 
-    } else if (material.metalnessMap) {
+    }
+    else if (material.metalnessMap) {
 
       uvScaleMap = material.metalnessMap;
 
-    } else if (material.alphaMap) {
+    }
+    else if (material.alphaMap) {
 
       uvScaleMap = material.alphaMap;
 
-    } else if (material.emissiveMap) {
+    }
+    else if (material.emissiveMap) {
 
       uvScaleMap = material.emissiveMap;
 
@@ -2266,6 +2304,11 @@ function WebGLRenderer(parameters) {
 
   }
 
+  /**
+   * 刷新standard属性（roughness、metalness）
+   * @param uniforms
+   * @param material
+   */
   function refreshUniformsStandard(uniforms, material) {
 
     uniforms.roughness.value = material.roughness;

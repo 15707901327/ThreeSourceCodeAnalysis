@@ -220,6 +220,11 @@ function setValue2fv( gl, v ) {
 
 }
 
+/**
+ *
+ * @param gl 上下文
+ * @param v 值
+ */
 function setValue3fv( gl, v ) {
 
 	var cache = this.cache;
@@ -841,6 +846,12 @@ function WebGLUniforms( gl, program, renderer ) {
 
 }
 
+/**
+ *
+ * @param gl
+ * @param name
+ * @param value
+ */
 WebGLUniforms.prototype.setValue = function ( gl, name, value ) {
 
 	var u = this.map[ name ];
@@ -860,6 +871,13 @@ WebGLUniforms.prototype.setOptional = function ( gl, object, name ) {
 
 // Static interface
 
+/**
+ * 将seq中的属性传送给着色器
+ * @param gl 上下文
+ * @param seq uniformsList
+ * @param values{Object}
+ * @param renderer
+ */
 WebGLUniforms.upload = function ( gl, seq, values, renderer ) {
 
 	for ( var i = 0, n = seq.length; i !== n; ++ i ) {

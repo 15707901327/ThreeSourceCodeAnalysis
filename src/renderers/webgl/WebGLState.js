@@ -450,8 +450,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   setBlending(NoBlending);
 
-  //
-
+  // 初始化newAttributes为0
   function initAttributes() {
 
     for (var i = 0, l = newAttributes.length; i < l; i++) {
