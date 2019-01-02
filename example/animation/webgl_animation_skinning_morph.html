@@ -1,286 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>three.js webgl - skinning and morphing</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<style>
-			body {
-				font-family: Monospace;
-				background-color: #000;
-				margin: 0px;
-				overflow: hidden;
-
-			}
-			#info {
-				position: absolute;
-				top: 10px;
-				width: 100%;
-				text-align: center;
-				z-index: 100;
-				display:block;
-			}
-			#info p {
-				max-width: 600px;
-				margin-left: auto;
-				margin-right: auto;
-				padding: 0 2em;
-			}
-			#info a {
-				color: #2fa1d6;
-				font-weight: bold;
-			}
-			.dg.ac {
-				z-index: 999 !important;
-			}
-		</style>
-	</head>
-
-	<body>
-		<div id="info">
-			<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl - skinning and morphing<br />
-			<p>
-				The animation system allows clips to be played individually, looped, or crossfaded with
-				other clips. This example shows a character looping in one of several base animation states,
-				then transitioning smoothly to one-time actions. Facial expressions are controlled
-				independently with morph targets.
-			</p>
-			Model by
-			<a href="https://www.patreon.com/quaternius" target="_blank" rel="noopener">Tomás Laulhé</a>,
-			modifications by <a href="https://donmccurdy.com/" target="_blank" rel="noopener">Don McCurdy</a>. CC0.<br />
-		</div>
+<head>
+  <title>three.js webgl - skinning and morphing</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <style>
+    body {
+      font-family: Monospace;
+      background-color: #000;
+      margin: 0px;
+      overflow: hidden;
+
+    }
+
+    #info {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      z-index: 100;
+      display: block;
+    }
+
+    #info p {
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 2em;
+    }
 
-		<script src="../../build/three_r100.js"></script>
+    #info a {
+      color: #2fa1d6;
+      font-weight: bold;
+    }
 
-		<script src="../js/loaders/GLTFLoader_100.js"></script>
+    .dg.ac {
+      z-index: 999 !important;
+    }
+  </style>
+</head>
 
-		<script src="../js/WebGL.js"></script>
-		<script src="../js/libs/stats.min.js"></script>
-		<script src="../js/libs/dat.gui.min.js"></script>
+<body>
+<div id="info">
+  <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl - skinning and morphing<br/>
+  <p>
+    The animation system allows clips to be played individually, looped, or crossfaded with
+    other clips. This example shows a character looping in one of several base animation states,
+    then transitioning smoothly to one-time actions. Facial expressions are controlled
+    independently with morph targets.
+  </p>
+  Model by
+  <a href="https://www.patreon.com/quaternius" target="_blank" rel="noopener">Tomás Laulhé</a>,
+  modifications by <a href="https://donmccurdy.com/" target="_blank" rel="noopener">Don McCurdy</a>. CC0.<br/>
+</div>
 
-		<script>
+<script src="../../build/three_r100.js"></script>
 
-			if ( WEBGL.isWebGLAvailable() === false ) {
+<script src="../js/loaders/GLTFLoader.js"></script>
 
-				document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+<script src="../js/WebGL.js"></script>
+<script src="../js/libs/stats.min.js"></script>
+<script src="../js/libs/dat.gui.min.js"></script>
 
-			}
+<script>
 
-			var container, stats, clock, gui, mixer, actions, activeAction, previousAction;
-			var camera, scene, renderer, model, face;
+  if (WEBGL.isWebGLAvailable() === false) {
 
-			var api = { state: 'Walking' };
+    document.body.appendChild(WEBGL.getWebGLErrorMessage());
 
-			init();
-			animate();
+  }
 
-			function init() {
+  var container, stats, clock, gui, mixer, actions, activeAction, previousAction;
+  var camera, scene, renderer, model, face;
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+  var api = {state: 'Walking'};
 
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 100 );
-				camera.position.set( - 5, 3, 10 );
-				camera.lookAt( new THREE.Vector3( 0, 2, 0 ) );
+  init();
+  animate();
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xe0e0e0 );
-				scene.fog = new THREE.Fog( 0xe0e0e0, 20, 100 );
+  function init() {
 
-				clock = new THREE.Clock();
+    container = document.createElement('div');
+    document.body.appendChild(container);
 
-				// lights
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 100);
+    camera.position.set(-5, 3, 10);
+    camera.lookAt(new THREE.Vector3(0, 2, 0));
 
-				var light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-				light.position.set( 0, 20, 0 );
-				scene.add( light );
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xe0e0e0);
+    scene.fog = new THREE.Fog(0xe0e0e0, 20, 100);
 
-				light = new THREE.DirectionalLight( 0xffffff );
-				light.position.set( 0, 20, 10 );
-				scene.add( light );
+    clock = new THREE.Clock();
 
-				// ground
+    // lights
 
-				var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
-				mesh.rotation.x = - Math.PI / 2;
-				scene.add( mesh );
+    var light = new THREE.HemisphereLight(0xffffff, 0x444444);
+    light.position.set(0, 20, 0);
+    scene.add(light);
 
-				var grid = new THREE.GridHelper( 200, 40, 0x000000, 0x000000 );
-				grid.material.opacity = 0.2;
-				grid.material.transparent = true;
-				scene.add( grid );
+    light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(0, 20, 10);
+    scene.add(light);
 
-				// model
+    // ground
 
-				var loader = new THREE.GLTFLoader();
-				loader.load( '../models/gltf/RobotExpressive/RobotExpressive.glb', function( gltf ) {
+    var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({
+      color: 0x999999,
+      depthWrite: false
+    }));
+    mesh.rotation.x = -Math.PI / 2;
+    scene.add(mesh);
 
-					model = gltf.scene;
-					scene.add( model );
+    var grid = new THREE.GridHelper(200, 40, 0x000000, 0x000000);
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    scene.add(grid);
 
-					createGUI( model, gltf.animations );
+    // model
 
-				}, undefined, function( e ) {
+    var loader = new THREE.GLTFLoader();
+    loader.load('../models/gltf/RobotExpressive/RobotExpressive.glb', function (gltf) {
 
-					console.error( e );
+      model = gltf.scene;
+      scene.add(model);
 
-				} );
+      createGUI(model, gltf.animations);
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.gammaOutput = true;
-				renderer.gammaFactor = 2.2;
-				container.appendChild( renderer.domElement );
+    }, undefined, function (e) {
 
-				window.addEventListener( 'resize', onWindowResize, false );
+      console.error(e);
 
-				// stats
-				stats = new Stats();
-				container.appendChild( stats.dom );
+    });
 
-			}
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.gammaOutput = true;
+    renderer.gammaFactor = 2.2;
+    container.appendChild(renderer.domElement);
 
-			function createGUI( model, animations ) {
+    window.addEventListener('resize', onWindowResize, false);
 
-				var states = [ 'Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Standing' ];
-				var emotes = [ 'Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp' ];
+    // stats
+    stats = new Stats();
+    container.appendChild(stats.dom);
 
-				gui = new dat.GUI();
+  }
 
-				mixer = new THREE.AnimationMixer( model );
+  function createGUI(model, animations) {
 
-				actions = {};
+    var states = ['Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Standing'];
+    var emotes = ['Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp'];
 
-				for ( var i = 0; i < animations.length; i++ ) {
+    gui = new dat.GUI();
 
-					var clip = animations[ i ];
-					var action = mixer.clipAction( clip );
-					actions[ clip.name ] = action;
+    mixer = new THREE.AnimationMixer(model);
 
-					if ( emotes.indexOf( clip.name ) >= 0 || states.indexOf( clip.name ) >= 4 ) {
+    actions = {};
 
-							action.clampWhenFinished = true;
-							action.loop = THREE.LoopOnce;
+    for (var i = 0; i < animations.length; i++) {
 
-					}
+      var clip = animations[i];
+      var action = mixer.clipAction(clip);
+      actions[clip.name] = action;
 
-				}
+      if (emotes.indexOf(clip.name) >= 0 || states.indexOf(clip.name) >= 4) {
 
-				// states
+        action.clampWhenFinished = true;
+        action.loop = THREE.LoopOnce;
 
-				var statesFolder = gui.addFolder( 'States' );
+      }
 
-				var clipCtrl = statesFolder.add( api, 'state' ).options( states );
+    }
 
-				clipCtrl.onChange( function() {
+    // states
 
-					fadeToAction( api.state, 0.5 );
+    var statesFolder = gui.addFolder('States');
 
-				} );
+    var clipCtrl = statesFolder.add(api, 'state').options(states);
 
-				statesFolder.open();
+    clipCtrl.onChange(function () {
 
-				// emotes
+      fadeToAction(api.state, 0.5);
 
-				var emoteFolder = gui.addFolder( 'Emotes' );
+    });
 
-				function createEmoteCallback( name ) {
+    statesFolder.open();
 
-					api[ name ] = function() {
+    // emotes
 
-						fadeToAction( name, 0.2 );
+    var emoteFolder = gui.addFolder('Emotes');
 
-						mixer.addEventListener( 'finished', restoreState );
+    function createEmoteCallback(name) {
 
-					};
+      api[name] = function () {
 
-					emoteFolder.add( api, name );
+        fadeToAction(name, 0.2);
 
-				}
+        mixer.addEventListener('finished', restoreState);
 
-				function restoreState() {
+      };
 
-					mixer.removeEventListener( 'finished', restoreState );
+      emoteFolder.add(api, name);
 
-					fadeToAction( api.state, 0.2 );
+    }
 
-				}
+    function restoreState() {
 
-				for ( var i = 0; i < emotes.length; i++ ) {
+      mixer.removeEventListener('finished', restoreState);
 
-					createEmoteCallback( emotes[ i ] );
+      fadeToAction(api.state, 0.2);
 
-				}
+    }
 
-				emoteFolder.open();
+    for (var i = 0; i < emotes.length; i++) {
 
-				// expressions
+      createEmoteCallback(emotes[i]);
 
-				face = model.getObjectByName( 'Head_2' );
+    }
 
-				var expressions = Object.keys( face.morphTargetDictionary );
-				var expressionFolder = gui.addFolder('Expressions');
+    emoteFolder.open();
 
-				for ( var i = 0; i < expressions.length; i++ ) {
+    // expressions
 
-					expressionFolder.add( face.morphTargetInfluences, i, 0, 1 ).name( expressions[ i ] );
+    face = model.getObjectByName('Head_2');
 
-				}
+    var expressions = Object.keys(face.morphTargetDictionary);
+    var expressionFolder = gui.addFolder('Expressions');
 
-				activeAction = actions['Walking'];
-				activeAction.play();
+    for (var i = 0; i < expressions.length; i++) {
 
-				expressionFolder.open();
+      expressionFolder.add(face.morphTargetInfluences, i, 0, 1).name(expressions[i]);
 
-			}
+    }
 
-			function fadeToAction( name, duration ) {
+    activeAction = actions['Walking'];
+    activeAction.play();
 
-				previousAction = activeAction;
-				activeAction = actions[ name ];
+    expressionFolder.open();
 
-				if ( previousAction !== activeAction ) {
+  }
 
-					previousAction.fadeOut( duration );
+  function fadeToAction(name, duration) {
 
-				}
+    previousAction = activeAction;
+    activeAction = actions[name];
 
-				activeAction
-					.reset()
-					.setEffectiveTimeScale( 1 )
-					.setEffectiveWeight( 1 )
-					.fadeIn( duration )
-					.play();
+    if (previousAction !== activeAction) {
 
-			}
+      previousAction.fadeOut(duration);
 
-			function onWindowResize() {
+    }
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+    activeAction
+      .reset()
+      .setEffectiveTimeScale(1)
+      .setEffectiveWeight(1)
+      .fadeIn(duration)
+      .play();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+  }
 
-			}
+  function onWindowResize() {
 
-			//
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
 
-			function animate() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-				var dt = clock.getDelta();
+  }
 
-				if ( mixer ) mixer.update( dt );
+  //
 
-				requestAnimationFrame( animate );
+  function animate() {
 
-				renderer.render( scene, camera );
+    var dt = clock.getDelta();
 
-				stats.update();
+    if (mixer) mixer.update(dt);
 
-			}
+    requestAnimationFrame(animate);
 
-		</script>
+    renderer.render(scene, camera);
 
-	</body>
+    stats.update();
+
+  }
+
+</script>
+
+</body>
 </html>

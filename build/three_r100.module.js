@@ -33395,6 +33395,12 @@ Object.assign( AnimationClip, {
 
 	},
 
+  /**
+   *
+   * @param objectOrClipArray
+   * @param name 名称
+   * @return {*}
+   */
 	findByName: function ( objectOrClipArray, name ) {
 
 		var clipArray = objectOrClipArray;
