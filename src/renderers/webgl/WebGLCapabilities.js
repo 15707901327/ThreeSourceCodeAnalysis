@@ -3,7 +3,7 @@
  */
 
 /**
- *
+ * 获取当前webgl的基础参数
  * @param gl 上下文
  * @param extensions 获取扩展方法的对象
  * @param parameters 参数

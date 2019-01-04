@@ -261,9 +261,10 @@ function WebGLRenderer(parameters) {
    */
   function initGLContext() {
 
-    // 开启WebGL支持的扩展功能
+    // 保存当前WebGL开启的扩展功能
     extensions = new WebGLExtensions(_gl);
 
+    // 获取当前webgl的基础属性
     capabilities = new WebGLCapabilities(_gl, extensions, parameters);
 
     if (!capabilities.isWebGL2) {

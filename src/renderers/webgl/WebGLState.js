@@ -364,7 +364,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
   var enabledAttributes = new Uint8Array(maxVertexAttributes);
   var attributeDivisors = new Uint8Array(maxVertexAttributes);
 
-  var enabledCapabilities = {};
+  var enabledCapabilities = {}; // 保存功能开启状态
 
   var compressedTextureFormats = null;
 
@@ -504,6 +504,10 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   }
 
+  /**
+   * 开启功能
+   * @param id
+   */
   function enable(id) {
 
     if (enabledCapabilities[id] !== true) {
@@ -515,6 +519,10 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   }
 
+  /**
+   * 关闭功能
+   * @param id
+   */
   function disable(id) {
 
     if (enabledCapabilities[id] !== false) {

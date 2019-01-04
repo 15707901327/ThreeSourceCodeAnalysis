@@ -36,8 +36,8 @@ function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
 
 		_NumberOfMaterialVariants = ( _MorphingFlag | _SkinningFlag ) + 1,
 
-		_depthMaterials = new Array( _NumberOfMaterialVariants ),
-		_distanceMaterials = new Array( _NumberOfMaterialVariants ),
+		_depthMaterials = new Array( _NumberOfMaterialVariants ), // 保存MeshDepthMaterial材质
+		_distanceMaterials = new Array( _NumberOfMaterialVariants ), // 保存MeshDistanceMaterial材质
 
 		_materialCache = {};
 
@@ -93,13 +93,19 @@ function WebGLShadowMap( _renderer, _objects, maxTextureSize ) {
 
 	var scope = this;
 
-	this.enabled = false;
+	this.enabled = false; // 是否渲染阴影
 
 	this.autoUpdate = true;
 	this.needsUpdate = false;
 
 	this.type = PCFShadowMap;
 
+  /**
+	 * 渲染材质
+   * @param lights
+   * @param scene
+   * @param camera
+   */
 	this.render = function ( lights, scene, camera ) {
 
 		if ( scope.enabled === false ) return;
