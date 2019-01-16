@@ -104,17 +104,7 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
 
       if (morphTargets !== undefined && morphTargets.length > 0) {
 
-        this.morphTargetInfluences = [];
-        this.morphTargetDictionary = {};
-
-        for (m = 0, ml = morphTargets.length; m < ml; m++) {
-
-          name = morphTargets[m].name || String(m);
-
-          this.morphTargetInfluences.push(0);
-          this.morphTargetDictionary[name] = m;
-
-        }
+				console.error( 'THREE.Mesh.updateMorphTargets() no longer supports THREE.Geometry. Use THREE.BufferGeometry instead.' );
 
       }
 
@@ -143,6 +133,18 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
     var intersectionPoint = new Vector3();
     var intersectionPointWorld = new Vector3();
 
+    /**
+     *
+     * @param object 待检测对象
+     * @param material 材质
+     * @param raycaster
+     * @param ray
+     * @param pA 点的坐标
+     * @param pB 点的坐标
+     * @param pC 点的坐标
+     * @param point intersectionPoint
+     * @return {*}
+     */
     function checkIntersection(object, material, raycaster, ray, pA, pB, pC, point) {
 
       var intersect;
@@ -174,8 +176,22 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
 
     }
 
+    /**
+     *
+     * @param object 待检测对象
+     * @param material 材质
+     * @param raycaster
+     * @param ray
+     * @param position 位置坐标集合
+     * @param uv 集合
+     * @param a 点的下标
+     * @param b 点的下标
+     * @param c 点的下标
+     * @return {{distance, point, object}}
+     */
     function checkBufferGeometryIntersection(object, material, raycaster, ray, position, uv, a, b, c) {
 
+      // 获取对应点的坐标
       vA.fromBufferAttribute(position, a);
       vB.fromBufferAttribute(position, b);
       vC.fromBufferAttribute(position, c);
@@ -220,6 +236,7 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
       sphere.copy(geometry.boundingSphere);
       sphere.applyMatrix4(matrixWorld);
 
+      // 计算射线与几何体包围盒子是否相交
       if (raycaster.ray.intersectsSphere(sphere) === false) return;
 
       //
@@ -306,7 +323,8 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
 
           }
 
-        } else if (position !== undefined) {
+        }
+        else if (position !== undefined) {
 
           // non-indexed buffer geometry
 
@@ -339,7 +357,8 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
 
             }
 
-          } else {
+          }
+          else {
 
             start = Math.max(0, drawRange.start);
             end = Math.min(position.count, (drawRange.start + drawRange.count));
@@ -364,8 +383,8 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
           }
 
         }
-
-      } else if (geometry.isGeometry) {
+      }
+      else if (geometry.isGeometry) {
 
         var fvA, fvB, fvC;
         var isMultiMaterial = Array.isArray(material);
