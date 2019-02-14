@@ -6,6 +6,7 @@ import {Euler} from '../math/Euler.js';
 import {Layers} from './Layers.js';
 import {Matrix3} from '../math/Matrix3.js';
 import {_Math} from '../math/Math.js';
+import { TrianglesDrawMode } from '../constants.js';
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -92,8 +93,8 @@ function Object3D() {
   this.castShadow = false;
   this.receiveShadow = false;
 
-  this.frustumCulled = true; // 设置物体渲染之前，是否检查物体在可视范围之内，默认检查 true
-  this.renderOrder = 0;
+  this.frustumCulled = true; // 标记是否检查物体在可视范围之内，默认检查 true
+  this.renderOrder = 0; // 渲染级别
 
   this.userData = {};
 
@@ -338,7 +339,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
       position.setFromMatrixPosition(this.matrixWorld);
 
-      if (this.isCamera) {
+			if ( this.isCamera || this.isLight ) {
 
         m1.lookAt(position, target, this.up);
 
@@ -363,7 +364,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
   }(),
 
   /**
-   * 把object对象放到children数组中，object的parent指向这个类别
+   * 把object对象放到children数组中，从原有得父类中移除该对象
    * @param object 可以是一个值，也可以是多个值
    * @return {add}
    */
@@ -613,7 +614,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
   },
 
   /**
-   * 更新当前物体以及他子类物体的本地和世界坐标矩阵
+   * 更新当前对象以及子类对象的本地和世界坐标矩阵
    * @param force
    */
   updateMatrixWorld: function (force) {
@@ -736,6 +737,10 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
     object.matrix = this.matrix.toArray();
 
     if (this.matrixAutoUpdate === false) object.matrixAutoUpdate = false;
+
+		// object specific properties
+
+		if ( this.isMesh && this.drawMode !== TrianglesDrawMode ) object.drawMode = this.drawMode;
 
     //
 

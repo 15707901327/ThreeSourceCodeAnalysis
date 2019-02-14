@@ -133,6 +133,11 @@ Object.assign(Box3.prototype, {
 
   }(),
 
+	/**
+   * 设置值
+	 * @param object
+	 * @return {*}
+	 */
   setFromObject: function (object) {
 
     this.makeEmpty();
@@ -233,8 +238,8 @@ Object.assign(Box3.prototype, {
 
   expandByObject: function () {
 
-    // Computes the world-axis-aligned bounding box of an object (including its children),
-    // accounting for both the object's, and children's, world transforms
+    // 计算对象（包括其子对象）的世界轴对齐边界框，
+    // 考虑对象和子对象得世界变换
 
     var scope, i, l;
 
@@ -259,7 +264,8 @@ Object.assign(Box3.prototype, {
 
           }
 
-        } else if (geometry.isBufferGeometry) {
+        }
+        else if (geometry.isBufferGeometry) {
 
           var attribute = geometry.attributes.position;
 
