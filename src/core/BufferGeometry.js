@@ -867,6 +867,33 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   toNonIndexed: function () {
 
+		function convertBufferAttribute( attribute, indices ) {
+
+			var array = attribute.array;
+			var itemSize = attribute.itemSize;
+
+			var array2 = new array.constructor( indices.length * itemSize );
+
+			var index = 0, index2 = 0;
+
+			for ( var i = 0, l = indices.length; i < l; i ++ ) {
+
+				index = indices[ i ] * itemSize;
+
+				for ( var j = 0; j < itemSize; j ++ ) {
+
+					array2[ index2 ++ ] = array[ index ++ ];
+
+				}
+
+			}
+
+			return new BufferAttribute( array2, itemSize );
+
+		}
+
+		//
+
     if (this.index === null) {
 
       console.warn('THREE.BufferGeometry.toNonIndexed(): Geometry is already non-indexed.');
@@ -879,32 +906,42 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
     var indices = this.index.array;
     var attributes = this.attributes;
 
+		// attributes
+
     for (var name in attributes) {
 
       var attribute = attributes[name];
 
-      var array = attribute.array;
-      var itemSize = attribute.itemSize;
+			var newAttribute = convertBufferAttribute( attribute, indices );
 
-      var array2 = new array.constructor(indices.length * itemSize);
+			geometry2.addAttribute( name, newAttribute );
 
-      var index = 0, index2 = 0;
+		}
 
-      for (var i = 0, l = indices.length; i < l; i++) {
+		// morph attributes
 
-        index = indices[i] * itemSize;
+		var morphAttributes = this.morphAttributes;
 
-        for (var j = 0; j < itemSize; j++) {
+		for ( name in morphAttributes ) {
 
-          array2[index2++] = array[index++];
+			var morphArray = [];
+			var morphAttribute = morphAttributes[ name ]; // morphAttribute: array of Float32BufferAttributes
 
-        }
+			for ( var i = 0, il = morphAttribute.length; i < il; i ++ ) {
+
+				var attribute = morphAttribute[ i ];
+
+				var newAttribute = convertBufferAttribute( attribute, indices );
+
+				morphArray.push( newAttribute );
 
       }
 
-      geometry2.addAttribute(name, new BufferAttribute(array2, itemSize));
+			geometry2.morphAttributes[ name ] = morphArray;
 
     }
+
+		// groups
 
     var groups = this.groups;
 

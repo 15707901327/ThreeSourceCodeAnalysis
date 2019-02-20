@@ -92,7 +92,7 @@ function WebGLRenderer(parameters) {
 
   // clearing
 
-  this.autoClear = true;
+  this.autoClear = true; // 自动清空缓存区
   this.autoClearColor = true;
   this.autoClearDepth = true;
   this.autoClearStencil = true;
@@ -761,17 +761,15 @@ function WebGLRenderer(parameters) {
 
     }
 
+    // 着色器关联顶点属性
     if (updateBuffers) {
 
       // 设置顶点相关信息
       setupVertexAttributes(material, program, geometry);
 
       if (index !== null) {
-
         _gl.bindBuffer(_gl.ELEMENT_ARRAY_BUFFER, attribute.buffer);
-
       }
-
     }
 
     //
@@ -940,25 +938,20 @@ function WebGLRenderer(parameters) {
             var offset = geometryAttribute.offset;
 
             if (data && data.isInstancedInterleavedBuffer) {
-
               state.enableAttributeAndDivisor(programAttribute, data.meshPerAttribute);
-
               if (geometry.maxInstancedCount === undefined) {
-
                 geometry.maxInstancedCount = data.meshPerAttribute * data.count;
-
               }
-
-            } else {
-
+            }
+            else {
               state.enableAttribute(programAttribute);
-
             }
 
             _gl.bindBuffer(_gl.ARRAY_BUFFER, buffer);
             _gl.vertexAttribPointer(programAttribute, size, type, normalized, stride * bytesPerElement, offset * bytesPerElement);
 
-          } else {
+          }
+          else {
 
             if (geometryAttribute.isInstancedBufferAttribute) {
 
@@ -970,10 +963,9 @@ function WebGLRenderer(parameters) {
 
               }
 
-            } else {
-
+            }
+            else {
               state.enableAttribute(programAttribute);
-
             }
 
             _gl.bindBuffer(_gl.ARRAY_BUFFER, buffer);
@@ -981,7 +973,8 @@ function WebGLRenderer(parameters) {
 
           }
 
-        } else if (materialDefaultAttributeValues !== undefined) {
+        }
+        else if (materialDefaultAttributeValues !== undefined) {
 
           var value = materialDefaultAttributeValues[name];
 
@@ -1151,7 +1144,7 @@ function WebGLRenderer(parameters) {
     currentRenderList = renderLists.get(scene, camera);
     currentRenderList.init();
 
-    projectObject(scene, camera, _this.sortObjects);
+		projectObject( scene, camera, 0, _this.sortObjects );
 
     if (_this.sortObjects === true) {
 
@@ -1242,7 +1235,14 @@ function WebGLRenderer(parameters) {
 
   };
 
-  function projectObject(object, camera, sortObjects) {
+	/**
+   * 从scene中拆分渲染对象
+	 * @param object
+	 * @param camera
+	 * @param groupOrder
+	 * @param sortObjects
+	 */
+	function projectObject( object, camera, groupOrder, sortObjects ) {
 
     if (object.visible === false) return;
 
@@ -1250,7 +1250,11 @@ function WebGLRenderer(parameters) {
 
     if (visible) {
 
-      if (object.isLight) {
+			if ( object.isGroup ) {
+
+				groupOrder = object.renderOrder;
+
+			} else if ( object.isLight ) {
 
         currentRenderState.pushLight(object);
 
@@ -1275,7 +1279,7 @@ function WebGLRenderer(parameters) {
           var geometry = objects.update(object);
           var material = object.material;
 
-          currentRenderList.push(object, geometry, material, _vector3.z, null);
+					currentRenderList.push( object, geometry, material, groupOrder, _vector3.z, null );
 
         }
 
@@ -1289,7 +1293,7 @@ function WebGLRenderer(parameters) {
 
         }
 
-        currentRenderList.push(object, null, object.material, _vector3.z, null);
+				currentRenderList.push( object, null, object.material, groupOrder, _vector3.z, null );
 
       }
       else if (object.isMesh || object.isLine || object.isPoints) {
@@ -1323,7 +1327,7 @@ function WebGLRenderer(parameters) {
 
               if (groupMaterial && groupMaterial.visible) {
 
-                currentRenderList.push(object, geometry, groupMaterial, _vector3.z, group);
+								currentRenderList.push( object, geometry, groupMaterial, groupOrder, _vector3.z, group );
 
               }
 
@@ -1331,7 +1335,7 @@ function WebGLRenderer(parameters) {
 
           } else if (material.visible) {
 
-            currentRenderList.push(object, geometry, material, _vector3.z, null);
+						currentRenderList.push( object, geometry, material, groupOrder, _vector3.z, null );
 
           }
 
@@ -1345,7 +1349,7 @@ function WebGLRenderer(parameters) {
 
     for (var i = 0, l = children.length; i < l; i++) {
 
-      projectObject(children[i], camera, sortObjects);
+			projectObject( children[ i ], camera, groupOrder, sortObjects );
 
     }
 
@@ -1495,7 +1499,8 @@ function WebGLRenderer(parameters) {
       // changed glsl or parameters
       releaseMaterialProgramReference(material);
 
-    } else if (lightsHash.stateID !== lightsStateHash.stateID ||
+    }
+    else if (lightsHash.stateID !== lightsStateHash.stateID ||
       lightsHash.directionalLength !== lightsStateHash.directionalLength ||
       lightsHash.pointLength !== lightsStateHash.pointLength ||
       lightsHash.spotLength !== lightsStateHash.spotLength ||
@@ -1513,12 +1518,14 @@ function WebGLRenderer(parameters) {
 
       programChange = false;
 
-    } else if (parameters.shaderID !== undefined) {
+    }
+    else if (parameters.shaderID !== undefined) {
 
       // same glsl and uniform list
       return;
 
-    } else {
+    }
+    else {
 
       // only rebuild uniform list
       programChange = false;
@@ -2635,6 +2642,10 @@ function WebGLRenderer(parameters) {
 
         framebuffer = __webglFramebuffer[renderTarget.activeCubeFace];
         isCube = true;
+
+			} else if ( renderTarget.isWebGLMultisampleRenderTarget ) {
+
+				framebuffer = properties.get( renderTarget ).__webglMultisampledFramebuffer;
 
       } else {
 

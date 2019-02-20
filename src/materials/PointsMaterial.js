@@ -27,7 +27,7 @@ function PointsMaterial( parameters ) {
 
 	this.map = null;
 
-	this.size = 1;
+	this.size = 1; // 点的大小
 	this.sizeAttenuation = true;
 
 	this.morphTargets = false;

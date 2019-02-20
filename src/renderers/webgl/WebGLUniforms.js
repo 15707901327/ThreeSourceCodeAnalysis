@@ -833,6 +833,7 @@ function WebGLUniforms( gl, program, renderer ) {
 
 	this.renderer = renderer;
 
+	// 获取变量Uniform的数量
 	var n = gl.getProgramParameter( program, gl.ACTIVE_UNIFORMS );
 
 	for ( var i = 0; i < n; ++ i ) {
@@ -872,7 +873,7 @@ WebGLUniforms.prototype.setOptional = function ( gl, object, name ) {
 // Static interface
 
 /**
- * 将seq中的属性传送给着色器
+ * 将uniforms变量传送给着色器
  * @param gl 上下文
  * @param seq uniformsList
  * @param values{Object}

@@ -368,7 +368,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   var compressedTextureFormats = null;
 
-  var currentProgram = null;
+  var currentProgram = null; // 当前使用的着色器程序
 
   var currentBlendingEnabled = null; // 当前混合
   var currentBlending = null;

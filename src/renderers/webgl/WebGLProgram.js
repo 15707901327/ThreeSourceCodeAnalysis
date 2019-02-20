@@ -705,15 +705,13 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 	var cachedUniforms;
 
   /**
-   *
+   * 获取uniform变量的地址
    * @return {*}
    */
 	this.getUniforms = function () {
 
 		if ( cachedUniforms === undefined ) {
-
 			cachedUniforms = new WebGLUniforms( gl, program, renderer );
-
 		}
 
 		return cachedUniforms;
@@ -729,15 +727,10 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
    * @return {*}
    */
 	this.getAttributes = function () {
-
 		if ( cachedAttributes === undefined ) {
-
 			cachedAttributes = fetchAttributeLocations( gl, program );
-
 		}
-
 		return cachedAttributes;
-
 	};
 
 	// free resource
