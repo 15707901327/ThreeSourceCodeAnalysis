@@ -2192,6 +2192,11 @@ function WebGLRenderer(parameters) {
 
   }
 
+	/**
+   * 更新uniform相关变量
+	 * @param uniforms
+	 * @param material
+	 */
   function refreshUniformsPoints(uniforms, material) {
 
     uniforms.diffuse.value = material.color;

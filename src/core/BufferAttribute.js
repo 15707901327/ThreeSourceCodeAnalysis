@@ -23,10 +23,10 @@ function BufferAttribute( array, itemSize, normalized ) {
 	this.count = array !== undefined ? array.length / itemSize : 0;
 	this.normalized = normalized === true;
 
-	this.dynamic = false;
+	this.dynamic = false; // false 只会向缓存区对象中写入一次数据，但需要绘制很多次 true 多次写入，绘制多次
 	this.updateRange = { offset: 0, count: - 1 };
 
-	this.version = 0;
+	this.version = 0; // 版本
 
 }
 

@@ -6,6 +6,14 @@ import { Uint16BufferAttribute, Uint32BufferAttribute } from '../../core/BufferA
 import { BufferGeometry } from '../../core/BufferGeometry.js';
 import { arrayMax } from '../../utils.js';
 
+/**
+ * 管理几何体
+ * @param gl
+ * @param attributes
+ * @param info
+ * @return {{get: get, update: update, getWireframeAttribute: getWireframeAttribute}}
+ * @constructor
+ */
 function WebGLGeometries( gl, attributes, info ) {
 
 	var geometries = {};
@@ -32,18 +40,7 @@ function WebGLGeometries( gl, attributes, info ) {
 
 		delete geometries[ geometry.id ];
 
-		// TODO Remove duplicate code
-
-		var attribute = wireframeAttributes[ geometry.id ];
-
-		if ( attribute ) {
-
-			attributes.remove( attribute );
-			delete wireframeAttributes[ geometry.id ];
-
-		}
-
-		attribute = wireframeAttributes[ buffergeometry.id ];
+		var attribute = wireframeAttributes[ buffergeometry.id ];
 
 		if ( attribute ) {
 
@@ -58,6 +55,12 @@ function WebGLGeometries( gl, attributes, info ) {
 
 	}
 
+	/**
+	 * 获取对象的buffer几何体
+	 * @param object 对象
+	 * @param geometry 几何体
+	 * @return {*}
+	 */
 	function get( object, geometry ) {
 
 		var buffergeometry = geometries[ geometry.id ];
@@ -68,7 +71,8 @@ function WebGLGeometries( gl, attributes, info ) {
 
 		if ( geometry.isBufferGeometry ) {
 			buffergeometry = geometry;
-		} else if ( geometry.isGeometry ) {
+		}
+		else if ( geometry.isGeometry ) {
 			if ( geometry._bufferGeometry === undefined ) {
 				geometry._bufferGeometry = new BufferGeometry().setFromObject( object );
 			}

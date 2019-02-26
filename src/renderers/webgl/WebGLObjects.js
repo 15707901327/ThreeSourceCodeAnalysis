@@ -1,7 +1,6 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  */
-import {WebGLInfo} from "./WebGLInfo";
 
 /**
  *

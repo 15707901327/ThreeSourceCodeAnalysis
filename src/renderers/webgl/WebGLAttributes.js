@@ -6,6 +6,12 @@ function WebGLAttributes( gl ) {
 
 	var buffers = new WeakMap();
 
+	/**
+	 * 创建缓存区
+	 * @param attribute
+	 * @param bufferType
+	 * @return {{buffer: AudioBuffer | WebGLBuffer, type: number, bytesPerElement: number, version}}
+	 */
 	function createBuffer( attribute, bufferType ) {
 
 		var array = attribute.array;
@@ -24,34 +30,27 @@ function WebGLAttributes( gl ) {
 
 			type = gl.FLOAT;
 
-		} else if ( array instanceof Float64Array ) {
-
+		}
+		else if ( array instanceof Float64Array ) {
 			console.warn( 'THREE.WebGLAttributes: Unsupported data buffer format: Float64Array.' );
-
-		} else if ( array instanceof Uint16Array ) {
-
+		}
+		else if ( array instanceof Uint16Array ) {
 			type = gl.UNSIGNED_SHORT;
-
-		} else if ( array instanceof Int16Array ) {
-
+		}
+		else if ( array instanceof Int16Array ) {
 			type = gl.SHORT;
-
-		} else if ( array instanceof Uint32Array ) {
-
+		}
+		else if ( array instanceof Uint32Array ) {
 			type = gl.UNSIGNED_INT;
-
-		} else if ( array instanceof Int32Array ) {
-
+		}
+		else if ( array instanceof Int32Array ) {
 			type = gl.INT;
-
-		} else if ( array instanceof Int8Array ) {
-
+		}
+		else if ( array instanceof Int8Array ) {
 			type = gl.BYTE;
-
-		} else if ( array instanceof Uint8Array ) {
-
+		}
+		else if ( array instanceof Uint8Array ) {
 			type = gl.UNSIGNED_BYTE;
-
 		}
 
 		return {
@@ -130,7 +129,8 @@ function WebGLAttributes( gl ) {
 
 			buffers.set( attribute, createBuffer( attribute, bufferType ) );
 
-		} else if ( data.version < attribute.version ) {
+		}
+		else if ( data.version < attribute.version ) {
 
 			updateBuffer( data.buffer, attribute, bufferType );
 
