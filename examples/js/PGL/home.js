@@ -139,7 +139,9 @@ var PGL = PGL || {};
             });
 
             var mesh = new THREE.Mesh(bufferGeometry, meshPhongMaterial);
-            mesh.drawMode = THREE.TrianglesDrawMode;
+            // mesh.drawMode = THREE.TrianglesDrawMode;
+            mesh.translateX(1);
+            mesh.translateZ(1);
             this.scene.add(mesh);
         },
         /**
