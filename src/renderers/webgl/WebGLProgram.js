@@ -250,10 +250,11 @@ function unrollLoops( string ) {
  * @param shader
  * @param parameters
  * @param capabilities
+ * @param textures
  * @return {WebGLProgram}
  * @constructor
  */
-function WebGLProgram( renderer, extensions, code, material, shader, parameters, capabilities ) {
+function WebGLProgram( renderer, extensions, code, material, shader, parameters, capabilities, textures ) {
 
 	var gl = renderer.context;
 
@@ -265,13 +266,10 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 	var shadowMapTypeDefine = 'SHADOWMAP_TYPE_BASIC';
 
 	if ( parameters.shadowMapType === PCFShadowMap ) {
-
 		shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF';
-
-	} else if ( parameters.shadowMapType === PCFSoftShadowMap ) {
-
+	}
+	else if ( parameters.shadowMapType === PCFSoftShadowMap ) {
 		shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF_SOFT';
-
 	}
 
 	var envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
@@ -373,7 +371,8 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 
 		}
 
-	} else {
+	}
+	else {
 
 		prefixVertex = [
 
@@ -406,6 +405,8 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 			parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
 			parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
 			parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
+
+			parameters.vertexTangents ? '#define USE_TANGENT' : '',
 			parameters.vertexColors ? '#define USE_COLOR' : '',
 
 			parameters.flatShading ? '#define FLAT_SHADED' : '',
@@ -436,6 +437,12 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 			'attribute vec3 position;',
 			'attribute vec3 normal;',
 			'attribute vec2 uv;',
+
+			'#ifdef USE_TANGENT',
+
+			'	attribute vec4 tangent;',
+
+			'#endif',
 
 			'#ifdef USE_COLOR',
 
@@ -513,6 +520,8 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 			parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
 			parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
 			parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
+
+			parameters.vertexTangents ? '#define USE_TANGENT' : '',
 			parameters.vertexColors ? '#define USE_COLOR' : '',
 
 			parameters.gradientMap ? '#define USE_GRADIENTMAP' : '',
@@ -621,8 +630,8 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 	// console.log( '*FRAGMENT*', fragmentGlsl );
 
   // 创建着色器
-	var glVertexShader = WebGLShader( gl, gl.VERTEX_SHADER, vertexGlsl );
-	var glFragmentShader = WebGLShader( gl, gl.FRAGMENT_SHADER, fragmentGlsl );
+	var glVertexShader = WebGLShader( gl, gl.VERTEX_SHADER, vertexGlsl, renderer.debug.checkShaderErrors );
+	var glFragmentShader = WebGLShader( gl, gl.FRAGMENT_SHADER, fragmentGlsl, renderer.debug.checkShaderErrors );
 
 	gl.attachShader( program, glVertexShader );
 	gl.attachShader( program, glFragmentShader );
@@ -641,6 +650,9 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 	}
 
 	gl.linkProgram( program );
+
+	// check for link errors
+	if ( renderer.debug.checkShaderErrors ) {
 
 	var programLog = gl.getProgramInfoLog( program ).trim();
 	var vertexLog = gl.getShaderInfoLog( glVertexShader ).trim();
@@ -695,6 +707,8 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 
 	}
 
+	}
+
 	// clean up
 
 	gl.deleteShader( glVertexShader );
@@ -711,7 +725,9 @@ function WebGLProgram( renderer, extensions, code, material, shader, parameters,
 	this.getUniforms = function () {
 
 		if ( cachedUniforms === undefined ) {
-			cachedUniforms = new WebGLUniforms( gl, program, renderer );
+
+			cachedUniforms = new WebGLUniforms( gl, program, textures );
+
 		}
 
 		return cachedUniforms;
