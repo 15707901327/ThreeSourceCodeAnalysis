@@ -897,6 +897,20 @@ Array.prototype.isArrayFn = (function () {
             }
 
             return pts;
+        },
+
+        /**
+         * 获取面的长度
+         * @param arr
+         * @returns {Array}
+         */
+        getArrLength: function (arr) {
+            var arr2 = [];
+            for (var i = 1; i < arr.length; i++) {
+                arr2.push(Math.sqrt(Math.pow(arr[i][0] - arr[i - 1][0], 2) + Math.pow(arr[i][1] - arr[i - 1][1], 2)));
+            }
+            arr2.push(Math.sqrt(Math.pow(arr[0][0] - arr[arr.length - 1][0], 2) + Math.pow(arr[0][1] - arr[arr.length - 1][1], 2)));
+            return arr2;
         }
     })
 })(THREE);

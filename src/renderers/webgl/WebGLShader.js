@@ -16,12 +16,14 @@ function addLineNumbers( string ) {
 
 }
 
-function WebGLShader( gl, type, string ) {
+function WebGLShader( gl, type, string, debug ) {
 
 	var shader = gl.createShader( type );
 
 	gl.shaderSource( shader, string );
 	gl.compileShader( shader );
+
+	if ( debug === true ) {
 
 	if ( gl.getShaderParameter( shader, gl.COMPILE_STATUS ) === false ) {
 
@@ -32,6 +34,8 @@ function WebGLShader( gl, type, string ) {
 	if ( gl.getShaderInfoLog( shader ) !== '' ) {
 
 		console.warn( 'THREE.WebGLShader: gl.getShaderInfoLog()', type === gl.VERTEX_SHADER ? 'vertex' : 'fragment', gl.getShaderInfoLog( shader ), addLineNumbers( string ) );
+
+	}
 
 	}
 
