@@ -8,7 +8,9 @@ varying vec3 vViewPosition;
 
 #endif
 
+// 定义的常量和一些常用的方法
 #include <common>
+// 定义贴图的uv坐标（map）
 #include <uv_pars_vertex>
 #include <uv2_pars_vertex>
 #include <displacementmap_pars_vertex>
@@ -22,7 +24,7 @@ varying vec3 vViewPosition;
 #include <clipping_planes_pars_vertex>
 
 void main() {
-
+    // 计算uv的坐标
 	#include <uv_vertex>
 	#include <uv2_vertex>
 	#include <color_vertex>

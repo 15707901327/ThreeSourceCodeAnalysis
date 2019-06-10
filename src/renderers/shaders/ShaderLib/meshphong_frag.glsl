@@ -10,8 +10,10 @@ uniform float opacity;
 #include <packing>
 #include <dithering_pars_fragment>
 #include <color_pars_fragment>
+// 声明varying变量vUv
 #include <uv_pars_fragment>
 #include <uv2_pars_fragment>
+// 声明采集器
 #include <map_pars_fragment>
 #include <alphamap_pars_fragment>
 #include <aomap_pars_fragment>
@@ -40,6 +42,7 @@ void main() {
 	vec3 totalEmissiveRadiance = emissive;
 
 	#include <logdepthbuf_fragment>
+	// 贴图采集颜色
 	#include <map_fragment>
 	#include <color_fragment>
 	#include <alphamap_fragment>

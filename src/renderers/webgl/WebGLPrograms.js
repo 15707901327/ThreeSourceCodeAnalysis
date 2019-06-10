@@ -117,8 +117,8 @@ function WebGLPrograms( renderer, extensions, capabilities, textures ) {
   }
 
   /**
-   * 获取参数
-   * @param material
+   * 获取参数标记
+   * @param material 材质对象
    * @param lights
    * @param shadows
    * @param fog

@@ -81,7 +81,8 @@ function WebGLRenderer( parameters ) {
         _antialias = parameters.antialias !== undefined ? parameters.antialias : false,
         _premultipliedAlpha = parameters.premultipliedAlpha !== undefined ? parameters.premultipliedAlpha : true,
         _preserveDrawingBuffer = parameters.preserveDrawingBuffer !== undefined ? parameters.preserveDrawingBuffer : false,
-        _powerPreference = parameters.powerPreference !== undefined ? parameters.powerPreference : 'default';
+		_powerPreference = parameters.powerPreference !== undefined ? parameters.powerPreference : 'default',
+		_failIfMajorPerformanceCaveat = parameters.failIfMajorPerformanceCaveat !== undefined ? parameters.failIfMajorPerformanceCaveat : false;
 
     var currentRenderList = null;
     var currentRenderState = null;
@@ -98,7 +99,7 @@ function WebGLRenderer( parameters ) {
          * Enables error checking and reporting when shader programs are being compiled
          * @type {boolean}
          */
-        checkShaderErrors: false
+		checkShaderErrors: true
     };
 
     // clearing
@@ -148,6 +149,8 @@ function WebGLRenderer( parameters ) {
 
         _framebuffer = null,
 
+		_currentActiveCubeFace = 0,
+		_currentActiveMipmapLevel = 0,
         _currentRenderTarget = null,
         _currentFramebuffer = null,
         _currentMaterialId = -1,
@@ -213,7 +216,9 @@ function WebGLRenderer( parameters ) {
             antialias: _antialias,
             premultipliedAlpha: _premultipliedAlpha,
             preserveDrawingBuffer: _preserveDrawingBuffer,
-            powerPreference: _powerPreference
+			powerPreference: _powerPreference,
+			failIfMajorPerformanceCaveat: _failIfMajorPerformanceCaveat,
+			xrCompatible: true
         };
 
         // event listeners must be registered before WebGL context is created, see #12753
@@ -327,7 +332,7 @@ function WebGLRenderer( parameters ) {
 
     // vr
 
-    var vr = (typeof navigator !== 'undefined' && 'xr' in navigator) ? new WebXRManager(_this) : new WebVRManager(_this);
+	var vr = ( typeof navigator !== 'undefined' && 'xr' in navigator && 'supportsSession' in navigator.xr ) ? new WebXRManager( _this ) : new WebVRManager( _this );
 
     this.vr = vr;
 
@@ -836,10 +841,9 @@ function WebGLRenderer( parameters ) {
 
             dataCount = index.count;
 
-        } else if (position !== undefined) {
-
+        }
+        else if (position !== undefined) {
             dataCount = position.count;
-
         }
 
         var rangeStart = geometry.drawRange.start * rangeFactor;
@@ -864,7 +868,8 @@ function WebGLRenderer( parameters ) {
                 state.setLineWidth(material.wireframeLinewidth * getTargetPixelRatio());
                 renderer.setMode(_gl.LINES);
 
-            } else {
+            }
+            else {
 
                 switch (object.drawMode) {
 
@@ -883,9 +888,8 @@ function WebGLRenderer( parameters ) {
                 }
 
             }
-
-
-        } else if (object.isLine) {
+        }
+        else if (object.isLine) {
 
             var lineWidth = material.linewidth;
 
@@ -907,30 +911,22 @@ function WebGLRenderer( parameters ) {
 
             }
 
-        } else if (object.isPoints) {
-
+        }
+        else if (object.isPoints) {
             renderer.setMode(_gl.POINTS);
-
-        } else if (object.isSprite) {
-
+        }
+        else if (object.isSprite) {
             renderer.setMode(_gl.TRIANGLES);
-
         }
 
         if (geometry && geometry.isInstancedBufferGeometry) {
-
             if (geometry.maxInstancedCount > 0) {
-
                 renderer.renderInstances(geometry, drawStart, drawCount);
-
             }
-
-        } else {
-
-            renderer.render(drawStart, drawCount);
-
         }
-
+        else {
+            renderer.render(drawStart, drawCount);
+        }
     };
 
     /**
@@ -1454,22 +1450,7 @@ function WebGLRenderer( parameters ) {
 
                     if (object.layers.test(camera2.layers)) {
 
-                        if ('viewport' in camera2) { // XR
-
                             state.viewport(_currentViewport.copy(camera2.viewport));
-
-                        } else {
-
-                            var bounds = camera2.bounds;
-
-                            var x = bounds.x * _width;
-                            var y = bounds.y * _height;
-                            var width = bounds.z * _width;
-                            var height = bounds.w * _height;
-
-                            state.viewport(_currentViewport.set(x, y, width, height).multiplyScalar(_pixelRatio));
-
-                        }
 
                         currentRenderState.setupLights(camera2);
 
@@ -1479,7 +1460,8 @@ function WebGLRenderer( parameters ) {
 
                 }
 
-            } else {
+            }
+            else {
 
                 _currentArrayCamera = null;
 
@@ -1522,10 +1504,9 @@ function WebGLRenderer( parameters ) {
 
             renderObjectImmediate(object, program);
 
-        } else {
-
+        }
+        else {
             _this.renderBufferDirect(camera, scene.fog, geometry, material, object, group);
-
         }
 
         // 渲染之后调用方法
@@ -1560,16 +1541,14 @@ function WebGLRenderer( parameters ) {
         var programChange = true;
 
         if (program === undefined) {
-
             // new material
             material.addEventListener('dispose', onMaterialDispose);
-
-        } else if (program.code !== code) {
-
+        }
+        else if (program.code !== code) {
             // changed glsl or parameters
             releaseMaterialProgramReference(material);
-
-        } else if (lightsHash.stateID !== lightsStateHash.stateID ||
+        }
+        else if (lightsHash.stateID !== lightsStateHash.stateID ||
             lightsHash.directionalLength !== lightsStateHash.directionalLength ||
             lightsHash.pointLength !== lightsStateHash.pointLength ||
             lightsHash.spotLength !== lightsStateHash.spotLength ||
@@ -1587,12 +1566,12 @@ function WebGLRenderer( parameters ) {
 
             programChange = false;
 
-        } else if (parameters.shaderID !== undefined) {
-
+        }
+        else if (parameters.shaderID !== undefined) {
             // same glsl and uniform list
             return;
-
-        } else {
+        }
+        else {
 
             // only rebuild uniform list
             programChange = false;
@@ -1612,7 +1591,8 @@ function WebGLRenderer( parameters ) {
                     fragmentShader: shader.fragmentShader
                 };
 
-            } else {
+            }
+            else {
 
                 materialProperties.shader = {
                     name: material.type,
@@ -1769,14 +1749,12 @@ function WebGLRenderer( parameters ) {
         if (material.needsUpdate === false) {
 
             if (materialProperties.program === undefined) {
-
                 material.needsUpdate = true;
-
-            } else if (material.fog && materialProperties.fog !== fog) {
-
+            }
+            else if (material.fog && materialProperties.fog !== fog) {
                 material.needsUpdate = true;
-
-            } else if (material.lights && (lightsHash.stateID !== lightsStateHash.stateID ||
+            }
+            else if (material.lights && (lightsHash.stateID !== lightsStateHash.stateID ||
                 lightsHash.directionalLength !== lightsStateHash.directionalLength ||
                 lightsHash.pointLength !== lightsStateHash.pointLength ||
                 lightsHash.spotLength !== lightsStateHash.spotLength ||
@@ -1785,13 +1763,11 @@ function WebGLRenderer( parameters ) {
                 lightsHash.shadowsLength !== lightsStateHash.shadowsLength)) {
 
                 material.needsUpdate = true;
-
-            } else if (materialProperties.numClippingPlanes !== undefined &&
+            }
+            else if (materialProperties.numClippingPlanes !== undefined &&
                 (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
                     materialProperties.numIntersection !== _clipping.numIntersection)) {
-
                 material.needsUpdate = true;
-
             }
 
         }
@@ -1970,12 +1946,14 @@ function WebGLRenderer( parameters ) {
 
                 refreshUniformsCommon(m_uniforms, material);
 
-            } else if (material.isMeshLambertMaterial) {
+            }
+            else if (material.isMeshLambertMaterial) {
 
                 refreshUniformsCommon(m_uniforms, material);
                 refreshUniformsLambert(m_uniforms, material);
 
-            } else if (material.isMeshPhongMaterial) {
+            }
+            else if (material.isMeshPhongMaterial) {
 
                 refreshUniformsCommon(m_uniforms, material);
 
@@ -1989,7 +1967,8 @@ function WebGLRenderer( parameters ) {
 
                 }
 
-            } else if (material.isMeshStandardMaterial) {
+            }
+            else if (material.isMeshStandardMaterial) {
 
                 // 刷新属性（opacity、color、map等）
                 refreshUniformsCommon(m_uniforms, material);
@@ -2005,28 +1984,33 @@ function WebGLRenderer( parameters ) {
 
                 }
 
-            } else if (material.isMeshMatcapMaterial) {
+            }
+            else if (material.isMeshMatcapMaterial) {
 
                 refreshUniformsCommon(m_uniforms, material);
 
                 refreshUniformsMatcap(m_uniforms, material);
 
-            } else if (material.isMeshDepthMaterial) {
+            }
+            else if (material.isMeshDepthMaterial) {
 
                 refreshUniformsCommon(m_uniforms, material);
                 refreshUniformsDepth(m_uniforms, material);
 
-            } else if (material.isMeshDistanceMaterial) {
+            }
+            else if (material.isMeshDistanceMaterial) {
 
                 refreshUniformsCommon(m_uniforms, material);
                 refreshUniformsDistance(m_uniforms, material);
 
-            } else if (material.isMeshNormalMaterial) {
+            }
+            else if (material.isMeshNormalMaterial) {
 
                 refreshUniformsCommon(m_uniforms, material);
                 refreshUniformsNormal(m_uniforms, material);
 
-            } else if (material.isLineBasicMaterial) {
+            }
+            else if (material.isLineBasicMaterial) {
 
                 refreshUniformsLine(m_uniforms, material);
 
@@ -2036,15 +2020,18 @@ function WebGLRenderer( parameters ) {
 
                 }
 
-            } else if (material.isPointsMaterial) {
+            }
+            else if (material.isPointsMaterial) {
 
                 refreshUniformsPoints(m_uniforms, material);
 
-            } else if (material.isSpriteMaterial) {
+            }
+            else if (material.isSpriteMaterial) {
 
                 refreshUniformsSprites(m_uniforms, material);
 
-            } else if (material.isShadowMaterial) {
+            }
+            else if (material.isShadowMaterial) {
 
                 m_uniforms.color.value.copy(material.color);
                 m_uniforms.opacity.value = material.opacity;
@@ -2169,35 +2156,43 @@ function WebGLRenderer( parameters ) {
 
             uvScaleMap = material.map;
 
-        } else if (material.specularMap) {
+        }
+        else if (material.specularMap) {
 
             uvScaleMap = material.specularMap;
 
-        } else if (material.displacementMap) {
+        }
+        else if (material.displacementMap) {
 
             uvScaleMap = material.displacementMap;
 
-        } else if (material.normalMap) {
+        }
+        else if (material.normalMap) {
 
             uvScaleMap = material.normalMap;
 
-        } else if (material.bumpMap) {
+        }
+        else if (material.bumpMap) {
 
             uvScaleMap = material.bumpMap;
 
-        } else if (material.roughnessMap) {
+        }
+        else if (material.roughnessMap) {
 
             uvScaleMap = material.roughnessMap;
 
-        } else if (material.metalnessMap) {
+        }
+        else if (material.metalnessMap) {
 
             uvScaleMap = material.metalnessMap;
 
-        } else if (material.alphaMap) {
+        }
+        else if (material.alphaMap) {
 
             uvScaleMap = material.alphaMap;
 
-        } else if (material.emissiveMap) {
+        }
+        else if (material.emissiveMap) {
 
             uvScaleMap = material.emissiveMap;
 
@@ -2545,9 +2540,23 @@ function WebGLRenderer( parameters ) {
 
     this.setFramebuffer = function (value) {
 
+		if ( _framebuffer !== value ) _gl.bindFramebuffer( _gl.FRAMEBUFFER, value );
+
         _framebuffer = value;
 
     };
+
+	this.getActiveCubeFace = function () {
+
+		return _currentActiveCubeFace;
+
+	};
+
+	this.getActiveMipMapLevel = function () {
+
+		return _currentActiveMipmapLevel;
+
+	};
 
     this.getRenderTarget = function () {
 
@@ -2558,6 +2567,8 @@ function WebGLRenderer( parameters ) {
     this.setRenderTarget = function (renderTarget, activeCubeFace, activeMipMapLevel) {
 
         _currentRenderTarget = renderTarget;
+		_currentActiveCubeFace = activeCubeFace;
+		_currentActiveMipmapLevel = activeMipMapLevel;
 
         if (renderTarget && properties.get(renderTarget).__webglFramebuffer === undefined) {
 
@@ -2619,7 +2630,7 @@ function WebGLRenderer( parameters ) {
 
     };
 
-    this.readRenderTargetPixels = function (renderTarget, x, y, width, height, buffer) {
+	this.readRenderTargetPixels = function ( renderTarget, x, y, width, height, buffer, activeCubeFaceIndex ) {
 
         if (!(renderTarget && renderTarget.isWebGLRenderTarget)) {
 
@@ -2629,6 +2640,12 @@ function WebGLRenderer( parameters ) {
         }
 
         var framebuffer = properties.get(renderTarget).__webglFramebuffer;
+
+		if ( renderTarget.isWebGLRenderTargetCube && activeCubeFaceIndex !== undefined ) {
+
+			framebuffer = framebuffer[ activeCubeFaceIndex ];
+
+		}
 
         if (framebuffer) {
 

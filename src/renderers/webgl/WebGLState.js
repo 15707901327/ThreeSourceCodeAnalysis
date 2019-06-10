@@ -388,7 +388,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
   var currentPolygonOffsetFactor = null;
   var currentPolygonOffsetUnits = null;
 
-  var maxTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+  var maxTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS); // 获取最大的纹理单元
 
   var lineWidthAvailable = false;
   var version = 0;
@@ -406,8 +406,8 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   }
 
-  var currentTextureSlot = null;
-  var currentBoundTextures = {};
+  var currentTextureSlot = null; // 当前激活的纹理单元
+  var currentBoundTextures = {}; // 当前绑定的纹理对象
 
   var currentScissor = new Vector4();
   var currentViewport = new Vector4();

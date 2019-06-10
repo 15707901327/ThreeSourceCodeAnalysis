@@ -147,9 +147,13 @@ var PGL = PGL || {};
             bufferGeometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             bufferGeometry.addAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
 
-            var texture = new THREE.TextureLoader().load( 'textures/land_ocean_ice_cloud_2048.jpg' );
             var meshPhongMaterial = new THREE.MeshPhongMaterial({
-                map:texture
+                color:0xffffff
+            });
+            var textureLoader = new THREE.TextureLoader();
+            textureLoader.load("textures/land_ocean_ice_cloud_2048.jpg",function (texture) {
+                meshPhongMaterial.map = texture;
+                meshPhongMaterial.needsUpdate = true;
             });
 
             var mesh = new THREE.Mesh(bufferGeometry, meshPhongMaterial);
@@ -206,7 +210,7 @@ var PGL = PGL || {};
 $(function () {
     var scene3D = new PGL.scene3D({}, {
         container: document.getElementById("container"),
-        enabledSkyBox: true
+        enabledSkyBox: false
     });
     scene3D.init();
 });
