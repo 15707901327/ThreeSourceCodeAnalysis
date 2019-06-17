@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/docs/files/inconsolata.woff" charset="UTF-16" />
+    <file url="file://$USER_HOME$/Desktop/thing/test100.tjs" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/docs/files/inconsolata.woff" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/examples/test100.tjs" charset="ISO-8859-1" />
   </component>
 </project>
