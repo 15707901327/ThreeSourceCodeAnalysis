@@ -4,19 +4,22 @@
 
 import { WebGLLights } from './WebGLLights.js';
 
+/**
+ * Webgl渲染状态
+ * @returns {{init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}}
+ * @constructor
+ */
 function WebGLRenderState() {
 
 	var lights = new WebGLLights();
 
 	var lightsArray = [];
 	var shadowsArray = [];
-	var spritesArray = [];
 
 	function init() {
 
 		lightsArray.length = 0;
 		shadowsArray.length = 0;
-		spritesArray.length = 0;
 
 	}
 
@@ -32,12 +35,6 @@ function WebGLRenderState() {
 
 	}
 
-	function pushSprite( sprite ) {
-
-		spritesArray.push( sprite );
-
-	}
-
 	function setupLights( camera ) {
 
 		lights.setup( lightsArray, shadowsArray, camera );
@@ -47,7 +44,6 @@ function WebGLRenderState() {
 	var state = {
 		lightsArray: lightsArray,
 		shadowsArray: shadowsArray,
-		spritesArray: spritesArray,
 
 		lights: lights
 	};
@@ -58,27 +54,54 @@ function WebGLRenderState() {
 		setupLights: setupLights,
 
 		pushLight: pushLight,
-		pushShadow: pushShadow,
-		pushSprite: pushSprite
+		pushShadow: pushShadow
 	};
 
 }
 
+/**
+ * WebGL渲染状态管理
+ * @returns {{get: (function(*, *): {init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}), dispose: dispose}}
+ * @constructor
+ */
 function WebGLRenderStates() {
 
 	var renderStates = {};
 
+	function onSceneDispose( event ) {
+
+		var scene = event.target;
+
+		scene.removeEventListener( 'dispose', onSceneDispose );
+
+		delete renderStates[ scene.id ];
+
+	}
+
+	/**
+	 * 获取渲染状态
+	 * @param scene
+	 * @param camera
+	 * @returns {{init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}}
+	 */
 	function get( scene, camera ) {
 
-		var hash = scene.id + ',' + camera.id;
+		var renderState;
 
-		var renderState = renderStates[ hash ];
-
-		if ( renderState === undefined ) {
-
+		if ( renderStates[ scene.id ] === undefined ) {
 			renderState = new WebGLRenderState();
-			renderStates[ hash ] = renderState;
+			renderStates[ scene.id ] = {};
+			renderStates[ scene.id ][ camera.id ] = renderState;
 
+			scene.addEventListener( 'dispose', onSceneDispose );
+		}
+		else {
+			if ( renderStates[ scene.id ][ camera.id ] === undefined ) {
+				renderState = new WebGLRenderState();
+				renderStates[ scene.id ][ camera.id ] = renderState;
+			} else {
+				renderState = renderStates[ scene.id ][ camera.id ];
+			}
 		}
 
 		return renderState;

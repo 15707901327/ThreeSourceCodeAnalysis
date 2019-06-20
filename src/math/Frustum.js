@@ -109,6 +109,7 @@ Object.assign(Frustum.prototype, {
       if (geometry.boundingSphere === null)
         geometry.computeBoundingSphere();
 
+      //
       sphere.copy(geometry.boundingSphere)
         .applyMatrix4(object.matrixWorld);
 

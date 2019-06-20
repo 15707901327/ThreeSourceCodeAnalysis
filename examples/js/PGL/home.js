@@ -79,7 +79,7 @@ var PGL = PGL || {};
         },
         initCamera: function () {
             this.camera = new THREE.PerspectiveCamera(45, this.getWidth() / this.getHeight(), 0.1, 30000);
-            this.camera.position.set(0, 0, 10);
+            this.camera.position.set(0, 0, 5);
         },
         initLight: function () {
             var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -133,31 +133,38 @@ var PGL = PGL || {};
             var bufferGeometry = new THREE.BufferGeometry();
 
             var positions = new Float32Array([
-                -0.5, 0.5, 0.0,
+                0.0, 0.5, -0.4,
+                -0.5, -0.5, -0.4,
+                0.5, -0.5, -0.4,
+
+                0.5, 0.4, -0.2,
+                -0.5, 0.4, -0.2,
+                0.0, -0.6, -0.2,
+
+                0.0, 0.5, 0.0,
                 -0.5, -0.5, 0.0,
-                0.5, 0.5, 0.0,
                 0.5, -0.5, 0.0
             ]);
-            var uvs = new Float32Array([
-                0.0, 1.0,
-                0.0, 0.0,
-                1.0, 1.0,
-                1.0, 0.0
+            var color = new Float32Array([
+                0.4, 1.0, 0.4,
+                0.4, 1.0, 0.4,
+                1.0, 0.4, 0.4,
+
+                1.0, 0.4, 0.4,
+                1.0, 1.0, 0.4,
+                1.0, 1.0, 0.4,
+
+                0.4, 0.4, 1.0,
+                0.4, 0.4, 1.0,
+                1.0, 0.4, 0.4
             ]);
             bufferGeometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            bufferGeometry.addAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+            bufferGeometry.addAttribute('color', new THREE.Float32BufferAttribute(color, 3));
 
-            var meshPhongMaterial = new THREE.MeshPhongMaterial({
-                color:0xffffff
-            });
-            var textureLoader = new THREE.TextureLoader();
-            textureLoader.load("textures/land_ocean_ice_cloud_2048.jpg",function (texture) {
-                meshPhongMaterial.map = texture;
-                meshPhongMaterial.needsUpdate = true;
-            });
+            var meshPhongMaterial = new THREE.MeshPhongMaterial();
+            meshPhongMaterial.vertexColors = THREE.VertexColors;
 
             var mesh = new THREE.Mesh(bufferGeometry, meshPhongMaterial);
-            mesh.drawMode = THREE.TriangleStripDrawMode;
             this.mesh = mesh;
             this.scene.add(mesh);
         },

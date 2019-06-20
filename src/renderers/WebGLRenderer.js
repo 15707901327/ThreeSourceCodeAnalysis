@@ -84,8 +84,8 @@ function WebGLRenderer( parameters ) {
 		_powerPreference = parameters.powerPreference !== undefined ? parameters.powerPreference : 'default',
 		_failIfMajorPerformanceCaveat = parameters.failIfMajorPerformanceCaveat !== undefined ? parameters.failIfMajorPerformanceCaveat : false;
 
-    var currentRenderList = null;
-    var currentRenderState = null;
+    var currentRenderList = null;  // 当前渲染列表
+    var currentRenderState = null; // 当前渲染状态
 
     // public properties
 
@@ -163,7 +163,7 @@ function WebGLRenderer( parameters ) {
             wireframe: false
         },
 
-        _currentCamera = null,
+        _currentCamera = null, // 当前渲染相机
         _currentArrayCamera = null,
 
         _currentViewport = new Vector4(),
@@ -191,11 +191,10 @@ function WebGLRenderer( parameters ) {
         _clippingEnabled = false,
         _localClippingEnabled = false,
 
-        // camera matrices cache
-
+        // camera matrices cache 投影矩阵 * 视图矩阵
         _projScreenMatrix = new Matrix4(),
 
-        _vector3 = new Vector3();
+        _vector3 = new Vector3(); //
 
     function getTargetPixelRatio() {
 
@@ -1131,35 +1130,27 @@ function WebGLRenderer( parameters ) {
 
     /**
      * 循环渲染物体
-     * @param scene
-     * @param camera
-     * @param renderTarget
-     * @param forceClear
+     * @param scene 场景
+     * @param camera 相机
      */
     this.render = function (scene, camera) {
 
         var renderTarget, forceClear;
 
         if (arguments[2] !== undefined) {
-
             console.warn('THREE.WebGLRenderer.render(): the renderTarget argument has been removed. Use .setRenderTarget() instead.');
             renderTarget = arguments[2];
-
         }
 
         if (arguments[3] !== undefined) {
-
             console.warn('THREE.WebGLRenderer.render(): the forceClear argument has been removed. Use .clear() instead.');
             forceClear = arguments[3];
-
         }
 
         // 检查相机
         if (!(camera && camera.isCamera)) {
-
             console.error('THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.');
             return;
-
         }
 
         // 检查是否丢失上下文
@@ -1176,8 +1167,7 @@ function WebGLRenderer( parameters ) {
         // update scene graph 更新对象的位置矩阵
         if (scene.autoUpdate === true) scene.updateMatrixWorld();
 
-        // update camera matrices and frustum
-
+        // 更新相机矩阵和视锥
         if (camera.parent === null) camera.updateMatrixWorld();
 
         if (vr.enabled) {
@@ -1186,14 +1176,15 @@ function WebGLRenderer( parameters ) {
 
         }
 
-        //
-
+        // 获取当前渲染状态
         currentRenderState = renderStates.get(scene, camera);
         currentRenderState.init();
 
         scene.onBeforeRender(_this, scene, camera, renderTarget || _currentRenderTarget);
 
+        // 投影矩阵 * 视图矩阵
         _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+        // 设置视锥体
         _frustum.setFromMatrix(_projScreenMatrix);
 
         _localClippingEnabled = this.localClippingEnabled;
@@ -1243,22 +1234,17 @@ function WebGLRenderer( parameters ) {
         var transparentObjects = currentRenderList.transparent;  // 当前透明渲染列表
 
         if (scene.overrideMaterial) {
-
             var overrideMaterial = scene.overrideMaterial;
 
             if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera, overrideMaterial);
             if (transparentObjects.length) renderObjects(transparentObjects, scene, camera, overrideMaterial);
-
-        } else {
-
+        }
+        else {
             // opaque pass (front-to-back order)
-
             if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera);
 
             // transparent pass (back-to-front order)
-
             if (transparentObjects.length) renderObjects(transparentObjects, scene, camera);
-
         }
 
         //
@@ -1301,9 +1287,9 @@ function WebGLRenderer( parameters ) {
     };
 
     /**
-     * 从scene中拆分渲染对象
-     * @param object:对象
-     * @param camera：相机
+     * 拆分渲染对象，解析几何体、以及几何体中的attribute变量
+     * @param object 根对象
+     * @param camera 相机
      * @param groupOrder
      * @param sortObjects
      */
@@ -1311,6 +1297,7 @@ function WebGLRenderer( parameters ) {
 
         if (object.visible === false) return;
 
+        // 根据相机判断是否显示模型
         var visible = object.layers.test(camera.layers);
 
         if (visible) {
@@ -1319,7 +1306,8 @@ function WebGLRenderer( parameters ) {
 
                 groupOrder = object.renderOrder;
 
-            } else if (object.isLight) {
+            }
+            else if (object.isLight) {
 
                 currentRenderState.pushLight(object);
 
@@ -1329,7 +1317,8 @@ function WebGLRenderer( parameters ) {
 
                 }
 
-            } else if (object.isSprite) {
+            }
+            else if (object.isSprite) {
                 if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
 
                     if (sortObjects) {
@@ -1350,7 +1339,8 @@ function WebGLRenderer( parameters ) {
 
                 }
 
-            } else if (object.isImmediateRenderObject) {
+            }
+            else if (object.isImmediateRenderObject) {
 
                 if (sortObjects) {
 
@@ -1361,21 +1351,19 @@ function WebGLRenderer( parameters ) {
 
                 currentRenderList.push(object, null, object.material, groupOrder, _vector3.z, null);
 
-            } else if (object.isMesh || object.isLine || object.isPoints) {
+            }
+            else if (object.isMesh || object.isLine || object.isPoints) {
 
                 if (object.isSkinnedMesh) {
-
                     object.skeleton.update();
-
                 }
 
+                // 检查物体是否在平截头体内
                 if (!object.frustumCulled || _frustum.intersectsObject(object)) {
 
                     if (sortObjects) {
-
-                        _vector3.setFromMatrixPosition(object.matrixWorld)
-                            .applyMatrix4(_projScreenMatrix);
-
+                        // 计算模型投影到屏幕上的坐标
+                        _vector3.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix);
                     }
 
                     var geometry = objects.update(object);
@@ -1398,7 +1386,8 @@ function WebGLRenderer( parameters ) {
 
                         }
 
-                    } else if (material.visible) {
+                    }
+                    else if (material.visible) {
 
                         currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
 
@@ -1421,7 +1410,7 @@ function WebGLRenderer( parameters ) {
     }
 
     /**
-     * 渲染物体
+     * 渲染物体列表中的物体
      * @param renderList 渲染列表
      * @param scene 场景
      * @param camera 相机
@@ -1486,10 +1475,12 @@ function WebGLRenderer( parameters ) {
 
         // 渲染之前调用方法
         object.onBeforeRender(_this, scene, camera, geometry, material, group);
+        // 获取渲染状态
         currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
 
         // 计算对象的模型视图矩阵
         object.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, object.matrixWorld);
+        // 获取对象的法线矩阵
         object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
 
         if (object.isImmediateRenderObject) {
@@ -1787,11 +1778,9 @@ function WebGLRenderer( parameters ) {
             m_uniforms = materialProperties.shader.uniforms;
 
         if (state.useProgram(program.program)) {
-
             refreshProgram = true;
             refreshMaterial = true;
             refreshLights = true;
-
         }
 
         if (material.id !== _currentMaterialId) {
@@ -1802,15 +1791,14 @@ function WebGLRenderer( parameters ) {
 
         }
 
+        // 设置相机的投影矩阵、视图矩阵
         if (refreshProgram || _currentCamera !== camera) {
 
+            // 设置投影矩阵
             p_uniforms.setValue(_gl, 'projectionMatrix', camera.projectionMatrix);
 
             if (capabilities.logarithmicDepthBuffer) {
-
-                p_uniforms.setValue(_gl, 'logDepthBufFC',
-                    2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
-
+                p_uniforms.setValue(_gl, 'logDepthBufFC', 2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
             }
 
             if (_currentCamera !== camera) {
@@ -1837,10 +1825,7 @@ function WebGLRenderer( parameters ) {
                 var uCamPos = p_uniforms.map.cameraPosition;
 
                 if (uCamPos !== undefined) {
-
-                    uCamPos.setValue(_gl,
-                        _vector3.setFromMatrixPosition(camera.matrixWorld));
-
+                    uCamPos.setValue(_gl, _vector3.setFromMatrixPosition(camera.matrixWorld));
                 }
 
             }
@@ -1852,6 +1837,7 @@ function WebGLRenderer( parameters ) {
                 material.isShaderMaterial ||
                 material.skinning) {
 
+                // 设置视图矩阵
                 p_uniforms.setValue(_gl, 'viewMatrix', camera.matrixWorldInverse);
 
             }

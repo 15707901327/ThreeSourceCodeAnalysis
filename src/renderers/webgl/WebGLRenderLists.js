@@ -4,181 +4,223 @@
 
 function painterSortStable(a, b) {
 
-  if (a.renderOrder !== b.renderOrder) {
+    if (a.groupOrder !== b.groupOrder) {
 
-    return a.renderOrder - b.renderOrder;
+        return a.groupOrder - b.groupOrder;
 
-  } else if (a.program && b.program && a.program !== b.program) {
+    } else if (a.renderOrder !== b.renderOrder) {
 
-    return a.program.id - b.program.id;
+        return a.renderOrder - b.renderOrder;
 
-  } else if (a.material.id !== b.material.id) {
+    } else if (a.program !== b.program) {
 
-    return a.material.id - b.material.id;
+        return a.program.id - b.program.id;
 
-  } else if (a.z !== b.z) {
+    } else if (a.material.id !== b.material.id) {
 
-    return a.z - b.z;
+        return a.material.id - b.material.id;
 
-  } else {
+    } else if (a.z !== b.z) {
 
-    return a.id - b.id;
+        return a.z - b.z;
 
-  }
+    } else {
+
+        return a.id - b.id;
+
+    }
 
 }
 
 function reversePainterSortStable(a, b) {
 
-  if (a.renderOrder !== b.renderOrder) {
+    if (a.groupOrder !== b.groupOrder) {
 
-    return a.renderOrder - b.renderOrder;
+        return a.groupOrder - b.groupOrder;
 
-  }
-  if (a.z !== b.z) {
+    } else if (a.renderOrder !== b.renderOrder) {
 
-    return b.z - a.z;
+        return a.renderOrder - b.renderOrder;
 
-  } else {
+    } else if (a.z !== b.z) {
 
-    return a.id - b.id;
+        return b.z - a.z;
 
-  }
+    } else {
+
+        return a.id - b.id;
+
+    }
 
 }
 
 
 function WebGLRenderList() {
 
-  var renderItems = [];
-  var renderItemsIndex = 0;
+    var renderItems = [];
+    var renderItemsIndex = 0;
 
-  var opaque = [];
-  var transparent = [];
+    var opaque = [];
+    var transparent = [];
 
-  function init() {
+    var defaultProgram = {id: -1};
 
-    renderItemsIndex = 0;
+    function init() {
 
-    opaque.length = 0;
-    transparent.length = 0;
+        renderItemsIndex = 0;
 
-  }
-
-  function getNextRenderItem(object, geometry, material, z, group) {
-
-    var renderItem = renderItems[renderItemsIndex];
-
-    if (renderItem === undefined) {
-
-      renderItem = {
-        id: object.id,
-        object: object,
-        geometry: geometry,
-        material: material,
-        program: material.program,
-        renderOrder: object.renderOrder,
-        z: z,
-        group: group
-      };
-
-      renderItems[renderItemsIndex] = renderItem;
-
-    } else {
-
-      renderItem.id = object.id;
-      renderItem.object = object;
-      renderItem.geometry = geometry;
-      renderItem.material = material;
-      renderItem.program = material.program;
-      renderItem.renderOrder = object.renderOrder;
-      renderItem.z = z;
-      renderItem.group = group;
+        opaque.length = 0;
+        transparent.length = 0;
 
     }
 
-    renderItemsIndex++;
+    /**
+     * 信息存放至渲染列表
+     * @param object 对象
+     * @param geometry 集合体
+     * @param material 材质
+     * @param groupOrder
+     * @param z 深度值
+     * @param group
+     */
+    function getNextRenderItem(object, geometry, material, groupOrder, z, group) {
 
-    return renderItem;
+        var renderItem = renderItems[renderItemsIndex];
 
-  }
+        if (renderItem === undefined) {
 
-  function push(object, geometry, material, z, group) {
+            renderItem = {
+                id: object.id,
+                object: object,
+                geometry: geometry,
+                material: material,
+                program: material.program || defaultProgram,
+                groupOrder: groupOrder,
+                renderOrder: object.renderOrder,
+                z: z,
+                group: group
+            };
 
-    var renderItem = getNextRenderItem(object, geometry, material, z, group);
+            renderItems[renderItemsIndex] = renderItem;
 
-    (material.transparent === true ? transparent : opaque).push(renderItem);
+        }
+        else {
 
-  }
+            renderItem.id = object.id;
+            renderItem.object = object;
+            renderItem.geometry = geometry;
+            renderItem.material = material;
+            renderItem.program = material.program || defaultProgram;
+            renderItem.groupOrder = groupOrder;
+            renderItem.renderOrder = object.renderOrder;
+            renderItem.z = z;
+            renderItem.group = group;
 
-  function unshift(object, geometry, material, z, group) {
+        }
 
-    var renderItem = getNextRenderItem(object, geometry, material, z, group);
+        renderItemsIndex++;
 
-    (material.transparent === true ? transparent : opaque).unshift(renderItem);
+        return renderItem;
 
-  }
+    }
 
-  function sort() {
+    /**
+     * 信息存放至渲染列表
+     * @param object 对象
+     * @param geometry 集合体
+     * @param material 材质
+     * @param groupOrder
+     * @param z 深度值
+     * @param group
+     */
+    function push(object, geometry, material, groupOrder, z, group) {
 
-    if (opaque.length > 1) opaque.sort(painterSortStable);
-    if (transparent.length > 1) transparent.sort(reversePainterSortStable);
+        var renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
 
-  }
+        (material.transparent === true ? transparent : opaque).push(renderItem);
 
-  return {
-    opaque: opaque,
-    transparent: transparent,
+    }
 
-    init: init,
-    push: push,
-    unshift: unshift,
+	function unshift( object, geometry, material, groupOrder, z, group ) {
 
-    sort: sort
-  };
+		var renderItem = getNextRenderItem( object, geometry, material, groupOrder, z, group );
+
+        (material.transparent === true ? transparent : opaque).unshift(renderItem);
+
+    }
+
+    function sort() {
+
+        if (opaque.length > 1) opaque.sort(painterSortStable);
+        if (transparent.length > 1) transparent.sort(reversePainterSortStable);
+
+    }
+
+    return {
+        opaque: opaque,
+        transparent: transparent,
+
+        init: init,
+        push: push,
+        unshift: unshift,
+
+        sort: sort
+    };
 
 }
 
 function WebGLRenderLists() {
 
-  var lists = {};
+    var lists = {};
 
-  function get(scene, camera) {
+	function onSceneDispose( event ) {
 
-    var cameras = lists[scene.id];
-    var list;
-    if (cameras === undefined) {
+		var scene = event.target;
 
-      list = new WebGLRenderList();
-      lists[scene.id] = {};
-      lists[scene.id][camera.id] = list;
+		scene.removeEventListener( 'dispose', onSceneDispose );
 
-    } else {
+		delete lists[ scene.id ];
 
-      list = cameras[camera.id];
-      if (list === undefined) {
+	}
 
-        list = new WebGLRenderList();
-        cameras[camera.id] = list;
+    function get(scene, camera) {
 
-      }
+        var cameras = lists[scene.id];
+        var list;
+        if (cameras === undefined) {
+
+            list = new WebGLRenderList();
+            lists[scene.id] = {};
+            lists[scene.id][camera.id] = list;
+
+			scene.addEventListener( 'dispose', onSceneDispose );
+
+        } else {
+
+            list = cameras[camera.id];
+            if (list === undefined) {
+
+                list = new WebGLRenderList();
+                cameras[camera.id] = list;
+
+            }
+
+        }
+
+        return list;
 
     }
 
-    return list;
+    function dispose() {
 
-  }
+        lists = {};
 
-  function dispose() {
+    }
 
-    lists = {};
-
-  }
-
-  return {
-    get: get,
-    dispose: dispose
-  };
+    return {
+        get: get,
+        dispose: dispose
+    };
 
 }
 

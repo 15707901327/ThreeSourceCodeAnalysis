@@ -31,7 +31,7 @@ function Material() {
 	this.vertexTangents = false;
 	this.vertexColors = NoColors; // THREE.NoColors, THREE.VertexColors, THREE.FaceColors
 
-  // 控制透明度
+  	// 控制透明度
 	this.opacity = 1;
 	this.transparent = false;
 
@@ -56,7 +56,7 @@ function Material() {
 
 	this.precision = null; // override the renderer's default precision for this material
 
-  // 设置多边形位移
+  	// 设置多边形位移
 	this.polygonOffset = false;
 	this.polygonOffsetFactor = 0;
 	this.polygonOffsetUnits = 0;

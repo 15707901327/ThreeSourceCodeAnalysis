@@ -5,7 +5,6 @@
 */
 
 import { Matrix4 } from '../math/Matrix4.js';
-import { Quaternion } from '../math/Quaternion.js';
 import { Object3D } from '../core/Object3D.js';
 import { Vector3 } from '../math/Vector3.js';
 
@@ -15,8 +14,9 @@ function Camera() {
 
 	this.type = 'Camera';
 
-	this.matrixWorldInverse = new Matrix4(); // 相机位置矩阵的倒数矩阵
+	this.matrixWorldInverse = new Matrix4(); // 相机位置矩阵的倒数矩阵 视图矩阵是相机位置矩阵的逆矩阵
 	this.projectionMatrix = new Matrix4(); // 投影矩阵
+	this.projectionMatrixInverse = new Matrix4(); // 投影矩阵的逆矩阵
 
 }
 
@@ -32,16 +32,13 @@ Camera.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 		this.matrixWorldInverse.copy( source.matrixWorldInverse );
 		this.projectionMatrix.copy( source.projectionMatrix );
+		this.projectionMatrixInverse.copy( source.projectionMatrixInverse );
 
 		return this;
 
 	},
 
-	getWorldDirection: function () {
-
-		var quaternion = new Quaternion();
-
-		return function getWorldDirection( target ) {
+	getWorldDirection: function ( target ) {
 
 			if ( target === undefined ) {
 
@@ -50,13 +47,13 @@ Camera.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 			}
 
-			this.getWorldQuaternion( quaternion );
+		this.updateMatrixWorld( true );
 
-			return target.set( 0, 0, - 1 ).applyQuaternion( quaternion );
+		var e = this.matrixWorld.elements;
 
-		};
+		return target.set( - e[ 8 ], - e[ 9 ], - e[ 10 ] ).normalize();
 
-	}(),
+	},
 
   /**
 	 * 更新相机以及相机子类的本地和世界坐标矩阵

@@ -6,6 +6,12 @@ import {Vector3} from './Vector3.js';
  * @author mrdoob / http://mrdoob.com/
  */
 
+/**
+ * 包围球
+ * @param center
+ * @param radius
+ * @constructor
+ */
 function Sphere(center, radius) {
 
   this.center = (center !== undefined) ? center : new Vector3();

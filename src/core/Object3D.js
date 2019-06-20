@@ -30,6 +30,7 @@ function Object3D() {
   this.parent = null;
   this.children = [];
 
+  // 上方向
   this.up = Object3D.DefaultUp.clone();
 
   var position = new Vector3();
@@ -73,9 +74,11 @@ function Object3D() {
       enumerable: true,
       value: scale
     },
+    // 模型视图矩阵
     modelViewMatrix: {
       value: new Matrix4()
     },
+    // 法线矩阵
     normalMatrix: {
       value: new Matrix3()
     }
@@ -87,8 +90,8 @@ function Object3D() {
   this.matrixAutoUpdate = Object3D.DefaultMatrixAutoUpdate;
   this.matrixWorldNeedsUpdate = false;
 
-  this.layers = new Layers();
-  this.visible = true;
+  this.layers = new Layers(); // 图层
+  this.visible = true; // 是否显示
 
   this.castShadow = false;
   this.receiveShadow = false;
@@ -100,7 +103,7 @@ function Object3D() {
 
 }
 
-Object3D.DefaultUp = new Vector3(0, 1, 0);
+Object3D.DefaultUp = new Vector3(0, 1, 0); // 默认上方向
 Object3D.DefaultMatrixAutoUpdate = true;
 
 Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {

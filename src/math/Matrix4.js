@@ -416,6 +416,12 @@ Object.assign(Matrix4.prototype, {
 
   },
 
+  /**
+   * 计算矩阵乘积，复制给当前矩阵
+   * @param a
+   * @param b
+   * @returns {Matrix4}
+   */
   multiplyMatrices: function (a, b) {
 
     var ae = a.elements;
@@ -588,13 +594,23 @@ Object.assign(Matrix4.prototype, {
 
   },
 
-  setPosition: function (v) {
+	setPosition: function ( x, y, z ) {
 
     var te = this.elements;
 
-    te[12] = v.x;
-    te[13] = v.y;
-    te[14] = v.z;
+		if ( x.isVector3 ) {
+
+			te[ 12 ] = x.x;
+			te[ 13 ] = x.y;
+			te[ 14 ] = x.z;
+
+		} else {
+
+			te[ 12 ] = x;
+			te[ 13 ] = y;
+			te[ 14 ] = z;
+
+		}
 
     return this;
 

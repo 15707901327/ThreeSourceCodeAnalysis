@@ -38,10 +38,13 @@ Object.assign( Layers.prototype, {
 
 	},
 
+	/**
+	 * 测试当前mask和layers.mask相与是否不等于0
+	 * @param layers
+	 * @returns {boolean}
+	 */
 	test: function ( layers ) {
-
 		return ( this.mask & layers.mask ) !== 0;
-
 	}
 
 } );

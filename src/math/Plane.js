@@ -6,8 +6,8 @@ import {Vector3} from './Vector3.js';
  */
 /**
  *
- * @param normal
- * @param constant
+ * @param normal 定义平面法线的单位长度Vector3。默认值为（1,0,0）
+ * @param constant 从原点到平面的有符号距离
  * @constructor
  */
 function Plane(normal, constant) {
@@ -109,6 +109,11 @@ Object.assign(Plane.prototype, {
 
   },
 
+  /**
+   * 返回从点到平面的有符号距离
+   * @param point
+   * @returns {*}
+   */
   distanceToPoint: function (point) {
 
     return this.normal.dot(point) + this.constant;
