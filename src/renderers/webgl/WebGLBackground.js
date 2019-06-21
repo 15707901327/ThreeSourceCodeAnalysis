@@ -23,14 +23,32 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 	var currentBackground = null;
 	var currentBackgroundVersion = 0;
 
+	/**
+	 * 更新缓冲区
+	 * @param renderList 渲染列表
+	 * @param scene 场景
+	 * @param camera 相机
+	 * @param forceClear 是否强制刷新缓冲区
+	 */
 	function render( renderList, scene, camera, forceClear ) {
 		var background = scene.background;
+
+		// Ignore background in AR
+		// TODO: Reconsider this.
+
+		var vr = renderer.vr;
+		var session = vr.getSession && vr.getSession();
+
+		if ( session && session.environmentBlendMode === 'additive' ) {
+
+			background = null;
+
+		}
 
 		if ( background === null ) {
 			setClear( clearColor, clearAlpha );
 			currentBackground = null;
 			currentBackgroundVersion = 0;
-
 		}
 		else if ( background && background.isColor ) {
 
@@ -42,9 +60,7 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 		}
 
 		if ( renderer.autoClear || forceClear ) {
-
 			renderer.clear( renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil );
-
 		}
 
 		if ( background && ( background.isCubeTexture || background.isWebGLRenderTargetCube ) ) {

@@ -74,12 +74,13 @@ var PGL = PGL || {};
         initScene: function () {
             this.scene = new THREE.Scene();
             // this.scene.fog = new THREE.Fog(0xffffff, 300, 1200);
-            var axes = new THREE.AxesHelper(100);
-            this.scene.add(axes);
+            // var axes = new THREE.AxesHelper(100);
+            // this.scene.add(axes);
         },
         initCamera: function () {
             this.camera = new THREE.PerspectiveCamera(45, this.getWidth() / this.getHeight(), 0.1, 30000);
             this.camera.position.set(0, 0, 5);
+            this.camera.lookAt(new THREE.Vector3(0, 0, -100));
         },
         initLight: function () {
             var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -131,42 +132,50 @@ var PGL = PGL || {};
 
         initObject: function () {
             var bufferGeometry = new THREE.BufferGeometry();
-
             var positions = new Float32Array([
-                0.0, 0.5, -0.4,
-                -0.5, -0.5, -0.4,
-                0.5, -0.5, -0.4,
-
-                0.5, 0.4, -0.2,
-                -0.5, 0.4, -0.2,
-                0.0, -0.6, -0.2,
-
-                0.0, 0.5, 0.0,
-                -0.5, -0.5, 0.0,
-                0.5, -0.5, 0.0
+                0.0, 2.5, -5.0,
+                -2.5, -2.5, -5.0,
+                2.5, -2.5, -5.0,
             ]);
             var color = new Float32Array([
-                0.4, 1.0, 0.4,
-                0.4, 1.0, 0.4,
-                1.0, 0.4, 0.4,
-
-                1.0, 0.4, 0.4,
-                1.0, 1.0, 0.4,
-                1.0, 1.0, 0.4,
-
-                0.4, 0.4, 1.0,
-                0.4, 0.4, 1.0,
-                1.0, 0.4, 0.4
+                0.0, 1.0, 0.0, // 蓝色
+                0.0, 1.0, 0.0,
+                1.0, 0.0, 0.0,
             ]);
             bufferGeometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             bufferGeometry.addAttribute('color', new THREE.Float32BufferAttribute(color, 3));
 
             var meshPhongMaterial = new THREE.MeshPhongMaterial();
             meshPhongMaterial.vertexColors = THREE.VertexColors;
+            meshPhongMaterial.polygonOffset = true;
+            meshPhongMaterial.polygonOffsetFactor = 1.0;
+            meshPhongMaterial.polygonOffsetUnits = 1.0;
 
             var mesh = new THREE.Mesh(bufferGeometry, meshPhongMaterial);
+            mesh.translateX(0.75);
             this.mesh = mesh;
             this.scene.add(mesh);
+
+            var bufferGeometry2 = new THREE.BufferGeometry();
+            var positions2 = new Float32Array([
+                0.0, 3.0, -5.0,
+                -3.0, -3.0, -5.0,
+                3.0, -3.0, -5.0
+            ]);
+            var color2 = new Float32Array([
+                1.0, 0.0, 0.0,//  黄色
+                1.0, 1.0, 0.0,
+                1.0, 1.0, 0.0
+            ]);
+            bufferGeometry2.addAttribute('position', new THREE.Float32BufferAttribute(positions2, 3));
+            bufferGeometry2.addAttribute('color', new THREE.Float32BufferAttribute(color2, 3));
+
+            var meshPhongMaterial2 = new THREE.MeshPhongMaterial();
+            meshPhongMaterial2.vertexColors = THREE.VertexColors;
+
+            var mesh2 = new THREE.Mesh(bufferGeometry2, meshPhongMaterial2);
+            mesh2.translateX(0.75);
+            this.scene.add(mesh2);
         },
         /**
          * 添加天空盒子

@@ -149,11 +149,12 @@ function WebGLRenderList() {
 
     }
 
+    /**
+     * 对渲染物体排序
+     */
     function sort() {
-
         if (opaque.length > 1) opaque.sort(painterSortStable);
         if (transparent.length > 1) transparent.sort(reversePainterSortStable);
-
     }
 
     return {

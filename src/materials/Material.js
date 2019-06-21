@@ -56,7 +56,7 @@ function Material() {
 
 	this.precision = null; // override the renderer's default precision for this material
 
-  	// 设置多边形位移
+  	// 设置多边形偏移
 	this.polygonOffset = false;
 	this.polygonOffsetFactor = 0;
 	this.polygonOffsetUnits = 0;
@@ -65,8 +65,6 @@ function Material() {
 
 	this.alphaTest = 0;
 	this.premultipliedAlpha = false;
-
-	this.overdraw = 0; // Overdrawn pixels (typically between 0 and 1) for fixing antialiasing gaps in CanvasRenderer
 
 	this.visible = true;
 

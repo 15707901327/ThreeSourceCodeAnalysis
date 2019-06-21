@@ -110,8 +110,7 @@ function WebGLRenderer( parameters ) {
     this.autoClearStencil = true;
 
     // scene graph
-
-    this.sortObjects = true;
+    this.sortObjects = true; // 标记排序渲染物体
 
     // user-defined clipping
 
@@ -1142,6 +1141,7 @@ function WebGLRenderer( parameters ) {
             renderTarget = arguments[2];
         }
 
+        // 判断是否强制刷新缓冲区
         if (arguments[3] !== undefined) {
             console.warn('THREE.WebGLRenderer.render(): the forceClear argument has been removed. Use .clear() instead.');
             forceClear = arguments[3];
@@ -1197,9 +1197,7 @@ function WebGLRenderer( parameters ) {
         projectObject(scene, camera, 0, _this.sortObjects);
 
         if (_this.sortObjects === true) {
-
             currentRenderList.sort();
-
         }
 
         //
@@ -1224,8 +1222,7 @@ function WebGLRenderer( parameters ) {
 
         }
 
-        //
-
+        // 渲染背景（更新缓冲区）
         background.render(currentRenderList, scene, camera, forceClear);
 
         // render scene
@@ -1288,6 +1285,7 @@ function WebGLRenderer( parameters ) {
 
     /**
      * 拆分渲染对象，解析几何体、以及几何体中的attribute变量
+     * 过滤渲染物体，计算渲染深度z
      * @param object 根对象
      * @param camera 相机
      * @param groupOrder
@@ -1361,8 +1359,8 @@ function WebGLRenderer( parameters ) {
                 // 检查物体是否在平截头体内
                 if (!object.frustumCulled || _frustum.intersectsObject(object)) {
 
+                    // 计算模型投影到屏幕上的坐标
                     if (sortObjects) {
-                        // 计算模型投影到屏幕上的坐标
                         _vector3.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix);
                     }
 
@@ -1388,9 +1386,7 @@ function WebGLRenderer( parameters ) {
 
                     }
                     else if (material.visible) {
-
                         currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
-
                     }
 
                 }

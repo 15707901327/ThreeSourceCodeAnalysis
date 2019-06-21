@@ -27,7 +27,7 @@ import {
 import {Vector4} from '../../math/Vector4.js';
 
 /**
- *
+ * webgl状态机
  * @param gl 上下文
  * @param extensions 获取扩展的对象
  * @param utils 转换方法
@@ -108,7 +108,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
     var currentDepthMask = null; // 锁定或释放深度缓存区的写入操作
     var currentDepthFunc = null; // 比较函数值
-    var currentDepthClear = null;
+    var currentDepthClear = null;// 绘图区域的深度
 
     return {
 
@@ -117,17 +117,11 @@ function WebGLState(gl, extensions, utils, capabilities) {
        * @param depthTest
        */
       setTest: function (depthTest) {
-
         if (depthTest) {
-
           enable(gl.DEPTH_TEST);
-
         } else {
-
           disable(gl.DEPTH_TEST);
-
         }
-
       },
 
       /**
@@ -220,15 +214,15 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
       },
 
+      /**
+       * 指定绘图区域的深度
+       * @param depth
+       */
       setClear: function (depth) {
-
         if (currentDepthClear !== depth) {
-
           gl.clearDepth(depth);
           currentDepthClear = depth;
-
         }
-
       },
 
       reset: function () {
@@ -385,10 +379,12 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   var currentLineWidth = null;
 
+  // 多边形偏移参数
   var currentPolygonOffsetFactor = null;
   var currentPolygonOffsetUnits = null;
 
-  var maxTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS); // 获取最大的纹理单元
+  // 获取最大的纹理单元
+  var maxTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
 
   var lineWidthAvailable = false;
   var version = 0;
@@ -399,7 +395,8 @@ function WebGLState(gl, extensions, utils, capabilities) {
     version = parseFloat(/^WebGL\ ([0-9])/.exec(glVersion)[1]);
     lineWidthAvailable = (version >= 1.0);
 
-  } else if (glVersion.indexOf('OpenGL ES') !== -1) {
+  }
+  else if (glVersion.indexOf('OpenGL ES') !== -1) {
 
     version = parseFloat(/^OpenGL\ ES\ ([0-9])/.exec(glVersion)[1]);
     lineWidthAvailable = (version >= 2.0);
@@ -437,11 +434,13 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   // init
 
+  // 指定绘图区域的颜色
   colorBuffer.setClear(0, 0, 0, 1);
+  // 指定绘图区域的深度
   depthBuffer.setClear(1);
   stencilBuffer.setClear(0);
 
-  enable(gl.DEPTH_TEST);
+  enable(gl.DEPTH_TEST); // 开启隐藏面消除
   depthBuffer.setFunc(LessEqualDepth);
 
   setFlipSided(false);
@@ -509,14 +508,10 @@ function WebGLState(gl, extensions, utils, capabilities) {
    * @param id
    */
   function enable(id) {
-
     if (enabledCapabilities[id] !== true) {
-
       gl.enable(id);
       enabledCapabilities[id] = true;
-
     }
-
   }
 
   /**
@@ -524,14 +519,10 @@ function WebGLState(gl, extensions, utils, capabilities) {
    * @param id
    */
   function disable(id) {
-
     if (enabledCapabilities[id] !== false) {
-
       gl.disable(id);
       enabledCapabilities[id] = false;
-
     }
-
   }
 
   function getCompressedTextureFormats() {
@@ -826,15 +817,14 @@ function WebGLState(gl, extensions, utils, capabilities) {
   }
 
   /**
-   * 设置多边形位移
-   * @param polygonOffset true 启动 false 不启动
+   * 设置多边形偏移
+   * @param polygonOffset true 启动 false 关闭
    * @param factor
    * @param units
    */
   function setPolygonOffset(polygonOffset, factor, units) {
 
     if (polygonOffset) {
-
       enable(gl.POLYGON_OFFSET_FILL);
 
       if (currentPolygonOffsetFactor !== factor || currentPolygonOffsetUnits !== units) {
@@ -843,15 +833,10 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
         currentPolygonOffsetFactor = factor;
         currentPolygonOffsetUnits = units;
-
       }
-
     } else {
-
       disable(gl.POLYGON_OFFSET_FILL);
-
     }
-
   }
 
   function setScissorTest(scissorTest) {
