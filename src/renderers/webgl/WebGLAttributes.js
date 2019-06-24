@@ -9,7 +9,7 @@ function WebGLAttributes( gl ) {
 	/**
 	 * 创建缓存区
 	 * @param attribute
-	 * @param bufferType
+	 * @param bufferType buffer类型
 	 * @return {{buffer: AudioBuffer | WebGLBuffer, type: number, bytesPerElement: number, version}}
 	 */
 	function createBuffer( attribute, bufferType ) {
@@ -119,6 +119,11 @@ function WebGLAttributes( gl ) {
 
 	}
 
+	/**
+	 * 管理属性的缓冲空间
+	 * @param attribute
+	 * @param bufferType
+	 */
 	function update( attribute, bufferType ) {
 
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
@@ -126,16 +131,11 @@ function WebGLAttributes( gl ) {
 		var data = buffers.get( attribute );
 
 		if ( data === undefined ) {
-
 			buffers.set( attribute, createBuffer( attribute, bufferType ) );
-
 		}
 		else if ( data.version < attribute.version ) {
-
 			updateBuffer( data.buffer, attribute, bufferType );
-
 			data.version = attribute.version;
-
 		}
 
 	}

@@ -832,13 +832,10 @@ function WebGLRenderer( parameters ) {
         }
 
         //
-
         var dataCount = Infinity;
 
         if (index !== null) {
-
             dataCount = index.count;
-
         }
         else if (position !== undefined) {
             dataCount = position.count;
@@ -857,10 +854,8 @@ function WebGLRenderer( parameters ) {
 
         if (drawCount === 0) return;
 
-        //
-
+        // 设置绘制的方式
         if (object.isMesh) {
-            // 设置绘制的方式
             if (material.wireframe === true) {
 
                 state.setLineWidth(material.wireframeLinewidth * getTargetPixelRatio());

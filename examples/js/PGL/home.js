@@ -133,15 +133,37 @@ var PGL = PGL || {};
         initObject: function () {
             var bufferGeometry = new THREE.BufferGeometry();
             var positions = new Float32Array([
-                0.0, 2.5, -5.0,
-                -2.5, -2.5, -5.0,
-                2.5, -2.5, -5.0,
+                // 顶点
+                1.0, 1.0, 1.0,
+                -1.0, 1.0, 1.0,
+                -1.0, -1.0, 1.0,
+                1.0, -1.0, 1.0,
+                1.0, -1.0, -1.0,
+                1.0, 1.0, -1.0,
+                -1.0, 1.0, -1.0,
+                -1.0, -1.0, -1.0
             ]);
             var color = new Float32Array([
-                0.0, 1.0, 0.0, // 蓝色
-                0.0, 1.0, 0.0,
-                1.0, 0.0, 0.0,
+                // 颜色
+                1.0, 1.0, 1.0,  // v0 White
+                1.0, 0.0, 1.0,  // v1 Magenta
+                1.0, 0.0, 0.0,  // v2 Red
+                1.0, 1.0, 0.0,  // v3 Yellow
+                0.0, 1.0, 0.0,  // v4 Green
+                0.0, 1.0, 1.0,  // v5 Cyan
+                0.0, 0.0, 1.0,  // v6 Blue
+                0.0, 0.0, 0.0   // v7 Black
             ]);
+            // 顶点索引
+            var indices = [
+                0, 1, 2, 0, 2, 3,    // front
+                0, 3, 4, 0, 4, 5,    // right
+                0, 5, 6, 0, 6, 1,    // up
+                1, 6, 7, 1, 7, 2,    // left
+                7, 4, 3, 7, 3, 2,    // down
+                4, 7, 6, 4, 6, 5     // back
+            ];
+            bufferGeometry.setIndex( indices );
             bufferGeometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             bufferGeometry.addAttribute('color', new THREE.Float32BufferAttribute(color, 3));
 
@@ -155,27 +177,6 @@ var PGL = PGL || {};
             mesh.translateX(0.75);
             this.mesh = mesh;
             this.scene.add(mesh);
-
-            var bufferGeometry2 = new THREE.BufferGeometry();
-            var positions2 = new Float32Array([
-                0.0, 3.0, -5.0,
-                -3.0, -3.0, -5.0,
-                3.0, -3.0, -5.0
-            ]);
-            var color2 = new Float32Array([
-                1.0, 0.0, 0.0,//  黄色
-                1.0, 1.0, 0.0,
-                1.0, 1.0, 0.0
-            ]);
-            bufferGeometry2.addAttribute('position', new THREE.Float32BufferAttribute(positions2, 3));
-            bufferGeometry2.addAttribute('color', new THREE.Float32BufferAttribute(color2, 3));
-
-            var meshPhongMaterial2 = new THREE.MeshPhongMaterial();
-            meshPhongMaterial2.vertexColors = THREE.VertexColors;
-
-            var mesh2 = new THREE.Mesh(bufferGeometry2, meshPhongMaterial2);
-            mesh2.translateX(0.75);
-            this.scene.add(mesh2);
         },
         /**
          * 添加天空盒子

@@ -31,7 +31,7 @@ function BufferGeometry() {
     this.name = '';
     this.type = 'BufferGeometry';
 
-    this.index = null;
+    this.index = null; // 索引值
     this.attributes = {}; // 保存属性信息
 
     this.morphAttributes = {};
@@ -59,18 +59,17 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     },
 
+    /**
+     * 设置顶点索引
+     * @param index 索引值
+     */
     setIndex: function (index) {
 
         if (Array.isArray(index)) {
-
             this.index = new (arrayMax(index) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute)(index, 1);
-
         } else {
-
             this.index = index;
-
         }
-
     },
 
     /**

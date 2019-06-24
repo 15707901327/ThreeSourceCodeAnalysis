@@ -87,15 +87,17 @@ function WebGLGeometries( gl, attributes, info ) {
 
 	}
 
+	/**
+	 * 更新几何体
+	 * @param geometry
+	 */
 	function update( geometry ) {
 
 		var index = geometry.index;
 		var geometryAttributes = geometry.attributes;
 
 		if ( index !== null ) {
-
 			attributes.update( index, gl.ELEMENT_ARRAY_BUFFER );
-
 		}
 
 		for ( var name in geometryAttributes ) {
