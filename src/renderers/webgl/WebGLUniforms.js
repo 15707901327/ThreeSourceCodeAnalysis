@@ -156,7 +156,7 @@ function allocTexUnits( textures, n ) {
 
 // Single scalar
 
-function setValue1f( gl, v ) {
+function setValueV1f( gl, v ) {
 
 	var cache = this.cache;
 
@@ -168,21 +168,9 @@ function setValue1f( gl, v ) {
 
 }
 
-function setValue1i( gl, v ) {
-
-	var cache = this.cache;
-
-	if ( cache[ 0 ] === v ) return;
-
-	gl.uniform1i( this.addr, v );
-
-	cache[ 0 ] = v;
-
-}
-
 // Single float vector (from flat array or THREE.VectorN)
 
-function setValue2fv( gl, v ) {
+function setValueV2f( gl, v ) {
 
 	var cache = this.cache;
 
@@ -214,7 +202,7 @@ function setValue2fv( gl, v ) {
  * @param gl 上下文
  * @param v 值
  */
-function setValue3fv( gl, v ) {
+function setValueV3f( gl, v ) {
 
 	var cache = this.cache;
 
@@ -254,7 +242,7 @@ function setValue3fv( gl, v ) {
 
 }
 
-function setValue4fv( gl, v ) {
+function setValueV4f( gl, v ) {
 
 	var cache = this.cache;
 
@@ -285,7 +273,7 @@ function setValue4fv( gl, v ) {
 
 // Single matrix (from flat array or MatrixN)
 
-function setValue2fm( gl, v ) {
+function setValueM2( gl, v ) {
 
 	var cache = this.cache;
 	var elements = v.elements;
@@ -312,7 +300,7 @@ function setValue2fm( gl, v ) {
 
 }
 
-function setValue3fm( gl, v ) {
+function setValueM3( gl, v ) {
 
 	var cache = this.cache;
 	var elements = v.elements;
@@ -339,7 +327,7 @@ function setValue3fm( gl, v ) {
 
 }
 
-function setValue4fm( gl, v ) {
+function setValueM4( gl, v ) {
 
 	var cache = this.cache;
 	var elements = v.elements;
@@ -434,7 +422,19 @@ function setValueT6( gl, v, textures ) {
 
 // Integer / Boolean vectors or arrays thereof (always flat arrays)
 
-function setValue2iv( gl, v ) {
+function setValueV1i( gl, v ) {
+
+	var cache = this.cache;
+
+	if ( cache[ 0 ] === v ) return;
+
+	gl.uniform1i( this.addr, v );
+
+	cache[ 0 ] = v;
+
+}
+
+function setValueV2i( gl, v ) {
 
 	var cache = this.cache;
 
@@ -446,7 +446,7 @@ function setValue2iv( gl, v ) {
 
 }
 
-function setValue3iv( gl, v ) {
+function setValueV3i( gl, v ) {
 
 	var cache = this.cache;
 
@@ -458,7 +458,7 @@ function setValue3iv( gl, v ) {
 
 }
 
-function setValue4iv( gl, v ) {
+function setValueV4i( gl, v ) {
 
 	var cache = this.cache;
 
@@ -471,156 +471,131 @@ function setValue4iv( gl, v ) {
 }
 
 // Helper to pick the right setter for the singular case
-
+/**
+ * 得到数据的传输类型
+ * @param type
+ * @return {*}
+ */
 function getSingularSetter( type ) {
 
 	switch ( type ) {
 
-		case 0x1406: return setValue1f; // FLOAT
-		case 0x8b50: return setValue2fv; // _VEC2
-		case 0x8b51: return setValue3fv; // _VEC3
-		case 0x8b52: return setValue4fv; // _VEC4
+		case 0x1406: return setValueV1f; // FLOAT
+		case 0x8b50: return setValueV2f; // _VEC2
+		case 0x8b51: return setValueV3f; // _VEC3
+		case 0x8b52: return setValueV4f; // _VEC4
 
-		case 0x8b5a: return setValue2fm; // _MAT2
-		case 0x8b5b: return setValue3fm; // _MAT3
-		case 0x8b5c: return setValue4fm; // _MAT4
+		case 0x8b5a: return setValueM2; // _MAT2
+		case 0x8b5b: return setValueM3; // _MAT3
+		case 0x8b5c: return setValueM4; // _MAT4
 
 		case 0x8b5e: case 0x8d66: return setValueT1; // SAMPLER_2D, SAMPLER_EXTERNAL_OES
 		case 0x8b5f: return setValueT3D1; // SAMPLER_3D
 		case 0x8b60: return setValueT6; // SAMPLER_CUBE
 		case 0x8DC1: return setValueT2DArray1; // SAMPLER_2D_ARRAY
 
-		case 0x1404: case 0x8b56: return setValue1i; // INT, BOOL
-		case 0x8b53: case 0x8b57: return setValue2iv; // _VEC2
-		case 0x8b54: case 0x8b58: return setValue3iv; // _VEC3
-		case 0x8b55: case 0x8b59: return setValue4iv; // _VEC4
+		case 0x1404: case 0x8b56: return setValueV1i; // INT, BOOL
+		case 0x8b53: case 0x8b57: return setValueV2i; // _VEC2
+		case 0x8b54: case 0x8b58: return setValueV3i; // _VEC3
+		case 0x8b55: case 0x8b59: return setValueV4i; // _VEC4
 
 	}
 
 }
 
 // Array of scalars
-
-function setValue1fv( gl, v ) {
-
-	var cache = this.cache;
-
-	if ( arraysEqual( cache, v ) ) return;
+function setValueV1fArray( gl, v ) {
 
 	gl.uniform1fv( this.addr, v );
 
-	copyArray( cache, v );
-
 }
-function setValue1iv( gl, v ) {
 
-	var cache = this.cache;
-
-	if ( arraysEqual( cache, v ) ) return;
+// Integer / Boolean vectors or arrays thereof (always flat arrays)
+function setValueV1iArray( gl, v ) {
 
 	gl.uniform1iv( this.addr, v );
 
-	copyArray( cache, v );
+}
+
+function setValueV2iArray( gl, v ) {
+
+	gl.uniform2iv( this.addr, v );
+
+}
+
+function setValueV3iArray( gl, v ) {
+
+	gl.uniform3iv( this.addr, v );
+
+}
+
+function setValueV4iArray( gl, v ) {
+
+	gl.uniform4iv( this.addr, v );
 
 }
 
 // Array of vectors (flat or from THREE classes)
 
-function setValueV2a( gl, v ) {
+function setValueV2fArray( gl, v ) {
 
-	var cache = this.cache;
 	var data = flatten( v, this.size, 2 );
-
-	if ( arraysEqual( cache, data ) ) return;
 
 	gl.uniform2fv( this.addr, data );
 
-	this.updateCache( data );
-
 }
 
-function setValueV3a( gl, v ) {
+function setValueV3fArray( gl, v ) {
 
-	var cache = this.cache;
 	var data = flatten( v, this.size, 3 );
-
-	if ( arraysEqual( cache, data ) ) return;
 
 	gl.uniform3fv( this.addr, data );
 
-	this.updateCache( data );
-
 }
 
-function setValueV4a( gl, v ) {
+function setValueV4fArray( gl, v ) {
 
-	var cache = this.cache;
 	var data = flatten( v, this.size, 4 );
 
-	if ( arraysEqual( cache, data ) ) return;
-
 	gl.uniform4fv( this.addr, data );
-
-	this.updateCache( data );
 
 }
 
 // Array of matrices (flat or from THREE clases)
 
-function setValueM2a( gl, v ) {
+function setValueM2Array( gl, v ) {
 
-	var cache = this.cache;
 	var data = flatten( v, this.size, 4 );
-
-	if ( arraysEqual( cache, data ) ) return;
 
 	gl.uniformMatrix2fv( this.addr, false, data );
 
-	this.updateCache( data );
-
 }
 
-function setValueM3a( gl, v ) {
+function setValueM3Array( gl, v ) {
 
-	var cache = this.cache;
 	var data = flatten( v, this.size, 9 );
-
-	if ( arraysEqual( cache, data ) ) return;
 
 	gl.uniformMatrix3fv( this.addr, false, data );
 
-	this.updateCache( data );
-
 }
 
-function setValueM4a( gl, v ) {
+function setValueM4Array( gl, v ) {
 
-	var cache = this.cache;
 	var data = flatten( v, this.size, 16 );
 
-	if ( arraysEqual( cache, data ) ) return;
-
 	gl.uniformMatrix4fv( this.addr, false, data );
-
-	this.updateCache( data );
 
 }
 
 // Array of textures (2D / Cube)
 
-function setValueT1a( gl, v, textures ) {
+function setValueT1Array( gl, v, textures ) {
 
-	var cache = this.cache;
 	var n = v.length;
 
 	var units = allocTexUnits( textures, n );
 
-	if ( arraysEqual( cache, units ) === false ) {
-
 		gl.uniform1iv( this.addr, units );
-		copyArray( cache, units );
-
-	}
 
 	for ( var i = 0; i !== n; ++ i ) {
 
@@ -630,19 +605,13 @@ function setValueT1a( gl, v, textures ) {
 
 }
 
-function setValueT6a( gl, v, textures ) {
+function setValueT6Array( gl, v, textures ) {
 
-	var cache = this.cache;
 	var n = v.length;
 
 	var units = allocTexUnits( textures, n );
 
-	if ( arraysEqual( cache, units ) === false ) {
-
 		gl.uniform1iv( this.addr, units );
-		copyArray( cache, units );
-
-	}
 
 	for ( var i = 0; i !== n; ++ i ) {
 
@@ -658,22 +627,22 @@ function getPureArraySetter( type ) {
 
 	switch ( type ) {
 
-		case 0x1406: return setValue1fv; // FLOAT
-		case 0x8b50: return setValueV2a; // _VEC2
-		case 0x8b51: return setValueV3a; // _VEC3
-		case 0x8b52: return setValueV4a; // _VEC4
+		case 0x1406: return setValueV1fArray; // FLOAT
+		case 0x8b50: return setValueV2fArray; // _VEC2
+		case 0x8b51: return setValueV3fArray; // _VEC3
+		case 0x8b52: return setValueV4fArray; // _VEC4
 
-		case 0x8b5a: return setValueM2a; // _MAT2
-		case 0x8b5b: return setValueM3a; // _MAT3
-		case 0x8b5c: return setValueM4a; // _MAT4
+		case 0x8b5a: return setValueM2Array; // _MAT2
+		case 0x8b5b: return setValueM3Array; // _MAT3
+		case 0x8b5c: return setValueM4Array; // _MAT4
 
-		case 0x8b5e: return setValueT1a; // SAMPLER_2D
-		case 0x8b60: return setValueT6a; // SAMPLER_CUBE
+		case 0x8b5e: return setValueT1Array; // SAMPLER_2D
+		case 0x8b60: return setValueT6Array; // SAMPLER_CUBE
 
-		case 0x1404: case 0x8b56: return setValue1iv; // INT, BOOL
-		case 0x8b53: case 0x8b57: return setValue2iv; // _VEC2
-		case 0x8b54: case 0x8b58: return setValue3iv; // _VEC3
-		case 0x8b55: case 0x8b59: return setValue4iv; // _VEC4
+		case 0x1404: case 0x8b56: return setValueV1iArray; // INT, BOOL
+		case 0x8b53: case 0x8b57: return setValueV2iArray; // _VEC2
+		case 0x8b54: case 0x8b58: return setValueV3iArray; // _VEC3
+		case 0x8b55: case 0x8b59: return setValueV4iArray; // _VEC4
 
 	}
 
@@ -725,15 +694,18 @@ PureArrayUniform.prototype.updateCache = function ( data ) {
 
 };
 
+/**
+ * 结构体uniform变量
+ * @param id 变量名称
+ * @constructor
+ */
 function StructuredUniform( id ) {
 
 	this.id = id;
 
 	this.seq = [];
 	this.map = {};
-
 }
-
 StructuredUniform.prototype.setValue = function ( gl, value, textures ) {
 
 	var seq = this.seq;
@@ -761,12 +733,9 @@ var RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
 // Note: These portions can be read in a non-overlapping fashion and
 // allow straightforward parsing of the hierarchy that WebGL encodes
 // in the uniform names.
-
 function addUniform( container, uniformObject ) {
-
 	container.seq.push( uniformObject );
 	container.map[ uniformObject.id ] = uniformObject;
-
 }
 
 /**
@@ -795,34 +764,22 @@ function parseUniform( activeInfo, addr, container ) {
 		if ( idIsIndex ) id = id | 0; // convert to integer
 
 		if ( subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength ) {
-
 			// bare name or "pure" bottom-level array "[0]" suffix
-
 			addUniform( container, subscript === undefined ?
 				new SingleUniform( id, activeInfo, addr ) :
 				new PureArrayUniform( id, activeInfo, addr ) );
-
 			break;
-
-		} else {
-
+		}
+		else {
 			// step into inner node / create it in case it doesn't exist
-
 			var map = container.map, next = map[ id ];
-
 			if ( next === undefined ) {
-
 				next = new StructuredUniform( id );
 				addUniform( container, next );
-
 			}
-
 			container = next;
-
 		}
-
 	}
-
 }
 
 // Root Container
@@ -831,7 +788,6 @@ function parseUniform( activeInfo, addr, container ) {
  * 管理Uniform及地址
  * @param gl
  * @param program
- * @param renderer
  * @constructor
  */
 function WebGLUniforms( gl, program) {
@@ -839,6 +795,7 @@ function WebGLUniforms( gl, program) {
 	this.seq = [];
 	this.map = {};
 
+	// 获取变量Uniform的数量
 	var n = gl.getProgramParameter( program, gl.ACTIVE_UNIFORMS );
 
 	for ( var i = 0; i < n; ++ i ) {

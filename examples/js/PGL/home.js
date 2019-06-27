@@ -83,20 +83,22 @@ var PGL = PGL || {};
             this.camera.lookAt(new THREE.Vector3(0, 0, -100));
         },
         initLight: function () {
-            var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
             this.scene.add(ambientLight);
 
-            var light = new THREE.DirectionalLight(0xffffff, .6);
-            light.position.set(-200, 200, 100);
-            light.castShadow = true;
+            var light = new THREE.DirectionalLight(0xffffff, 1.0);
+            light.position.set(0.5, 3.0, 4.0);
             this.scene.add(light);
 
-            var SpotLight = new THREE.SpotLight(0xffffff, .6);
-            SpotLight.castShadow = true;
-            SpotLight.position.set(-200, 200, -200);
-            SpotLight.shadow.mapSize.width = 4096;
-            SpotLight.shadow.mapSize.height = 4096;
-            this.scene.add(SpotLight);
+            // var helper = new THREE.DirectionalLightHelper( light, 4 );
+            // this.scene.add( helper );
+
+            // var SpotLight = new THREE.SpotLight(0xffffff, .6);
+            // SpotLight.castShadow = true;
+            // SpotLight.position.set(-200, 200, -200);
+            // SpotLight.shadow.mapSize.width = 4096;
+            // SpotLight.shadow.mapSize.height = 4096;
+            // this.scene.add(SpotLight);
         },
         initOrbitControls: function () {
             this.orbitControls = new THREE.OrbitControls(this.camera, this.webGLRenderer.domElement);
@@ -132,40 +134,44 @@ var PGL = PGL || {};
 
         initObject: function () {
             var bufferGeometry = new THREE.BufferGeometry();
-            var positions = new Float32Array([
-                // 顶点
-                1.0, 1.0, 1.0,
-                -1.0, 1.0, 1.0,
-                -1.0, -1.0, 1.0,
-                1.0, -1.0, 1.0,
-                1.0, -1.0, -1.0,
-                1.0, 1.0, -1.0,
-                -1.0, 1.0, -1.0,
-                -1.0, -1.0, -1.0
+
+            var vertices = new Float32Array([
+                1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0,  // v0-v1-v2-v3 front
+                1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0,  // v0-v3-v4-v5 right
+                1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0,  // v0-v5-v6-v1 up
+                -1.0, 1.0, 1.0, -1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0,  // v1-v6-v7-v2 left
+                -1.0, -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, -1.0, -1.0, 1.0,  // v7-v4-v3-v2 down
+                1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0   // v4-v7-v6-v5 back
             ]);
-            var color = new Float32Array([
-                // 颜色
-                1.0, 1.0, 1.0,  // v0 White
-                1.0, 0.0, 1.0,  // v1 Magenta
-                1.0, 0.0, 0.0,  // v2 Red
-                1.0, 1.0, 0.0,  // v3 Yellow
-                0.0, 1.0, 0.0,  // v4 Green
-                0.0, 1.0, 1.0,  // v5 Cyan
-                0.0, 0.0, 1.0,  // v6 Blue
-                0.0, 0.0, 0.0   // v7 Black
+            var colors = new Float32Array([     // Colors
+                1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,     // v0-v1-v2-v3 front
+                1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,     // v0-v3-v4-v5 right
+                1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,     // v0-v5-v6-v1 up
+                1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,     // v1-v6-v7-v2 left
+                1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,     // v7-v4-v3-v2 down
+                1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0　    // v4-v7-v6-v5 back
+            ]);
+            var normals = new Float32Array([    // Normal
+                0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,  // v0-v1-v2-v3 front
+                1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0,  // v0-v3-v4-v5 right
+                0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0,  // v0-v5-v6-v1 up
+                -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,  // v1-v6-v7-v2 left
+                0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0,  // v7-v4-v3-v2 down
+                0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0   // v4-v7-v6-v5 back
             ]);
             // 顶点索引
             var indices = [
                 0, 1, 2, 0, 2, 3,    // front
-                0, 3, 4, 0, 4, 5,    // right
-                0, 5, 6, 0, 6, 1,    // up
-                1, 6, 7, 1, 7, 2,    // left
-                7, 4, 3, 7, 3, 2,    // down
-                4, 7, 6, 4, 6, 5     // back
+                4, 5, 6, 4, 6, 7,    // right
+                8, 9, 10, 8, 10, 11,    // up
+                12, 13, 14, 12, 14, 15,    // left
+                16, 17, 18, 16, 18, 19,    // down
+                20, 21, 22, 20, 22, 23     // back
             ];
-            bufferGeometry.setIndex( indices );
-            bufferGeometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            bufferGeometry.addAttribute('color', new THREE.Float32BufferAttribute(color, 3));
+            bufferGeometry.setIndex(indices);
+            bufferGeometry.addAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            bufferGeometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            bufferGeometry.addAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
 
             var meshPhongMaterial = new THREE.MeshPhongMaterial();
             meshPhongMaterial.vertexColors = THREE.VertexColors;
@@ -174,7 +180,6 @@ var PGL = PGL || {};
             meshPhongMaterial.polygonOffsetUnits = 1.0;
 
             var mesh = new THREE.Mesh(bufferGeometry, meshPhongMaterial);
-            mesh.translateX(0.75);
             this.mesh = mesh;
             this.scene.add(mesh);
         },

@@ -1,21 +1,17 @@
+// 定义环境光
 uniform vec3 ambientLightColor;
 
+// 获取环境光的辐照度
 vec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
-
 	vec3 irradiance = ambientLightColor;
-
 	#ifndef PHYSICALLY_CORRECT_LIGHTS
-
 		irradiance *= PI;
-
 	#endif
-
 	return irradiance;
-
 }
 
+// 平行光
 #if NUM_DIR_LIGHTS > 0
-
 	struct DirectionalLight {
 		vec3 direction;
 		vec3 color;
@@ -26,14 +22,13 @@ vec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
 		vec2 shadowMapSize;
 	};
 
+	// 声明结构体数组
 	uniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];
-
 	void getDirectionalDirectLightIrradiance( const in DirectionalLight directionalLight, const in GeometricContext geometry, out IncidentLight directLight ) {
 
 		directLight.color = directionalLight.color;
 		directLight.direction = directionalLight.direction;
 		directLight.visible = true;
-
 	}
 
 #endif

@@ -1,12 +1,12 @@
 #define PI 3.14159265359
 #define PI2 6.28318530718
 #define PI_HALF 1.5707963267949
-#define RECIPROCAL_PI 0.31830988618
-#define RECIPROCAL_PI2 0.15915494
+#define RECIPROCAL_PI 0.31830988618 // 1/PI 用于计算环境光
+#define RECIPROCAL_PI2 0.15915494 // 1/2*PI
 #define LOG2 1.442695
 #define EPSILON 1e-6
 
-#define saturate(a) clamp( a, 0.0, 1.0 )
+#define saturate(a) clamp( a, 0.0, 1.0 ) // 限制a的值在0-1之间
 #define whiteCompliment(a) ( 1.0 - saturate( a ) )
 
 float pow2( const in float x ) { return x*x; }
@@ -21,6 +21,7 @@ highp float rand( const in vec2 uv ) {
 	return fract(sin(sn) * c);
 }
 
+// 入射光
 struct IncidentLight {
 	vec3 color;
 	vec3 direction;
@@ -28,7 +29,7 @@ struct IncidentLight {
 };
 
 struct ReflectedLight {
-	vec3 directDiffuse;
+	vec3 directDiffuse; // 反射光照 （基地颜色、环境光）
 	vec3 directSpecular;
 	vec3 indirectDiffuse;
 	vec3 indirectSpecular;

@@ -13,7 +13,7 @@ function WebGLRenderState() {
 
 	var lights = new WebGLLights();
 
-	var lightsArray = [];
+	var lightsArray = []; // 记录渲染的灯光
 	var shadowsArray = [];
 
 	function init() {
@@ -23,10 +23,12 @@ function WebGLRenderState() {
 
 	}
 
+	/**
+	 * 记录渲染的灯光
+	 * @param light
+	 */
 	function pushLight( light ) {
-
 		lightsArray.push( light );
-
 	}
 
 	function pushShadow( shadowLight ) {
@@ -35,10 +37,12 @@ function WebGLRenderState() {
 
 	}
 
+	/**
+	 * 设置灯光
+	 * @param camera 相机
+	 */
 	function setupLights( camera ) {
-
 		lights.setup( lightsArray, shadowsArray, camera );
-
 	}
 
 	var state = {

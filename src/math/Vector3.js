@@ -341,6 +341,11 @@ Object.assign(Vector3.prototype, {
 
 	},
 
+  /**
+   * 通过矩阵（m的左上3×3子集）变换该向量的方向，然后对结果进行归一化
+   * @param m
+   * @returns {*}
+   */
   transformDirection: function (m) {
 
     // input: THREE.Matrix4 affine matrix

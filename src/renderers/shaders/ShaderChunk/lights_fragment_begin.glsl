@@ -19,7 +19,7 @@ geometry.position = - vViewPosition;
 geometry.normal = normal;
 geometry.viewDir = normalize( vViewPosition );
 
-IncidentLight directLight;
+IncidentLight directLight; // 实例化入射光
 
 #if ( NUM_POINT_LIGHTS > 0 ) && defined( RE_Direct )
 
@@ -63,6 +63,7 @@ IncidentLight directLight;
 
 #endif
 
+// 计算平行光
 #if ( NUM_DIR_LIGHTS > 0 ) && defined( RE_Direct )
 
 	DirectionalLight directionalLight;

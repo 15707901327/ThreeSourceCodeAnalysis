@@ -1203,6 +1203,7 @@ function WebGLRenderer( parameters ) {
 
         shadowMap.render(shadowsArray, scene, camera);
 
+        // 设置灯光
         currentRenderState.setupLights(camera);
 
         if (_clippingEnabled) _clipping.endShadows();
@@ -1301,15 +1302,12 @@ function WebGLRenderer( parameters ) {
 
             }
             else if (object.isLight) {
-
                 currentRenderState.pushLight(object);
-
                 if (object.castShadow) {
 
                     currentRenderState.pushShadow(object);
 
                 }
-
             }
             else if (object.isSprite) {
                 if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
@@ -1507,6 +1505,7 @@ function WebGLRenderer( parameters ) {
 
         var materialProperties = properties.get(material);
 
+        // 获取管理灯光
         var lights = currentRenderState.state.lights;
         var shadowsArray = currentRenderState.state.shadowsArray;
 
@@ -1514,8 +1513,7 @@ function WebGLRenderer( parameters ) {
         var lightsStateHash = lights.state.hash;
 
         // 获取参数
-        var parameters = programCache.getParameters(
-            material, lights.state, shadowsArray, fog, _clipping.numPlanes, _clipping.numIntersection, object);
+        var parameters = programCache.getParameters(material, lights.state, shadowsArray, fog, _clipping.numPlanes, _clipping.numIntersection, object);
 
         var code = programCache.getProgramCode(material, parameters);
 
@@ -1560,6 +1558,7 @@ function WebGLRenderer( parameters ) {
 
         }
 
+        // 获取shader变量、顶点着色器、片元着色器，创建着色器程序
         if (programChange) {
 
             if (parameters.shaderID) {
@@ -1632,25 +1631,20 @@ function WebGLRenderer( parameters ) {
 
         }
 
+        // shader变量
         var uniforms = materialProperties.shader.uniforms;
 
-        if (!material.isShaderMaterial &&
-            !material.isRawShaderMaterial ||
-            material.clipping === true) {
-
+        if (!material.isShaderMaterial && !material.isRawShaderMaterial || material.clipping === true) {
             materialProperties.numClippingPlanes = _clipping.numPlanes;
             materialProperties.numIntersection = _clipping.numIntersection;
             uniforms.clippingPlanes = _clipping.uniform;
-
         }
 
         materialProperties.fog = fog;
 
         // store the light setup it was created for
         if (lightsHash === undefined) {
-
             materialProperties.lightsHash = lightsHash = {};
-
         }
 
         lightsHash.stateID = lightsStateHash.stateID;
@@ -1661,13 +1655,13 @@ function WebGLRenderer( parameters ) {
         lightsHash.hemiLength = lightsStateHash.hemiLength;
         lightsHash.shadowsLength = lightsStateHash.shadowsLength;
 
+        // 添加灯光属性
         if (material.lights) {
-
             // wire up the material to this renderer's lighting state
 
-            uniforms.ambientLightColor.value = lights.state.ambient;
+            uniforms.ambientLightColor.value = lights.state.ambient; // 环境光颜色值
             uniforms.lightProbe.value = lights.state.probe;
-            uniforms.directionalLights.value = lights.state.directional;
+            uniforms.directionalLights.value = lights.state.directional; // Array平行光参数
             uniforms.spotLights.value = lights.state.spot;
             uniforms.rectAreaLights.value = lights.state.rectArea;
             uniforms.pointLights.value = lights.state.point;
@@ -1680,12 +1674,11 @@ function WebGLRenderer( parameters ) {
             uniforms.pointShadowMap.value = lights.state.pointShadowMap;
             uniforms.pointShadowMatrix.value = lights.state.pointShadowMatrix;
             // TODO (abelnation): add area lights shadow info to uniforms
-
         }
 
+        // 获取着色器程序中的uniform变量
         var progUniforms = materialProperties.program.getUniforms(),
-            uniformsList =
-                WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
+            uniformsList = WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
 
         materialProperties.uniformsList = uniformsList;
 
@@ -1704,7 +1697,7 @@ function WebGLRenderer( parameters ) {
         textures.resetTextureUnits();
 
         var materialProperties = properties.get(material);
-        var lights = currentRenderState.state.lights;
+        var lights = currentRenderState.state.lights; // 获取灯光数据
 
         var lightsHash = materialProperties.lightsHash;
         var lightsStateHash = lights.state.hash;

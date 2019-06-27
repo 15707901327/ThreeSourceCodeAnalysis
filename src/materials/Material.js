@@ -23,7 +23,7 @@ function Material() {
 	this.type = 'Material';
 
 	this.fog = true;
-	this.lights = true;
+	this.lights = true; // 对灯光敏感
 
 	this.blending = NormalBlending; // 控制渲染时是否混合
 	this.side = FrontSide; // 控制渲染面

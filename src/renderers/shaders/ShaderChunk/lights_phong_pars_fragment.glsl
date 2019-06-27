@@ -1,19 +1,15 @@
 varying vec3 vViewPosition;
 
 #ifndef FLAT_SHADED
-
 	varying vec3 vNormal;
-
 #endif
 
-
+// 定义高亮材质结构体
 struct BlinnPhongMaterial {
-
 	vec3	diffuseColor;
 	vec3	specularColor;
 	float	specularShininess;
 	float	specularStrength;
-
 };
 
 void RE_Direct_BlinnPhong( const in IncidentLight directLight, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
@@ -41,10 +37,15 @@ void RE_Direct_BlinnPhong( const in IncidentLight directLight, const in Geometri
 
 }
 
+/**
+ * RE_IndirectDiffuse_BlinnPhong
+ * irradiance:光源颜色
+ * geometry：几何体
+ * material：材质
+ * reflectedLight：反射光
+ */
 void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in GeometricContext geometry, const in BlinnPhongMaterial material, inout ReflectedLight reflectedLight ) {
-
 	reflectedLight.indirectDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );
-
 }
 
 #define RE_Direct				RE_Direct_BlinnPhong

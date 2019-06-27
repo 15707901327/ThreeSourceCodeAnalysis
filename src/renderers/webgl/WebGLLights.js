@@ -9,6 +9,9 @@ import { Vector3 } from '../../math/Vector3.js';
 
 function UniformsCache() {
 
+	/**
+	 * [灯光id：灯光的相关属性]
+	 */
 	var lights = {};
 
 	return {
@@ -16,15 +19,12 @@ function UniformsCache() {
 		get: function ( light ) {
 
 			if ( lights[ light.id ] !== undefined ) {
-
 				return lights[ light.id ];
-
 			}
 
 			var uniforms;
 
 			switch ( light.type ) {
-
 				case 'DirectionalLight':
 					uniforms = {
 						direction: new Vector3(),
@@ -36,7 +36,6 @@ function UniformsCache() {
 						shadowMapSize: new Vector2()
 					};
 					break;
-
 				case 'SpotLight':
 					uniforms = {
 						position: new Vector3(),
@@ -53,7 +52,6 @@ function UniformsCache() {
 						shadowMapSize: new Vector2()
 					};
 					break;
-
 				case 'PointLight':
 					uniforms = {
 						position: new Vector3(),
@@ -69,7 +67,6 @@ function UniformsCache() {
 						shadowCameraFar: 1000
 					};
 					break;
-
 				case 'HemisphereLight':
 					uniforms = {
 						direction: new Vector3(),
@@ -77,7 +74,6 @@ function UniformsCache() {
 						groundColor: new Color()
 					};
 					break;
-
 				case 'RectAreaLight':
 					uniforms = {
 						color: new Color(),
@@ -87,7 +83,6 @@ function UniformsCache() {
 						// TODO (abelnation): set RectAreaLight shadow uniforms
 					};
 					break;
-
 			}
 
 			lights[ light.id ] = uniforms;
@@ -119,9 +114,9 @@ function WebGLLights() {
 			shadowsLength: - 1
 		},
 
-		ambient: [ 0, 0, 0 ],
-		probe: [],
-		directional: [],
+		ambient: [ 0, 0, 0 ], // 环境光
+		probe: [], // 放置9个三维点
+		directional: [], // 放置灯光属性
 		directionalShadowMap: [],
 		directionalShadowMatrix: [],
 		spot: [],
@@ -141,37 +136,45 @@ function WebGLLights() {
 	var matrix4 = new Matrix4();
 	var matrix42 = new Matrix4();
 
+	/**
+	 * 设置灯光
+	 * @param lights 灯光数组
+	 * @param shadows
+	 * @param camera 相机
+	 */
 	function setup( lights, shadows, camera ) {
 
 		var r = 0, g = 0, b = 0;
 
+		// 初始化probe
 		for ( var i = 0; i < 9; i ++ ) state.probe[ i ].set( 0, 0, 0 );
 
-		var directionalLength = 0;
+		var directionalLength = 0; // 方向长度
 		var pointLength = 0;
 		var spotLength = 0;
 		var rectAreaLength = 0;
 		var hemiLength = 0;
 
+		// 视图矩阵
 		var viewMatrix = camera.matrixWorldInverse;
 
 		for ( var i = 0, l = lights.length; i < l; i ++ ) {
 
 			var light = lights[ i ];
 
-			var color = light.color;
-			var intensity = light.intensity;
-			var distance = light.distance;
+			var color = light.color; // 颜色
+			var intensity = light.intensity; // 强度
+			var distance = light.distance; // 距离
 
+			// 阴影贴图
 			var shadowMap = ( light.shadow && light.shadow.map ) ? light.shadow.map.texture : null;
 
 			if ( light.isAmbientLight ) {
-
 				r += color.r * intensity;
 				g += color.g * intensity;
 				b += color.b * intensity;
-
-			} else if ( light.isLightProbe ) {
+			}
+			else if ( light.isLightProbe ) {
 
 				for ( var j = 0; j < 9; j ++ ) {
 
@@ -179,14 +182,20 @@ function WebGLLights() {
 
 				}
 
-			} else if ( light.isDirectionalLight ) {
+			}
+			else if ( light.isDirectionalLight ) {
 
 				var uniforms = cache.get( light );
 
+				// 颜色是灯光颜色 * 灯光强度
 				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
+				// 获取光源位置
 				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
+				// 获取光源指向位置
 				vector3.setFromMatrixPosition( light.target.matrixWorld );
+				// 计算光源的方向
 				uniforms.direction.sub( vector3 );
+				// 用视图矩阵对向量进行变换（归一化）
 				uniforms.direction.transformDirection( viewMatrix );
 
 				uniforms.shadow = light.castShadow;
@@ -207,7 +216,8 @@ function WebGLLights() {
 
 				directionalLength ++;
 
-			} else if ( light.isSpotLight ) {
+			}
+			else if ( light.isSpotLight ) {
 
 				var uniforms = cache.get( light );
 
@@ -244,7 +254,8 @@ function WebGLLights() {
 
 				spotLength ++;
 
-			} else if ( light.isRectAreaLight ) {
+			}
+			else if ( light.isRectAreaLight ) {
 
 				var uniforms = cache.get( light );
 
@@ -276,7 +287,8 @@ function WebGLLights() {
 
 				rectAreaLength ++;
 
-			} else if ( light.isPointLight ) {
+			}
+			else if ( light.isPointLight ) {
 
 				var uniforms = cache.get( light );
 
@@ -307,7 +319,8 @@ function WebGLLights() {
 
 				pointLength ++;
 
-			} else if ( light.isHemisphereLight ) {
+			}
+			else if ( light.isHemisphereLight ) {
 
 				var uniforms = cache.get( light );
 
@@ -326,6 +339,7 @@ function WebGLLights() {
 
 		}
 
+		// 环境光
 		state.ambient[ 0 ] = r;
 		state.ambient[ 1 ] = g;
 		state.ambient[ 2 ] = b;

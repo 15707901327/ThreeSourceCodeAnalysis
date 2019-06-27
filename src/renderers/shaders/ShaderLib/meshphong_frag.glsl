@@ -6,9 +6,10 @@ uniform vec3 specular;
 uniform float shininess;
 uniform float opacity;
 
-#include <common>
+#include <common> // 包含着色器公共模块(包含常用的数学工具函数以及一些常量定义什么的)
 #include <packing>
 #include <dithering_pars_fragment>
+// 定义顶点颜色
 #include <color_pars_fragment>
 // 声明varying变量vUv
 #include <uv_pars_fragment>
@@ -22,10 +23,12 @@ uniform float opacity;
 #include <envmap_pars_fragment>
 #include <gradientmap_pars_fragment>
 #include <fog_pars_fragment>
-#include <bsdfs>
-#include <lights_pars_begin>
+#include <bsdfs> // 定义光照模型
+
+#include <lights_pars_begin> // 定义光照结构体，相关函数
 #include <lights_pars_maps>
-#include <lights_phong_pars_fragment>
+#include <lights_phong_pars_fragment> // 定义BlinnPhongMaterial结构体 宏定义函数：RE_Direct RE_IndirectDiffuse
+
 #include <shadowmap_pars_fragment>
 #include <bumpmap_pars_fragment>
 #include <normalmap_pars_fragment>
@@ -53,6 +56,7 @@ void main() {
 	#include <emissivemap_fragment>
 
 	// accumulation
+	// 定义材质 BlinnPhongMaterial material，并赋值
 	#include <lights_phong_fragment>
 	#include <lights_fragment_begin>
 	#include <lights_fragment_maps>

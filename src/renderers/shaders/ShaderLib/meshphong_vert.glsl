@@ -8,10 +8,8 @@ varying vec3 vViewPosition;
 
 #endif
 
-// 定义的常量和一些常用的方法
-#include <common>
-// 定义贴图的uv坐标（map）
-#include <uv_pars_vertex>
+#include <common> // 定义的常量和一些常用的方法
+#include <uv_pars_vertex> // 定义贴图的uv坐标（map）
 #include <uv2_pars_vertex>
 #include <displacementmap_pars_vertex>
 #include <envmap_pars_vertex>

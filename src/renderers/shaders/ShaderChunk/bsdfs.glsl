@@ -25,10 +25,9 @@ float punctualLightIntensityToIrradianceFactor( const in float lightDistance, co
 
 }
 
+// Lambert光照模型
 vec3 BRDF_Diffuse_Lambert( const in vec3 diffuseColor ) {
-
 	return RECIPROCAL_PI * diffuseColor;
-
 } // validated
 
 vec3 F_Schlick( const in vec3 specularColor, const in float dotLH ) {
@@ -260,6 +259,10 @@ float D_BlinnPhong( const in float shininess, const in float dotNH ) {
 
 }
 
+// incidentLight:入射光
+// geometry：几何体
+// specularColor：颜色
+// shininess：平滑度
 vec3 BRDF_Specular_BlinnPhong( const in IncidentLight incidentLight, const in GeometricContext geometry, const in vec3 specularColor, const in float shininess ) {
 
 	vec3 halfDir = normalize( incidentLight.direction + geometry.viewDir );
