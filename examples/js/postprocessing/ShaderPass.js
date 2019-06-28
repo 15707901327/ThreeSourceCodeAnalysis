@@ -2,6 +2,12 @@
  * @author alteredq / http://alteredqualia.com/
  */
 
+/**
+ *
+ * @param shader THREE.CopyShader
+ * @param textureID
+ * @constructor
+ */
 THREE.ShaderPass = function ( shader, textureID ) {
 
 	THREE.Pass.call( this );
@@ -9,26 +15,21 @@ THREE.ShaderPass = function ( shader, textureID ) {
 	this.textureID = ( textureID !== undefined ) ? textureID : "tDiffuse";
 
 	if ( shader instanceof THREE.ShaderMaterial ) {
-
 		this.uniforms = shader.uniforms;
-
 		this.material = shader;
-
-	} else if ( shader ) {
+	}
+	else if ( shader ) {
 
 		this.uniforms = THREE.UniformsUtils.clone( shader.uniforms );
-
 		this.material = new THREE.ShaderMaterial( {
-
 			defines: Object.assign( {}, shader.defines ),
 			uniforms: this.uniforms,
 			vertexShader: shader.vertexShader,
 			fragmentShader: shader.fragmentShader
-
 		} );
-
 	}
 
+	// 创建一个全屏的方片
 	this.fsQuad = new THREE.Pass.FullScreenQuad( this.material );
 
 };

@@ -3,7 +3,7 @@
  */
 
 /**
- * 渲染通行证
+ * 渲染通道
  * @param scene 场景
  * @param camera 相机
  * @param overrideMaterial

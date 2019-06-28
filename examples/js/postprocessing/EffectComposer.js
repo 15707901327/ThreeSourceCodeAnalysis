@@ -1,14 +1,14 @@
 /**
- * @author alteredq / http://alteredqualia.com/
+ * 渲染组合器
  * @param renderer：渲染器
  * @param renderTarget
  */
 THREE.EffectComposer = function ( renderer, renderTarget ) {
 
+	// 渲染器
 	this.renderer = renderer;
 
 	if ( renderTarget === undefined ) {
-
 		var parameters = {
 			minFilter: THREE.LinearFilter,
 			magFilter: THREE.LinearFilter,
@@ -16,6 +16,7 @@ THREE.EffectComposer = function ( renderer, renderTarget ) {
 			stencilBuffer: false
 		};
 
+		// 获取渲染大小
 		var size = renderer.getSize( new THREE.Vector2() );
 		this._pixelRatio = renderer.getPixelRatio();
 		this._width = size.width;
@@ -23,8 +24,8 @@ THREE.EffectComposer = function ( renderer, renderTarget ) {
 
 		renderTarget = new THREE.WebGLRenderTarget( this._width * this._pixelRatio, this._height * this._pixelRatio, parameters );
 		renderTarget.texture.name = 'EffectComposer.rt1';
-
-	} else {
+	}
+	else {
 
 		this._pixelRatio = 1;
 		this._width = renderTarget.width;
@@ -39,8 +40,10 @@ THREE.EffectComposer = function ( renderer, renderTarget ) {
 	this.writeBuffer = this.renderTarget1;
 	this.readBuffer = this.renderTarget2;
 
+	// 渲染到屏幕
 	this.renderToScreen = true;
 
+	// 保存渲染通道
 	this.passes = [];
 
 	// dependencies
@@ -50,6 +53,7 @@ THREE.EffectComposer = function ( renderer, renderTarget ) {
 	if ( THREE.ShaderPass === undefined ) {
 		console.error( 'THREE.EffectComposer relies on THREE.ShaderPass' );
 	}
+	// CopyShader是为了能将结果输出，普通的通道一般都是不能输出的，要靠CopyShader进行输出
 	this.copyPass = new THREE.ShaderPass( THREE.CopyShader );
 
 	this.clock = new THREE.Clock();
@@ -66,6 +70,10 @@ Object.assign( THREE.EffectComposer.prototype, {
 
 	},
 
+	/**
+	 * 添加渲染通道
+	 * @param pass
+	 */
 	addPass: function ( pass ) {
 
 		this.passes.push( pass );
@@ -81,30 +89,31 @@ Object.assign( THREE.EffectComposer.prototype, {
 
 	},
 
+	/**
+	 * 判断后面的渲染通道是否开启
+	 * @param passIndex 渲染通道index
+	 * @returns {boolean} true 开启 false 没开启
+	 */
 	isLastEnabledPass: function ( passIndex ) {
 
 		for ( var i = passIndex + 1; i < this.passes.length; i ++ ) {
-
 			if ( this.passes[ i ].enabled ) {
-
 				return false;
-
 			}
-
 		}
-
 		return true;
-
 	},
 
+	/**
+	 * 渲染
+	 * @param deltaTime
+	 */
 	render: function ( deltaTime ) {
 
 		// deltaTime value is in seconds
 
 		if ( deltaTime === undefined ) {
-
 			deltaTime = this.clock.getDelta();
-
 		}
 
 		var currentRenderTarget = this.renderer.getRenderTarget();
@@ -113,6 +122,7 @@ Object.assign( THREE.EffectComposer.prototype, {
 
 		var pass, i, il = this.passes.length;
 
+		// 遍历渲染通道
 		for ( i = 0; i < il; i ++ ) {
 
 			pass = this.passes[ i ];
@@ -214,13 +224,13 @@ Object.assign( THREE.EffectComposer.prototype, {
 } );
 
 /**
- *
+ * 渲染通道
  * @constructor
  */
 THREE.Pass = function () {
 
 	// if set to true, the pass is processed by the composer
-	this.enabled = true;
+	this.enabled = true; // 开启渲染
 
 	// if set to true, the pass indicates to swap read and write buffer after rendering
 	this.needsSwap = true;
@@ -251,10 +261,13 @@ THREE.Pass.FullScreenQuad = ( function () {
 	var camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
 	var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
 
+	/**
+	 *
+	 * @param material THREE.ShaderMaterial
+	 * @constructor
+	 */
 	var FullScreenQuad = function ( material ) {
-
 		this._mesh = new THREE.Mesh( geometry, material );
-
 	};
 
 	Object.defineProperty( FullScreenQuad.prototype, 'material', {
