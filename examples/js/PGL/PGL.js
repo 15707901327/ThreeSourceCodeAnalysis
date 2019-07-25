@@ -116,6 +116,34 @@ var PGL = PGL || {};
  */
 (function (PGL) {
     /**
+     * 根据参数生成天空盒子加到场景的背景上
+     */
+    PGL.SkyBox = function (scene, baseFileUrl) {
+        this.scene = scene;
+        this.baseFileUrl = baseFileUrl !== undefined ? baseFileUrl : "source/textures/cube/";
+        this.cubePic = {
+            "skyboxsun25deg": ['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'],
+            "skybox": ['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'],
+            "MilkyWay": ['dark-s_px.jpg', 'dark-s_nx.jpg', 'dark-s_py.jpg', 'dark-s_ny.jpg', 'dark-s_pz.jpg', 'dark-s_nz.jpg']
+        };
+    };
+    Object.assign(PGL.SkyBox.prototype, {
+
+        constructor: PGL.SkyBox,
+
+        update: function (fileName) {
+
+            if (!fileName) {
+                fileName = "skyboxsun25deg"
+            }
+
+            var loader = new THREE.CubeTextureLoader();
+            loader.setPath(this.baseFileUrl + fileName + '/');
+            this.scene.background = loader.load(this.cubePic[fileName]);
+        }
+    });
+
+    /**
      * 射线的相关方法
      * @param camera：相机
      * @param scene：场景

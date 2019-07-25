@@ -74,7 +74,7 @@ var PGL = PGL || {};
         initScene: function () {
             this.scene = new THREE.Scene();
 
-            var baseFileUrl = "textures/cube/";
+            var baseFileUrl = "../textures/cube/";
             this.skyBox = new PGL.SkyBox(this.scene, baseFileUrl);
             this.skyBox.update("skybox");
 
