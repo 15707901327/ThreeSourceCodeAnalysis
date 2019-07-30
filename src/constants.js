@@ -1,5 +1,5 @@
 export var REVISION = '94';
-export var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 };
+export var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 }; // 鼠标点击事件状态
 export var CullFaceNone = 0;
 export var CullFaceBack = 1;
 export var CullFaceFront = 2;

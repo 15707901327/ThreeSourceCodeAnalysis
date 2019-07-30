@@ -1,4 +1,4 @@
-import { _Math } from './Math.js';
+import {_Math} from './Math.js';
 
 /**
  * @author bhouston / http://clara.io
@@ -10,81 +10,84 @@ import { _Math } from './Math.js';
  * The azimuthal angle (theta) is measured from the positive z-axiz.
  */
 
-function Spherical( radius, phi, theta ) {
+/**
+ * 球形类
+ * @param radius 半径
+ * @param phi 极角
+ * @param theta 方位角
+ * @returns {Spherical}
+ * @constructor
+ */
+function Spherical(radius, phi, theta) {
+    this.radius = (radius !== undefined) ? radius : 1.0;
+    this.phi = (phi !== undefined) ? phi : 0; // polar angle
+    this.theta = (theta !== undefined) ? theta : 0; // azimuthal angle
 
-	this.radius = ( radius !== undefined ) ? radius : 1.0;
-	this.phi = ( phi !== undefined ) ? phi : 0; // polar angle
-	this.theta = ( theta !== undefined ) ? theta : 0; // azimuthal angle
-
-	return this;
-
+    return this;
 }
 
-Object.assign( Spherical.prototype, {
+Object.assign(Spherical.prototype, {
 
-	set: function ( radius, phi, theta ) {
+    set: function (radius, phi, theta) {
 
-		this.radius = radius;
-		this.phi = phi;
-		this.theta = theta;
+        this.radius = radius;
+        this.phi = phi;
+        this.theta = theta;
 
-		return this;
+        return this;
 
-	},
+    },
 
-	clone: function () {
+    clone: function () {
 
-		return new this.constructor().copy( this );
+        return new this.constructor().copy(this);
 
-	},
+    },
 
-	copy: function ( other ) {
+    copy: function (other) {
 
-		this.radius = other.radius;
-		this.phi = other.phi;
-		this.theta = other.theta;
+        this.radius = other.radius;
+        this.phi = other.phi;
+        this.theta = other.theta;
 
-		return this;
+        return this;
 
-	},
+    },
 
-	// restrict phi to be betwee EPS and PI-EPS
-	makeSafe: function () {
+    // restrict phi to be betwee EPS and PI-EPS
+    makeSafe: function () {
+        var EPS = 0.000001;
+        this.phi = Math.max(EPS, Math.min(Math.PI - EPS, this.phi));
+        return this;
+    },
 
-		var EPS = 0.000001;
-		this.phi = Math.max( EPS, Math.min( Math.PI - EPS, this.phi ) );
+    /**
+     * 从Vector3设置此球形半径，phi和theta属性的值。
+     * @param v
+     * @returns {*|Spherical}
+     */
+    setFromVector3: function (v) {
+        return this.setFromCartesianCoords(v.x, v.y, v.z);
+    },
 
-		return this;
+    /**
+     * 从笛卡尔坐标设置此球面半径，phi和theta属性的值。
+     * @param x
+     * @param y
+     * @param z
+     * @returns {Spherical}
+     */
+    setFromCartesianCoords: function (x, y, z) {
+        this.radius = Math.sqrt(x * x + y * y + z * z);
+        if (this.radius === 0) {
+            this.theta = 0;
+            this.phi = 0;
+        } else {
+            this.theta = Math.atan2(x, z);
+            this.phi = Math.acos(_Math.clamp(y / this.radius, -1, 1));
+        }
+        return this;
+    }
+});
 
-	},
-
-	setFromVector3: function ( v ) {
-
-		return this.setFromCartesianCoords( v.x, v.y, v.z );
-
-	},
-
-	setFromCartesianCoords: function ( x, y, z ) {
-
-		this.radius = Math.sqrt( x * x + y * y + z * z );
-
-		if ( this.radius === 0 ) {
-
-			this.theta = 0;
-			this.phi = 0;
-
-		} else {
-
-			this.theta = Math.atan2( x, z );
-			this.phi = Math.acos( _Math.clamp( y / this.radius, - 1, 1 ) );
-
-		}
-
-		return this;
-
-	}
-
-} );
-
-
-export { Spherical };
+export {Spherical};
