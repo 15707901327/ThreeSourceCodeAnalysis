@@ -15,7 +15,7 @@ import { Vector4 } from '../math/Vector4.js';
  * depthBuffer/stencilBuffer: Booleans to indicate if we should generate these buffers
 */
 /**
- *
+ * 渲染目标
  * @param width 宽度
  * @param height 长度
  * @param options 参数集合
@@ -33,6 +33,7 @@ function WebGLRenderTarget( width, height, options ) {
 
 	options = options || {};
 
+	// 贴图
 	this.texture = new Texture( undefined, undefined, options.wrapS, options.wrapT, options.magFilter, options.minFilter, options.format, options.type, options.anisotropy, options.encoding );
 
 	this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;

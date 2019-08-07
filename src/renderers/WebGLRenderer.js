@@ -150,7 +150,7 @@ function WebGLRenderer( parameters ) {
 
 		_currentActiveCubeFace = 0,
 		_currentActiveMipmapLevel = 0,
-        _currentRenderTarget = null,
+        _currentRenderTarget = null, // 当前渲染目标
         _currentFramebuffer = null,
         _currentMaterialId = -1,
 
@@ -2534,16 +2534,22 @@ function WebGLRenderer( parameters ) {
 
     };
 
+    /**
+     * 设置渲染目标
+     * @param renderTarget 渲染目标
+     * @param activeCubeFace
+     * @param activeMipMapLevel
+     */
     this.setRenderTarget = function (renderTarget, activeCubeFace, activeMipMapLevel) {
 
+        // 设置当前渲染目标类
         _currentRenderTarget = renderTarget;
 		_currentActiveCubeFace = activeCubeFace;
 		_currentActiveMipmapLevel = activeMipMapLevel;
 
+		// 渲染到纹理和深度图
         if (renderTarget && properties.get(renderTarget).__webglFramebuffer === undefined) {
-
             textures.setupRenderTarget(renderTarget);
-
         }
 
         var framebuffer = _framebuffer;
@@ -2554,37 +2560,30 @@ function WebGLRenderer( parameters ) {
             var __webglFramebuffer = properties.get(renderTarget).__webglFramebuffer;
 
             if (renderTarget.isWebGLRenderTargetCube) {
-
                 framebuffer = __webglFramebuffer[activeCubeFace || 0];
                 isCube = true;
-
-            } else if (renderTarget.isWebGLMultisampleRenderTarget) {
-
+            }
+            else if (renderTarget.isWebGLMultisampleRenderTarget) {
                 framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
-
-            } else {
-
+            }
+            else {
                 framebuffer = __webglFramebuffer;
-
             }
 
             _currentViewport.copy(renderTarget.viewport);
             _currentScissor.copy(renderTarget.scissor);
             _currentScissorTest = renderTarget.scissorTest;
 
-        } else {
-
+        }
+        else {
             _currentViewport.copy(_viewport).multiplyScalar(_pixelRatio);
             _currentScissor.copy(_scissor).multiplyScalar(_pixelRatio);
             _currentScissorTest = _scissorTest;
-
         }
 
         if (_currentFramebuffer !== framebuffer) {
-
             _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
             _currentFramebuffer = framebuffer;
-
         }
 
         state.viewport(_currentViewport);
@@ -2592,12 +2591,9 @@ function WebGLRenderer( parameters ) {
         state.setScissorTest(_currentScissorTest);
 
         if (isCube) {
-
             var textureProperties = properties.get(renderTarget.texture);
             _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + (activeCubeFace || 0), textureProperties.__webglTexture, activeMipMapLevel || 0);
-
         }
-
     };
 
 	this.readRenderTargetPixels = function ( renderTarget, x, y, width, height, buffer, activeCubeFaceIndex ) {

@@ -19,13 +19,11 @@
   </style>
 </head>
 <body>
-<script src="../../build/three_r95.js"></script>
+<script src="../../build/three_r106.js"></script>
 <script src="../js/controls/OrbitControls.js"></script>
 <script src="../js/objects/Sky.js"></script>
-<script src="../js/Detector.js"></script>
 <script src="../js/libs/dat.gui.min.js"></script>
 <script>
-  if (!Detector.webgl) Detector.addGetWebGLMessage();
 
   var camera, controls, scene, renderer;
   var sky, sunSphere;
@@ -47,7 +45,7 @@
     );
     sunSphere.position.y = -700000;
     sunSphere.visible = false;
-    // scene.add(sunSphere);
+    scene.add(sunSphere);
 
     // GUI
     var effectController = {

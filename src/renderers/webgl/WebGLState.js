@@ -853,47 +853,43 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   }
 
-// texture
-
+  /**
+   * 激活纹理单元
+   * @param webglSlot 纹理单元编号
+   */
   function activeTexture(webglSlot) {
 
     if (webglSlot === undefined) webglSlot = gl.TEXTURE0 + maxTextures - 1;
 
     if (currentTextureSlot !== webglSlot) {
-
       gl.activeTexture(webglSlot);
       currentTextureSlot = webglSlot;
-
     }
-
   }
 
+  /**
+   * 绑定纹理对象
+   * @param webglType 纹理类型;gl.TEXTURE_2D
+   * @param webglTexture： 纹理对象
+   */
   function bindTexture(webglType, webglTexture) {
 
     if (currentTextureSlot === null) {
-
       activeTexture();
-
     }
 
     var boundTexture = currentBoundTextures[currentTextureSlot];
-
     if (boundTexture === undefined) {
-
       boundTexture = {type: undefined, texture: undefined};
       currentBoundTextures[currentTextureSlot] = boundTexture;
-
     }
 
     if (boundTexture.type !== webglType || boundTexture.texture !== webglTexture) {
-
       gl.bindTexture(webglType, webglTexture || emptyTextures[webglType]);
 
       boundTexture.type = webglType;
       boundTexture.texture = webglTexture;
-
     }
-
   }
 
   function compressedTexImage2D() {

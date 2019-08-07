@@ -69,26 +69,12 @@ var PGL = PGL || {};
                 antialias: true
             });
             this.webGLRenderer.setSize(this.getWidth(), this.getHeight());
+            this.webGLRenderer.setClearColor(0x00ff00);
             this.container.appendChild(this.webGLRenderer.domElement);
         },
         initScene: function () {
             this.scene = new THREE.Scene();
-            this.scene.background = createHeightMap();
-
-            function createHeightMap() {
-                var canvas = document.createElement("canvas");
-                canvas.width = 256;
-                canvas.height = 256;
-                var ctx = canvas.getContext("2d");
-                var grad = ctx.createLinearGradient(0, 0, 0, 256); //创建一个渐变色线性对象
-                grad.addColorStop(0, "#f00");                  //定义渐变色颜色#233a43
-                grad.addColorStop(1, "#000");
-                ctx.fillStyle = grad;                         //设置fillStyle为当前的渐变对象
-                ctx.fillRect(0, 0, 256, 256);                    //绘制渐变图形
-
-                // return canvas;
-                return new THREE.CanvasTexture(canvas);
-            }
+            // this.scene.background = new THREE.Color(0xff0000);
 
             // this.scene.fog = new THREE.Fog(0xffffff, 300, 1200);
             // var axes = new THREE.AxesHelper(100);

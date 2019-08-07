@@ -8,8 +8,8 @@ import { _Math } from '../../math/Math.js';
 /**
  * 和贴图相关的方法属性
  * @param _gl 上下文
- * @param extensions 获取扩展的对象
- * @param state
+ * @param extensions 扩展功能管理对象
+ * @param state webgl状态机
  * @param properties
  * @param capabilities
  * @param utils
@@ -177,15 +177,10 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 	// Fallback filters for non-power-of-2 textures
 
 	function filterFallback( f ) {
-
 		if ( f === NearestFilter || f === NearestMipMapNearestFilter || f === NearestMipMapLinearFilter ) {
-
 			return _gl.NEAREST;
-
 		}
-
 		return _gl.LINEAR;
-
 	}
 
 	//
@@ -493,6 +488,12 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 	}
 
+	/**
+	 * 设置纹理的参数
+	 * @param textureType 纹理类型
+	 * @param texture 纹理对象
+	 * @param supportsMips
+	 */
 	function setTextureParameters( textureType, texture, supportsMips ) {
 
 		var extension;
@@ -503,38 +504,33 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 			_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_T, utils.convert( texture.wrapT ) );
 
 			if ( textureType === _gl.TEXTURE_3D || textureType === _gl.TEXTURE_2D_ARRAY ) {
-
 				_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_R, utils.convert( texture.wrapR ) );
-
 			}
 
 			_gl.texParameteri( textureType, _gl.TEXTURE_MAG_FILTER, utils.convert( texture.magFilter ) );
 			_gl.texParameteri( textureType, _gl.TEXTURE_MIN_FILTER, utils.convert( texture.minFilter ) );
 
-		} else {
+		}
+		else {
 
+			// 使用纹理图像边缘值来填充图像
 			_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_S, _gl.CLAMP_TO_EDGE );
 			_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_T, _gl.CLAMP_TO_EDGE );
 
 			if ( textureType === _gl.TEXTURE_3D || textureType === _gl.TEXTURE_2D_ARRAY ) {
-
 				_gl.texParameteri( textureType, _gl.TEXTURE_WRAP_R, _gl.CLAMP_TO_EDGE );
-
 			}
 
 			if ( texture.wrapS !== ClampToEdgeWrapping || texture.wrapT !== ClampToEdgeWrapping ) {
-
 				console.warn( 'THREE.WebGLRenderer: Texture is not power of two. Texture.wrapS and Texture.wrapT should be set to THREE.ClampToEdgeWrapping.' );
-
 			}
 
+			// 纹理像素的截取类型
 			_gl.texParameteri( textureType, _gl.TEXTURE_MAG_FILTER, filterFallback( texture.magFilter ) );
 			_gl.texParameteri( textureType, _gl.TEXTURE_MIN_FILTER, filterFallback( texture.minFilter ) );
 
 			if ( texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter ) {
-
 				console.warn( 'THREE.WebGLRenderer: Texture is not power of two. Texture.minFilter should be set to THREE.NearestFilter or THREE.LinearFilter.' );
-
 			}
 
 		}
@@ -547,14 +543,10 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 			if ( texture.type === HalfFloatType && ( capabilities.isWebGL2 || extensions.get( 'OES_texture_half_float_linear' ) ) === null ) return;
 
 			if ( texture.anisotropy > 1 || properties.get( texture ).__currentAnisotropy ) {
-
 				_gl.texParameterf( textureType, extension.TEXTURE_MAX_ANISOTROPY_EXT, Math.min( texture.anisotropy, capabilities.getMaxAnisotropy() ) );
 				properties.get( texture ).__currentAnisotropy = texture.anisotropy;
-
 			}
-
 		}
-
 	}
 
 	function initTexture( textureProperties, texture ) {
@@ -764,6 +756,13 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 	// Render targets
 
 	// Setup storage for target texture and bind it to correct framebuffer
+	/**
+	 * 帧缓冲区
+	 * @param framebuffer 帧缓冲区
+	 * @param renderTarget
+	 * @param attachment
+	 * @param textureTarget
+	 */
 	function setupFrameBufferTexture( framebuffer, renderTarget, attachment, textureTarget ) {
 
 		var glFormat = utils.convert( renderTarget.texture.format );
@@ -891,12 +890,10 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 		var isCube = ( renderTarget.isWebGLRenderTargetCube === true );
 
 		if ( renderTarget.depthTexture ) {
-
 			if ( isCube ) throw new Error( 'target.depthTexture not supported in Cube render targets' );
-
 			setupDepthTexture( renderTargetProperties.__webglFramebuffer, renderTarget );
-
-		} else {
+		}
+		else {
 
 			if ( isCube ) {
 
@@ -910,7 +907,8 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 				}
 
-			} else {
+			}
+			else {
 
 				_gl.bindFramebuffer( _gl.FRAMEBUFFER, renderTargetProperties.__webglFramebuffer );
 				renderTargetProperties.__webglDepthbuffer = _gl.createRenderbuffer();
@@ -925,6 +923,10 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 	}
 
 	// Set up GL resources for the render target
+	/**
+	 * 为渲染目标设置GL资源
+	 * @param renderTarget 渲染目标
+	 */
 	function setupRenderTarget( renderTarget ) {
 
 		var renderTargetProperties = properties.get( renderTarget );
@@ -932,6 +934,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		renderTarget.addEventListener( 'dispose', onRenderTargetDispose );
 
+		// 创建贴图
 		textureProperties.__webglTexture = _gl.createTexture();
 
 		info.memory.textures ++;
@@ -943,21 +946,15 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 		// Setup framebuffer
 
 		if ( isCube ) {
-
 			renderTargetProperties.__webglFramebuffer = [];
-
 			for ( var i = 0; i < 6; i ++ ) {
-
 				renderTargetProperties.__webglFramebuffer[ i ] = _gl.createFramebuffer();
-
 			}
-
-		} else {
-
+		}
+		else {
+			// 创建一个帧缓存区对象
 			renderTargetProperties.__webglFramebuffer = _gl.createFramebuffer();
-
 			if ( isMultisample ) {
-
 				if ( capabilities.isWebGL2 ) {
 
 					renderTargetProperties.__webglMultisampledFramebuffer = _gl.createFramebuffer();
@@ -984,61 +981,46 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 					_gl.bindFramebuffer( _gl.FRAMEBUFFER, null );
 
 
-				} else {
-
+				}
+				else {
 					console.warn( 'THREE.WebGLRenderer: WebGLMultisampleRenderTarget can only be used with WebGL2.' );
-
 				}
 
 			}
-
 		}
 
 		// Setup color buffer
 
 		if ( isCube ) {
-
 			state.bindTexture( _gl.TEXTURE_CUBE_MAP, textureProperties.__webglTexture );
 			setTextureParameters( _gl.TEXTURE_CUBE_MAP, renderTarget.texture, supportsMips );
 
 			for ( var i = 0; i < 6; i ++ ) {
-
 				setupFrameBufferTexture( renderTargetProperties.__webglFramebuffer[ i ], renderTarget, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + i );
-
 			}
 
 			if ( textureNeedsGenerateMipmaps( renderTarget.texture, supportsMips ) ) {
-
 				generateMipmap( _gl.TEXTURE_CUBE_MAP, renderTarget.texture, renderTarget.width, renderTarget.height );
-
 			}
 
 			state.bindTexture( _gl.TEXTURE_CUBE_MAP, null );
 
-		} else {
-
+		}
+		else {
 			state.bindTexture( _gl.TEXTURE_2D, textureProperties.__webglTexture );
 			setTextureParameters( _gl.TEXTURE_2D, renderTarget.texture, supportsMips );
 			setupFrameBufferTexture( renderTargetProperties.__webglFramebuffer, renderTarget, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D );
 
 			if ( textureNeedsGenerateMipmaps( renderTarget.texture, supportsMips ) ) {
-
 				generateMipmap( _gl.TEXTURE_2D, renderTarget.texture, renderTarget.width, renderTarget.height );
-
 			}
-
 			state.bindTexture( _gl.TEXTURE_2D, null );
-
 		}
 
 		// Setup depth and stencil buffers
-
 		if ( renderTarget.depthBuffer ) {
-
 			setupDepthRenderbuffer( renderTarget );
-
 		}
-
 	}
 
 	function updateRenderTargetMipmap( renderTarget ) {

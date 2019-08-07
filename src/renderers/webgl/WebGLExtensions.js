@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 /**
- * 保存当前WebGL开启的扩展功能
+ * 扩展功能管理器
  * @param gl 上下文
  * @return {{get: get}}
  * @constructor

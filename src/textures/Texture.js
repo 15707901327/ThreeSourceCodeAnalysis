@@ -23,6 +23,20 @@ import { ImageUtils } from '../extras/ImageUtils.js';
 
 var textureId = 0;
 
+/**
+ * 贴图
+ * @param image
+ * @param mapping
+ * @param wrapS
+ * @param wrapT
+ * @param magFilter 纹理放大像素的截取类型
+ * @param minFilter 纹理缩小像素的截取类型
+ * @param format
+ * @param type
+ * @param anisotropy 像素的样本数
+ * @param encoding
+ * @constructor
+ */
 function Texture( image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding ) {
 
 	Object.defineProperty( this, 'id', { value: textureId ++ } );
