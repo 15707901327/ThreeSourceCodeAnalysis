@@ -151,12 +151,12 @@ import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
       let _this = this;
       new MTLLoader()
       .setPath('../../models/obj/ceshi/')
-      .load('111.mtl', function(materials) {
+      .load('xiaoqiu.mtl', function(materials) {
         // materials.preload();
         new OBJLoader()
         .setMaterials(materials)
         .setPath('../../models/obj/ceshi/')
-        .load('111.obj', function(object) {
+        .load('xiaoqiu.obj', function(object) {
           console.log(object);
           // object.children[1].material.color.set(0xffffff);
           _this.scene.add(object);
