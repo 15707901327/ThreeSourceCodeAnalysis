@@ -154,20 +154,20 @@ import { GLTFLoader } from '../../jsm/loaders/GLTFLoader.js';
 
     initObject: function() {
       let _this = this;
-      new GLTFLoader().load( '../../models/gltf/PrimaryIonDrive.glb', function ( gltf ) {
+      new GLTFLoader().load( '../../models/gltf/test004.gltf.glb', function ( gltf ) {
 
         var model = gltf.scene;
 
         _this.scene.add( model );
 
-        // Mesh contains self-intersecting semi-transparent faces, which display
-        // z-fighting unless depthWrite is disabled.
-        var core = model.getObjectByName( 'geo1_HoloFillDark_0' );
-        core.material.depthWrite = false;
-
-        _this.mixer = new THREE.AnimationMixer( model );
-        var clip = gltf.animations[ 0 ];
-        _this.mixer.clipAction( clip.optimize() ).play();
+        // // Mesh contains self-intersecting semi-transparent faces, which display
+        // // z-fighting unless depthWrite is disabled.
+        // var core = model.getObjectByName( 'geo1_HoloFillDark_0' );
+        // core.material.depthWrite = false;
+        //
+        // _this.mixer = new THREE.AnimationMixer( model );
+        // var clip = gltf.animations[ 0 ];
+        // _this.mixer.clipAction( clip.optimize() ).play();
       } );
     },
     /**
