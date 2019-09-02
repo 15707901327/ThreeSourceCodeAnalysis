@@ -1,5 +1,6 @@
-export var REVISION = '94';
-export var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2 }; // 鼠标点击事件状态
+export var REVISION = '108';
+export var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };// 鼠标点击事件状态
+export var TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
 export var CullFaceNone = 0;
 export var CullFaceBack = 1;
 export var CullFaceFront = 2;
@@ -9,6 +10,7 @@ export var FrontFaceDirectionCCW = 1;
 export var BasicShadowMap = 0;
 export var PCFShadowMap = 1;
 export var PCFSoftShadowMap = 2;
+export var VSMShadowMap = 3;
 export var FrontSide = 0;
 export var BackSide = 1;
 export var DoubleSide = 2;
@@ -55,6 +57,8 @@ export var LinearToneMapping = 1;
 export var ReinhardToneMapping = 2;
 export var Uncharted2ToneMapping = 3;
 export var CineonToneMapping = 4;
+export var ACESFilmicToneMapping = 5;
+
 export var UVMapping = 300;
 export var CubeReflectionMapping = 301;
 export var CubeRefractionMapping = 302;
@@ -63,15 +67,24 @@ export var EquirectangularRefractionMapping = 304;
 export var SphericalReflectionMapping = 305;
 export var CubeUVReflectionMapping = 306;
 export var CubeUVRefractionMapping = 307;
-export var RepeatWrapping = 1000;
-export var ClampToEdgeWrapping = 1001;
-export var MirroredRepeatWrapping = 1002;
-export var NearestFilter = 1003;
+
+// 纹理填充参数值
+export var RepeatWrapping = 1000; // 平铺式的重复纹理
+export var ClampToEdgeWrapping = 1001; // 使用纹理边缘值
+export var MirroredRepeatWrapping = 1002; // 镜像对称式纹理重复
+
+// 纹理缩放参数值
+export var NearestFilter = 1003; // 最近点颜色值（曼哈顿距离）
+export var NearestMipmapNearestFilter = 1004;
 export var NearestMipMapNearestFilter = 1004;
+export var NearestMipmapLinearFilter = 1005;
 export var NearestMipMapLinearFilter = 1005;
-export var LinearFilter = 1006;
+export var LinearFilter = 1006; // 使用四个点的加权平均来取值
+export var LinearMipmapNearestFilter = 1007;
 export var LinearMipMapNearestFilter = 1007;
+export var LinearMipmapLinearFilter = 1008;
 export var LinearMipMapLinearFilter = 1008;
+
 export var UnsignedByteType = 1009;
 export var ByteType = 1010;
 export var ShortType = 1011;
@@ -92,6 +105,7 @@ export var LuminanceAlphaFormat = 1025;
 export var RGBEFormat = RGBAFormat;
 export var DepthFormat = 1026;
 export var DepthStencilFormat = 1027;
+export var RedFormat = 1028;
 export var RGB_S3TC_DXT1_Format = 33776;
 export var RGBA_S3TC_DXT1_Format = 33777;
 export var RGBA_S3TC_DXT3_Format = 33778;
@@ -139,3 +153,21 @@ export var BasicDepthPacking = 3200;
 export var RGBADepthPacking = 3201;
 export var TangentSpaceNormalMap = 0;
 export var ObjectSpaceNormalMap = 1;
+
+export var ZeroStencilOp = 0;
+export var KeepStencilOp = 7680;
+export var ReplaceStencilOp = 7681;
+export var IncrementStencilOp = 7682;
+export var DecrementStencilOp = 7683;
+export var IncrementWrapStencilOp = 34055;
+export var DecrementWrapStencilOp = 34056;
+export var InvertStencilOp = 5386;
+
+export var NeverStencilFunc = 512;
+export var LessStencilFunc = 513;
+export var EqualStencilFunc = 514;
+export var LessEqualStencilFunc = 515;
+export var GreaterStencilFunc = 516;
+export var NotEqualStencilFunc = 517;
+export var GreaterEqualStencilFunc = 518;
+export var AlwaysStencilFunc = 519;

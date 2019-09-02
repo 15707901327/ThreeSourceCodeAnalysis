@@ -256,6 +256,8 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
       setTest: function (stencilTest) {
 
+				if ( ! locked ) {
+
         if (stencilTest) {
 
           enable(gl.STENCIL_TEST);
@@ -265,6 +267,8 @@ function WebGLState(gl, extensions, utils, capabilities) {
           disable(gl.STENCIL_TEST);
 
         }
+
+				}
 
       },
 
@@ -383,7 +387,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
   var currentPolygonOffsetFactor = null;
   var currentPolygonOffsetUnits = null;
 
-  // 获取最大的纹理单元
+  // 获取纹理单元的数量
   var maxTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
 
   var lineWidthAvailable = false;
@@ -404,7 +408,8 @@ function WebGLState(gl, extensions, utils, capabilities) {
   }
 
   var currentTextureSlot = null; // 当前激活的纹理单元
-  var currentBoundTextures = {}; // 当前绑定的纹理对象
+  // 保存激活的纹理单元对纹理
+  var currentBoundTextures = {};
 
   var currentScissor = new Vector4();
   var currentViewport = new Vector4();
@@ -854,7 +859,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
   }
 
   /**
-   * 激活纹理单元
+   * 激活纹理单元，如果没有传入，激活最大的纹理单元
    * @param webglSlot 纹理单元编号
    */
   function activeTexture(webglSlot) {
@@ -874,10 +879,12 @@ function WebGLState(gl, extensions, utils, capabilities) {
    */
   function bindTexture(webglType, webglTexture) {
 
+    // 激活纹理单元
     if (currentTextureSlot === null) {
       activeTexture();
     }
 
+    // 保存激活的纹理单元，及相关的纹理贴图
     var boundTexture = currentBoundTextures[currentTextureSlot];
     if (boundTexture === undefined) {
       boundTexture = {type: undefined, texture: undefined};
@@ -906,18 +913,15 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   }
 
+  /**
+   * 将image指定的图像分配给绑定的目标上的纹理对象。
+   */
   function texImage2D() {
-
     try {
-
       gl.texImage2D.apply(gl, arguments);
-
     } catch (error) {
-
       console.error('THREE.WebGLState:', error);
-
     }
-
   }
 
   function texImage3D() {

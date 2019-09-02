@@ -1,7 +1,7 @@
 /**
+ * 保存WebGL对象相关属性
  * @author fordacious / fordacious.github.io
  */
-
 function WebGLProperties() {
 
 	var properties = new WeakMap();
@@ -13,16 +13,12 @@ function WebGLProperties() {
 	function get( object ) {
 
 		var map = properties.get( object );
-
 		if ( map === undefined ) {
-
 			map = {};
 			properties.set( object, map );
-
 		}
 
 		return map;
-
 	}
 
 	function remove( object ) {

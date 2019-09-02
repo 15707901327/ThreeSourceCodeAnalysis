@@ -12,7 +12,7 @@ import {
 	LinearEncoding,
 	UnsignedByteType,
 	RGBAFormat,
-	LinearMipMapLinearFilter,
+	LinearMipmapLinearFilter,
 	LinearFilter,
 	UVMapping
 } from '../constants.js';
@@ -24,16 +24,16 @@ import { ImageUtils } from '../extras/ImageUtils.js';
 var textureId = 0;
 
 /**
- * 贴图
+ * 图片相关参数
  * @param image
  * @param mapping
- * @param wrapS
- * @param wrapT
+ * @param wrapS  纹理水平填充参数
+ * @param wrapT 纹理垂直填充参数
  * @param magFilter 纹理放大像素的截取类型
  * @param minFilter 纹理缩小像素的截取类型
- * @param format
- * @param type
- * @param anisotropy 像素的样本数
+ * @param format 图像的内部格式
+ * @param type 纹理数据类型
+ * @param anisotropy 各向异性过滤 默认1 不进行过滤
  * @param encoding
  * @constructor
  */
@@ -50,12 +50,15 @@ function Texture( image, mapping, wrapS, wrapT, magFilter, minFilter, format, ty
 
 	this.mapping = mapping !== undefined ? mapping : Texture.DEFAULT_MAPPING;
 
+	// 纹理填充参数
 	this.wrapS = wrapS !== undefined ? wrapS : ClampToEdgeWrapping;
 	this.wrapT = wrapT !== undefined ? wrapT : ClampToEdgeWrapping;
 
+	// 纹理缩放参数
 	this.magFilter = magFilter !== undefined ? magFilter : LinearFilter;
-	this.minFilter = minFilter !== undefined ? minFilter : LinearMipMapLinearFilter;
+	this.minFilter = minFilter !== undefined ? minFilter : LinearMipmapLinearFilter;
 
+	// 各向异性过滤（AF）
 	this.anisotropy = anisotropy !== undefined ? anisotropy : 1;
 
 	this.format = format !== undefined ? format : RGBAFormat;

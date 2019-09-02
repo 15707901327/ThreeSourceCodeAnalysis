@@ -16,9 +16,15 @@ import { Vector4 } from '../math/Vector4.js';
 */
 /**
  * 渲染目标
- * @param width 宽度
- * @param height 长度
+ * @param width 渲染目标的宽度
+ * @param height 渲染目标的长度
  * @param options 参数集合
+ * 	wrapS  纹理水平填充参数
+ * 	wrapT 纹理垂直填充参数
+ *  magFilter 纹理放大像素的截取类型
+ *  minFilter 纹理缩小像素的截取类型
+ *
+ *  depthTexture：深度图 THREE.DepthTexture
  * @constructor
  */
 function WebGLRenderTarget( width, height, options ) {
@@ -36,11 +42,18 @@ function WebGLRenderTarget( width, height, options ) {
 	// 贴图
 	this.texture = new Texture( undefined, undefined, options.wrapS, options.wrapT, options.magFilter, options.minFilter, options.format, options.type, options.anisotropy, options.encoding );
 
+	// 添加图片，以及参数
+	this.texture.image = {};
+	this.texture.image.width = width;
+	this.texture.image.height = height;
+
 	this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
+	// 纹理缩小时像素的取值
 	this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
 
 	this.depthBuffer = options.depthBuffer !== undefined ? options.depthBuffer : true;
 	this.stencilBuffer = options.stencilBuffer !== undefined ? options.stencilBuffer : true;
+	// 深度纹理
 	this.depthTexture = options.depthTexture !== undefined ? options.depthTexture : null;
 
 }
@@ -56,6 +69,9 @@ WebGLRenderTarget.prototype = Object.assign( Object.create( EventDispatcher.prot
 
 			this.width = width;
 			this.height = height;
+
+			this.texture.image.width = width;
+			this.texture.image.height = height;
 
 			this.dispose();
 

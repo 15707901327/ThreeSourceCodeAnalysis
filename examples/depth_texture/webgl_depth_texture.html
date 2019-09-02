@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>three.js webgl - Depth Texture</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="../main.css">
-    <style>
-        #error {
-            margin: auto;
-            margin-top: 40px;
-            display: block;
-            max-width: 400px;
-            padding: 20px;
-            background: #CE0808;
-        }
-    </style>
+  <title>three.js webgl - Depth Texture</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="../main.css">
+  <style>
+    #error {
+      margin: auto;
+      margin-top: 40px;
+      display: block;
+      max-width: 400px;
+      padding: 20px;
+      background: #CE0808;
+    }
+  </style>
 
-    <script id="post-vert" type="x-shader/x-vertex">
+  <script id="post-vert" type="x-shader/x-vertex">
 			varying vec2 vUv;
 
 			void main() {
@@ -24,8 +24,9 @@
 				gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 			}
 
-    </script>
-    <script id="post-frag" type="x-shader/x-fragment">
+
+  </script>
+  <script id="post-frag" type="x-shader/x-fragment">
 			#include <packing>
 
 			varying vec2 vUv;
@@ -45,164 +46,159 @@
 				vec3 diffuse = texture2D( tDiffuse, vUv ).rgb;
 				float depth = readDepth( tDepth, vUv );
 
-				// gl_FragColor.rgb = 1.0 - vec3( depth );
 				gl_FragColor.rgb = 1.0 - vec3( depth );
 				gl_FragColor.a = 1.0;
 			}
 
-    </script>
+  </script>
 
 </head>
 <body>
 <canvas></canvas>
 <div id="info">
-    <a href="http://threejs.org" target="_blank" rel="noopener">threejs</a> webgl - depth texture<br/>
-    Stores render target depth in a texture attachment.<br/>
-    Created by <a href="http://twitter.com/mattdesl" target="_blank" rel="noopener">@mattdesl</a>.
+  <a href="http://threejs.org" target="_blank" rel="noopener">threejs</a> webgl - depth texture<br/>
+  Stores render target depth in a texture attachment.<br/>
+  Created by <a href="http://twitter.com/mattdesl" target="_blank" rel="noopener">@mattdesl</a>.
 
-    <div id="error" style="display: none;">
-        Your browser does not support <strong>WEBGL_depth_texture</strong>.<br/><br/>
-        This demo will not work.
-    </div>
+  <div id="error" style="display: none;">
+    Your browser does not support <strong>WEBGL_depth_texture</strong>.<br/><br/>
+    This demo will not work.
+  </div>
 </div>
 
 <script type="module">
 
-    import * as THREE from '../../build/three_r106.module.js';
-    import Stats from '../jsm/libs/stats.module.js';
-    import {OrbitControls} from '../jsm/controls/OrbitControls.js';
+  import * as THREE from '../../build/three_r107.module.js';
+  import Stats from '../jsm/libs/stats.module.js';
+  import {OrbitControls} from '../jsm/controls/OrbitControls.js';
 
-    var camera, scene, renderer, stats;
-    var target;
-    var postScene, postCamera;
-    var supportsExtension = true;
+  var camera, scene, renderer, stats;
+  var target;
+  var postScene, postCamera;
+  var supportsExtension = true;
 
-    init();
-    animate();
+  init();
+  animate();
 
-    function init() {
+  function init() {
 
-        // 初始化渲染器
-        renderer = new THREE.WebGLRenderer({canvas: document.querySelector('canvas')});
-        if (!renderer.extensions.get('WEBGL_depth_texture')) {
-            supportsExtension = false;
-            document.querySelector('#error').style.display = 'block';
-            return;
-        }
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        // Stats
-        stats = new Stats();
-        document.body.appendChild(stats.dom);
-
-        // 初始化相机
-        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 50);
-        camera.position.z = 4;
-
-        // 初始化控制器
-        var controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.25;
-        controls.rotateSpeed = 0.35;
-
-        // Create a multi render target with Float buffers
-        // 使用Float缓冲区创建多渲染目标
-        target = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
-        target.texture.format = THREE.RGBFormat; // 纹理数据的格式
-        target.texture.minFilter = THREE.NearestFilter;
-        target.texture.magFilter = THREE.NearestFilter;
-        target.texture.generateMipmaps = false;
-        target.stencilBuffer = false;
-        target.depthBuffer = true;
-        target.depthTexture = new THREE.DepthTexture();
-        target.depthTexture.type = THREE.UnsignedShortType;
-
-        // Our scene
-        scene = new THREE.Scene();
-        setupScene();
-
-        // Setup post-processing step
-        setupPost();
-
-        onWindowResize();
-        window.addEventListener('resize', onWindowResize, false);
-
+    // 初始化渲染器
+    renderer = new THREE.WebGLRenderer({canvas: document.querySelector('canvas')});
+    if (!renderer.extensions.get('WEBGL_depth_texture')) {
+      supportsExtension = false;
+      document.querySelector('#error').style.display = 'block';
+      return;
     }
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-    function setupPost() {
-        // Setup post processing stage
-        postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-        var postMaterial = new THREE.ShaderMaterial({
-            vertexShader: document.querySelector('#post-vert').textContent.trim(),
-            fragmentShader: document.querySelector('#post-frag').textContent.trim(),
-            uniforms: {
-                cameraNear: {value: camera.near},
-                cameraFar: {value: camera.far},
-                tDiffuse: {value: target.texture},
-                tDepth: {value: target.depthTexture}
-            }
-        });
-        var postPlane = new THREE.PlaneBufferGeometry(2, 2);
-        var postQuad = new THREE.Mesh(postPlane, postMaterial);
-        postScene = new THREE.Scene();
-        postScene.add(postQuad);
+    // Stats
+    stats = new Stats();
+    document.body.appendChild(stats.dom);
+
+    // 初始化相机
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 50);
+    camera.position.z = 4;
+
+    // 初始化控制器
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.rotateSpeed = 0.35;
+
+    // Create a multi render target with Float buffers
+    // 使用Float缓冲区创建多渲染目标
+    target = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+    target.texture.format = THREE.RGBFormat; // 纹理数据的格式
+    target.texture.minFilter = THREE.NearestFilter;
+    target.texture.magFilter = THREE.NearestFilter;
+    target.texture.generateMipmaps = false;
+    target.stencilBuffer = false;
+    target.depthBuffer = true;
+    target.depthTexture = new THREE.DepthTexture();
+    target.depthTexture.type = THREE.UnsignedShortType;
+
+    // Our scene
+    scene = new THREE.Scene();
+    setupScene();
+
+    // Setup post-processing step
+    setupPost();
+
+    onWindowResize();
+    window.addEventListener('resize', onWindowResize, false);
+  }
+
+  function setupPost() {
+    // Setup post processing stage
+    postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    var postMaterial = new THREE.ShaderMaterial({
+      vertexShader: document.querySelector('#post-vert').textContent.trim(),
+      fragmentShader: document.querySelector('#post-frag').textContent.trim(),
+      uniforms: {
+        cameraNear: {value: camera.near},
+        cameraFar: {value: camera.far},
+        tDiffuse: {value: target.texture},
+        tDepth: {value: target.depthTexture}
+      }
+    });
+    var postPlane = new THREE.PlaneBufferGeometry(2, 2);
+    var postQuad = new THREE.Mesh(postPlane, postMaterial);
+    postScene = new THREE.Scene();
+    postScene.add(postQuad);
+  }
+
+  /**
+   * 初始化设置场景物体
+   */
+  function setupScene() {
+
+    // Setup some geometries
+    var geometry = new THREE.TorusKnotBufferGeometry(1, 0.3, 128, 64);
+    var material = new THREE.MeshBasicMaterial({color: 'blue'});
+
+    var count = 100;
+    var scale = 5;
+
+    for (var i = 0; i < count; i++) {
+      var r = Math.random() * 2.0 * Math.PI;
+      var z = (Math.random() * 2.0) - 1.0;
+      var zScale = Math.sqrt(1.0 - z * z) * scale;
+      var mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
+      mesh.rotation.set(Math.random(), Math.random(), Math.random());
+      scene.add(mesh);
     }
+  }
 
-    /**
-     * 初始化设置场景物体
-     */
-    function setupScene() {
-        //var diffuse = new TextureLoader().load( 'textures/brick_diffuse.jpg' );
-        //diffuse.wrapS = diffuse.wrapT = RepeatWrapping;
+  function onWindowResize() {
 
-        // Setup some geometries
-        var geometry = new THREE.TorusKnotBufferGeometry(1, 0.3, 128, 64);
-        var material = new THREE.MeshBasicMaterial({color: 'blue'});
+    var aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = aspect;
+    camera.updateProjectionMatrix();
 
-        var count = 100;
-        var scale = 5;
+    var dpr = renderer.getPixelRatio();
+    target.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-        for (var i = 0; i < count; i++) {
-            var r = Math.random() * 2.0 * Math.PI;
-            var z = (Math.random() * 2.0) - 1.0;
-            var zScale = Math.sqrt(1.0 - z * z) * scale;
-            var mesh = new THREE.Mesh(geometry, material);
-            mesh.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
-            mesh.rotation.set(Math.random(), Math.random(), Math.random());
-            scene.add(mesh);
-        }
-    }
+  }
 
-    function onWindowResize() {
+  function animate() {
 
-        var aspect = window.innerWidth / window.innerHeight;
-        camera.aspect = aspect;
-        camera.updateProjectionMatrix();
+    if (!supportsExtension) return;
 
-        var dpr = renderer.getPixelRatio();
-        target.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
-        renderer.setSize(window.innerWidth, window.innerHeight);
+    requestAnimationFrame(animate);
 
-    }
+    // render scene into target
+    renderer.setRenderTarget(target);
+    renderer.render(scene, camera);
 
-    function animate() {
+    // render post FX
+    renderer.setRenderTarget(null);
+    renderer.render(postScene, postCamera);
 
-        if (!supportsExtension) return;
-
-        requestAnimationFrame(animate);
-
-        // render scene into target
-        renderer.setRenderTarget(target);
-        renderer.render(scene, camera);
-
-        // render post FX
-        renderer.setRenderTarget(null);
-        renderer.render(postScene, postCamera);
-
-        stats.update();
-
-    }
+    stats.update();
+  }
 
 </script>
 

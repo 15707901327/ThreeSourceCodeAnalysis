@@ -12,10 +12,10 @@ import { NearestFilter, UnsignedShortType, UnsignedInt248Type, DepthFormat, Dept
  * @param height 高度
  * @param type 纹理数据类型
  * @param mapping
- * @param wrapS
- * @param wrapT
- * @param magFilter
- * @param minFilter
+ * @param wrapS  纹理水平填充参数
+ * @param wrapT 纹理垂直填充参数
+ * @param magFilter 纹理放大像素的截取类型
+ * @param minFilter 纹理缩小像素的截取类型
  * @param anisotropy
  * @param format
  * @constructor
@@ -25,9 +25,7 @@ function DepthTexture( width, height, type, mapping, wrapS, wrapT, magFilter, mi
 	format = format !== undefined ? format : DepthFormat;
 
 	if ( format !== DepthFormat && format !== DepthStencilFormat ) {
-
 		throw new Error( 'DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat' );
-
 	}
 
 	if ( type === undefined && format === DepthFormat ) type = UnsignedShortType;
