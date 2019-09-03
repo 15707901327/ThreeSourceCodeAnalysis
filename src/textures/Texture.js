@@ -73,8 +73,9 @@ function Texture( image, mapping, wrapS, wrapT, magFilter, minFilter, format, ty
 	this.matrix = new Matrix3();
 
 	this.generateMipmaps = true;
-	this.premultiplyAlpha = false;
-	this.flipY = true;
+	this.premultiplyAlpha = false; // 将图像RGB颜色值的每一个分量乘以A
+	this.flipY = true; // 图像Y轴反转
+	// 从内存中解压缩像素数据
 	this.unpackAlignment = 4;	// valid values: 1, 2, 4, 8 (see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml)
 
 	// Values of encoding !== THREE.LinearEncoding only supported on map, envMap and emissiveMap.

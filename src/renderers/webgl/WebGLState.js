@@ -411,7 +411,9 @@ function WebGLState(gl, extensions, utils, capabilities) {
   // 保存激活的纹理单元对纹理
   var currentBoundTextures = {};
 
+  // 当前裁剪区域
   var currentScissor = new Vector4();
+  // 当前绘图区域
   var currentViewport = new Vector4();
 
   function createTexture(type, target, count) {
@@ -844,18 +846,16 @@ function WebGLState(gl, extensions, utils, capabilities) {
     }
   }
 
+  /**
+   * 设置是否启用裁剪
+   * @param scissorTest
+   */
   function setScissorTest(scissorTest) {
-
     if (scissorTest) {
-
       enable(gl.SCISSOR_TEST);
-
     } else {
-
       disable(gl.SCISSOR_TEST);
-
     }
-
   }
 
   /**
@@ -938,28 +938,23 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   }
 
-  //
-
+  // 设置裁剪区域
   function scissor(scissor) {
-
     if (currentScissor.equals(scissor) === false) {
-
       gl.scissor(scissor.x, scissor.y, scissor.z, scissor.w);
       currentScissor.copy(scissor);
-
     }
-
   }
 
+  /**
+   * 设置绘图区域
+   * @param viewport
+   */
   function viewport(viewport) {
-
     if (currentViewport.equals(viewport) === false) {
-
       gl.viewport(viewport.x, viewport.y, viewport.z, viewport.w);
       currentViewport.copy(viewport);
-
     }
-
   }
 
 //

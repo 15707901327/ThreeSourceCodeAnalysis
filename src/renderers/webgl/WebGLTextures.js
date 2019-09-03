@@ -316,8 +316,11 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
   }
 
-  //
-
+  /**
+   * 设置纹理
+   * @param texture 纹理贴图
+   * @param slot 纹理单元
+   */
   function setTexture2D(texture, slot) {
 
     var textureProperties = properties.get(texture);
@@ -329,25 +332,21 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       var image = texture.image;
 
       if (image === undefined) {
-
         console.warn('THREE.WebGLRenderer: Texture marked for update but image is undefined');
-
-      } else if (image.complete === false) {
-
+      }
+      else if (image.complete === false) {
         console.warn('THREE.WebGLRenderer: Texture marked for update but image is incomplete');
-
-      } else {
-
+      }
+      else {
+        // 上传纹理
         uploadTexture(textureProperties, texture, slot);
         return;
-
       }
 
     }
 
     state.activeTexture(_gl.TEXTURE0 + slot);
     state.bindTexture(_gl.TEXTURE_2D, textureProperties.__webglTexture);
-
   }
 
   function setTexture2DArray(texture, slot) {
@@ -586,22 +585,27 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
   }
 
+  /**
+   * 初始化纹理textureProperties.__webglTexture
+   * @param textureProperties 纹理对象属性
+   * @param texture 纹理对象
+   */
   function initTexture(textureProperties, texture) {
 
     if (textureProperties.__webglInit === undefined) {
-
       textureProperties.__webglInit = true;
-
       texture.addEventListener('dispose', onTextureDispose);
-
       textureProperties.__webglTexture = _gl.createTexture();
-
       info.memory.textures++;
-
     }
-
   }
 
+  /**
+   * 上传纹理
+   * @param textureProperties 纹理对象属性
+   * @param texture 纹理对象
+   * @param slot 纹理单元
+   */
   function uploadTexture(textureProperties, texture, slot) {
 
     var textureType = _gl.TEXTURE_2D;
@@ -609,6 +613,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     if (texture.isDataTexture2DArray) textureType = _gl.TEXTURE_2D_ARRAY;
     if (texture.isDataTexture3D) textureType = _gl.TEXTURE_3D;
 
+    // 初始化纹理对象
     initTexture(textureProperties, texture);
 
     state.activeTexture(_gl.TEXTURE0 + slot);
@@ -626,22 +631,20 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       glType = utils.convert(texture.type),
       glInternalFormat = getInternalFormat(glFormat, glType);
 
+    // 设置纹理的参数
     setTextureParameters(textureType, texture, supportsMips);
 
     var mipmap, mipmaps = texture.mipmaps;
 
     if (texture.isDepthTexture) {
-
       // populate depth texture with dummy data
-
       glInternalFormat = _gl.DEPTH_COMPONENT;
 
       if (texture.type === FloatType) {
-
         if (!capabilities.isWebGL2) throw new Error('Float Depth Texture only supported in WebGL2.0');
         glInternalFormat = _gl.DEPTH_COMPONENT32F;
-
-      } else if (capabilities.isWebGL2) {
+      }
+      else if (capabilities.isWebGL2) {
 
         // WebGL 2.0 requires signed internalformat for glTexImage2D
         glInternalFormat = _gl.DEPTH_COMPONENT16;
@@ -654,14 +657,11 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         // DEPTH_COMPONENT and type is not UNSIGNED_SHORT or UNSIGNED_INT
         // (https://www.khronos.org/registry/webgl/extensions/WEBGL_depth_texture/)
         if (texture.type !== UnsignedShortType && texture.type !== UnsignedIntType) {
-
           console.warn('THREE.WebGLRenderer: Use UnsignedShortType or UnsignedIntType for DepthFormat DepthTexture.');
 
           texture.type = UnsignedShortType;
           glType = utils.convert(texture.type);
-
         }
-
       }
 
       // Depth stencil textures need the DEPTH_STENCIL internal format
@@ -684,9 +684,11 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       }
 
+      // 将image指定的图像分配给绑定的目标上的纹理对象。
       state.texImage2D(_gl.TEXTURE_2D, 0, glInternalFormat, image.width, image.height, 0, glFormat, glType, null);
 
-    } else if (texture.isDataTexture) {
+    }
+    else if (texture.isDataTexture) {
 
       // use manually created mipmaps if available
       // if there are no manual mipmaps
@@ -711,7 +713,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       }
 
-    } else if (texture.isCompressedTexture) {
+    }
+    else if (texture.isCompressedTexture) {
 
       for (var i = 0, il = mipmaps.length; i < il; i++) {
 
@@ -739,17 +742,20 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
       textureProperties.__maxMipLevel = mipmaps.length - 1;
 
-    } else if (texture.isDataTexture2DArray) {
+    }
+    else if (texture.isDataTexture2DArray) {
 
       state.texImage3D(_gl.TEXTURE_2D_ARRAY, 0, glInternalFormat, image.width, image.height, image.depth, 0, glFormat, glType, image.data);
       textureProperties.__maxMipLevel = 0;
 
-    } else if (texture.isDataTexture3D) {
+    }
+    else if (texture.isDataTexture3D) {
 
       state.texImage3D(_gl.TEXTURE_3D, 0, glInternalFormat, image.width, image.height, image.depth, 0, glFormat, glType, image.data);
       textureProperties.__maxMipLevel = 0;
 
-    } else {
+    }
+    else {
 
       // regular Texture (image, video, canvas)
 
@@ -779,21 +785,18 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
 
     if (textureNeedsGenerateMipmaps(texture, supportsMips)) {
-
       generateMipmap(_gl.TEXTURE_2D, texture, image.width, image.height);
-
     }
 
     textureProperties.__version = texture.version;
 
     if (texture.onUpdate) texture.onUpdate(texture);
-
   }
 
   // Render targets
   // Setup storage for target texture and bind it to correct framebuffer
   /**
-   * 帧缓冲区
+   * 设置颜色关联对象
    * @param framebuffer 帧缓冲区对象
    * @param renderTarget 渲染目标
    * @param attachment 关联类型
@@ -877,6 +880,11 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
   }
 
   // Setup resources for a Depth Texture for a FBO (needs an extension)
+  /**
+   * 设置深度关联、模板关联 纹理
+   * @param framebuffer 帧缓冲区对象
+   * @param renderTarget 渲染目标
+   */
   function setupDepthTexture(framebuffer, renderTarget) {
 
     var isCube = (renderTarget && renderTarget.isWebGLRenderTargetCube);
@@ -885,9 +893,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
 
     if (!(renderTarget.depthTexture && renderTarget.depthTexture.isDepthTexture)) {
-
       throw new Error('renderTarget.depthTexture must be an instance of THREE.DepthTexture');
-
     }
 
     // upload an empty depth texture with framebuffer size
@@ -898,30 +904,30 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       renderTarget.depthTexture.image.width = renderTarget.width;
       renderTarget.depthTexture.image.height = renderTarget.height;
       renderTarget.depthTexture.needsUpdate = true;
-
     }
 
+    // 设置深度纹理
     setTexture2D(renderTarget.depthTexture, 0);
 
     var webglDepthTexture = properties.get(renderTarget.depthTexture).__webglTexture;
 
     if (renderTarget.depthTexture.format === DepthFormat) {
-
       _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.DEPTH_ATTACHMENT, _gl.TEXTURE_2D, webglDepthTexture, 0);
-
-    } else if (renderTarget.depthTexture.format === DepthStencilFormat) {
-
+    }
+    else if (renderTarget.depthTexture.format === DepthStencilFormat) {
       _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.DEPTH_STENCIL_ATTACHMENT, _gl.TEXTURE_2D, webglDepthTexture, 0);
-
-    } else {
-
+    }
+    else {
       throw new Error('Unknown depthTexture format');
-
     }
 
   }
 
   // Setup GL resources for a non-texture depth buffer
+  /**
+   * 渲染深度图
+   * @param renderTarget 渲染目标
+   */
   function setupDepthRenderbuffer(renderTarget) {
 
     var renderTargetProperties = properties.get(renderTarget);
@@ -931,7 +937,8 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     if (renderTarget.depthTexture) {
       if (isCube) throw new Error('target.depthTexture not supported in Cube render targets');
       setupDepthTexture(renderTargetProperties.__webglFramebuffer, renderTarget);
-    } else {
+    }
+    else {
 
       if (isCube) {
 
@@ -956,7 +963,6 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
 
     _gl.bindFramebuffer(_gl.FRAMEBUFFER, null);
-
   }
 
   // Set up GL resources for the render target
@@ -973,7 +979,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
 
     renderTarget.addEventListener('dispose', onRenderTargetDispose);
 
-    // renderTarget的texture 添加对象属性__webglTexture
+    // 创建纹理对象
     textureProperties.__webglTexture = _gl.createTexture();
 
     info.memory.textures++;
@@ -1027,6 +1033,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
 
     // Setup color buffer
+    // 设置颜色关联对象
     if (isCube) {
       state.bindTexture(_gl.TEXTURE_CUBE_MAP, textureProperties.__webglTexture);
       setTextureParameters(_gl.TEXTURE_CUBE_MAP, renderTarget.texture, supportsMips);
@@ -1047,7 +1054,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
       state.bindTexture(_gl.TEXTURE_2D, textureProperties.__webglTexture);
       // 设置纹理参数
       setTextureParameters(_gl.TEXTURE_2D, renderTarget.texture, supportsMips);
-      // 启动帧缓存图片
+      // 设置颜色关联对象
       setupFrameBufferTexture(renderTargetProperties.__webglFramebuffer, renderTarget, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D);
 
       if (textureNeedsGenerateMipmaps(renderTarget.texture, supportsMips)) {
@@ -1057,6 +1064,7 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
     }
 
     // Setup depth and stencil buffers
+    // 设置深度图
     if (renderTarget.depthBuffer) {
       setupDepthRenderbuffer(renderTarget);
     }

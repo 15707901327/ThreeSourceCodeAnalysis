@@ -161,7 +161,7 @@ function WebGLRenderer(parameters) {
     _currentCamera = null, // 当前渲染相机
     _currentArrayCamera = null,
 
-    _currentViewport = new Vector4(),
+    _currentViewport = new Vector4(),// 当前绘图区域
     _currentScissor = new Vector4(),
     _currentScissorTest = null,
 
@@ -173,8 +173,8 @@ function WebGLRenderer(parameters) {
     _pixelRatio = 1,
 
     _viewport = new Vector4(0, 0, _width, _height), // 设置绘图区域
-    _scissor = new Vector4(0, 0, _width, _height),
-    _scissorTest = false,
+    _scissor = new Vector4(0, 0, _width, _height), // 设置裁剪区域
+    _scissorTest = false, // 是否启用裁剪
 
     // frustum
 
@@ -784,11 +784,8 @@ function WebGLRenderer(parameters) {
     }
 
     if (object.morphTargetInfluences) {
-
       morphtargets.update(object, geometry, material, program);
-
       updateBuffers = true;
-
     }
 
     //
@@ -798,10 +795,8 @@ function WebGLRenderer(parameters) {
     var rangeFactor = 1;
 
     if (material.wireframe === true) {
-
       index = geometries.getWireframeAttribute(geometry);
       rangeFactor = 2;
-
     }
 
     var attribute;
@@ -832,7 +827,8 @@ function WebGLRenderer(parameters) {
 
     if (index !== null) {
       dataCount = index.count;
-    } else if (position !== undefined) {
+    }
+    else if (position !== undefined) {
       dataCount = position.count;
     }
 
@@ -875,7 +871,8 @@ function WebGLRenderer(parameters) {
         }
 
       }
-    } else if (object.isLine) {
+    }
+    else if (object.isLine) {
 
       var lineWidth = material.linewidth;
 
@@ -897,9 +894,11 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else if (object.isPoints) {
+    }
+    else if (object.isPoints) {
       renderer.setMode(_gl.POINTS);
-    } else if (object.isSprite) {
+    }
+    else if (object.isSprite) {
       renderer.setMode(_gl.TRIANGLES);
     }
 
@@ -907,7 +906,8 @@ function WebGLRenderer(parameters) {
       if (geometry.maxInstancedCount > 0) {
         renderer.renderInstances(geometry, drawStart, drawCount);
       }
-    } else {
+    }
+    else {
       renderer.render(drawStart, drawCount);
     }
   };
@@ -1156,9 +1156,7 @@ function WebGLRenderer(parameters) {
     if (camera.parent === null) camera.updateMatrixWorld();
 
     if (vr.enabled) {
-
       camera = vr.getCamera(camera);
-
     }
 
     // 获取当前渲染状态
@@ -1202,17 +1200,15 @@ function WebGLRenderer(parameters) {
 
     if (this.info.autoReset) this.info.reset();
 
+    // 设置渲染目标
     if (renderTarget !== undefined) {
-
       this.setRenderTarget(renderTarget);
-
     }
 
     // 渲染背景（更新缓冲区）
     background.render(currentRenderList, scene, camera, forceClear);
 
     // render scene
-
     var opaqueObjects = currentRenderList.opaque; // 当前不透明渲染列表
     var transparentObjects = currentRenderList.transparent;  // 当前透明渲染列表
 
@@ -1221,30 +1217,21 @@ function WebGLRenderer(parameters) {
 
       if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera, overrideMaterial);
       if (transparentObjects.length) renderObjects(transparentObjects, scene, camera, overrideMaterial);
-    } else {
+    }
+    else {
       // opaque pass (front-to-back order)
       if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera);
-
       // transparent pass (back-to-front order)
       if (transparentObjects.length) renderObjects(transparentObjects, scene, camera);
     }
 
-    //
-
     scene.onAfterRender(_this, scene, camera);
 
-    //
-
     if (_currentRenderTarget !== null) {
-
       // Generate mipmap if we're using any kind of mipmap filtering
-
       textures.updateRenderTargetMipmap(_currentRenderTarget);
-
       // resolve multisample renderbuffers to a single-sample texture if necessary
-
       textures.updateMultisampleRenderTarget(_currentRenderTarget);
-
     }
 
     // Ensure depth buffer writing is enabled so it can be cleared on next render
@@ -1256,16 +1243,13 @@ function WebGLRenderer(parameters) {
     state.setPolygonOffset(false);
 
     if (vr.enabled) {
-
       vr.submitFrame();
-
     }
 
     // _gl.finish();
 
     currentRenderList = null;
     currentRenderState = null;
-
   };
 
   /**
@@ -1406,37 +1390,22 @@ function WebGLRenderer(parameters) {
       var group = renderItem.group;
 
       if (camera.isArrayCamera) {
-
         _currentArrayCamera = camera;
-
         var cameras = camera.cameras;
-
         for (var j = 0, jl = cameras.length; j < jl; j++) {
-
           var camera2 = cameras[j];
-
           if (object.layers.test(camera2.layers)) {
-
             state.viewport(_currentViewport.copy(camera2.viewport));
-
             currentRenderState.setupLights(camera2);
-
             renderObject(object, scene, camera2, geometry, material, group);
-
           }
-
         }
-
-      } else {
-
-        _currentArrayCamera = null;
-
-        renderObject(object, scene, camera, geometry, material, group);
-
       }
-
+      else {
+        _currentArrayCamera = null;
+        renderObject(object, scene, camera, geometry, material, group);
+      }
     }
-
   }
 
   /**
@@ -1472,14 +1441,14 @@ function WebGLRenderer(parameters) {
 
       renderObjectImmediate(object, program);
 
-    } else {
+    }
+    else {
       _this.renderBufferDirect(camera, scene.fog, geometry, material, object, group);
     }
 
     // 渲染之后调用方法
     object.onAfterRender(_this, scene, camera, geometry, material, group);
     currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
-
   }
 
   /**
@@ -2469,7 +2438,7 @@ function WebGLRenderer(parameters) {
 
   };
 
-  this.getActiveMipMapLevel = function() {
+	this.getActiveMipmapLevel = function () {
 
     return _currentActiveMipmapLevel;
 
@@ -2487,14 +2456,14 @@ function WebGLRenderer(parameters) {
    * @param activeCubeFace
    * @param activeMipMapLevel
    */
-  this.setRenderTarget = function(renderTarget, activeCubeFace, activeMipMapLevel) {
+	this.setRenderTarget = function ( renderTarget, activeCubeFace, activeMipmapLevel ) {
 
     // 设置当前渲染目标类
     _currentRenderTarget = renderTarget;
     _currentActiveCubeFace = activeCubeFace;
     _currentActiveMipmapLevel = activeMipmapLevel;
 
-    // 渲染到纹理和深度图
+    // 设置颜色纹理、深度纹理、模板关联
     if (renderTarget && properties.get(renderTarget).__webglFramebuffer === undefined) {
       textures.setupRenderTarget(renderTarget);
     }
@@ -2502,24 +2471,29 @@ function WebGLRenderer(parameters) {
     var framebuffer = _framebuffer;
     var isCube = false;
 
+    // 设置绘图区域
     if (renderTarget) {
-
       var __webglFramebuffer = properties.get(renderTarget).__webglFramebuffer;
 
       if (renderTarget.isWebGLRenderTargetCube) {
         framebuffer = __webglFramebuffer[activeCubeFace || 0];
         isCube = true;
-      } else if (renderTarget.isWebGLMultisampleRenderTarget) {
+      }
+      else if (renderTarget.isWebGLMultisampleRenderTarget) {
         framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
-      } else {
+      }
+      else {
         framebuffer = __webglFramebuffer;
       }
 
+      // 设置绘图区域
       _currentViewport.copy(renderTarget.viewport);
+      // 设置裁剪区域
       _currentScissor.copy(renderTarget.scissor);
+      // 设置是否启用裁剪区域
       _currentScissorTest = renderTarget.scissorTest;
-
-    } else {
+    }
+    else {
       _currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor();
       _currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor();
       _currentScissorTest = _scissorTest;
@@ -2537,7 +2511,6 @@ function WebGLRenderer(parameters) {
     if (isCube) {
       var textureProperties = properties.get(renderTarget.texture);
       _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + (activeCubeFace || 0), textureProperties.__webglTexture, activeMipmapLevel || 0);
-
     }
   };
 
