@@ -90,7 +90,7 @@
           float c1 = smoothstep(min_width, min_width + loop.minBlur, dis);
           float c2 = 1.0 - smoothstep(max_width - loop.maxBlur, max_width, dis);
 
-          return mix(beginRGB,loop.color,c1*c2);
+          return mix(beginRGB,loop.color,c1*c2) + beginRGB ;
       }
 
       // 读取深度信息
