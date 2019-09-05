@@ -1,27 +1,28 @@
 import {Matrix3} from './Matrix3.js';
 import {Vector3} from './Vector3.js';
 
+var _vector1 = new Vector3();
+var _vector2 = new Vector3();
+var _normalMatrix = new Matrix3();
+
 /**
  * @author bhouston / http://clara.io
- */
-/**
- *
  * @param normal 定义平面法线的单位长度Vector3。默认值为（1,0,0）
- * @param constant 从原点到平面的有符号距离
+ * @param constant 从原点到平面的有符号距离 0
  * @constructor
  */
 function Plane(normal, constant) {
 
   // normal is assumed to be normalized
-
   this.normal = (normal !== undefined) ? normal : new Vector3(1, 0, 0);
   this.constant = (constant !== undefined) ? constant : 0;
-
 }
 
 Object.assign(Plane.prototype, {
 
-  set: function (normal, constant) {
+  isPlane: true,
+
+  set: function(normal, constant) {
 
     this.normal.copy(normal);
     this.constant = constant;
@@ -38,48 +39,46 @@ Object.assign(Plane.prototype, {
    * @param w
    * @return {setComponents}
    */
-  setComponents: function (x, y, z, w) {
+  setComponents: function(x, y, z, w) {
     this.normal.set(x, y, z);
     this.constant = w;
 
     return this;
   },
 
-  setFromNormalAndCoplanarPoint: function (normal, point) {
+  /**
+   * 设置由法线和任意共面点定义的平面属性。
+   * @param normal 法线
+   * @param point 共面点
+   * @returns {Plane}
+   */
+  setFromNormalAndCoplanarPoint: function(normal, point) {
 
     this.normal.copy(normal);
     this.constant = -point.dot(this.normal);
 
     return this;
+  },
+
+  setFromCoplanarPoints: function(a, b, c) {
+
+    var normal = _vector1.subVectors(c, b).cross(_vector2.subVectors(a, b)).normalize();
+
+    // Q: should an error be thrown if normal is zero (e.g. degenerate plane)?
+
+    this.setFromNormalAndCoplanarPoint(normal, a);
+
+    return this;
 
   },
 
-  setFromCoplanarPoints: function () {
-
-    var v1 = new Vector3();
-    var v2 = new Vector3();
-
-    return function setFromCoplanarPoints(a, b, c) {
-
-      var normal = v1.subVectors(c, b).cross(v2.subVectors(a, b)).normalize();
-
-      // Q: should an error be thrown if normal is zero (e.g. degenerate plane)?
-
-      this.setFromNormalAndCoplanarPoint(normal, a);
-
-      return this;
-
-    };
-
-  }(),
-
-  clone: function () {
+  clone: function() {
 
     return new this.constructor().copy(this);
 
   },
 
-  copy: function (plane) {
+  copy: function(plane) {
 
     this.normal.copy(plane.normal);
     this.constant = plane.constant;
@@ -88,7 +87,7 @@ Object.assign(Plane.prototype, {
 
   },
 
-  normalize: function () {
+  normalize: function() {
 
     // Note: will lead to a divide by zero if the plane is invalid.
 
@@ -100,7 +99,7 @@ Object.assign(Plane.prototype, {
 
   },
 
-  negate: function () {
+  negate: function() {
 
     this.constant *= -1;
     this.normal.negate();
@@ -114,19 +113,19 @@ Object.assign(Plane.prototype, {
    * @param point
    * @returns {*}
    */
-  distanceToPoint: function (point) {
+  distanceToPoint: function(point) {
 
     return this.normal.dot(point) + this.constant;
 
   },
 
-  distanceToSphere: function (sphere) {
+  distanceToSphere: function(sphere) {
 
     return this.distanceToPoint(sphere.center) - sphere.radius;
 
   },
 
-  projectPoint: function (point, target) {
+  projectPoint: function(point, target) {
 
     if (target === undefined) {
 
@@ -139,52 +138,46 @@ Object.assign(Plane.prototype, {
 
   },
 
-  intersectLine: function () {
+  intersectLine: function(line, target) {
 
-    var v1 = new Vector3();
+    if (target === undefined) {
 
-    return function intersectLine(line, target) {
+      console.warn('THREE.Plane: .intersectLine() target is now required');
+      target = new Vector3();
 
-      if (target === undefined) {
+    }
 
-        console.warn('THREE.Plane: .intersectLine() target is now required');
-        target = new Vector3();
+    var direction = line.delta(_vector1);
 
-      }
+    var denominator = this.normal.dot(direction);
 
-      var direction = line.delta(v1);
+    if (denominator === 0) {
 
-      var denominator = this.normal.dot(direction);
+      // line is coplanar, return origin
+      if (this.distanceToPoint(line.start) === 0) {
 
-      if (denominator === 0) {
-
-        // line is coplanar, return origin
-        if (this.distanceToPoint(line.start) === 0) {
-
-          return target.copy(line.start);
-
-        }
-
-        // Unsure if this is the correct method to handle this case.
-        return undefined;
+        return target.copy(line.start);
 
       }
 
-      var t = -(line.start.dot(this.normal) + this.constant) / denominator;
+      // Unsure if this is the correct method to handle this case.
+      return undefined;
 
-      if (t < 0 || t > 1) {
+    }
 
-        return undefined;
+    var t = -(line.start.dot(this.normal) + this.constant) / denominator;
 
-      }
+    if (t < 0 || t > 1) {
 
-      return target.copy(direction).multiplyScalar(t).add(line.start);
+      return undefined;
 
-    };
+    }
 
-  }(),
+    return target.copy(direction).multiplyScalar(t).add(line.start);
 
-  intersectsLine: function (line) {
+  },
+
+  intersectsLine: function(line) {
 
     // Note: this tests if a line intersects the plane, not whether it (or its end-points) are coplanar with it.
 
@@ -195,19 +188,19 @@ Object.assign(Plane.prototype, {
 
   },
 
-  intersectsBox: function (box) {
+  intersectsBox: function(box) {
 
     return box.intersectsPlane(this);
 
   },
 
-  intersectsSphere: function (sphere) {
+  intersectsSphere: function(sphere) {
 
     return sphere.intersectsPlane(this);
 
   },
 
-  coplanarPoint: function (target) {
+  coplanarPoint: function(target) {
 
     if (target === undefined) {
 
@@ -220,28 +213,22 @@ Object.assign(Plane.prototype, {
 
   },
 
-  applyMatrix4: function () {
+  /**
+   * 将Matrix4应用于平面。矩阵必须是仿射均匀变换。
+   * @param matrix
+   * @param optionalNormalMatrix
+   * @returns {Plane}
+   */
+  applyMatrix4: function(matrix, optionalNormalMatrix) {
 
-    var v1 = new Vector3();
-    var m1 = new Matrix3();
+    var normalMatrix = optionalNormalMatrix || _normalMatrix.getNormalMatrix(matrix);
+    var referencePoint = this.coplanarPoint(_vector1).applyMatrix4(matrix);
+    var normal = this.normal.applyMatrix3(normalMatrix).normalize();
+    this.constant = -referencePoint.dot(normal);
+    return this;
+  },
 
-    return function applyMatrix4(matrix, optionalNormalMatrix) {
-
-      var normalMatrix = optionalNormalMatrix || m1.getNormalMatrix(matrix);
-
-      var referencePoint = this.coplanarPoint(v1).applyMatrix4(matrix);
-
-      var normal = this.normal.applyMatrix3(normalMatrix).normalize();
-
-      this.constant = -referencePoint.dot(normal);
-
-      return this;
-
-    };
-
-  }(),
-
-  translate: function (offset) {
+  translate: function(offset) {
 
     this.constant -= offset.dot(this.normal);
 
@@ -249,13 +236,12 @@ Object.assign(Plane.prototype, {
 
   },
 
-  equals: function (plane) {
+  equals: function(plane) {
 
     return plane.normal.equals(this.normal) && (plane.constant === this.constant);
 
   }
 
 });
-
 
 export {Plane};

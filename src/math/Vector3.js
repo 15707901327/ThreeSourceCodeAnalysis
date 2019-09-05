@@ -9,7 +9,8 @@ import {Quaternion} from './Quaternion.js';
  * @author egraether / http://egraether.com/
  * @author WestLangley / http://github.com/WestLangley
  */
-
+var _vector = new Vector3();
+var _quaternion = new Quaternion();
 /**
  * 三维坐标
  * @param x
@@ -249,11 +250,7 @@ Object.assign(Vector3.prototype, {
 
   },
 
-  applyEuler: function () {
-
-    var quaternion = new Quaternion();
-
-    return function applyEuler(euler) {
+	applyEuler: function ( euler ) {
 
       if (!(euler && euler.isEuler)) {
 
@@ -261,23 +258,15 @@ Object.assign(Vector3.prototype, {
 
       }
 
-      return this.applyQuaternion(quaternion.setFromEuler(euler));
+		return this.applyQuaternion( _quaternion.setFromEuler( euler ) );
 
-    };
+	},
 
-  }(),
+	applyAxisAngle: function ( axis, angle ) {
 
-  applyAxisAngle: function () {
+		return this.applyQuaternion( _quaternion.setFromAxisAngle( axis, angle ) );
 
-    var quaternion = new Quaternion();
-
-    return function applyAxisAngle(axis, angle) {
-
-      return this.applyQuaternion(quaternion.setFromAxisAngle(axis, angle));
-
-    };
-
-  }(),
+	},
 
   applyMatrix3: function (m) {
 
@@ -566,34 +555,25 @@ Object.assign(Vector3.prototype, {
 
   },
 
-  projectOnPlane: function () {
+	projectOnPlane: function ( planeNormal ) {
 
-    var v1 = new Vector3();
+		_vector.copy( this ).projectOnVector( planeNormal );
 
-    return function projectOnPlane(planeNormal) {
+		return this.sub( _vector );
 
-      v1.copy(this).projectOnVector(planeNormal);
+	},
 
-      return this.sub(v1);
-
-    };
-
-  }(),
-
-  reflect: function () {
+  /**
+   * 镜像向量，沿着法线
+   * @param normal 法线
+   * @returns {*}
+   */
+	reflect: function ( normal ) {
 
     // reflect incident vector off plane orthogonal to normal
     // normal is assumed to have unit length
-
-    var v1 = new Vector3();
-
-    return function reflect(normal) {
-
-      return this.sub(v1.copy(normal).multiplyScalar(2 * this.dot(normal)));
-
-    };
-
-  }(),
+		return this.sub( _vector.copy( normal ).multiplyScalar( 2 * this.dot( normal ) ) );
+	},
 
   angleTo: function (v) {
 

@@ -23,7 +23,8 @@ import { Vector4 } from '../math/Vector4.js';
  * 	wrapT 纹理垂直填充参数
  *  magFilter 纹理放大像素的截取类型
  *  minFilter 纹理缩小像素的截取类型
- *
+ *  format 图像的内部格式
+ *  stencilBuffer：是否开启模板缓冲区 true
  *  depthTexture：深度图 THREE.DepthTexture
  * @constructor
  */
@@ -48,7 +49,7 @@ function WebGLRenderTarget( width, height, options ) {
 	this.texture.image.height = height;
 
 	this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
-	// 纹理缩小时像素的取值
+	// 纹理缩小时像素的取值format
 	this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
 
 	this.depthBuffer = options.depthBuffer !== undefined ? options.depthBuffer : true;

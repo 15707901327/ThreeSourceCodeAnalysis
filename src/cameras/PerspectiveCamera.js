@@ -4,6 +4,10 @@ import { _Math } from '../math/Math.js';
 
 /**
  * 投影相机对象
+ *  @author mrdoob / http://mrdoob.com/
+ * @author greggman / http://games.greggman.com/
+ * @author zz85 / http://www.lab4games.net/zz85/blog
+ * @author tschw
  * @param fov
  * @param aspect
  * @param near

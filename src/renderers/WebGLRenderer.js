@@ -1268,64 +1268,46 @@ function WebGLRenderer(parameters) {
     var visible = object.layers.test(camera.layers);
 
     if (visible) {
-
       if (object.isGroup) {
-
         groupOrder = object.renderOrder;
-
-      } else if (object.isLOD) {
-
+      }
+      else if (object.isLOD) {
         if (object.autoUpdate === true) object.update(camera);
-
-      } else if (object.isLight) {
-
+      }
+      else if (object.isLight) {
         currentRenderState.pushLight(object);
         if (object.castShadow) {
-
           currentRenderState.pushShadow(object);
-
         }
-      } else if (object.isSprite) {
+      }
+      else if (object.isSprite) {
         if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
-
           if (sortObjects) {
-
             _vector3.setFromMatrixPosition(object.matrixWorld)
             .applyMatrix4(_projScreenMatrix);
-
           }
 
           var geometry = objects.update(object);
           var material = object.material;
 
           if (material.visible) {
-
             currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
-
           }
-
         }
-
-      } else if (object.isImmediateRenderObject) {
-
+      }
+      else if (object.isImmediateRenderObject) {
         if (sortObjects) {
-
           _vector3.setFromMatrixPosition(object.matrixWorld)
           .applyMatrix4(_projScreenMatrix);
-
         }
-
         currentRenderList.push(object, null, object.material, groupOrder, _vector3.z, null);
-
-      } else if (object.isMesh || object.isLine || object.isPoints) {
-
+      }
+      else if (object.isMesh || object.isLine || object.isPoints) {
         if (object.isSkinnedMesh) {
           object.skeleton.update();
         }
-
         // 检查物体是否在平截头体内
         if (!object.frustumCulled || _frustum.intersectsObject(object)) {
-
           // 计算模型投影到屏幕上的坐标
           if (sortObjects) {
             _vector3.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix);
@@ -1351,24 +1333,19 @@ function WebGLRenderer(parameters) {
 
             }
 
-          } else if (material.visible) {
+          }
+          else if (material.visible) {
             currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
           }
-
         }
-
       }
-
     }
 
     var children = object.children;
 
     for (var i = 0, l = children.length; i < l; i++) {
-
       projectObject(children[i], camera, groupOrder, sortObjects);
-
     }
-
   }
 
   /**
