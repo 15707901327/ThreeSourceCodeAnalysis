@@ -91,8 +91,8 @@ var PGL = PGL || {};
             }
 
             // this.scene.fog = new THREE.Fog(0xffffff, 300, 1200);
-            // var axes = new THREE.AxesHelper(100);
-            // this.scene.add(axes);
+            var axes = new THREE.AxesHelper(100);
+            this.scene.add(axes);
         },
         initCamera: function () {
             this.camera = new THREE.PerspectiveCamera(45, this.getWidth() / this.getHeight(), 0.1, 30000);

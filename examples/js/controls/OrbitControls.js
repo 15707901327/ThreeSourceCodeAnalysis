@@ -74,8 +74,6 @@ THREE.OrbitControls = function (object, domElement) {
     // 设置为false以禁用旋转
     this.enableRotate = true;
     this.rotateSpeed = 1.0;
-    // 设置false禁用上下旋转
-    this.enableRotatePhi = true;
 
     // 设置为 false 以禁用平移
     this.enablePan = true;
@@ -484,9 +482,8 @@ THREE.OrbitControls = function (object, domElement) {
         var element = scope.domElement === document ? scope.domElement.body : scope.domElement;
         // 整个绘图区域的旋转角度设置为360°，根据移动的距离计算旋转的角度
         rotateLeft(2 * Math.PI * rotateDelta.x / element.clientHeight); // yes, height
-        if(scope.enableRotatePhi){
+
             rotateUp(2 * Math.PI * rotateDelta.y / element.clientHeight);
-        }
 
         rotateStart.copy(rotateEnd);
 
@@ -547,11 +544,8 @@ THREE.OrbitControls = function (object, domElement) {
             dollyIn(getZoomScale());
         }
         scope.update();
-    }
 
-    this.handleScale = function (num) {
-        handleMouseWheel({deltaY: num})
-    };
+	}
 
     function handleKeyDown(event) {
 
@@ -640,9 +634,7 @@ THREE.OrbitControls = function (object, domElement) {
 
         rotateLeft(2 * Math.PI * rotateDelta.x / element.clientHeight); // yes, height
 
-        if(scope.enableRotatePhi) {
             rotateUp(2 * Math.PI * rotateDelta.y / element.clientHeight);
-        }
 
         rotateStart.copy(rotateEnd);
 

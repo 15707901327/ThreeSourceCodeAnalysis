@@ -100,6 +100,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	};
 
+  this.distance = function (radius) {};
+
 	this.saveState = function () {
 
 		scope.target0.copy( scope.target );
@@ -169,6 +171,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 			// restrict radius to be between desired limits
 			spherical.radius = Math.max( scope.minDistance, Math.min( scope.maxDistance, spherical.radius ) );
+      scope.distance(spherical.radius);
 
 			// move target to panned location
 			scope.target.add( panOffset );
@@ -539,7 +542,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 	}
 
     this.handleScale = function (num) {
-        handleMouseWheel({deltaY: num})
+    handleMouseWheel({deltaY: num});
     };
 
 	function handleKeyDown( event ) {
