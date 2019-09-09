@@ -6,6 +6,11 @@ function EventDispatcher() {}
 
 Object.assign( EventDispatcher.prototype, {
 
+	/**
+	 * 添加事件
+	 * @param type 事件类型
+	 * @param listener
+	 */
 	addEventListener: function ( type, listener ) {
 
 		if ( this._listeners === undefined ) this._listeners = {};
@@ -13,29 +18,32 @@ Object.assign( EventDispatcher.prototype, {
 		var listeners = this._listeners;
 
 		if ( listeners[ type ] === undefined ) {
-
 			listeners[ type ] = [];
-
 		}
 
 		if ( listeners[ type ].indexOf( listener ) === - 1 ) {
-
 			listeners[ type ].push( listener );
-
 		}
 
 	},
 
+	/**
+	 * 判断是否注册当前事件
+	 * @param type
+	 * @param listener
+	 * @returns {boolean}
+	 */
 	hasEventListener: function ( type, listener ) {
-
 		if ( this._listeners === undefined ) return false;
-
 		var listeners = this._listeners;
-
 		return listeners[ type ] !== undefined && listeners[ type ].indexOf( listener ) !== - 1;
-
 	},
 
+	/**
+	 * 移除当前事件
+	 * @param type
+	 * @param listener
+	 */
 	removeEventListener: function ( type, listener ) {
 
 		if ( this._listeners === undefined ) return;
@@ -44,19 +52,17 @@ Object.assign( EventDispatcher.prototype, {
 		var listenerArray = listeners[ type ];
 
 		if ( listenerArray !== undefined ) {
-
 			var index = listenerArray.indexOf( listener );
-
 			if ( index !== - 1 ) {
-
 				listenerArray.splice( index, 1 );
-
 			}
-
 		}
-
 	},
 
+	/**
+	 * 派发事件
+	 * @param event
+	 */
 	dispatchEvent: function ( event ) {
 
 		if ( this._listeners === undefined ) return;
