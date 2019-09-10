@@ -19,7 +19,7 @@ import {
 } from "../../../build/three_r108.module.js";
 
 /**
- *
+ * 镜像反射类
  * @param geometry 几何体
  * @param options 参数
  *  color：颜色  0x7F7F7F

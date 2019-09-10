@@ -8,6 +8,24 @@ import {Matrix3} from '../math/Matrix3.js';
 import {_Math} from '../math/Math.js';
 import { TrianglesDrawMode } from '../constants.js';
 
+var _object3DId = 0;
+
+var _v1 = new Vector3();
+var _q1 = new Quaternion();
+var _m1 = new Matrix4();
+var _target = new Vector3();
+
+var _position = new Vector3();
+var _scale = new Vector3();
+var _quaternion = new Quaternion();
+
+var _xAxis = new Vector3( 1, 0, 0 );
+var _yAxis = new Vector3( 0, 1, 0 );
+var _zAxis = new Vector3( 0, 0, 1 );
+
+var _addedEvent = { type: 'added' };
+var _removedEvent = { type: 'removed' };
+
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author mikael emtinger / http://gomo.se/
@@ -16,11 +34,9 @@ import { TrianglesDrawMode } from '../constants.js';
  * @author elephantatwork / www.elephantatwork.ch
  */
 
-var object3DId = 0;
-
 function Object3D() {
 
-  Object.defineProperty(this, 'id', {value: object3DId++});
+	Object.defineProperty( this, 'id', { value: _object3DId ++ } );
 
   this.uuid = _Math.generateUUID();
 
@@ -50,8 +66,8 @@ function Object3D() {
 
   }
 
-  rotation.onChange(onRotationChange);
-  quaternion.onChange(onQuaternionChange);
+	rotation._onChange( onRotationChange );
+	quaternion._onChange( onQuaternionChange );
 
   Object.defineProperties(this, {
     position: {
@@ -165,135 +181,81 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   },
 
-  rotateOnAxis: function () {
+	rotateOnAxis: function ( axis, angle ) {
 
     // rotate object on axis in object space
     // axis is assumed to be normalized
 
-    var q1 = new Quaternion();
+		_q1.setFromAxisAngle( axis, angle );
 
-    return function rotateOnAxis(axis, angle) {
-
-      q1.setFromAxisAngle(axis, angle);
-
-      this.quaternion.multiply(q1);
+		this.quaternion.multiply( _q1 );
 
       return this;
 
-    };
+	},
 
-  }(),
-
-  rotateOnWorldAxis: function () {
+	rotateOnWorldAxis: function ( axis, angle ) {
 
     // rotate object on axis in world space
     // axis is assumed to be normalized
     // method assumes no rotated parent
 
-    var q1 = new Quaternion();
+		_q1.setFromAxisAngle( axis, angle );
 
-    return function rotateOnWorldAxis(axis, angle) {
-
-      q1.setFromAxisAngle(axis, angle);
-
-      this.quaternion.premultiply(q1);
+		this.quaternion.premultiply( _q1 );
 
       return this;
 
-    };
+	},
 
-  }(),
+	rotateX: function ( angle ) {
 
-  rotateX: function () {
+		return this.rotateOnAxis( _xAxis, angle );
 
-    var v1 = new Vector3(1, 0, 0);
+	},
 
-    return function rotateX(angle) {
+	rotateY: function ( angle ) {
 
-      return this.rotateOnAxis(v1, angle);
+		return this.rotateOnAxis( _yAxis, angle );
 
-    };
+	},
 
-  }(),
+	rotateZ: function ( angle ) {
 
-  rotateY: function () {
+		return this.rotateOnAxis( _zAxis, angle );
 
-    var v1 = new Vector3(0, 1, 0);
+	},
 
-    return function rotateY(angle) {
-
-      return this.rotateOnAxis(v1, angle);
-
-    };
-
-  }(),
-
-  rotateZ: function () {
-
-    var v1 = new Vector3(0, 0, 1);
-
-    return function rotateZ(angle) {
-
-      return this.rotateOnAxis(v1, angle);
-
-    };
-
-  }(),
-
-  translateOnAxis: function () {
+	translateOnAxis: function ( axis, distance ) {
 
     // translate object by distance along axis in object space
     // axis is assumed to be normalized
 
-    var v1 = new Vector3();
+		_v1.copy( axis ).applyQuaternion( this.quaternion );
 
-    return function translateOnAxis(axis, distance) {
-
-      v1.copy(axis).applyQuaternion(this.quaternion);
-
-      this.position.add(v1.multiplyScalar(distance));
+		this.position.add( _v1.multiplyScalar( distance ) );
 
       return this;
 
-    };
+	},
 
-  }(),
+	translateX: function ( distance ) {
 
-  translateX: function () {
+		return this.translateOnAxis( _xAxis, distance );
 
-    var v1 = new Vector3(1, 0, 0);
+	},
 
-    return function translateX(distance) {
+	translateY: function ( distance ) {
 
-      return this.translateOnAxis(v1, distance);
+		return this.translateOnAxis( _yAxis, distance );
 
-    };
+	},
 
-  }(),
+	translateZ: function ( distance ) {
 
-  translateY: function () {
+		return this.translateOnAxis( _zAxis, distance );
 
-    var v1 = new Vector3(0, 1, 0);
-
-    return function translateY(distance) {
-
-      return this.translateOnAxis(v1, distance);
-
-    };
-
-  }(),
-
-  translateZ: function () {
-
-    var v1 = new Vector3(0, 0, 1);
-
-    return function translateZ(distance) {
-
-      return this.translateOnAxis(v1, distance);
-
-    };
-
-  }(),
+	},
 
   localToWorld: function (vector) {
 
@@ -301,40 +263,23 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   },
 
-  worldToLocal: function () {
+	worldToLocal: function ( vector ) {
 
-    var m1 = new Matrix4();
+		return vector.applyMatrix4( _m1.getInverse( this.matrixWorld ) );
 
-    return function worldToLocal(vector) {
+	},
 
-      return vector.applyMatrix4(m1.getInverse(this.matrixWorld));
-
-    };
-
-  }(),
-
-  /**
-   * 更新rotation、quaternion
-   * 接受的参数可以是一个THREE.Vector3类型，也可以是三个x\y\z类型
-   */
-  lookAt: function () {
+	lookAt: function ( x, y, z ) {
 
     // This method does not support objects having non-uniformly-scaled parent(s)
 
-    var q1 = new Quaternion();
-    var m1 = new Matrix4();
-    var target = new Vector3();
-    var position = new Vector3();
-
-    return function lookAt(x, y, z) {
-
       if (x.isVector3) {
 
-        target.copy(x);
+			_target.copy( x );
 
       } else {
 
-        target.set(x, y, z);
+			_target.set( x, y, z );
 
       }
 
@@ -342,32 +287,29 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
       this.updateWorldMatrix(true, false);
 
-      position.setFromMatrixPosition(this.matrixWorld);
+		_position.setFromMatrixPosition( this.matrixWorld );
 
 			if ( this.isCamera || this.isLight ) {
 
-        m1.lookAt(position, target, this.up);
+			_m1.lookAt( _position, _target, this.up );
 
       } else {
 
-        m1.lookAt(target, position, this.up);
+			_m1.lookAt( _target, _position, this.up );
 
       }
 
-      this.quaternion.setFromRotationMatrix(m1);
+		this.quaternion.setFromRotationMatrix( _m1 );
 
       if (parent) {
 
-        m1.extractRotation(parent.matrixWorld);
-        q1.setFromRotationMatrix(m1);
-        this.quaternion.premultiply(q1.inverse());
+			_m1.extractRotation( parent.matrixWorld );
+			_q1.setFromRotationMatrix( _m1 );
+			this.quaternion.premultiply( _q1.inverse() );
 
       }
 
-    };
-
-  }(),
-
+	},
   /**
    * 把object对象放到children数组中，从原有得父类中移除该对象
    * @param object 可以是一个值，也可以是多个值
@@ -403,9 +345,9 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
       }
 
       object.parent = this;
-      object.dispatchEvent({type: 'added'});
-
       this.children.push(object);
+
+			object.dispatchEvent( _addedEvent );
 
     } else {
 
@@ -436,16 +378,41 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
     if (index !== -1) {
 
       object.parent = null;
-
-      object.dispatchEvent({type: 'removed'});
-
       this.children.splice(index, 1);
+
+			object.dispatchEvent( _removedEvent );
 
     }
 
     return this;
 
   },
+
+	attach: function ( object ) {
+
+		// adds object as a child of this, while maintaining the object's world transform
+
+		this.updateWorldMatrix( true, false );
+
+		_m1.getInverse( this.matrixWorld );
+
+		if ( object.parent !== null ) {
+
+			object.parent.updateWorldMatrix( true, false );
+
+			_m1.multiply( object.parent.matrixWorld );
+
+		}
+
+		object.applyMatrix( _m1 );
+
+		object.updateWorldMatrix( false, false );
+
+		this.add( object );
+
+		return this;
+
+	},
 
   getObjectById: function (id) {
 
@@ -495,12 +462,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   },
 
-  getWorldQuaternion: function () {
-
-    var position = new Vector3();
-    var scale = new Vector3();
-
-    return function getWorldQuaternion(target) {
+	getWorldQuaternion: function ( target ) {
 
       if (target === undefined) {
 
@@ -511,20 +473,13 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
       this.updateMatrixWorld(true);
 
-      this.matrixWorld.decompose(position, target, scale);
+		this.matrixWorld.decompose( _position, target, _scale );
 
       return target;
 
-    };
+	},
 
-  }(),
-
-  getWorldScale: function () {
-
-    var position = new Vector3();
-    var quaternion = new Quaternion();
-
-    return function getWorldScale(target) {
+	getWorldScale: function ( target ) {
 
       if (target === undefined) {
 
@@ -535,13 +490,11 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
       this.updateMatrixWorld(true);
 
-      this.matrixWorld.decompose(position, quaternion, target);
+		this.matrixWorld.decompose( _position, _quaternion, target );
 
       return target;
 
-    };
-
-  }(),
+	},
 
   getWorldDirection: function (target) {
 
