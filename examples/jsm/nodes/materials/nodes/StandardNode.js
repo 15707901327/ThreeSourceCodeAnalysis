@@ -13,6 +13,10 @@ import { ColorNode } from '../../inputs/ColorNode.js';
 import { FloatNode } from '../../inputs/FloatNode.js';
 import { SpecularMIPLevelNode } from '../../utils/SpecularMIPLevelNode.js';
 
+/**
+ * 标准节点
+ * @constructor
+ */
 function StandardNode() {
 
 	Node.call( this );

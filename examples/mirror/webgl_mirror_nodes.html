@@ -94,8 +94,6 @@
 
 			function fillScene() {
 
-				var planeGeo = new THREE.PlaneBufferGeometry( 100.1, 100.1 );
-
 				// reflector/mirror plane
 				var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
 				var groundMirror = new ReflectorRTT( geometry, { clipBias: 0.003, textureWidth: WIDTH, textureHeight: HEIGHT } );
@@ -130,14 +128,15 @@
 				groundMirrorMaterial.environmentAlpha = mask;
 				groundMirrorMaterial.normal = new NormalMapNode( normalMap );
 
+				var planeGeo = new THREE.PlaneBufferGeometry( 100.1, 100.1 );
 				var mirrorMesh = new THREE.Mesh( planeGeo, groundMirrorMaterial );
-				// add all alternative mirror materials inside the ReflectorRTT to prevent:
-				// glDrawElements: Source and destination textures of the draw are the same.
+				// 在ReflectorRTT中添加所有替代镜像材质以防止：
+				// glDrawElements: 绘制的源和目标纹理是相同的
 				groundMirror.add( mirrorMesh );
-
 				groundMirror.rotateX( - Math.PI / 2 );
 				scene.add( groundMirror );
 
+				// 球形物体
 				sphereGroup = new THREE.Object3D();
 				scene.add( sphereGroup );
 

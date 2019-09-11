@@ -1,11 +1,17 @@
 // TODO: all nodes
 /******* nodes整体结构 ******
+ * Material：
+ *    ShaderMaterial：
+ *        NodeMaterial：
+ *            StandardNodeMaterial：
+ * NodeMaterialLoader：节点材质加载器
  * Object3D:
- *    Mesh:
- *        Reflector:
- *            ReflectorRTT:
+ *        Mesh:
+ *            Reflector:
+ *                ReflectorRTT:
  * NodeFrame:
  * Node:根节点
+ *    StandardNode：标准节点
  * 		SwitchNode：
  * 		TempNode：
  * 				ReflectorNode:
