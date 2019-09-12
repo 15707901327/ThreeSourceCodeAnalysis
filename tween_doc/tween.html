@@ -17,7 +17,16 @@
       <section>
         <h4>基本用法</h4>
         <div class="content">
-          <strong>tween概述</strong>
+          <strong>delay:</strong>
+          <p>tween.delay(1000);</p>
+          <p>delay方法用于控制动画之间的延时.</p>
+          <strong>to:</strong>
+          <p>var position = { x: 100, y: 0 };</p>
+          <p>var tween = new TWEEN.Tween(position);</p>
+          <p>tween.to({ x: 200 }, 1000);</p>
+          <p>用时1000毫秒，x从100渐变为200.</p>
+          <strong>onComplete:</strong>
+          <p>动画结束调用函数。</p>
         </div>
       </section>
     </section>
