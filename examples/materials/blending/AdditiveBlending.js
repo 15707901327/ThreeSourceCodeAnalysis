@@ -1,5 +1,5 @@
-import {MTLLoader} from './jsm/loaders/MTLLoader.js';
-import {OBJLoader} from './jsm/loaders/OBJLoader.js';
+import {MTLLoader} from '../../jsm/loaders/MTLLoader.js';
+import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
 
 /**
  * 场景初始化区
@@ -123,14 +123,6 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       //是否开启右键拖拽
       this.orbitControls.enablePan = true;
       this.orbitControls.enableRotatePhi = false;
-      var orbitControls = this.orbitControls;
-
-      document.getElementById("item1").addEventListener("click", function(event) {
-        orbitControls.handleScale(-1);
-      });
-      document.getElementById("item2").addEventListener("click", function(event) {
-        orbitControls.handleScale(1);
-      });
     },
     initStats: function() {
       this.stats = new Stats();
@@ -150,12 +142,12 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       var onError = function() {};
       let _this = this;
       new MTLLoader()
-      .setPath('models/obj/blending/')
+      .setPath('../../models/obj/blending/')
       .load('test004.mtl', function(materials) {
         // materials.preload();
         new OBJLoader()
         .setMaterials(materials)
-        .setPath('models/obj/blending/')
+        .setPath('../../models/obj/blending/')
         .load('test004.obj', function(object) {
           object.children[0].material.blending = THREE.AdditiveBlending;
           _this.scene.add(object);
@@ -166,7 +158,7 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
      * 添加天空盒子
      */
     initSkyBox: function() {
-      let texture = new THREE.TextureLoader().load('textures/skybox/sky.png');
+      let texture = new THREE.TextureLoader().load('../../textures/skybox/sky.png');
       let sphereGeometry = new THREE.SphereGeometry(700, 50, 50);
       sphereGeometry.scale(-1, 1, 1);
       let sphereMaterial = new THREE.MeshBasicMaterial({
