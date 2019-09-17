@@ -20,12 +20,14 @@ export var SmoothShading = 2;
 export var NoColors = 0;
 export var FaceColors = 1;
 export var VertexColors = 2;
+// 混合模式
 export var NoBlending = 0;
 export var NormalBlending = 1;
 export var AdditiveBlending = 2;
 export var SubtractiveBlending = 3;
 export var MultiplyBlending = 4;
 export var CustomBlending = 5;
+
 export var AddEquation = 100;
 export var SubtractEquation = 101;
 export var ReverseSubtractEquation = 102;
