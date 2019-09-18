@@ -577,7 +577,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   /**
    * 设置混合
-   * @param blending
+   * @param blending 混合类型
    * @param blendEquation
    * @param blendSrc
    * @param blendDst
@@ -589,90 +589,63 @@ function WebGLState(gl, extensions, utils, capabilities) {
   function setBlending(blending, blendEquation, blendSrc, blendDst, blendEquationAlpha, blendSrcAlpha, blendDstAlpha, premultipliedAlpha) {
 
     if (blending === NoBlending) {
-
       if (currentBlendingEnabled) {
-
         disable(gl.BLEND);
         currentBlendingEnabled = false;
-
       }
-
       return;
-
     }
 
     if (!currentBlendingEnabled) {
-
       enable(gl.BLEND);
       currentBlendingEnabled = true;
-
     }
 
     if (blending !== CustomBlending) {
-
       if (blending !== currentBlending || premultipliedAlpha !== currentPremultipledAlpha) {
-
         if (currentBlendEquation !== AddEquation || currentBlendEquationAlpha !== AddEquation) {
-
           gl.blendEquation(gl.FUNC_ADD);
-
           currentBlendEquation = AddEquation;
           currentBlendEquationAlpha = AddEquation;
-
         }
 
         if (premultipliedAlpha) {
-
           switch (blending) {
-
             case NormalBlending:
               gl.blendFuncSeparate(gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
               break;
-
             case AdditiveBlending:
               gl.blendFunc(gl.ONE, gl.ONE);
               break;
-
             case SubtractiveBlending:
               gl.blendFuncSeparate(gl.ZERO, gl.ZERO, gl.ONE_MINUS_SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
               break;
-
             case MultiplyBlending:
               gl.blendFuncSeparate(gl.ZERO, gl.SRC_COLOR, gl.ZERO, gl.SRC_ALPHA);
               break;
-
             default:
               console.error('THREE.WebGLState: Invalid blending: ', blending);
               break;
-
           }
-
-        } else {
-
+        }
+        else {
           switch (blending) {
-
             case NormalBlending:
               gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
               break;
-
             case AdditiveBlending:
               gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
               break;
-
             case SubtractiveBlending:
               gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
               break;
-
             case MultiplyBlending:
               gl.blendFunc(gl.ZERO, gl.SRC_COLOR);
               break;
-
             default:
               console.error('THREE.WebGLState: Invalid blending: ', blending);
               break;
-
           }
-
         }
 
         currentBlendSrc = null;
@@ -682,11 +655,8 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
         currentBlending = blending;
         currentPremultipledAlpha = premultipliedAlpha;
-
       }
-
       return;
-
     }
 
     // custom blending
@@ -736,6 +706,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
     setFlipSided(flipSided);
 
+    // 设置材质混合
     (material.blending === NormalBlending && material.transparent === false)
       ? setBlending(NoBlending)
       : setBlending(material.blending, material.blendEquation, material.blendSrc, material.blendDst, material.blendEquationAlpha, material.blendSrcAlpha, material.blendDstAlpha, material.premultipliedAlpha);
@@ -744,6 +715,15 @@ function WebGLState(gl, extensions, utils, capabilities) {
     depthBuffer.setTest(material.depthTest);
     depthBuffer.setMask(material.depthWrite);
     colorBuffer.setMask(material.colorWrite);
+
+		var stencilWrite = material.stencilWrite;
+		stencilBuffer.setTest( stencilWrite );
+		if ( stencilWrite ) {
+
+			stencilBuffer.setFunc( material.stencilFunc, material.stencilRef, material.stencilMask );
+			stencilBuffer.setOp( material.stencilFail, material.stencilZFail, material.stencilZPass );
+
+		}
 
     setPolygonOffset(material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits);
 
