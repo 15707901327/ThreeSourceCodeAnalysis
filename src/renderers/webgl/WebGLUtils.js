@@ -135,6 +135,7 @@ function WebGLUtils(gl, extensions, capabilities) {
     if (p === DepthStencilFormat) return gl.DEPTH_STENCIL;
     if (p === RedFormat) return gl.RED;
 
+    // 转换混合方程
     if (p === AddEquation) return gl.FUNC_ADD;
     if (p === SubtractEquation) return gl.FUNC_SUBTRACT;
     if (p === ReverseSubtractEquation) return gl.FUNC_REVERSE_SUBTRACT;
@@ -208,24 +209,19 @@ function WebGLUtils(gl, extensions, capabilities) {
 
     }
 
+    // webgl2混合
     if (p === MinEquation || p === MaxEquation) {
-
       if (capabilities.isWebGL2) {
-
         if (p === MinEquation) return gl.MIN;
         if (p === MaxEquation) return gl.MAX;
-
       }
 
       extension = extensions.get('EXT_blend_minmax');
 
       if (extension !== null) {
-
         if (p === MinEquation) return extension.MIN_EXT;
         if (p === MaxEquation) return extension.MAX_EXT;
-
       }
-
     }
 
     if (p === UnsignedInt248Type) {

@@ -369,11 +369,11 @@ function WebGLState(gl, extensions, utils, capabilities) {
   var currentProgram = null; // 当前使用的着色器程序
 
   var currentBlendingEnabled = null; // 当前混合
-  var currentBlending = null;
-  var currentBlendEquation = null;
+  var currentBlending = null; // 当前混合类型
+  var currentBlendEquation = null; // 当前混合方程
   var currentBlendSrc = null;
   var currentBlendDst = null;
-  var currentBlendEquationAlpha = null;
+  var currentBlendEquationAlpha = null; // 透明混合方程
   var currentBlendSrcAlpha = null;
   var currentBlendDstAlpha = null;
   var currentPremultipledAlpha = false;
@@ -578,16 +578,17 @@ function WebGLState(gl, extensions, utils, capabilities) {
   /**
    * 设置混合
    * @param blending 混合类型
-   * @param blendEquation
-   * @param blendSrc
-   * @param blendDst
-   * @param blendEquationAlpha
-   * @param blendSrcAlpha
-   * @param blendDstAlpha
-   * @param premultipliedAlpha
+   * @param blendEquation 混合方程
+   * @param blendSrc 源颜色因子
+   * @param blendDst 目标颜色因子
+   * @param blendEquationAlpha a通道混合方程
+   * @param blendSrcAlpha 源颜色因子
+   * @param blendDstAlpha 目标颜色因子
+   * @param premultipliedAlpha 预乘Alpha
    */
   function setBlending(blending, blendEquation, blendSrc, blendDst, blendEquationAlpha, blendSrcAlpha, blendDstAlpha, premultipliedAlpha) {
 
+    // 关闭混合
     if (blending === NoBlending) {
       if (currentBlendingEnabled) {
         disable(gl.BLEND);
@@ -596,19 +597,23 @@ function WebGLState(gl, extensions, utils, capabilities) {
       return;
     }
 
+    // 启动混合
     if (!currentBlendingEnabled) {
       enable(gl.BLEND);
       currentBlendingEnabled = true;
     }
 
+    // 处理预定义混合类型
     if (blending !== CustomBlending) {
       if (blending !== currentBlending || premultipliedAlpha !== currentPremultipledAlpha) {
+        // 设置混合方程
         if (currentBlendEquation !== AddEquation || currentBlendEquationAlpha !== AddEquation) {
           gl.blendEquation(gl.FUNC_ADD);
           currentBlendEquation = AddEquation;
           currentBlendEquationAlpha = AddEquation;
         }
 
+        // 设置混合方程参数
         if (premultipliedAlpha) {
           switch (blending) {
             case NormalBlending:
@@ -659,35 +664,29 @@ function WebGLState(gl, extensions, utils, capabilities) {
       return;
     }
 
-    // custom blending
-
+    // 处理自定义混合
     blendEquationAlpha = blendEquationAlpha || blendEquation;
     blendSrcAlpha = blendSrcAlpha || blendSrc;
     blendDstAlpha = blendDstAlpha || blendDst;
 
+    // 设置混合方程
     if (blendEquation !== currentBlendEquation || blendEquationAlpha !== currentBlendEquationAlpha) {
-
       gl.blendEquationSeparate(utils.convert(blendEquation), utils.convert(blendEquationAlpha));
-
       currentBlendEquation = blendEquation;
       currentBlendEquationAlpha = blendEquationAlpha;
-
     }
 
+    // 设置混合方程参数
     if (blendSrc !== currentBlendSrc || blendDst !== currentBlendDst || blendSrcAlpha !== currentBlendSrcAlpha || blendDstAlpha !== currentBlendDstAlpha) {
-
       gl.blendFuncSeparate(utils.convert(blendSrc), utils.convert(blendDst), utils.convert(blendSrcAlpha), utils.convert(blendDstAlpha));
-
       currentBlendSrc = blendSrc;
       currentBlendDst = blendDst;
       currentBlendSrcAlpha = blendSrcAlpha;
       currentBlendDstAlpha = blendDstAlpha;
-
     }
 
     currentBlending = blending;
     currentPremultipledAlpha = null;
-
   }
 
   /**
