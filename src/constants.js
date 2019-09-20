@@ -58,8 +58,10 @@ export var NotEqualDepth = 7;
 export var MultiplyOperation = 0;
 export var MixOperation = 1;
 export var AddOperation = 2;
-export var NoToneMapping = 0;
-export var LinearToneMapping = 1;
+
+// 色调映射
+export var NoToneMapping = 0;         // 禁用色调映射
+export var LinearToneMapping = 1;     // 为默认值，线性色调映射。
 export var ReinhardToneMapping = 2;
 export var Uncharted2ToneMapping = 3;
 export var CineonToneMapping = 4;
@@ -91,6 +93,7 @@ export var LinearMipMapNearestFilter = 1007;
 export var LinearMipmapLinearFilter = 1008;
 export var LinearMipMapLinearFilter = 1008;
 
+// 字符类型
 export var UnsignedByteType = 1009;
 export var ByteType = 1010;
 export var ShortType = 1011;
@@ -103,6 +106,7 @@ export var UnsignedShort4444Type = 1017;
 export var UnsignedShort5551Type = 1018;
 export var UnsignedShort565Type = 1019;
 export var UnsignedInt248Type = 1020;
+
 export var AlphaFormat = 1021;
 export var RGBFormat = 1022;
 export var RGBAFormat = 1023;

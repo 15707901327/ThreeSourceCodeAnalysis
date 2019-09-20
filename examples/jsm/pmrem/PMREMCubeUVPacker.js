@@ -29,7 +29,7 @@ import {
 	Vector2,
 	Vector3,
 	WebGLRenderTarget
-} from "../../../build/three.module.js";
+} from "../../../build/three_r108.module.js";
 
 var PMREMCubeUVPacker = ( function () {
 
