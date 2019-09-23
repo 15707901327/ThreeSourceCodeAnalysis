@@ -12,6 +12,10 @@
     <h4><a href="#performanceOptimization">性能优化</a></h4>
     <h4><a href="examples/index.html" target="_blank">实例</a></h4>
     <h4><a href="#postprocessing">后期处理</a></h4>
+    <h4><a href="#Blur">模糊算法</a></h4>
+    <ul class="ul-1">
+      <li><a href="#GaussianBlur">GaussianBlur</a></li>
+    </ul>
     <h4>连接</h4>
     <ul class="ul-1">
       <li><a href="dat_gui_doc/gui.html">dat.gui.js基本用法</a></li>
@@ -93,7 +97,8 @@
       </section>
       <section>
         <h4>对粒子群进行转换，而不是每个粒子</h4>
-        <p>使用THREE.Sprite时，可以更好地控制单个粒子，但是当使用大量的粒子的时候，这个方法的性能会降低，并且会更复杂。此时可以使用THREE.SpriteCloud，可以轻松地管理大量的粒子，进行整体操作，此时对单个粒子的控制能力会减弱。</p>
+        <p>
+          使用THREE.Sprite时，可以更好地控制单个粒子，但是当使用大量的粒子的时候，这个方法的性能会降低，并且会更复杂。此时可以使用THREE.SpriteCloud，可以轻松地管理大量的粒子，进行整体操作，此时对单个粒子的控制能力会减弱。</p>
       </section>
       <section>
         <h4>模型的面越少越好，模型过于细致会增加渲染开销</h4>
@@ -107,6 +112,19 @@
         <ul class="ul-2-num">
           <li>创建渲染通道：var renderScene = new RenderPass(scene, camera);</li>
         </ul>
+      </section>
+    </section>
+    <section id="Blur" class="section1">
+      <div class="title">Blur</div>
+      <section id="GaussianBlur">
+        <h4>GaussianBlur</h4>
+        <p>高斯模糊的算法实际上来说就是对图像进行卷积计算。在计算每一个片元的颜色时，将其左边四个点和右边四个点
+          的颜色进行一定比例的加和（横向高斯模糊），再对其上面四个点和下面四个点的颜色按照一定比例进行加和（纵向
+          高斯模糊）最终得到模糊的画面，这里值得注意的是我们在进行高斯模糊时最后所乘的系数和一定要控制在1，不然
+          就会出现图片过亮的状态.</p>
+        <div class="content">
+          <strong><a href="examples/Blur/GaussianBlur.html" target="_blank">实例-GaussianBlur</a></strong>
+        </div>
       </section>
     </section>
   </div>
