@@ -4,6 +4,10 @@ import {
 	Mesh
 } from "../../../build/three_r108.module.js";
 
+/**
+ * 渲染通道基类
+ * @constructor
+ */
 function Pass() {
 
 	// if set to true, the pass is processed by the composer

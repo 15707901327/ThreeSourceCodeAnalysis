@@ -5,6 +5,15 @@
 
 import { Pass } from "../postprocessing/Pass.js";
 
+/**
+ * 渲染通道：它只会渲染场景，但不会把结果输出到场景上
+ * @param scene 场景
+ * @param camera 相机
+ * @param overrideMaterial
+ * @param clearColor
+ * @param clearAlpha
+ * @constructor
+ */
 var RenderPass = function ( scene, camera, overrideMaterial, clearColor, clearAlpha ) {
 
 	Pass.call( this );

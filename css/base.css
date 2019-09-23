@@ -31,13 +31,41 @@ ul {
     list-style: none;
 }
 
+.formula{
+    color: aqua;
+}
+
 .ul-1 {
     margin-left: 20px;
+}
+
+.ul-2 {
+    margin-left: 2em;
+}
+.ul-3 {
+    margin-left: 4em;
 }
 
 .ul-1-num {
     margin-left: 20px;
     list-style: decimal;
+}
+
+.ul-2-num {
+    margin-left: 2em;
+    list-style: decimal;
+}
+
+.ul-3-num {
+    margin-left: 4em;
+    list-style: decimal;
+}
+
+.code{
+    background-color: #5d5443;
+    color: #e7e9f1;
+    font-size: 24px;
+    border-radius: 28px;
 }
 
 .wrapper {
@@ -65,6 +93,10 @@ ul {
     min-height: 929px;
 }
 
+.divLeft{
+    float: left;
+    margin: 20px 20px 20px 0;
+}
 .section1 {
     margin-top: 20px;
     border-top: 1px dashed burlywood;
@@ -85,12 +117,6 @@ section .content {
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
-
-/******************************** 左侧目录开始 *********************************/
-.left_List{
-    padding: 14px;
+.clear{
+    clear: both;
 }
-.list_title{
-    padding: 13px 0;
-}
-/******************************** 左侧目录结束 *********************************/

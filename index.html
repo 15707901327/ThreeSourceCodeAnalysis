@@ -11,6 +11,7 @@
     <h4><a href="#base">动画</a></h4>
     <h4><a href="#performanceOptimization">性能优化</a></h4>
     <h4><a href="examples/index.html" target="_blank">实例</a></h4>
+    <h4><a href="#postprocessing">后期处理</a></h4>
     <h4>连接</h4>
     <ul class="ul-1">
       <li><a href="dat_gui_doc/gui.html">dat.gui.js基本用法</a></li>
@@ -97,6 +98,15 @@
       <section>
         <h4>模型的面越少越好，模型过于细致会增加渲染开销</h4>
         <p>three场景导入模型时，可以在保证最低清晰度的时候，降低模型的复杂度，面越多，模型越大，加载所需开销就越大</p>
+      </section>
+    </section>
+    <section id="postprocessing" class="section1">
+      <div class="title">postprocessing</div>
+      <section>
+        <h4>渲染流程：</h4>
+        <ul class="ul-2-num">
+          <li>创建渲染通道：var renderScene = new RenderPass(scene, camera);</li>
+        </ul>
       </section>
     </section>
   </div>
