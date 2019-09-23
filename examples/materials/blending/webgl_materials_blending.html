@@ -94,6 +94,7 @@
 						var blending = blendings[ i ];
 
 						var material = new THREE.MeshBasicMaterial( { map: map } );
+						// 如果设置为false，材质与背景混合
 						material.transparent = true;
 						material.blending = blending.constant;
 
