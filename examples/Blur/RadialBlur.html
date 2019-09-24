@@ -120,12 +120,12 @@
     // 正交投影
     var composePlaneGeometry = new THREE.PlaneBufferGeometry(window.innerWidth, window.innerHeight);
     var material = new THREE.ShaderMaterial({
-      uniforms: THREE.UniformsUtils.clone(Blur.MotionShader.uniforms),
-      vertexShader: Blur.MotionShader.vertexShader,
-      fragmentShader: Blur.MotionShader.fragmentShader
+      uniforms: THREE.UniformsUtils.clone(Blur.RadialShader.uniforms),
+      vertexShader: Blur.RadialShader.vertexShader,
+      fragmentShader: Blur.RadialShader.fragmentShader
     });
-    material.uniforms['GlowRange'].value = 5.0;
     material.uniforms['tDiffuse'].value = webGLRenderTarget.texture;
+    material.uniforms['centerpos'].value.copy(new THREE.Vector2(0.5, 0.5));
     material.needsUpdate = true;
 
     var composePlaneMesh = new THREE.Mesh(composePlaneGeometry, material);
