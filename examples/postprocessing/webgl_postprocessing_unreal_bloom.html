@@ -87,6 +87,7 @@
   bloomPass.strength = params.bloomStrength;
   bloomPass.radius = params.bloomRadius;
 
+  // 效果合成器
   composer = new EffectComposer(renderer);
   composer.addPass(renderScene);
   composer.addPass(bloomPass);
@@ -111,33 +112,20 @@
   });
 
   var gui = new GUI();
-
   gui.add(params, 'exposure', 0.1, 2).onChange(function(value) {
-
     renderer.toneMappingExposure = Math.pow(value, 4.0);
-
   });
-
   gui.add(params, 'bloomThreshold', 0.0, 1.0).onChange(function(value) {
-
     bloomPass.threshold = Number(value);
-
   });
-
   gui.add(params, 'bloomStrength', 0.0, 3.0).onChange(function(value) {
-
     bloomPass.strength = Number(value);
-
   });
-
   gui.add(params, 'bloomRadius', 0.0, 1.0).step(0.01).onChange(function(value) {
-
     bloomPass.radius = Number(value);
-
   });
 
   window.onresize = function() {
-
     var width = window.innerWidth;
     var height = window.innerHeight;
 
@@ -146,22 +134,15 @@
 
     renderer.setSize(width, height);
     composer.setSize(width, height);
-
   };
 
-
   function animate() {
-
     requestAnimationFrame(animate);
-
     const delta = clock.getDelta();
 
     mixer.update(delta);
-
     stats.update();
-
     composer.render();
-
   }
 
 </script>

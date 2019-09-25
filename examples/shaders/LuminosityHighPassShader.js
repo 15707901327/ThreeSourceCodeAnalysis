@@ -9,32 +9,25 @@ import {
 	Color
 } from "../../build/three_r108.module.js";
 
+// 高亮通道shader
 var LuminosityHighPassShader = {
 
 	shaderID: "luminosityHighPass",
 
 	uniforms: {
-
 		"tDiffuse": { value: null },
-		"luminosityThreshold": { value: 1.0 },
-		"smoothWidth": { value: 1.0 },
+		"luminosityThreshold": { value: 1.0 }, // 阈值（渐变的最小值）
+		"smoothWidth": { value: 1.0 }, // 平滑过渡宽度
 		"defaultColor": { value: new Color( 0x000000 ) },
 		"defaultOpacity": { value: 0.0 }
-
 	},
 
 	vertexShader: [
-
 		"varying vec2 vUv;",
-
 		"void main() {",
-
 			"vUv = uv;",
-
 			"gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
 		"}"
-
 	].join("\n"),
 
 	fragmentShader: [
@@ -44,9 +37,7 @@ var LuminosityHighPassShader = {
 		"uniform float defaultOpacity;",
 		"uniform float luminosityThreshold;",
 		"uniform float smoothWidth;",
-
 		"varying vec2 vUv;",
-
 		"void main() {",
 
 			"vec4 texel = texture2D( tDiffuse, vUv );",

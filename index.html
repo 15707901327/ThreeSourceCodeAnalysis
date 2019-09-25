@@ -113,7 +113,19 @@
       <section>
         <h4>渲染流程：</h4>
         <ul class="ul-2-num">
-          <li>创建渲染通道：var renderScene = new RenderPass(scene, camera);</li>
+          <li>创建renderPass渲染通道：
+            <p>var renderPass = new RenderPass(scene, camera);</p>
+            <p>渲染场景到渲染目标以供后面通道使用，或者渲染到屏幕（与render一致）。</p>
+          </li>
+          <li>创建具体后期处理渲染通道，例如：泛光渲染通道
+            <p>var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);</p>
+          </li>
+          <li>创建渲染合成器，并把通道添加到合成器中
+            <p>composer = new EffectComposer(renderer);</p>
+            <p>composer.addPass(renderScene);</p>
+            <p>composer.addPass(bloomPass);</p>
+            <p>顺序调用后期处理通道渲染</p>
+          </li>
         </ul>
       </section>
     </section>

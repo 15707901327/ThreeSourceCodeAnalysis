@@ -8,6 +8,12 @@ import {
 } from "../../../build/three_r108.module.js";
 import { Pass } from "../postprocessing/Pass.js";
 
+/**
+ * shader材质通道
+ * @param shader shader或则shader数据
+ * @param textureID
+ * @constructor
+ */
 var ShaderPass = function ( shader, textureID ) {
 
 	Pass.call( this );
@@ -15,28 +21,20 @@ var ShaderPass = function ( shader, textureID ) {
 	this.textureID = ( textureID !== undefined ) ? textureID : "tDiffuse";
 
 	if ( shader instanceof ShaderMaterial ) {
-
 		this.uniforms = shader.uniforms;
-
 		this.material = shader;
-
-	} else if ( shader ) {
-
+	}
+	else if ( shader ) {
 		this.uniforms = UniformsUtils.clone( shader.uniforms );
-
 		this.material = new ShaderMaterial( {
-
 			defines: Object.assign( {}, shader.defines ),
 			uniforms: this.uniforms,
 			vertexShader: shader.vertexShader,
 			fragmentShader: shader.fragmentShader
-
-		} );
-
+		});
 	}
 
 	this.fsQuad = new Pass.FullScreenQuad( this.material );
-
 };
 
 ShaderPass.prototype = Object.assign( Object.create( Pass.prototype ), {

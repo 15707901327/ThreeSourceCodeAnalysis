@@ -23,10 +23,10 @@ import {LuminosityHighPassShader} from "../../shaders/LuminosityHighPassShader.j
 
 /**
  * 虚幻泛光通道
- * @param resolution：解析度 Vector2
- * @param strength： 强度
- * @param radius 半径
- * @param threshold 阀
+ * @param resolution 渲染目标的尺寸 @see THREE.Vector2()
+ * @param strength：泛光强度
+ * @param radius 泛光半径
+ * @param threshold 阀值（渐变的最小取值）
  * @constructor
  */
 var UnrealBloomPass = function(resolution, strength, radius, threshold) {
@@ -81,7 +81,7 @@ var UnrealBloomPass = function(resolution, strength, radius, threshold) {
   var highPassShader = LuminosityHighPassShader;
   this.highPassUniforms = UniformsUtils.clone(highPassShader.uniforms);
   this.highPassUniforms["luminosityThreshold"].value = threshold;
-  this.highPassUniforms["smoothWidth"].value = 0.01;
+  this.highPassUniforms["smoothWidth"].value = 0.01; // 渐变的宽度
 
   this.materialHighPassFilter = new ShaderMaterial({
     uniforms: this.highPassUniforms,
@@ -117,15 +117,18 @@ var UnrealBloomPass = function(resolution, strength, radius, threshold) {
 
   var bloomFactors = [1.0, 0.8, 0.6, 0.4, 0.2];
   this.compositeMaterial.uniforms["bloomFactors"].value = bloomFactors;
-  this.bloomTintColors = [new Vector3(1, 1, 1), new Vector3(1, 1, 1), new Vector3(1, 1, 1),
-    new Vector3(1, 1, 1), new Vector3(1, 1, 1)];
+  this.bloomTintColors = [
+    new Vector3(1, 1, 1),
+    new Vector3(1, 1, 1),
+    new Vector3(1, 1, 1),
+    new Vector3(1, 1, 1),
+    new Vector3(1, 1, 1)
+  ];
   this.compositeMaterial.uniforms["bloomTintColors"].value = this.bloomTintColors;
 
   // copy material
   if (CopyShader === undefined) {
-
     console.error("UnrealBloomPass relies on CopyShader");
-
   }
 
   var copyShader = CopyShader;
@@ -149,10 +152,9 @@ var UnrealBloomPass = function(resolution, strength, radius, threshold) {
   this.oldClearColor = new Color();
   this.oldClearAlpha = 1;
 
-  this.basic = new MeshBasicMaterial();
-
+  // 使用正射相机显示场景
+  this.basic = new MeshBasicMaterial(); // 平面材质
   this.fsQuad = new Pass.FullScreenQuad(null);
-
 };
 
 UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
@@ -177,6 +179,11 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
 
   },
 
+  /**
+   * 设置图片的宽高
+   * @param width
+   * @param height
+   */
   setSize: function(width, height) {
 
     var resx = Math.round(width / 2);
@@ -195,9 +202,16 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
       resy = Math.round(resy / 2);
 
     }
-
   },
 
+  /**
+   * 渲染
+   * @param renderer 渲染器
+   * @param writeBuffer 读缓冲目标
+   * @param readBuffer 写缓冲目标
+   * @param deltaTime
+   * @param maskActive
+   */
   render: function(renderer, writeBuffer, readBuffer, deltaTime, maskActive) {
 
     this.oldClearColor.copy(renderer.getClearColor());
@@ -210,7 +224,6 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
     if (maskActive) renderer.state.buffers.stencil.setTest(false);
 
     // Render input to screen
-
     if (this.renderToScreen) {
 
       this.fsQuad.material = this.basic;
@@ -219,11 +232,9 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
       renderer.setRenderTarget(null);
       renderer.clear();
       this.fsQuad.render(renderer);
-
     }
 
     // 1. Extract Bright Areas
-
     this.highPassUniforms["tDiffuse"].value = readBuffer.texture;
     this.highPassUniforms["luminosityThreshold"].value = this.threshold;
     this.fsQuad.material = this.materialHighPassFilter;
@@ -233,9 +244,7 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
     this.fsQuad.render(renderer);
 
     // 2. Blur All the mips progressively
-
     var inputRenderTarget = this.renderTargetBright;
-
     for (var i = 0; i < this.nMips; i++) {
 
       this.fsQuad.material = this.separableBlurMaterials[i];
@@ -253,11 +262,9 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
       this.fsQuad.render(renderer);
 
       inputRenderTarget = this.renderTargetsVertical[i];
-
     }
 
     // Composite All the mips
-
     this.fsQuad.material = this.compositeMaterial;
     this.compositeMaterial.uniforms["bloomStrength"].value = this.strength;
     this.compositeMaterial.uniforms["bloomRadius"].value = this.radius;
@@ -268,37 +275,33 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
     this.fsQuad.render(renderer);
 
     // Blend it additively over the input texture
-
     this.fsQuad.material = this.materialCopy;
     this.copyUniforms["tDiffuse"].value = this.renderTargetsHorizontal[0].texture;
 
     if (maskActive) renderer.state.buffers.stencil.setTest(true);
 
     if (this.renderToScreen) {
-
       renderer.setRenderTarget(null);
       this.fsQuad.render(renderer);
-
     } else {
-
       renderer.setRenderTarget(readBuffer);
       this.fsQuad.render(renderer);
-
     }
 
     // Restore renderer settings
-
     renderer.setClearColor(this.oldClearColor, this.oldClearAlpha);
     renderer.autoClear = oldAutoClear;
-
   },
 
+  /**
+   * 获取可分离的模糊材料
+   * @param kernelRadius
+   * @returns {ShaderMaterial}
+   */
   getSeperableBlurMaterial: function(kernelRadius) {
-
     return new ShaderMaterial({
-
       defines: {
-        "KERNEL_RADIUS": kernelRadius,
+        "KERNEL_RADIUS": kernelRadius, // 半径
         "SIGMA": kernelRadius
       },
 
@@ -342,9 +345,13 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
           gl_FragColor = vec4(diffuseSum/weightSum, 1.0);\n\
         }"
     });
-
   },
 
+  /**
+   * 获取复合材质
+   * @param nMips
+   * @returns {ShaderMaterial}
+   */
   getCompositeMaterial: function(nMips) {
 
     return new ShaderMaterial({
@@ -392,11 +399,13 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
         }\
         \
         void main() {\
-          gl_FragColor = bloomStrength * ( lerpBloomFactor(bloomFactors[0]) * vec4(bloomTintColors[0], 1.0) * texture2D(blurTexture1, vUv) + \
-                           lerpBloomFactor(bloomFactors[1]) * vec4(bloomTintColors[1], 1.0) * texture2D(blurTexture2, vUv) + \
-                           lerpBloomFactor(bloomFactors[2]) * vec4(bloomTintColors[2], 1.0) * texture2D(blurTexture3, vUv) + \
-                           lerpBloomFactor(bloomFactors[3]) * vec4(bloomTintColors[3], 1.0) * texture2D(blurTexture4, vUv) + \
-                           lerpBloomFactor(bloomFactors[4]) * vec4(bloomTintColors[4], 1.0) * texture2D(blurTexture5, vUv) );\
+          gl_FragColor = bloomStrength * ( \
+              lerpBloomFactor(bloomFactors[0]) * vec4(bloomTintColors[0], 1.0) * texture2D(blurTexture1, vUv) + \
+              lerpBloomFactor(bloomFactors[1]) * vec4(bloomTintColors[1], 1.0) * texture2D(blurTexture2, vUv) + \
+              lerpBloomFactor(bloomFactors[2]) * vec4(bloomTintColors[2], 1.0) * texture2D(blurTexture3, vUv) + \
+              lerpBloomFactor(bloomFactors[3]) * vec4(bloomTintColors[3], 1.0) * texture2D(blurTexture4, vUv) + \
+              lerpBloomFactor(bloomFactors[4]) * vec4(bloomTintColors[4], 1.0) * texture2D(blurTexture5, vUv)\
+          );\
         }"
     });
 
