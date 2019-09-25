@@ -1264,7 +1264,7 @@ function WebGLRenderer(parameters) {
 
     if (object.visible === false) return;
 
-    // 根据相机判断是否显示模型
+    // 检测当前物体是否在当前渲染通道
     var visible = object.layers.test(camera.layers);
 
     if (visible) {

@@ -6,17 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/Blur/Blur.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Blur/Blur.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/postprocessing/EffectComposer.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/postprocessing/EffectComposer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/postprocessing/Pass.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/postprocessing/Pass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/postprocessing/ShaderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/postprocessing/ShaderPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/js/postprocessing/UnrealBloomPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/js/postprocessing/UnrealBloomPass.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/left.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/shaders/CopyShader.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/shaders/CopyShader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/shaders/LuminosityHighPassShader.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/shaders/LuminosityHighPassShader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom_selective.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom_selective.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Layers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Layers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Object3D.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Object3D.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -29,109 +25,157 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="92" column="30" lean-forward="true" selection-start-line="91" selection-start-column="2" selection-end-line="92" selection-end-column="30" />
-              <folding>
-                <element signature="n#head#0;n#html#0;n#!!top" />
-                <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
-                <element signature="e#3503#3930#0" />
-                <element signature="e#4020#4082#0" />
-                <element signature="e#4156#4202#0" />
-                <element signature="e#4275#4320#0" />
-                <element signature="e#4402#4445#0" />
-                <element signature="e#4480#4706#0" />
-                <element signature="e#4730#4876#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/EffectComposer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="169" lean-forward="true" selection-start-line="169" selection-end-line="169" />
-              <folding>
-                <element signature="e#1907#2006#0" />
-                <element signature="e#2010#2043#0" />
-                <element signature="e#2072#2187#0" />
-                <element signature="e#2228#2274#0" />
-                <element signature="e#2278#2351#0" />
-                <element signature="e#2395#2542#0" />
-                <element signature="e#2546#2582#0" />
-                <element signature="e#2615#3933#0" />
-                <element signature="e#3192#3685#0" />
-                <element signature="e#3970#4555#0" />
-                <element signature="e#4595#5016#0" />
-                <element signature="e#5059#5144#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
+        <entry file="file://$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom_selective.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="126" column="31" lean-forward="true" selection-start-line="126" selection-start-column="31" selection-end-line="126" selection-end-column="31" />
+            <state relative-caret-position="369">
+              <caret line="263" column="24" selection-start-line="263" selection-start-column="20" selection-end-line="263" selection-end-column="24" />
               <folding>
-                <element signature="n#ul#0;n#div#0;n#div#0;n#html#0;n#!!top" />
-                <element signature="n#ul#1;n#div#0;n#div#0;n#html#0;n#!!top" />
-                <element signature="n#section#0;n#div#1;n#div#0;n#html#0;n#!!top" />
-                <element signature="n#section#1;n#div#1;n#div#0;n#html#0;n#!!top" />
-                <element signature="n#section#2;n#div#1;n#div#0;n#html#0;n#!!top" />
-                <element signature="n#section#4;n#div#1;n#div#0;n#html#0;n#!!top" />
-                <element signature="n#section#0;n#section#4;n#div#1;n#div#0;n#html#0;n#!!top" />
-                <element signature="n#section#1;n#section#4;n#div#1;n#div#0;n#html#0;n#!!top" />
-                <element signature="n#section#2;n#section#4;n#div#1;n#div#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#script#9;n#body#0;n#html#0;n#!!top" />
+                <element signature="e#1932#2049#0" />
+                <element signature="e#3539#3843#0" />
+                <element signature="e#4328#4608#0" />
+                <element signature="e#4740#4821#0" />
+                <element signature="e#4907#4972#0" />
+                <element signature="e#5058#5122#0" />
+                <element signature="e#5218#5280#0" />
+                <element signature="e#5345#5763#0" />
+                <element signature="e#5798#6096#0" />
+                <element signature="e#6124#7005#0" />
+                <element signature="e#6354#6984#0" />
+                <element signature="e#7042#7113#0" />
+                <element signature="e#7175#7246#0" />
+                <element signature="e#7372#7483#0" />
+                <element signature="e#7692#7740#0" />
+                <element signature="e#7758#7910#0" />
+                <element signature="e#7930#7968#0" />
+                <element signature="e#7994#8113#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js">
+        <entry file="file://$PROJECT_DIR$/examples/js/postprocessing/EffectComposer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="16" column="14" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="14" />
+            <state relative-caret-position="199">
+              <caret line="204" column="22" selection-start-line="204" selection-start-column="9" selection-end-line="204" selection-end-column="22" />
               <folding>
-                <element signature="e#351#639#0" />
-                <element signature="e#1162#1338#0" />
-                <element signature="e#1365#1401#0" />
-                <element signature="e#1794#1861#0" />
+                <element signature="e#196#697#0" />
+                <element signature="e#704#808#0" />
+                <element signature="e#1574#1673#0" />
+                <element signature="e#1741#1891#0" />
+                <element signature="e#1932#1978#0" />
+                <element signature="e#2124#2272#0" />
+                <element signature="e#2908#3227#0" />
+                <element signature="e#2933#3196#0" />
+                <element signature="e#3268#3435#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/Blur/Blur.js">
+        <entry file="file://$PROJECT_DIR$/examples/js/postprocessing/UnrealBloomPass.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1036">
-              <caret line="224" column="55" selection-start-line="224" selection-start-column="55" selection-end-line="224" selection-end-column="55" />
+            <state relative-caret-position="420">
+              <caret line="197" lean-forward="true" selection-start-line="197" selection-end-line="197" />
               <folding>
-                <element signature="e#0#58#0" expanded="true" />
+                <element signature="e#180#292#0" />
+                <element signature="e#370#5008#0" />
+                <element signature="e#1318#1915#0" />
+                <element signature="e#2802#3068#0" />
+                <element signature="e#3984#4144#0" />
+                <element signature="e#4288#4365#0" />
+                <element signature="e#4568#4786#0" />
+                <element signature="e#5162#5449#0" />
+                <element signature="e#5489#5960#0" />
+                <element signature="e#7058#7850#0" />
+                <element signature="e#8572#8651#0" />
+                <element signature="e#8657#8742#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js">
+        <entry file="file://$PROJECT_DIR$/src/core/Object3D.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-977">
-              <caret line="214" column="40" selection-start-line="214" selection-start-column="29" selection-end-line="214" selection-end-column="40" />
+            <state relative-caret-position="142">
+              <caret line="520" column="17" selection-start-line="520" selection-start-column="13" selection-end-line="520" selection-end-column="17" />
               <folding>
-                <element signature="e#5847#5906#0" />
-                <element signature="e#5942#6405#0" />
-                <element signature="e#6410#6556#0" />
-                <element signature="e#6995#7186#0" />
-                <element signature="e#7663#8446#0" />
-                <element signature="e#9159#9240#0" />
-                <element signature="e#9246#9333#0" />
+                <element signature="e#0#49#0" expanded="true" />
+                <element signature="e#9770#9817#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="169">
+              <caret line="1119" column="2" selection-start-line="1119" selection-start-column="2" selection-end-line="1119" selection-end-column="2" />
+              <folding>
+                <element signature="e#0#199#0" expanded="true" />
+                <element signature="e#26959#27130#0" />
+                <element signature="e#28744#28783#0" />
+                <element signature="e#31190#31240#0" />
+                <element signature="e#31270#31342#0" />
+                <element signature="e#31374#31521#0" />
+                <element signature="e#31554#32030#0" />
+                <element signature="e#32078#32322#0" />
+                <element signature="e#32425#32472#0" />
+                <element signature="e#32569#33442#0" />
+                <element signature="e#32867#33287#0" />
+                <element signature="e#33325#33432#0" />
+                <element signature="e#33548#33622#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/left.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="20" column="97" selection-start-line="20" selection-start-column="97" selection-end-line="20" selection-end-column="97" />
+              <folding>
+                <element signature="n#ul#0;n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#ul#0;n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#li#13;n#ul#0;n#body#0;n#html#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/Layers.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="39" column="2" selection-start-line="39" selection-start-column="2" selection-end-line="39" selection-end-column="2" />
+              <folding>
+                <element signature="n#!!doc;n#Layers#0" />
+                <element signature="e#159#204#0" />
+                <element signature="e#292#342#0" />
+                <element signature="e#356#398#0" />
+                <element signature="e#358#394#0" />
+                <element signature="e#484#528#0" />
+                <element signature="e#548#590#0" />
+                <element signature="e#500#545#0" />
+                <element signature="e#572#595#0" />
+                <element signature="e#615#692#0" />
+                <element signature="e#708#756#0" />
               </folding>
             </state>
           </provider>
@@ -148,23 +192,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>radiusY</find>
-      <find>radiusX</find>
-      <find>GlowRange</find>
-      <find>GL_E</find>
-      <find>GL_ES</find>
-      <find>v_fragmentColor</find>
-      <find>scene</find>
-      <find>composeCamera</find>
-      <find>resolution</find>
-      <find>direction</find>
-      <find>bloomFactors</find>
-      <find>isLastEnabledPass</find>
-      <find>MaskPass</find>
-      <find>radius</find>
-      <find>basic</find>
-      <find>readBuffer</find>
-      <find>fsQuad</find>
       <find>inputRenderTarget</find>
       <find>luminosityThreshold</find>
       <find>setSize</find>
@@ -178,6 +205,23 @@
       <find>getSeperableBlurMaterial</find>
       <find>renderTargetBright</find>
       <find>writeBuffer</find>
+      <find>params</find>
+      <find>renderObject</find>
+      <find>layers</find>
+      <find>bloomLayer</find>
+      <find>enable</find>
+      <find>toggle</find>
+      <find>BLOOM_SCENE</find>
+      <find>renderBloom</find>
+      <find>darkenNonBloomed</find>
+      <find>darkMaterial</find>
+      <find>finalComposer</find>
+      <find>fragmentshader</find>
+      <find>render</find>
+      <find>projectObject</find>
+      <find>traverse</find>
+      <find>textureID</find>
+      <find>renderTarget1</find>
     </findStrings>
     <replaceStrings>
       <replace>jpg</replace>
@@ -192,12 +236,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/examples/particles/webgl_points_sprites.html" />
-        <option value="$PROJECT_DIR$/examples/js/PGL/PGL.js" />
-        <option value="$PROJECT_DIR$/examples/background/sky.html" />
-        <option value="$PROJECT_DIR$/examples/background/sky.js" />
-        <option value="$PROJECT_DIR$/examples/models/obj/blending/test004.mtl" />
-        <option value="$PROJECT_DIR$/examples/home.js" />
         <option value="$PROJECT_DIR$/examples/materials/blending/blending.html" />
         <option value="$PROJECT_DIR$/examples/materials/blending/blending.js" />
         <option value="$PROJECT_DIR$/examples/materials/blending/AdditiveBlending.html" />
@@ -231,7 +269,6 @@
         <option value="$PROJECT_DIR$/examples/Blur/MotionBlur.html" />
         <option value="$PROJECT_DIR$/examples/Blur/GeneralBlur.html" />
         <option value="$PROJECT_DIR$/examples/Blur/RadialBlur.html" />
-        <option value="$PROJECT_DIR$/examples/left.html" />
         <option value="$PROJECT_DIR$/examples/Blur/BlurDemo.html" />
         <option value="$PROJECT_DIR$/examples/Blur/Blur.js" />
         <option value="$PROJECT_DIR$/examples/shaders/CopyShader.js" />
@@ -240,9 +277,16 @@
         <option value="$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js" />
         <option value="$PROJECT_DIR$/examples/jsm/postprocessing/Pass.js" />
         <option value="$PROJECT_DIR$/examples/shaders/LuminosityHighPassShader.js" />
-        <option value="$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js" />
         <option value="$PROJECT_DIR$/examples/jsm/postprocessing/EffectComposer.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js" />
+        <option value="$PROJECT_DIR$/../three_r108.js-master/src/core/Layers.js" />
+        <option value="$PROJECT_DIR$/examples/left.html" />
+        <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
+        <option value="$PROJECT_DIR$/src/core/Layers.js" />
+        <option value="$PROJECT_DIR$/src/core/Object3D.js" />
+        <option value="$PROJECT_DIR$/examples/js/postprocessing/UnrealBloomPass.js" />
+        <option value="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom_selective.html" />
       </list>
     </option>
   </component>
@@ -278,15 +322,19 @@
             <path>
               <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="examples" type="462c0819:PsiDirectoryNode" />
-              <item name="jsm" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="examples" type="462c0819:PsiDirectoryNode" />
-              <item name="jsm" type="462c0819:PsiDirectoryNode" />
-              <item name="postprocessing" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="renderers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -299,7 +347,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DFrame" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../three_r108.js-master/src/core/Object3D.js" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -307,7 +355,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r108.js-master/src/renderers/WebGLRenderTarget.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r108.js-master/src/core/Object3D.js" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -426,7 +474,7 @@
       <workItem from="1569204047658" duration="2381000" />
       <workItem from="1569209236970" duration="21174000" />
       <workItem from="1569287948430" duration="26269000" />
-      <workItem from="1569374119319" duration="1390000" />
+      <workItem from="1569374119319" duration="15444000" />
     </task>
     <task id="LOCAL-00001" summary="1. 添加天空盒子背景效果实例&#10;2. r106">
       <created>1564043851469</created>
@@ -645,17 +693,24 @@
       <option name="project" value="LOCAL" />
       <updated>1569304022840</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="1.bloom">
+      <created>1569375755279</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1569375755279</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="380635000" />
+    <option name="totallyTimeSpent" value="394689000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21842733" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22160445" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -741,7 +796,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1. 添加渐变的背景颜色" />
     <MESSAGE value="1. 添加控制实例" />
     <MESSAGE value="1. 添加测试obj_mtl加载模型实例" />
     <MESSAGE value="1. 添加测试模型" />
@@ -766,7 +820,8 @@
     <MESSAGE value="1.GaussianBlur" />
     <MESSAGE value="1.MotionBlur" />
     <MESSAGE value="1.blur" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.blur" />
+    <MESSAGE value="1.bloom" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.bloom" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -780,66 +835,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/BloomPass.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="15" column="56" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLUniforms.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-23067">
-          <caret line="47" column="7" lean-forward="true" selection-start-line="47" selection-start-column="7" selection-end-line="47" selection-end-column="7" />
-          <folding>
-            <element signature="e#1177#1237#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLUtils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-756" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/beginnormal_vertex.glsl">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/textures/planets/earth_lights_2048.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/tonemapping/webgl_shaders_tonemapping.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="47" column="82" selection-start-line="47" selection-start-column="71" selection-end-line="47" selection-end-column="82" />
-          <folding>
-            <element signature="e#2310#12568#0" />
-            <element signature="e#2326#2491#0" />
-            <element signature="e#6186#6237#0" />
-            <element signature="e#6372#6440#0" />
-            <element signature="e#6527#6603#0" />
-            <element signature="e#6613#6756#0" />
-            <element signature="e#6738#6873#0" />
-            <element signature="e#4954#6924#0" />
-            <element signature="e#5111#5193#0" />
-            <element signature="e#5216#5660#0" />
-            <element signature="e#5696#6907#0" />
-            <element signature="e#7325#7520#0" />
-            <element signature="e#7556#7787#0" />
-            <element signature="e#7870#8072#0" />
-            <element signature="e#7887#7924#0" />
-            <element signature="e#8129#8333#0" />
-            <element signature="e#9708#9848#0" />
-            <element signature="e#10071#10117#0" />
-            <element signature="e#12599#12990#0" />
-            <element signature="e#13014#14335#0" />
-            <element signature="e#13076#13154#0" />
-            <element signature="e#13842#13921#0" />
-            <element signature="e#14358#14809#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/three_r108.module.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="28">
@@ -905,13 +900,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="6" column="23" lean-forward="true" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/Blur/MotionBlur.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="163">
@@ -970,11 +958,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom_selective.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1848" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/Blur/GaussianBlur.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="313">
@@ -1022,16 +1005,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/color_vertex.glsl">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="1796" column="17" selection-start-line="1796" selection-start-column="17" selection-end-line="1796" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#199#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/materials/MeshPhongMaterial.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -1092,27 +1065,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/left.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
-          <folding>
-            <element signature="n#ul#0;n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#13;n#ul#0;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/Blur/BlurDemo.html" />
     <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/common.glsl">
       <provider selected="true" editor-type-id="text-editor">
@@ -1160,41 +1112,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-977">
-          <caret line="214" column="40" selection-start-line="214" selection-start-column="29" selection-end-line="214" selection-end-column="40" />
-          <folding>
-            <element signature="e#5847#5906#0" />
-            <element signature="e#5942#6405#0" />
-            <element signature="e#6410#6556#0" />
-            <element signature="e#6995#7186#0" />
-            <element signature="e#7663#8446#0" />
-            <element signature="e#9159#9240#0" />
-            <element signature="e#9246#9333#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/Blur/Blur.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1036">
           <caret line="224" column="55" selection-start-line="224" selection-start-column="55" selection-end-line="224" selection-end-column="55" />
           <folding>
             <element signature="e#0#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="16" column="14" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="14" />
-          <folding>
-            <element signature="e#351#639#0" />
-            <element signature="e#1162#1338#0" />
-            <element signature="e#1365#1401#0" />
-            <element signature="e#1794#1861#0" />
           </folding>
         </state>
       </provider>
@@ -1220,24 +1143,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="92" column="30" lean-forward="true" selection-start-line="91" selection-start-column="2" selection-end-line="92" selection-end-column="30" />
-          <folding>
-            <element signature="n#head#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#3503#3930#0" />
-            <element signature="e#4020#4082#0" />
-            <element signature="e#4156#4202#0" />
-            <element signature="e#4275#4320#0" />
-            <element signature="e#4402#4445#0" />
-            <element signature="e#4480#4706#0" />
-            <element signature="e#4730#4876#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -1252,6 +1157,241 @@
             <element signature="n#section#0;n#section#4;n#div#1;n#div#0;n#html#0;n#!!top" />
             <element signature="n#section#1;n#section#4;n#div#1;n#div#0;n#html#0;n#!!top" />
             <element signature="n#section#2;n#section#4;n#div#1;n#div#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1456">
+          <caret line="28" column="42" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+          <folding>
+            <element signature="e#5847#5906#0" />
+            <element signature="e#5942#6405#0" />
+            <element signature="e#6410#6556#0" />
+            <element signature="e#6995#7186#0" />
+            <element signature="e#7663#8446#0" />
+            <element signature="e#9159#9240#0" />
+            <element signature="e#9246#9333#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="84" column="33" selection-start-line="84" selection-start-column="33" selection-end-line="84" selection-end-column="33" />
+          <folding>
+            <element signature="n#head#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+            <element signature="e#3503#3930#0" />
+            <element signature="e#4020#4082#0" />
+            <element signature="e#4156#4202#0" />
+            <element signature="e#4275#4320#0" />
+            <element signature="e#4402#4445#0" />
+            <element signature="e#4480#4706#0" />
+            <element signature="e#4730#4876#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/three_r108.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="24083" column="26" selection-start-line="24083" selection-start-column="13" selection-end-line="24083" selection-end-column="26" />
+          <folding>
+            <element signature="e#502706#513330#0" />
+            <element signature="e#503227#503496#0" />
+            <element signature="e#503964#504436#0" />
+            <element signature="e#504619#507994#0" />
+            <element signature="e#508034#508913#0" />
+            <element signature="e#509011#511753#0" />
+            <element signature="e#511824#513326#0" />
+            <element signature="e#512001#513150#0" />
+            <element signature="e#513243#513321#0" />
+            <element signature="e#599838#599928#0" />
+            <element signature="e#599986#600178#0" />
+            <element signature="e#600255#600364#0" />
+            <element signature="e#600426#602071#0" />
+            <element signature="e#602162#605490#0" />
+            <element signature="e#605557#608652#0" />
+            <element signature="e#608712#609429#0" />
+            <element signature="e#609529#609641#0" />
+            <element signature="e#609854#609960#0" />
+            <element signature="e#610022#613817#0" />
+            <element signature="e#616391#617300#0" />
+            <element signature="e#616861#617162#0" />
+            <element signature="e#617742#618039#0" />
+            <element signature="e#618045#618139#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Layers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="39" column="2" selection-start-line="39" selection-start-column="2" selection-end-line="39" selection-end-column="2" />
+          <folding>
+            <element signature="n#!!doc;n#Layers#0" />
+            <element signature="e#159#204#0" />
+            <element signature="e#292#342#0" />
+            <element signature="e#356#398#0" />
+            <element signature="e#358#394#0" />
+            <element signature="e#484#528#0" />
+            <element signature="e#548#590#0" />
+            <element signature="e#500#545#0" />
+            <element signature="e#572#595#0" />
+            <element signature="e#615#692#0" />
+            <element signature="e#708#756#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="1119" column="2" selection-start-line="1119" selection-start-column="2" selection-end-line="1119" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#199#0" expanded="true" />
+            <element signature="e#26959#27130#0" />
+            <element signature="e#28744#28783#0" />
+            <element signature="e#31190#31240#0" />
+            <element signature="e#31270#31342#0" />
+            <element signature="e#31374#31521#0" />
+            <element signature="e#31554#32030#0" />
+            <element signature="e#32078#32322#0" />
+            <element signature="e#32425#32472#0" />
+            <element signature="e#32569#33442#0" />
+            <element signature="e#32867#33287#0" />
+            <element signature="e#33325#33432#0" />
+            <element signature="e#33548#33622#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Object3D.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="520" column="17" selection-start-line="520" selection-start-column="13" selection-end-line="520" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+            <element signature="e#9770#9817#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/js/postprocessing/ShaderPass.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-241">
+          <caret line="43" column="2" selection-start-line="43" selection-start-column="2" selection-end-line="43" selection-end-column="2" />
+          <folding>
+            <element signature="e#351#639#0" />
+            <element signature="e#1162#1338#0" />
+            <element signature="e#1365#1401#0" />
+            <element signature="e#1794#1861#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/left.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="20" column="97" selection-start-line="20" selection-start-column="97" selection-end-line="20" selection-end-column="97" />
+          <folding>
+            <element signature="n#ul#0;n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#13;n#ul#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/js/postprocessing/EffectComposer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="204" column="22" selection-start-line="204" selection-start-column="9" selection-end-line="204" selection-end-column="22" />
+          <folding>
+            <element signature="e#196#697#0" />
+            <element signature="e#704#808#0" />
+            <element signature="e#1574#1673#0" />
+            <element signature="e#1741#1891#0" />
+            <element signature="e#1932#1978#0" />
+            <element signature="e#2124#2272#0" />
+            <element signature="e#2908#3227#0" />
+            <element signature="e#2933#3196#0" />
+            <element signature="e#3268#3435#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/js/postprocessing/UnrealBloomPass.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="197" lean-forward="true" selection-start-line="197" selection-end-line="197" />
+          <folding>
+            <element signature="e#180#292#0" />
+            <element signature="e#370#5008#0" />
+            <element signature="e#1318#1915#0" />
+            <element signature="e#2802#3068#0" />
+            <element signature="e#3984#4144#0" />
+            <element signature="e#4288#4365#0" />
+            <element signature="e#4568#4786#0" />
+            <element signature="e#5162#5449#0" />
+            <element signature="e#5489#5960#0" />
+            <element signature="e#7058#7850#0" />
+            <element signature="e#8572#8651#0" />
+            <element signature="e#8657#8742#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom_selective.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="263" column="24" selection-start-line="263" selection-start-column="20" selection-end-line="263" selection-end-column="24" />
+          <folding>
+            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#script#9;n#body#0;n#html#0;n#!!top" />
+            <element signature="e#1932#2049#0" />
+            <element signature="e#3539#3843#0" />
+            <element signature="e#4328#4608#0" />
+            <element signature="e#4740#4821#0" />
+            <element signature="e#4907#4972#0" />
+            <element signature="e#5058#5122#0" />
+            <element signature="e#5218#5280#0" />
+            <element signature="e#5345#5763#0" />
+            <element signature="e#5798#6096#0" />
+            <element signature="e#6124#7005#0" />
+            <element signature="e#6354#6984#0" />
+            <element signature="e#7042#7113#0" />
+            <element signature="e#7175#7246#0" />
+            <element signature="e#7372#7483#0" />
+            <element signature="e#7692#7740#0" />
+            <element signature="e#7758#7910#0" />
+            <element signature="e#7930#7968#0" />
+            <element signature="e#7994#8113#0" />
           </folding>
         </state>
       </provider>

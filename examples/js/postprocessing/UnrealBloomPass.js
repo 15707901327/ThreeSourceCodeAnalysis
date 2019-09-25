@@ -265,17 +265,15 @@ THREE.UnrealBloomPass.prototype = Object.assign( Object.create( THREE.Pass.proto
 
 		if ( maskActive ) renderer.context.enable( renderer.context.STENCIL_TEST );
 
-
 		if ( this.renderToScreen ) {
 
 			renderer.setRenderTarget( null );
 			this.fsQuad.render( renderer );
 
-		} else {
-
+		}
+		else {
 			renderer.setRenderTarget( readBuffer );
 			this.fsQuad.render( renderer );
-
 		}
 
 		// Restore renderer settings

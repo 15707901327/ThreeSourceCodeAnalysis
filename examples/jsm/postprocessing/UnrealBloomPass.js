@@ -26,7 +26,7 @@ import {LuminosityHighPassShader} from "../../shaders/LuminosityHighPassShader.j
  * @param resolution 渲染目标的尺寸 @see THREE.Vector2()
  * @param strength：泛光强度
  * @param radius 泛光半径
- * @param threshold 阀值（渐变的最小取值）
+ * @param threshold 阀值，定义了单一颜色需要多少亮度才会产生泛光
  * @constructor
  */
 var UnrealBloomPass = function(resolution, strength, radius, threshold) {
