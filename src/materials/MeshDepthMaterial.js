@@ -8,12 +8,17 @@ import { BasicDepthPacking } from '../constants.js';
  * @author WestLangley / http://github.com/WestLangley
  *
  * parameters = {
+ *
  *  opacity: <float>,
+ *
  *  map: new THREE.Texture( <Image> ),
+ *
  *  alphaMap: new THREE.Texture( <Image> ),
+ *
  *  displacementMap: new THREE.Texture( <Image> ),
  *  displacementScale: <float>,
  *  displacementBias: <float>,
+ *
  *  wireframe: <boolean>,
  *  wireframeLinewidth: <float>
  * }
@@ -24,6 +29,7 @@ function MeshDepthMaterial( parameters ) {
 
 	this.type = 'MeshDepthMaterial';
 
+	// 深度打包编码
 	this.depthPacking = BasicDepthPacking;
 
 	this.skinning = false;

@@ -159,8 +159,11 @@ export var LogLuvEncoding = 3003;
 export var RGBM7Encoding = 3004;
 export var RGBM16Encoding = 3005;
 export var RGBDEncoding = 3006;
+
+// 深度打包编码
 export var BasicDepthPacking = 3200;
 export var RGBADepthPacking = 3201;
+
 export var TangentSpaceNormalMap = 0;
 export var ObjectSpaceNormalMap = 1;
 
