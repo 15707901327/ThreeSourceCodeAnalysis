@@ -5,6 +5,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <link type="text/css" rel="stylesheet" href="../main.css">
+  <style>
+    body{
+      background: red;
+    }
+  </style>
 </head>
 <body>
 <div id="info">
@@ -93,10 +98,13 @@
     var width = window.innerWidth;
     var height = window.innerHeight;
 
-    renderer = new THREE.WebGLRenderer();
-    renderer.shadowMap.enabled = true;
+    renderer = new THREE.WebGLRenderer({
+      alpha: true
+    });
+    // renderer.shadowMap.enabled = true;
     // todo - support pixelRatio in this demo
     renderer.setSize(width, height);
+    renderer.setClearAlpha(0.0);
     document.body.appendChild(renderer.domElement);
 
     scene = new THREE.Scene();
@@ -208,7 +216,7 @@
 
     effectFXAA = new ShaderPass(FXAAShader);
     effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
-    // composer.addPass(effectFXAA);
+    composer.addPass(effectFXAA);
 
     window.addEventListener('resize', onWindowResize, false);
 
