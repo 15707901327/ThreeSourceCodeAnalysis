@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/examples/fire/webgl_fire.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/jsm/PGL/PGL.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/jsm/objects/Fire.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/particles/GradientParticles.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/particles/GradientParticles.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/Loader/gltf/gltf.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Loader/gltf/gltf.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/Loader/gltf/gltf.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Loader/gltf/gltf.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/left.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/particles/GradientParticles.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/particles/GradientParticles.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/particles/GradientParticles.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/particles/GradientParticles.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,15 +20,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/examples/particles/GradientParticles.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="54" column="52" selection-start-line="54" selection-start-column="52" selection-end-line="54" selection-end-column="52" />
+            <state relative-caret-position="443">
+              <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
               <folding>
                 <element signature="e#460#518#0" expanded="true" />
-                <element signature="e#1206#1235#0" />
-                <element signature="e#1290#1360#0" />
                 <element signature="e#2180#2429#0" />
                 <element signature="e#2452#2529#0" />
                 <element signature="e#2569#2658#0" />
@@ -50,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/examples/particles/GradientParticles.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="84">
-              <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
               <folding>
                 <element signature="e#143#192#0" />
                 <element signature="e#224#1644#0" />
@@ -60,40 +52,6 @@
                 <element signature="e#1749#1782#0" />
                 <element signature="e#1800#2152#0" />
                 <element signature="e#2181#2896#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/examples/left.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="24" column="72" selection-start-line="24" selection-start-column="72" selection-end-line="24" selection-end-column="72" />
-              <folding>
-                <element signature="n#ul#0;n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#13;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#14;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#15;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#16;n#ul#0;n#body#0;n#html#0;n#!!top" />
               </folding>
             </state>
           </provider>
@@ -205,9 +163,9 @@
         <option value="$PROJECT_DIR$/examples/jsm/objects/Fire.js" />
         <option value="$PROJECT_DIR$/examples/particles/Particles2.js" />
         <option value="$PROJECT_DIR$/examples/particles/webgl_points_waves2.html" />
+        <option value="$PROJECT_DIR$/examples/left.html" />
         <option value="$PROJECT_DIR$/examples/particles/GradientParticles.js" />
         <option value="$PROJECT_DIR$/examples/particles/GradientParticles.html" />
-        <option value="$PROJECT_DIR$/examples/left.html" />
       </list>
     </option>
   </component>
@@ -239,12 +197,6 @@
               <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
               <item name="examples" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="examples" type="462c0819:PsiDirectoryNode" />
-              <item name="particles" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -409,7 +361,7 @@
       <workItem from="1571794743792" duration="2734000" />
       <workItem from="1571803463806" duration="1495000" />
       <workItem from="1571814516369" duration="11600000" />
-      <workItem from="1571881206264" duration="4622000" />
+      <workItem from="1571881206264" duration="6490000" />
     </task>
     <task id="LOCAL-00001" summary="1. 添加天空盒子背景效果实例&#10;2. r106">
       <created>1564043851469</created>
@@ -663,11 +615,18 @@
       <option name="project" value="LOCAL" />
       <updated>1571711667558</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="1.粒子渐变">
+      <created>1571886310178</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1571886310178</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="471474000" />
+    <option name="totallyTimeSpent" value="473342000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -759,7 +718,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1. 测试gltf加载器" />
     <MESSAGE value="1. 更新three_107" />
     <MESSAGE value="1. 添加光圈变化效果" />
     <MESSAGE value="1. 帧缓存相关说明" />
@@ -784,7 +742,8 @@
     <MESSAGE value="1.outline" />
     <MESSAGE value="1.粒子demo" />
     <MESSAGE value="1.点云效果" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.点云效果" />
+    <MESSAGE value="1.粒子渐变" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.粒子渐变" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1283,24 +1242,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/particles/GradientParticles.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="54" column="52" selection-start-line="54" selection-start-column="52" selection-end-line="54" selection-end-column="52" />
-          <folding>
-            <element signature="e#460#518#0" expanded="true" />
-            <element signature="e#1206#1235#0" />
-            <element signature="e#1290#1360#0" />
-            <element signature="e#2180#2429#0" />
-            <element signature="e#2452#2529#0" />
-            <element signature="e#2569#2658#0" />
-            <element signature="e#2699#2888#0" />
-            <element signature="e#2928#3117#0" />
-            <element signature="e#3139#3340#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -1308,26 +1249,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/particles/GradientParticles.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
-          <folding>
-            <element signature="e#143#192#0" />
-            <element signature="e#224#1644#0" />
-            <element signature="e#570#787#0" />
-            <element signature="e#1011#1149#0" />
-            <element signature="e#1735#3051#0" />
-            <element signature="e#1749#1782#0" />
-            <element signature="e#1800#2152#0" />
-            <element signature="e#2181#2896#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/left.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
+        <state relative-caret-position="-364">
           <caret line="24" column="72" selection-start-line="24" selection-start-column="72" selection-end-line="24" selection-end-column="72" />
           <folding>
             <element signature="n#ul#0;n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
@@ -1353,6 +1277,39 @@
             <element signature="n#li#14;n#ul#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#li#15;n#ul#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#li#16;n#ul#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/particles/GradientParticles.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="e#143#192#0" />
+            <element signature="e#224#1644#0" />
+            <element signature="e#570#787#0" />
+            <element signature="e#1011#1149#0" />
+            <element signature="e#1735#3051#0" />
+            <element signature="e#1749#1782#0" />
+            <element signature="e#1800#2152#0" />
+            <element signature="e#2181#2896#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/particles/GradientParticles.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="443">
+          <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
+          <folding>
+            <element signature="e#460#518#0" expanded="true" />
+            <element signature="e#2180#2429#0" />
+            <element signature="e#2452#2529#0" />
+            <element signature="e#2569#2658#0" />
+            <element signature="e#2699#2888#0" />
+            <element signature="e#2928#3117#0" />
+            <element signature="e#3139#3340#0" />
           </folding>
         </state>
       </provider>

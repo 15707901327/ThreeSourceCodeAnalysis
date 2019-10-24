@@ -12,14 +12,17 @@ import {
  * @param options
  *  color：粒子颜色
  *  num:粒子数量
+ *  range:范围
+ *  size:20
  * @constructor
  */
-let GradientParticles = function(options) {
+function GradientParticles(options) {
 
   options = options || {};
-  var color = (options.color !== undefined) ? new Color(options.color) : new Color(0x7F7F7F);
-  // 粒子数量
+  var color = (options.color !== undefined) ? new Color(options.color) : new Color(0x0419ff);
   var num = options.num !== undefined ? options.num : 20;
+  var range = options.range !== undefined ? options.range : 50;
+  var size = options.size !== undefined ? options.size : 20;
   var shader = options.shader || GradientParticles.ParticlesShader;
 
   this.type = 'GradientParticles';
@@ -28,11 +31,11 @@ let GradientParticles = function(options) {
   var scales = new Float32Array(num);
 
   for (var i = 0; i < num; i++) {
-    positions[i * 3] = (Math.random() * 2 - 1) * 500;
-    positions[i * 3 + 1] = (Math.random() * 2 - 1) * 500;
-    positions[i * 3 + 2] = (Math.random() * 2 - 1) * 500;
+    positions[i * 3] = (Math.random() * 2 - 1) * range;
+    positions[i * 3 + 1] = (Math.random() * 2 - 1) * range;
+    positions[i * 3 + 2] = (Math.random() * 2 - 1) * range;
 
-    scales[i] = 20 + Math.random() * 20;
+    scales[i] = size/2 + Math.random() * size/2;
   }
 
   var geometry = new BufferGeometry();
@@ -49,7 +52,8 @@ let GradientParticles = function(options) {
 
   Points.call(this, geometry, material);
 
-  this.onBeforeRender = function(renderer, scene, camera, geometry, material, group) {};
+  this.onBeforeRender = function(renderer, scene, camera, geometry, material, group) {
+  };
 };
 
 GradientParticles.prototype = Object.create(Points.prototype);
@@ -73,7 +77,7 @@ GradientParticles.ParticlesShader = {
   fragmentShader: [
     'varying vec3 v_color;',
     'void main() {',
-    ' vec4 diff = vec4(v_color,1.0);',
+    ' vec3 diff = v_color;',
     ' float radius = length( gl_PointCoord - vec2( 0.5, 0.5 ) );',
     ' // 立方体变成球体',
     ' if ( radius > 0.5 ) discard;',
@@ -89,7 +93,7 @@ GradientParticles.ParticlesShader = {
     '   float blend = smoothstep(0.35, 0.5, radius);',
     '   diff = mix(diff * 0.5 ,diff * 0.25,blend);',
     ' };',
-    ' gl_FragColor = diff;',
+    ' gl_FragColor = vec4(diff,1.0);',
     '}'
   ].join('\n')
 };
