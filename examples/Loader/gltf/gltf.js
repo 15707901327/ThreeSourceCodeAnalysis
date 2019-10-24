@@ -1,4 +1,8 @@
 import { GLTFLoader } from '../../jsm/loaders/GLTFLoader.js';
+import PGL  from '../../jsm/PGL/PGL.js';
+import Stats from "../../jsm/libs/stats.module.js";
+import {OrbitControls} from "../../jsm/controls/OrbitControls.js";
+import * as THREE from "../../../build/three_r109.module.js";
 
 /**
  * 场景初始化区
@@ -113,7 +117,7 @@ import { GLTFLoader } from '../../jsm/loaders/GLTFLoader.js';
       // this.scene.add(SpotLight);
     },
     initOrbitControls: function() {
-      this.orbitControls = new THREE.OrbitControls(this.camera, this.webGLRenderer.domElement);
+      this.orbitControls = new OrbitControls(this.camera, this.webGLRenderer.domElement);
       // 如果使用animate方法时，将此函数删除
       //controls.addEventListener( 'change', render );
       // 使动画循环使用时阻尼或自转 意思是否有惯性
