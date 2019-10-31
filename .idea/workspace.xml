@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/examples/noise/heightmap.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/noise/textures/diffusemap.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/heatMap/test2.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/heatMap/textures/heightMap.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/heatMap/textures/heightMap1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/heatMap/textures/heightMap2.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/left.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/heatMap/test1.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/heatMap/test1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/heatMap/test1.js" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,88 +24,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/noise/heightmap.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1400">
-              <caret line="390" column="24" lean-forward="true" selection-start-line="390" selection-start-column="24" selection-end-line="390" selection-end-column="24" />
-              <folding>
-                <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-                <element signature="e#536#594#0" expanded="true" />
-                <element signature="e#673#798#0" />
-                <element signature="e#825#3474#0" />
-                <element signature="e#847#2052#0" />
-                <element signature="e#1137#1369#0" />
-                <element signature="e#4467#8748#0" />
-                <element signature="e#4446#5038#0" />
-                <element signature="e#4490#5031#0" />
-                <element signature="e#5121#6481#0" />
-                <element signature="e#9110#9939#0" />
-                <element signature="e#9963#10167#0" />
-                <element signature="e#10412#10579#0" />
-                <element signature="e#11281#11531#0" />
-                <element signature="e#12025#12089#0" />
-                <element signature="e#11995#12435#0" />
-                <element signature="e#13074#13299#0" />
-                <element signature="e#13193#13323#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/examples/left.html">
+        <entry file="file://$PROJECT_DIR$/examples/heatMap/test2.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="13" column="76" selection-start-line="13" selection-start-column="76" selection-end-line="13" selection-end-column="76" />
-              <folding>
-                <element signature="n#ul#0;n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#13;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#14;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#15;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#16;n#ul#0;n#body#0;n#html#0;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/heatMap/test1.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="418">
-              <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+            <state relative-caret-position="309">
+              <caret line="139" column="33" selection-start-line="139" selection-start-column="33" selection-end-line="139" selection-end-column="33" />
               <folding>
                 <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/heatMap/test1.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-382">
-              <caret line="53" column="1" lean-forward="true" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
-              <folding>
-                <element signature="e#1230#1658#0" />
-                <element signature="e#2339#2523#0" />
+                <element signature="e#364#422#0" expanded="true" />
+                <element signature="e#1924#5549#0" />
+                <element signature="e#5919#6006#0" />
               </folding>
             </state>
           </provider>
@@ -119,36 +50,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>PGL</find>
-      <find>stats</find>
-      <find>OrbitControls</find>
-      <find>$</find>
-      <find>Text</find>
-      <find>initParticle</find>
-      <find>camera</find>
-      <find>mouseX</find>
-      <find>particles</find>
-      <find>SEPARATION</find>
-      <find>Particles2</find>
-      <find>color</find>
-      <find>GradientParticles</find>
-      <find>this.color</find>
-      <find>numParticles</find>
-      <find>THREE.OrbitControls</find>
-      <find>colorMap</find>
-      <find>normalShader</find>
       <find>NormalMapShader</find>
       <find>cameraOrtho</find>
-      <find>render</find>
       <find>get_F2_F1</find>
       <find>noise_perlin</find>
       <find>noise_sum_abs</find>
-      <find>heightMap</find>
       <find>resolution</find>
       <find>heightMapMaterial</find>
       <find>quadTarget</find>
       <find>sceneRenderTarget</find>
       <find>uRepeatBase</find>
+      <find>u_time</find>
+      <find>time</find>
+      <find>update</find>
+      <find>clock</find>
+      <find>createHeightMap</find>
+      <find>heightMap</find>
+      <find>THREE.OrbitControls</find>
+      <find>texture</find>
+      <find>canvas</find>
+      <find>image</find>
+      <find>canvasDemo</find>
+      <find>imgDate</find>
+      <find>height</find>
+      <find>(height)</find>
+      <find>light</find>
+      <find>gui</find>
+      <find>heightRatio</find>
+      <find>render</find>
+      <find>vertexColors</find>
+      <find>color</find>
     </findStrings>
     <replaceStrings>
       <replace>jpg</replace>
@@ -158,6 +89,8 @@
       <replace>GradientParticles</replace>
       <replace>var color</replace>
       <replace>num</replace>
+      <replace>(height-1)</replace>
+      <replace>height</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -166,9 +99,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/examples/tonemapping/webgl_shaders_tonemapping.html" />
-        <option value="$PROJECT_DIR$/examples/jsm/controls/TrackballControls.js" />
-        <option value="$PROJECT_DIR$/examples/Blur/GaussianBlur.js" />
         <option value="$PROJECT_DIR$/examples/Blur/GaussianBlur.html" />
         <option value="$PROJECT_DIR$/examples/Blur/MotionBlur.html" />
         <option value="$PROJECT_DIR$/examples/Blur/GeneralBlur.html" />
@@ -182,7 +112,6 @@
         <option value="$PROJECT_DIR$/examples/shaders/LuminosityHighPassShader.js" />
         <option value="$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js" />
         <option value="$PROJECT_DIR$/../three_r108.js-master/src/core/Layers.js" />
-        <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
         <option value="$PROJECT_DIR$/src/core/Layers.js" />
         <option value="$PROJECT_DIR$/src/core/Object3D.js" />
         <option value="$PROJECT_DIR$/examples/js/postprocessing/UnrealBloomPass.js" />
@@ -196,7 +125,6 @@
         <option value="$PROJECT_DIR$/examples/jsm/postprocessing/OutlinePass.js" />
         <option value="$PROJECT_DIR$/examples/jsm/controls/TransformControls.js" />
         <option value="$PROJECT_DIR$/examples/potClould/demo1.html" />
-        <option value="$PROJECT_DIR$/examples/potClould/demo2.html" />
         <option value="$PROJECT_DIR$/examples/jsm/postprocessing/EffectComposer.js" />
         <option value="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_outline.html" />
         <option value="$PROJECT_DIR$/examples/jsm/postprocessing/ShaderPass.js" />
@@ -217,6 +145,11 @@
         <option value="$PROJECT_DIR$/examples/noise/noise.html" />
         <option value="$PROJECT_DIR$/examples/noise/heightmap.html" />
         <option value="$PROJECT_DIR$/examples/left.html" />
+        <option value="$PROJECT_DIR$/examples/heatMap/test1.js" />
+        <option value="$PROJECT_DIR$/examples/heatMap/test1.html" />
+        <option value="$PROJECT_DIR$/examples/potClould/demo2.html" />
+        <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
+        <option value="$PROJECT_DIR$/examples/heatMap/test2.html" />
       </list>
     </option>
   </component>
@@ -236,6 +169,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -248,18 +182,30 @@
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
               <item name="examples" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
+              <item name="heatMap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
+              <item name="heatMap" type="462c0819:PsiDirectoryNode" />
+              <item name="textures" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/examples/noise" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -271,19 +217,19 @@
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r109.js-master/examples/jsm/controls/OrbitControls.js" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\noise" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\particles" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\objects" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\fire" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\PGL" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\PGL" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\tonemapping" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\particles" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\nodes" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\Loader\obj" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\heatMap" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\noise" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\particles" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\objects" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\fire" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -416,7 +362,10 @@
       <workItem from="1571903684901" duration="1205000" />
       <workItem from="1571910693391" duration="348000" />
       <workItem from="1571970100179" duration="44000" />
-      <workItem from="1572230927722" duration="17570000" />
+      <workItem from="1572230927722" duration="17695000" />
+      <workItem from="1572314284866" duration="8650000" />
+      <workItem from="1572398093156" duration="26140000" />
+      <workItem from="1572484459270" duration="1960000" />
     </task>
     <task id="LOCAL-00001" summary="1. 添加天空盒子背景效果实例&#10;2. r106">
       <created>1564043851469</created>
@@ -691,17 +640,24 @@
       <option name="project" value="LOCAL" />
       <updated>1572245482639</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="1.细胞噪声 (Celluar Noise)">
+      <created>1572256733213</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1572256733213</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="492770000" />
+    <option name="totallyTimeSpent" value="529645000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20089285" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21502976" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -787,7 +743,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1. 添加光圈变化效果" />
     <MESSAGE value="1. 帧缓存相关说明" />
     <MESSAGE value="1. 添加圆圈显示实例" />
     <MESSAGE value="1. 添加镜面效果实例" />
@@ -812,7 +767,8 @@
     <MESSAGE value="1.点云效果" />
     <MESSAGE value="1.粒子渐变" />
     <MESSAGE value="1.噪声湍流" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.噪声湍流" />
+    <MESSAGE value="1.细胞噪声 (Celluar Noise)" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.细胞噪声 (Celluar Noise)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -822,170 +778,18 @@
           <line>14128</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/core/BufferAttribute.js</url>
+          <line>133</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="20" column="21" lean-forward="true" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
-          <folding>
-            <element signature="e#1162#1338#0" />
-            <element signature="e#1365#1401#0" />
-            <element signature="e#1794#1861#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/jsm/shaders/FXAAShader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4258">
-          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
-          <folding>
-            <element signature="e#283#346#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/EffectComposer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="592">
-          <caret line="194" column="9" selection-start-line="194" selection-start-column="2" selection-end-line="194" selection-end-column="9" />
-          <folding>
-            <element signature="e#609#1872#0" />
-            <element signature="e#675#1159#0" />
-            <element signature="e#1165#1274#0" />
-            <element signature="e#1624#1693#0" />
-            <element signature="e#1726#1795#0" />
-            <element signature="e#1944#2050#0" />
-            <element signature="e#2055#2091#0" />
-            <element signature="e#2118#2234#0" />
-            <element signature="e#2273#2320#0" />
-            <element signature="e#2325#2402#0" />
-            <element signature="e#2444#2601#0" />
-            <element signature="e#2606#2645#0" />
-            <element signature="e#2676#4081#0" />
-            <element signature="e#2749#2797#0" />
-            <element signature="e#3273#3808#0" />
-            <element signature="e#3844#4014#0" />
-            <element signature="e#4116#4730#0" />
-            <element signature="e#4768#5198#0" />
-            <element signature="e#5239#5327#0" />
-            <element signature="e#5357#5820#0" />
-            <element signature="e#5853#6081#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/OutlinePass.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="152" lean-forward="true" selection-start-line="152" selection-end-line="164" />
-          <folding>
-            <element signature="e#651#5249#0" />
-            <element signature="e#4544#4765#0" />
-            <element signature="e#5092#5246#0" />
-            <element signature="e#5375#5698#0" />
-            <element signature="e#5736#6433#0" />
-            <element signature="e#6438#6510#0" />
-            <element signature="e#6567#7089#0" />
-            <element signature="e#7094#7167#0" />
-            <element signature="e#7227#8184#0" />
-            <element signature="e#7310#7371#0" />
-            <element signature="e#8189#8210#0" />
-            <element signature="e#8245#8523#0" />
-            <element signature="e#8603#14606#0" />
-            <element signature="e#10935#11162#0" />
-            <element signature="e#14646#15946#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/jsm/postprocessing/ShaderPass.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="43" column="86" lean-forward="true" selection-start-line="43" selection-start-column="86" selection-end-line="43" selection-end-column="86" />
-          <folding>
-            <element signature="e#335#883#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_outline.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
-          <folding>
-            <element signature="n#head#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#4586#5191#0" />
-            <element signature="e#5334#5789#0" />
-            <element signature="e#6928#7067#0" />
-            <element signature="e#7453#7800#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/three_r105.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="37470" column="20" selection-start-line="37470" selection-start-column="11" selection-end-line="37470" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Desktop/demo/css/style.css" />
-    <entry file="file://$USER_HOME$/Desktop/demo/js/index.js" />
-    <entry file="file://$PROJECT_DIR$/css/base.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="121" column="17" selection-start-line="121" selection-start-column="17" selection-end-line="121" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/potClould/demo1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="e#413#471#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/js/libs/tween.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/models/obj/chahu.obj">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$USER_HOME$/Desktop/test_all(9-26).obj" />
     <entry file="file://$PROJECT_DIR$/examples/potClould/test_all(9-26).obj" />
-    <entry file="file://$PROJECT_DIR$/examples/potClould/demo2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4312">
-          <caret line="165" column="7" selection-start-line="165" selection-start-column="7" selection-end-line="165" selection-end-column="7" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="e#4592#4629#0" />
-            <element signature="e#4675#5062#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/potClould/demo3.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="60" selection-start-line="60" selection-end-line="60" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/js/PGL/PGL.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -1237,10 +1041,228 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/examples/noise/textures/diffusemap.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-896">
+          <caret line="6114" column="27" selection-start-line="6114" selection-start-column="10" selection-end-line="6114" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/left.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="13" column="76" selection-start-line="13" selection-start-column="76" selection-end-line="13" selection-end-column="76" />
+          <folding>
+            <element signature="n#ul#0;n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#ul#0;n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#13;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#14;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#15;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#li#16;n#ul#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/noise/heightmap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="387" column="3" lean-forward="true" selection-start-line="387" selection-start-column="3" selection-end-line="387" selection-end-column="3" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="e#536#594#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/mirror/webgl_mirror.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="22" />
+          <folding>
+            <element signature="n#script#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/noise/noise_turbulence.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="n#script#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/home.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4302">
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/example.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="38" column="19" lean-forward="true" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/heatMap/test1.js" />
+    <entry file="file://$PROJECT_DIR$/examples/jsm/libs/dat.gui.module.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="3569" column="12" lean-forward="true" selection-start-line="3569" selection-start-column="12" selection-end-line="3569" selection-end-column="12" />
+          <folding>
+            <element signature="e#405#664#0" />
+            <element signature="e#711#2098#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/depth_texture/webgl_depth_texture.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4144">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/materials/webgl_materials_lightmap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="13" column="12" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/materials/webgl_materials_wireframe.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/mirror/webgl_mirror_nodes.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="54" column="6" selection-start-line="54" selection-start-column="6" selection-end-line="55" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/potClould/demo1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1620">
+          <caret line="78" column="13" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="13" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="e#413#471#0" expanded="true" />
+            <element signature="e#2357#2535#0" />
+            <element signature="e#2568#3580#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/potClould/demo3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-816">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/three_r109.module.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1384">
+          <caret line="32551" column="2" lean-forward="true" selection-start-line="32551" selection-start-column="2" selection-end-line="32551" selection-end-column="2" />
+          <folding>
+            <element signature="e#51527#51670#0" />
+            <element signature="e#681531#682281#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/three_r69.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="183" column="65" selection-start-line="183" selection-start-column="65" selection-end-line="183" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/BufferAttribute.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="784">
+          <caret line="133" selection-start-line="133" selection-end-line="133" />
+          <folding>
+            <element signature="e#1108#1347#0" />
+            <element signature="e#1382#1428#0" />
+            <element signature="e#1458#1705#0" />
+            <element signature="e#1756#1959#0" />
+            <element signature="e#1993#2042#0" />
+            <element signature="e#2083#2483#0" />
+            <element signature="e#2527#2906#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/BufferGeometry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="93" column="50" selection-start-line="93" selection-start-column="50" selection-end-line="93" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/potClould/demo2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="132" column="56" lean-forward="true" selection-start-line="132" selection-start-column="56" selection-end-line="132" selection-end-column="88" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="e#2932#2963#0" />
+            <element signature="e#3117#3438#0" />
+            <element signature="e#3546#3772#0" />
+            <element signature="e#4592#4629#0" />
+            <element signature="e#4675#5062#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="513" selection-start-line="513" selection-end-line="513" />
+        <state relative-caret-position="247">
+          <caret line="944" lean-forward="true" selection-start-line="944" selection-end-line="944" />
           <folding>
             <element signature="e#0#199#0" expanded="true" />
             <element signature="e#6221#7495#0" />
@@ -1279,136 +1301,66 @@
             <element signature="e#14638#14681#0" />
             <element signature="e#14717#14760#0" />
             <element signature="e#14797#15108#0" />
+            <element signature="e#15156#15275#0" />
+            <element signature="e#15318#15435#0" />
+            <element signature="e#15473#15613#0" />
+            <element signature="e#18805#19019#0" />
+            <element signature="e#19059#19158#0" />
+            <element signature="e#19312#19400#0" />
+            <element signature="e#19481#19608#0" />
+            <element signature="e#19756#19833#0" />
+            <element signature="e#19903#19941#0" />
+            <element signature="e#19979#20020#0" />
+            <element signature="e#20570#21118#0" />
+            <element signature="e#21147#21561#0" />
+            <element signature="e#21592#21635#0" />
+            <element signature="e#21666#21712#0" />
+            <element signature="e#21770#21895#0" />
+            <element signature="e#21905#21957#0" />
             <element signature="e#26356#26464#0" />
             <element signature="e#26959#27130#0" />
+            <element signature="e#27187#27344#0" />
+            <element signature="e#27396#27512#0" />
+            <element signature="e#27991#28035#0" />
             <element signature="e#28744#28783#0" />
+            <element signature="e#30800#30958#0" />
             <element signature="e#31025#33629#0" />
             <element signature="e#31557#32033#0" />
             <element signature="e#31631#32025#0" />
             <element signature="e#31660#31782#0" />
             <element signature="e#32081#32325#0" />
             <element signature="e#32392#33453#0" />
+            <element signature="e#34172#34626#0" />
             <element signature="e#35428#35732#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/noise/noise_turbulence.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="28" column="2" lean-forward="true" selection-start-line="28" selection-start-column="2" selection-end-line="29" selection-end-column="71" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="e#669#3209#0" />
-            <element signature="e#3214#6927#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/noise/textures/diffusemap.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/heatMap/test1.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-382">
-          <caret line="53" column="1" lean-forward="true" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
-          <folding>
-            <element signature="e#1230#1658#0" />
-            <element signature="e#2339#2523#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/heatMap/test1.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+        <state relative-caret-position="569">
+          <caret line="59" column="31" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
           <folding>
             <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="e#1468#2202#0" />
+            <element signature="e#1720#2150#0" />
+            <element signature="e#2876#3074#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/three_r109.module.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-144">
-          <caret line="3743" column="2" selection-start-line="3743" selection-start-column="2" selection-end-line="3743" selection-end-column="2" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/examples/heatMap/textures/heightMap.jpg">
+      <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/depth_texture/webgl_depth_texture.html">
+    <entry file="file://$PROJECT_DIR$/examples/heatMap/test2.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4200" />
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-896">
-          <caret line="6114" column="27" selection-start-line="6114" selection-start-column="10" selection-end-line="6114" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/noise/heightmap.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1400">
-          <caret line="390" column="24" lean-forward="true" selection-start-line="390" selection-start-column="24" selection-end-line="390" selection-end-column="24" />
+        <state relative-caret-position="309">
+          <caret line="139" column="33" selection-start-line="139" selection-start-column="33" selection-end-line="139" selection-end-column="33" />
           <folding>
             <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="e#536#594#0" expanded="true" />
-            <element signature="e#673#798#0" />
-            <element signature="e#825#3474#0" />
-            <element signature="e#847#2052#0" />
-            <element signature="e#1137#1369#0" />
-            <element signature="e#4467#8748#0" />
-            <element signature="e#4446#5038#0" />
-            <element signature="e#4490#5031#0" />
-            <element signature="e#5121#6481#0" />
-            <element signature="e#9110#9939#0" />
-            <element signature="e#9963#10167#0" />
-            <element signature="e#10412#10579#0" />
-            <element signature="e#11281#11531#0" />
-            <element signature="e#12025#12089#0" />
-            <element signature="e#11995#12435#0" />
-            <element signature="e#13074#13299#0" />
-            <element signature="e#13193#13323#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/left.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="13" column="76" selection-start-line="13" selection-start-column="76" selection-end-line="13" selection-end-column="76" />
-          <folding>
-            <element signature="n#ul#0;n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#4;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#5;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#6;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#7;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#8;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#9;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#10;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#12;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#13;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#14;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#15;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#16;n#ul#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="e#364#422#0" expanded="true" />
+            <element signature="e#1924#5549#0" />
+            <element signature="e#5919#6006#0" />
           </folding>
         </state>
       </provider>
