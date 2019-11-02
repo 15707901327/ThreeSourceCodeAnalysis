@@ -104,9 +104,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     }
 
-    this.attributes[name] = attribute;
-
-    return this;
+		return this.setAttribute( name, attribute );
 
   },
 
@@ -115,6 +113,14 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
     return this.attributes[name];
 
   },
+
+	setAttribute: function ( name, attribute ) {
+
+		this.attributes[ name ] = attribute;
+
+		return this;
+
+	},
 
   removeAttribute: function(name) {
 
@@ -586,10 +592,6 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   computeBoundingBox: function() {
 
-    var box = new Box3();
-
-    return function computeBoundingBox() {
-
       if (this.boundingBox === null) {
 
         this.boundingBox = new Box3();
@@ -631,8 +633,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
       }
 
-    }
-  }(),
+    },
   /**
    * 计算模型的最小包围球的大小
    */
