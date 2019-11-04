@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/examples/fire/fire2.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/fire/fire3.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/fire/firePoints.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/jsm/controls/OrbitControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/controls/OrbitControls.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/left.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -21,58 +23,68 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/fire/fire2.html">
+        <entry file="file://$PROJECT_DIR$/examples/fire/fire3.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2016">
-              <caret line="297" column="24" lean-forward="true" selection-start-line="297" selection-start-column="24" selection-end-line="297" selection-end-column="24" />
+            <state relative-caret-position="427">
+              <caret line="89" column="27" selection-start-line="89" selection-start-column="27" selection-end-line="89" selection-end-column="27" />
               <folding>
-                <element signature="e#635#1312#0" />
-                <element signature="e#1394#2385#0" />
-                <element signature="e#1416#2344#0" />
-                <element signature="e#1426#1537#0" />
-                <element signature="e#1424#1499#0" />
-                <element signature="e#1764#1851#0" />
-                <element signature="e#1884#1937#0" />
-                <element signature="e#1956#2091#0" />
-                <element signature="e#2132#2336#0" />
-                <element signature="e#2032#3506#0" />
-                <element signature="e#2505#3866#0" />
-                <element signature="e#3508#3533#0" />
-                <element signature="e#3579#3880#0" />
-                <element signature="e#3930#4842#0" />
-                <element signature="e#4416#4662#0" />
-                <element signature="e#4708#4915#0" />
-                <element signature="e#4974#5196#0" />
-                <element signature="e#4892#5782#0" />
-                <element signature="e#5365#6142#0" />
-                <element signature="e#5402#5640#0" />
-                <element signature="e#5673#6106#0" />
-                <element signature="e#5784#5809#0" />
-                <element signature="e#6394#7495#0" />
-                <element signature="e#6441#6478#0" />
-                <element signature="e#7200#7264#0" />
-                <element signature="e#8143#8349#0" />
-                <element signature="e#8374#8488#0" />
-                <element signature="e#8942#11059#0" />
-                <element signature="e#9112#9350#0" />
-                <element signature="e#10779#10816#0" />
-                <element signature="e#10925#10974#0" />
-                <element signature="e#10566#10611#0" />
-                <element signature="e#11152#14792#0" />
-                <element signature="e#11260#14749#0" />
-                <element signature="e#11310#11591#0" />
-                <element signature="e#11563#14658#0" />
-                <element signature="e#11113#11846#0" />
-                <element signature="e#11252#11497#0" />
-                <element signature="e#11555#11762#0" />
-                <element signature="e#11877#12499#0" />
-                <element signature="e#12663#12915#0" />
-                <element signature="e#13166#13893#0" />
-                <element signature="e#13253#13881#0" />
-                <element signature="e#13193#13944#0" />
-                <element signature="e#14032#14077#0" />
-                <element signature="e#14123#14181#0" />
-                <element signature="e#14183#14205#0" />
+                <element signature="e#191#233#0" />
+                <element signature="e#244#271#0" />
+                <element signature="e#420#478#0" expanded="true" />
+                <element signature="e#1779#1837#0" />
+                <element signature="e#2368#2472#0" />
+                <element signature="e#2526#2702#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/fire/firePoints.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="336">
+              <caret line="145" column="36" selection-start-line="145" selection-start-column="36" selection-end-line="145" selection-end-column="36" />
+              <folding>
+                <element signature="e#71#882#0" />
+                <element signature="e#75#164#0" />
+                <element signature="e#200#263#0" />
+                <element signature="e#268#334#0" />
+                <element signature="e#366#407#0" />
+                <element signature="n#!!doc;n#Mover#0" />
+                <element signature="n#!!block;n#Mover#0" />
+                <element signature="e#1140#2204#0" />
+                <element signature="e#1335#1519#0" />
+                <element signature="e#1561#1605#0" />
+                <element signature="e#1647#1741#0" />
+                <element signature="e#1591#1632#0" />
+                <element signature="e#1658#1698#0" />
+                <element signature="e#1728#1823#0" />
+                <element signature="e#1859#1944#0" />
+                <element signature="e#1979#2084#0" />
+                <element signature="e#2088#2109#0" />
+                <element signature="e#2259#2291#0" />
+                <element signature="e#2327#2360#0" />
+                <element signature="n#!!doc;n#FirePoints#0" />
+                <element signature="n#!!block;n#FirePoints#0" />
+                <element signature="e#2902#5910#0" />
+                <element signature="e#2722#2758#0" />
+                <element signature="e#2896#3077#0" />
+                <element signature="e#3095#3281#0" />
+                <element signature="e#3601#4618#0" />
+                <element signature="e#3645#3736#0" />
+                <element signature="e#3782#3800#0" />
+                <element signature="e#4020#4089#0" />
+                <element signature="e#4337#4403#0" />
+                <element signature="e#4541#4611#0" />
+                <element signature="e#4736#4806#0" />
+                <element signature="e#5011#5081#0" />
+                <element signature="e#3876#3910#0" />
+                <element signature="e#3933#3943#0" />
+                <element signature="e#3338#3900#0" />
+                <element signature="e#3824#3859#0" />
+                <element signature="e#3887#4486#0" />
+                <element signature="e#4491#4526#0" />
+                <element signature="e#4655#5281#0" />
               </folding>
             </state>
           </provider>
@@ -81,8 +93,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/examples/left.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="14" column="53" selection-start-line="14" selection-start-column="53" selection-end-line="14" selection-end-column="53" />
+            <state relative-caret-position="420">
+              <caret line="15" column="56" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
               <folding>
                 <element signature="n#li#1;n#ul#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
@@ -130,36 +142,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>light</find>
-      <find>gui</find>
-      <find>heightRatio</find>
-      <find>render</find>
-      <find>vertexColors</find>
-      <find>color</find>
-      <find>minDistance</find>
-      <find>enableZoom</find>
-      <find>THREE.OrbitControls</find>
-      <find>_num</find>
-      <find>PlaneBufferGeometry</find>
-      <find>translate</find>
-      <find>_group</find>
-      <find>_mesh</find>
-      <find>frustumCulled</find>
-      <find>life</find>
-      <find>scale</find>
-      <find>vAlpha</find>
-      <find>WebGLRenderer</find>
-      <find>_renderer</find>
       <find>WebGLRenderTarget</find>
       <find>_rtt</find>
       <find>resetRT</find>
       <find>points</find>
       <find>mover</find>
-      <find>canvas</find>
       <find>getDegree</find>
       <find>updatePosition</find>
       <find>update</find>
       <find>hook</find>
+      <find>getSpherical</find>
+      <find>HemiLight</find>
+      <find>setPosition</find>
+      <find>Points</find>
+      <find>debounce</find>
+      <find>OrbitControls</find>
+      <find>Util</find>
+      <find>_controls</find>
+      <find>inactivate</find>
+      <find>firePoints</find>
+      <find>activateMover</find>
+      <find>height</find>
+      <find>antigravity</find>
+      <find>velocity</find>
+      <find>applyForce</find>
+      <find>Mover</find>
+      <find>movers_num</find>
+      <find>is_active</find>
+      <find>res</find>
+      <find>activeNum</find>
+      <find>canvas</find>
     </findStrings>
     <replaceStrings>
       <replace>jpg</replace>
@@ -180,9 +192,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom.html" />
-        <option value="$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js" />
-        <option value="$PROJECT_DIR$/examples/jsm/postprocessing/Pass.js" />
         <option value="$PROJECT_DIR$/examples/shaders/LuminosityHighPassShader.js" />
         <option value="$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js" />
         <option value="$PROJECT_DIR$/../three_r108.js-master/src/core/Layers.js" />
@@ -230,6 +239,9 @@
         <option value="$PROJECT_DIR$/src/core/InstancedBufferAttribute.js" />
         <option value="$PROJECT_DIR$/examples/fire/fire.html" />
         <option value="$PROJECT_DIR$/examples/fire/fire2.html" />
+        <option value="$PROJECT_DIR$/examples/jsm/controls/OrbitControls.js" />
+        <option value="$PROJECT_DIR$/examples/fire/fire3.html" />
+        <option value="$PROJECT_DIR$/examples/fire/firePoints.js" />
         <option value="$PROJECT_DIR$/examples/left.html" />
       </list>
     </option>
@@ -240,7 +252,7 @@
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="width" value="1386" />
     <option name="height" value="788" />
@@ -250,6 +262,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -272,14 +285,13 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DFrame" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -288,22 +300,22 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r109.js-master/src/core/BufferGeometry.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r110.js-master/examples/jsm/controls/OrbitControls.js" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\fire" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\core" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\geometries" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\build" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\heatMap" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\PGL" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\tonemapping" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\particles" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\nodes" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\Loader\obj" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\fire" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\core" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\geometries" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\build" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\heatMap" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -446,7 +458,8 @@
       <workItem from="1572569958662" duration="7305000" />
       <workItem from="1572579146723" duration="6412000" />
       <workItem from="1572659010990" duration="11856000" />
-      <workItem from="1572745013983" duration="8325000" />
+      <workItem from="1572745013983" duration="18411000" />
+      <workItem from="1572829007017" duration="16529000" />
     </task>
     <task id="LOCAL-00001" summary="1. 添加天空盒子背景效果实例&#10;2. r106">
       <created>1564043851469</created>
@@ -756,21 +769,28 @@
       <option name="project" value="LOCAL" />
       <updated>1572688621137</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="1.火焰">
+      <created>1572753422487</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1572753422488</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="564475000" />
+    <option name="totallyTimeSpent" value="591090000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="0" width="1386" height="788" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21502976" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22106825" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3285968" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32721713" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -896,31 +916,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/utils.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/jsm/curves/CurveExtras.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="427" column="4" selection-start-line="427" selection-start-column="4" selection-end-line="427" selection-end-column="4" />
-          <folding>
-            <element signature="e#452#518#0" expanded="true" />
-            <element signature="e#9174#9550#0" />
-            <element signature="e#9561#10070#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/Loader/ObjectLoader/webgl_loader_json_claraio.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-924" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/Loader/obj/obj_mtl.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-984" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/Loader/gltf/gltf.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
@@ -928,18 +923,6 @@
           <folding>
             <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
             <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/jsm/controls/OrbitControls_slr107.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="1185" column="22" selection-start-line="1185" selection-start-column="9" selection-end-line="1185" selection-end-column="22" />
-          <folding>
-            <element signature="e#285#417#0" expanded="true" />
-            <element signature="e#867#23523#0" />
-            <element signature="e#24171#24376#0" />
           </folding>
         </state>
       </provider>
@@ -1075,17 +1058,6 @@
           <caret line="60" selection-start-line="60" selection-end-line="60" />
           <folding>
             <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/three_r109.module.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1384">
-          <caret line="32551" column="2" lean-forward="true" selection-start-line="32551" selection-start-column="2" selection-end-line="32551" selection-end-column="2" />
-          <folding>
-            <element signature="e#51527#51670#0" />
-            <element signature="e#681531#682281#0" />
           </folding>
         </state>
       </provider>
@@ -1344,41 +1316,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/fire/fire.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1071">
-          <caret line="524" column="40" lean-forward="true" selection-start-line="524" selection-start-column="40" selection-end-line="524" selection-end-column="40" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="e#5571#10883#0" />
-            <element signature="e#7346#7448#0" />
-            <element signature="e#7800#8181#0" />
-            <element signature="e#7831#7885#0" />
-            <element signature="e#7904#7979#0" />
-            <element signature="e#8005#8080#0" />
-            <element signature="e#8121#8172#0" />
-            <element signature="e#8239#8488#0" />
-            <element signature="e#9026#9101#0" />
-            <element signature="e#9541#10162#0" />
-            <element signature="e#11075#13431#0" />
-            <element signature="e#11681#11754#0" />
-            <element signature="e#11777#11949#0" />
-            <element signature="e#11993#12213#0" />
-            <element signature="e#12532#13425#0" />
-            <element signature="e#12819#13278#0" />
-            <element signature="e#15016#15118#0" />
-            <element signature="e#15477#15747#0" />
-            <element signature="e#15493#15547#0" />
-            <element signature="e#15564#15618#0" />
-            <element signature="e#15791#15965#0" />
-            <element signature="e#17078#17794#0" />
-            <element signature="e#11253#11379#0" />
-            <element signature="e#11411#11821#0" />
-            <element signature="e#11930#12046#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/BufferGeometry.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="296">
@@ -1399,18 +1336,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="684" column="4" selection-start-line="684" selection-start-column="4" selection-end-line="684" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/examples/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="3" column="24" lean-forward="true" selection-start-line="3" selection-start-column="24" selection-end-line="3" selection-end-column="24" />
+        <state relative-caret-position="112">
+          <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/fire/webgl_fire.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="58" column="38" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="38" />
+        <state relative-caret-position="196">
+          <caret line="16" column="9" lean-forward="true" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
           <folding>
+            <element signature="e#448#506#0" expanded="true" />
             <element signature="e#727#1035#0" />
             <element signature="e#1893#1970#0" />
             <element signature="e#2054#2093#0" />
@@ -1445,73 +1390,152 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
+    <entry file="file://$PROJECT_DIR$/examples/jsm/controls/OrbitControls_slr107.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="684" column="4" selection-start-line="684" selection-start-column="4" selection-end-line="684" selection-end-column="4" />
+        <state relative-caret-position="754">
+          <caret line="1131" column="11" selection-start-line="1131" selection-start-column="11" selection-end-line="1131" selection-end-column="11" />
+          <folding>
+            <element signature="e#285#417#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/three_r109.module.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-924">
+          <caret line="27459" column="22" selection-start-line="27459" selection-start-column="7" selection-end-line="27459" selection-end-column="22" />
+          <folding>
+            <element signature="e#51527#51670#0" />
+            <element signature="e#681531#682281#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/fire/fire.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4900">
+          <caret line="179" column="45" selection-start-line="179" selection-start-column="36" selection-end-line="179" selection-end-column="45" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/fire/fire2.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2016">
-          <caret line="297" column="24" lean-forward="true" selection-start-line="297" selection-start-column="24" selection-end-line="297" selection-end-column="24" />
+        <state relative-caret-position="7336">
+          <caret line="462" column="34" selection-start-line="462" selection-start-column="24" selection-end-line="462" selection-end-column="34" />
           <folding>
-            <element signature="e#635#1312#0" />
-            <element signature="e#1394#2385#0" />
-            <element signature="e#1416#2344#0" />
-            <element signature="e#1426#1537#0" />
-            <element signature="e#1424#1499#0" />
-            <element signature="e#1764#1851#0" />
-            <element signature="e#1884#1937#0" />
-            <element signature="e#1956#2091#0" />
-            <element signature="e#2132#2336#0" />
-            <element signature="e#2032#3506#0" />
-            <element signature="e#2505#3866#0" />
-            <element signature="e#3508#3533#0" />
-            <element signature="e#3579#3880#0" />
-            <element signature="e#3930#4842#0" />
-            <element signature="e#4416#4662#0" />
-            <element signature="e#4708#4915#0" />
-            <element signature="e#4974#5196#0" />
-            <element signature="e#4892#5782#0" />
-            <element signature="e#5365#6142#0" />
-            <element signature="e#5402#5640#0" />
-            <element signature="e#5673#6106#0" />
-            <element signature="e#5784#5809#0" />
-            <element signature="e#6394#7495#0" />
-            <element signature="e#6441#6478#0" />
-            <element signature="e#7200#7264#0" />
-            <element signature="e#8143#8349#0" />
-            <element signature="e#8374#8488#0" />
-            <element signature="e#8942#11059#0" />
-            <element signature="e#9112#9350#0" />
-            <element signature="e#10779#10816#0" />
-            <element signature="e#10925#10974#0" />
-            <element signature="e#10566#10611#0" />
-            <element signature="e#11152#14792#0" />
-            <element signature="e#11260#14749#0" />
-            <element signature="e#11310#11591#0" />
-            <element signature="e#11563#14658#0" />
-            <element signature="e#11113#11846#0" />
-            <element signature="e#11252#11497#0" />
-            <element signature="e#11555#11762#0" />
-            <element signature="e#11877#12499#0" />
-            <element signature="e#12663#12915#0" />
-            <element signature="e#13166#13893#0" />
-            <element signature="e#13253#13881#0" />
-            <element signature="e#13193#13944#0" />
-            <element signature="e#14032#14077#0" />
-            <element signature="e#14123#14181#0" />
-            <element signature="e#14183#14205#0" />
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="e#6173#8689#0" />
+            <element signature="e#6712#7812#0" />
+            <element signature="e#7843#7988#0" />
+            <element signature="e#8021#8150#0" />
+            <element signature="e#8187#8419#0" />
+            <element signature="e#8460#8666#0" />
+            <element signature="e#9007#9400#0" />
+            <element signature="e#9429#10855#0" />
+            <element signature="e#11181#11469#0" />
+            <element signature="e#11545#12332#0" />
+            <element signature="e#11685#11930#0" />
+            <element signature="e#11988#12248#0" />
+            <element signature="e#13087#13801#0" />
+            <element signature="e#13174#13789#0" />
+            <element signature="e#13860#14614#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/animation/webgl_animation_skinning_blending.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="403" column="8" selection-start-line="403" selection-start-column="8" selection-end-line="405" selection-end-column="64" />
+          <folding>
+            <element signature="e#4011#7546#0" />
+            <element signature="e#7554#7610#0" />
+            <element signature="e#7648#7692#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/jsm/controls/OrbitControls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#236#360#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/fire/fire3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="89" column="27" selection-start-line="89" selection-start-column="27" selection-end-line="89" selection-end-column="27" />
+          <folding>
+            <element signature="e#191#233#0" />
+            <element signature="e#244#271#0" />
+            <element signature="e#420#478#0" expanded="true" />
+            <element signature="e#1779#1837#0" />
+            <element signature="e#2368#2472#0" />
+            <element signature="e#2526#2702#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/fire/firePoints.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="145" column="36" selection-start-line="145" selection-start-column="36" selection-end-line="145" selection-end-column="36" />
+          <folding>
+            <element signature="e#71#882#0" />
+            <element signature="e#75#164#0" />
+            <element signature="e#200#263#0" />
+            <element signature="e#268#334#0" />
+            <element signature="e#366#407#0" />
+            <element signature="n#!!doc;n#Mover#0" />
+            <element signature="n#!!block;n#Mover#0" />
+            <element signature="e#1140#2204#0" />
+            <element signature="e#1335#1519#0" />
+            <element signature="e#1561#1605#0" />
+            <element signature="e#1647#1741#0" />
+            <element signature="e#1591#1632#0" />
+            <element signature="e#1658#1698#0" />
+            <element signature="e#1728#1823#0" />
+            <element signature="e#1859#1944#0" />
+            <element signature="e#1979#2084#0" />
+            <element signature="e#2088#2109#0" />
+            <element signature="e#2259#2291#0" />
+            <element signature="e#2327#2360#0" />
+            <element signature="n#!!doc;n#FirePoints#0" />
+            <element signature="n#!!block;n#FirePoints#0" />
+            <element signature="e#2902#5910#0" />
+            <element signature="e#2722#2758#0" />
+            <element signature="e#2896#3077#0" />
+            <element signature="e#3095#3281#0" />
+            <element signature="e#3601#4618#0" />
+            <element signature="e#3645#3736#0" />
+            <element signature="e#3782#3800#0" />
+            <element signature="e#4020#4089#0" />
+            <element signature="e#4337#4403#0" />
+            <element signature="e#4541#4611#0" />
+            <element signature="e#4736#4806#0" />
+            <element signature="e#5011#5081#0" />
+            <element signature="e#3876#3910#0" />
+            <element signature="e#3933#3943#0" />
+            <element signature="e#3338#3900#0" />
+            <element signature="e#3824#3859#0" />
+            <element signature="e#3887#4486#0" />
+            <element signature="e#4491#4526#0" />
+            <element signature="e#4655#5281#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/left.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="14" column="53" selection-start-line="14" selection-start-column="53" selection-end-line="14" selection-end-column="53" />
+        <state relative-caret-position="420">
+          <caret line="15" column="56" selection-start-line="15" selection-start-column="56" selection-end-line="15" selection-end-column="56" />
           <folding>
             <element signature="n#li#1;n#ul#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />

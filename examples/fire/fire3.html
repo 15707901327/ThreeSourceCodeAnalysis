@@ -1,0 +1,117 @@
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>HTML5 Three.js 3D起火/燃烧动画</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+    }
+    #canvas{
+      width: 100%;
+      height:100%;
+    }
+  </style>
+  <script type="module">
+    import * as THREE from '../../build/three_r109.module.js';
+    import {FirePoints} from "./firePoints.js";
+    import {OrbitControls} from "../jsm/controls/OrbitControls.js";
+    import {GUI} from "../jsm/libs/dat.gui.module.js";
+
+    window.onload = function() {
+      var width = document.body.clientWidth;
+      var height = document.body.clientHeight;
+
+      var renderer = new THREE.WebGLRenderer({
+        antialias: true
+      });
+      renderer.setSize(width, height);
+      renderer.setClearColor(0x111111, 1.0);
+      var canvas = document.getElementById('canvas');
+      canvas.appendChild(renderer.domElement);
+
+      var scene = new THREE.Scene();
+      // scene.fog = new THREE.Fog(0x000000, 0, 1600);
+
+      var camera = new THREE.PerspectiveCamera(35, width / height, 1, 10000);
+      camera.up.set(0, 1, 0);
+      camera.position.set(1000, 1000, 1000);
+
+      var orbitControls = new OrbitControls(camera,renderer.domElement);
+
+      var ambientLight = new THREE.AmbientLight(0xcccccc, 1.0);
+      scene.add(ambientLight);
+
+      var light = new THREE.HemisphereLight(0xffff99, 0xffff99, 1.0);
+      light.position.set(433.01270189221947, 866.0254037844386, 250);
+      scene.add(light);
+
+      var gui = new GUI();
+
+      // 火焰粒子
+      var options = {
+        gui: gui,
+        enableGUI: true
+      };
+      var firePoints = new FirePoints(options);
+      scene.add(firePoints.obj);
+
+      // 平面
+      var plane_geometry = new THREE.PlaneGeometry(500, 500, 16, 16);
+      var plane_material = new THREE.MeshLambertMaterial({
+        color: 0xffffff,
+        wireframe: true
+      });
+      var plane_obj = new THREE.Mesh(plane_geometry, plane_material);
+      plane_obj.rotation.set(Math.PI / 2, 0, Math.PI / 2);
+      scene.add(plane_obj);
+
+      animate();
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        render();
+        firePoints.activateMover();
+      }
+
+      function render() {
+        renderer.clear();
+        firePoints.update();
+        renderer.render(scene, camera);
+      }
+
+      window.addEventListener("resize", function() {
+        width = document.body.clientWidth;
+        height = document.body.clientHeight;
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(width, height);
+        // camera.resize(width, height);
+      });
+    }
+  </script>
+</head>
+
+<body>
+<div id="canvas"></div>
+<canvas id="show_canvas"></canvas>
+</body>
+</html>
