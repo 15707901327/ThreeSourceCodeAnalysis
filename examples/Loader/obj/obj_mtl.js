@@ -1,5 +1,9 @@
+import * as THREE from "../../../build/three_r110.module.js";
+import PGL from '../../jsm/PGL/PGL.js';
 import {MTLLoader} from '../../jsm/loaders/MTLLoader.js';
 import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
+import Stats from "../../jsm/libs/stats.module.js";
+import {OrbitControls} from "../../jsm/controls/OrbitControls.js";
 
 /**
  * 场景初始化区
@@ -10,7 +14,7 @@ import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
    * @param config 加载配置文件
    * @param options
    *  container: 挂载点
-   *  enabledClick：控制是否开启射线拾取 true
+   *  enabledClick：控制是否开启stats射线拾取 true
    *  enabledSkyBox: 开启天空盒子 true
    */
   PGL.scene3D = function(config, options) {
@@ -105,7 +109,7 @@ import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
       // this.scene.add(SpotLight);
     },
     initOrbitControls: function() {
-      this.orbitControls = new THREE.OrbitControls(this.camera, this.webGLRenderer.domElement);
+      this.orbitControls = new OrbitControls(this.camera, this.webGLRenderer.domElement);
       // 如果使用animate方法时，将此函数删除
       //controls.addEventListener( 'change', render );
       // 使动画循环使用时阻尼或自转 意思是否有惯性
@@ -146,8 +150,10 @@ import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
 
     initObject: function() {
 
-      var onProgress = function(xhr) {};
-      var onError = function() {};
+      var onProgress = function(xhr) {
+      };
+      var onError = function() {
+      };
       let _this = this;
       new MTLLoader()
       .setPath('../../models/obj/ceshi/')
@@ -157,7 +163,7 @@ import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
         .setMaterials(materials)
         .setPath('../../models/obj/ceshi/')
         .load('xiaoqiu.obj', function(object) {
-          console.log(object);
+          // console.log(object);
           // object.children[1].material.color.set(0xffffff);
           _this.scene.add(object);
         }, onProgress, onError);

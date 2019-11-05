@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/build/three_r110.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/three_r110.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/three_r110.module.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/jsm/PGL/PGL.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/PGL/PGL.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/jsm/loaders/MTLLoader.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/loaders/MTLLoader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/jsm/loaders/OBJLoader.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/loaders/OBJLoader.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,7 +22,37 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/Loader/obj/obj_mtl.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="33" column="44" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
+              <folding>
+                <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+                <element signature="e#265#323#0" />
+                <element signature="e#341#403#0" />
+                <element signature="e#422#514#0" />
+                <element signature="e#529#807#0" />
+                <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="237">
+              <caret line="166" column="33" lean-forward="true" selection-start-line="166" selection-start-column="33" selection-end-line="166" selection-end-column="33" />
+              <folding>
+                <element signature="e#0#61#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -31,7 +63,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>WebGLRenderTarget</find>
       <find>_rtt</find>
       <find>resetRT</find>
       <find>points</find>
@@ -45,7 +76,6 @@
       <find>setPosition</find>
       <find>Points</find>
       <find>debounce</find>
-      <find>OrbitControls</find>
       <find>Util</find>
       <find>_controls</find>
       <find>inactivate</find>
@@ -61,6 +91,8 @@
       <find>res</find>
       <find>activeNum</find>
       <find>canvas</find>
+      <find>stats</find>
+      <find>OrbitControls</find>
     </findStrings>
     <replaceStrings>
       <replace>jpg</replace>
@@ -81,15 +113,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/examples/shaders/LuminosityHighPassShader.js" />
-        <option value="$PROJECT_DIR$/examples/jsm/postprocessing/UnrealBloomPass.js" />
-        <option value="$PROJECT_DIR$/../three_r108.js-master/src/core/Layers.js" />
         <option value="$PROJECT_DIR$/src/core/Layers.js" />
         <option value="$PROJECT_DIR$/src/core/Object3D.js" />
         <option value="$PROJECT_DIR$/examples/js/postprocessing/UnrealBloomPass.js" />
         <option value="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom_selective.html" />
         <option value="$PROJECT_DIR$/examples/jsm/shaders/FXAAShader.js" />
-        <option value="$PROJECT_DIR$/examples/jsm/loaders/OBJLoader.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/src/materials/Material.js" />
         <option value="$PROJECT_DIR$/src/materials/MeshDepthMaterial.js" />
@@ -104,7 +132,6 @@
         <option value="$PROJECT_DIR$/examples/particles/Particles.js" />
         <option value="$PROJECT_DIR$/examples/particles/demo.html" />
         <option value="$PROJECT_DIR$/examples/potClould/demo3.html" />
-        <option value="$PROJECT_DIR$/examples/jsm/PGL/PGL.js" />
         <option value="$PROJECT_DIR$/examples/Loader/gltf/gltf.html" />
         <option value="$PROJECT_DIR$/examples/Loader/gltf/gltf.js" />
         <option value="$PROJECT_DIR$/examples/fire/webgl_fire.html" />
@@ -132,6 +159,11 @@
         <option value="$PROJECT_DIR$/examples/fire/fire3.html" />
         <option value="$PROJECT_DIR$/examples/fire/firePoints.js" />
         <option value="$PROJECT_DIR$/examples/left.html" />
+        <option value="$PROJECT_DIR$/examples/jsm/loaders/MTLLoader.js" />
+        <option value="$PROJECT_DIR$/examples/jsm/loaders/OBJLoader.js" />
+        <option value="$PROJECT_DIR$/examples/jsm/PGL/PGL.js" />
+        <option value="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.html" />
+        <option value="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js" />
       </list>
     </option>
   </component>
@@ -164,6 +196,19 @@
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
               <item name="examples" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
+              <item name="jsm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
+              <item name="jsm" type="462c0819:PsiDirectoryNode" />
+              <item name="PGL" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -174,7 +219,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/build" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../three_r110.js-master/examples/jsm/loaders/OBJLoader.js" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -183,22 +228,22 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r110.js-master/examples/jsm/controls/OrbitControls.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r110.js-master/examples/jsm/loaders/OBJLoader.js" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\build" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\fire" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\core" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\geometries" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\heatMap" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\PGL" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\tonemapping" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\particles" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\nodes" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\Loader\obj" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\fire" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\core" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\geometries" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\build" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\heatMap" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -343,7 +388,9 @@
       <workItem from="1572659010990" duration="11856000" />
       <workItem from="1572745013983" duration="18411000" />
       <workItem from="1572829007017" duration="17413000" />
-      <workItem from="1572853469913" duration="1532000" />
+      <workItem from="1572853469913" duration="2787000" />
+      <workItem from="1572916626716" duration="261000" />
+      <workItem from="1572917557110" duration="1023000" />
     </task>
     <task id="LOCAL-00001" summary="1. 添加天空盒子背景效果实例&#10;2. r106">
       <created>1564043851469</created>
@@ -667,16 +714,24 @@
       <option name="project" value="LOCAL" />
       <updated>1572850352238</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="1.r110">
+      <created>1572855746989</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1572855746989</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="593506000" />
+    <option name="totallyTimeSpent" value="596045000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1386" height="788" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22106825" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20178041" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -762,7 +817,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1. 轨道控制器" />
     <MESSAGE value="1. OrbitControls.js 限制物体移动范围" />
     <MESSAGE value="1. mirror镜面效果" />
     <MESSAGE value="1. webgl_loader_nodes.html" />
@@ -787,7 +841,8 @@
     <MESSAGE value="1.山体显示" />
     <MESSAGE value="1.火焰" />
     <MESSAGE value="1.火焰粒子" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.火焰粒子" />
+    <MESSAGE value="1.r110" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.r110" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -806,76 +861,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-896">
-          <caret line="6114" column="27" selection-start-line="6114" selection-start-column="10" selection-end-line="6114" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/noise/heightmap.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="387" column="3" lean-forward="true" selection-start-line="387" selection-start-column="3" selection-end-line="387" selection-end-column="3" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="e#536#594#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/mirror/webgl_mirror.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="18" column="22" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="22" />
-          <folding>
-            <element signature="n#script#0;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/noise/noise_turbulence.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="26" column="21" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="n#script#0;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/home.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4302">
-          <folding>
-            <element signature="e#0#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/example.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="38" column="19" lean-forward="true" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/heatMap/test1.js" />
-    <entry file="file://$PROJECT_DIR$/examples/jsm/libs/dat.gui.module.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="3569" column="12" lean-forward="true" selection-start-line="3569" selection-start-column="12" selection-end-line="3569" selection-end-column="12" />
-          <folding>
-            <element signature="e#405#664#0" />
-            <element signature="e#711#2098#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/depth_texture/webgl_depth_texture.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4144">
@@ -1365,13 +1350,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/fire/firePoints.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -1450,6 +1428,98 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
           <caret line="8" column="31" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/example.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/Loader/ObjectLoader/webgl_loader_json_claraio.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/js/PGL/PGL.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1974">
+          <folding>
+            <element signature="e#1954#2686#0" />
+            <element signature="e#2695#2710#0" />
+            <element signature="e#2726#26743#0" />
+            <element signature="e#26792#27001#0" />
+            <element signature="e#27024#28418#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/jsm/loaders/OBJLoader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+          <folding>
+            <element signature="e#345#19166#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/jsm/loaders/MTLLoader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/jsm/PGL/PGL.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="113" column="8" lean-forward="true" selection-start-line="113" selection-start-column="8" selection-end-line="113" selection-end-column="8" />
+          <folding>
+            <element signature="e#107#1979#0" />
+            <element signature="e#1988#2001#0" />
+            <element signature="e#2017#2749#0" />
+            <element signature="e#2758#2773#0" />
+            <element signature="e#2789#26806#0" />
+            <element signature="e#26855#27064#0" />
+            <element signature="e#27099#27103#0" />
+            <element signature="e#27146#28355#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/Loader/obj/obj_mtl.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="33" column="44" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+            <element signature="e#265#323#0" />
+            <element signature="e#341#403#0" />
+            <element signature="e#422#514#0" />
+            <element signature="e#529#807#0" />
+            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="166" column="33" lean-forward="true" selection-start-line="166" selection-start-column="33" selection-end-line="166" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#61#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

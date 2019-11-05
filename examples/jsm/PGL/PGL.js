@@ -1,4 +1,4 @@
-import * as THREE from "../../../build/three_r109.module.js";
+import * as THREE from "../../../build/three_r110.module.js";
 
 var PGL = PGL || {};
 
