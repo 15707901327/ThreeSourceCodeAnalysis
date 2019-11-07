@@ -91,11 +91,11 @@ import * as THREE from "../../../build/three_r109.module.js";
       // this.scene.background = new THREE.Color(0xff0000);
 
       // this.scene.fog = new THREE.Fog(0xffffff, 300, 1200);
-      // var axes = new THREE.AxesHelper(100);
-      // this.scene.add(axes);
+      var axes = new THREE.AxesHelper(100);
+      this.scene.add(axes);
     },
     initCamera: function() {
-      this.camera = new THREE.PerspectiveCamera(45, this.getWidth() / this.getHeight(), 0.1, 30000);
+      this.camera = new THREE.PerspectiveCamera(45, this.getWidth() / this.getHeight(), 0.1, 500000);
       this.camera.position.set(0, 10, 10);
     },
     initLight: function() {
@@ -135,14 +135,6 @@ import * as THREE from "../../../build/three_r109.module.js";
       //是否开启右键拖拽
       this.orbitControls.enablePan = true;
       this.orbitControls.enableRotatePhi = false;
-      var orbitControls = this.orbitControls;
-
-      document.getElementById("item1").addEventListener("click", function(event) {
-        orbitControls.handleScale(-1);
-      });
-      document.getElementById("item2").addEventListener("click", function(event) {
-        orbitControls.handleScale(1);
-      });
     },
     initStats: function() {
       this.stats = new Stats();
@@ -158,20 +150,14 @@ import * as THREE from "../../../build/three_r109.module.js";
 
     initObject: function() {
       let _this = this;
-      new GLTFLoader().load( '../../models/gltf/test004.gltf.glb', function ( gltf ) {
+      console.log("测试gltf加载，动画");
+      new GLTFLoader().load( '../../models/gltf/animate001/scene.gltf', function ( gltf ) {
 
         var model = gltf.scene;
 
-        _this.scene.add( model );
+        console.log(model);
 
-        // // Mesh contains self-intersecting semi-transparent faces, which display
-        // // z-fighting unless depthWrite is disabled.
-        // var core = model.getObjectByName( 'geo1_HoloFillDark_0' );
-        // core.material.depthWrite = false;
-        //
-        // _this.mixer = new THREE.AnimationMixer( model );
-        // var clip = gltf.animations[ 0 ];
-        // _this.mixer.clipAction( clip.optimize() ).play();
+        _this.scene.add( model );
       } );
     },
     /**

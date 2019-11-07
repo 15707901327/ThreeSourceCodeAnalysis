@@ -77,6 +77,7 @@
 				var map2 = textureLoader.load( '../../textures/sprite0.png' );
 				var map3 = textureLoader.load( '../../textures/lensflare/lensflare0.png' );
 				var map4 = textureLoader.load( '../../textures/lensflare/lensflare0_alpha.png' );
+				var map5 = textureLoader.load( '../../textures/15.png' );
 
 				var geo1 = new THREE.PlaneBufferGeometry( 100, 100 );
 				var geo2 = new THREE.PlaneBufferGeometry( 100, 25 );
@@ -84,7 +85,7 @@
 				addImageRow( map0, 300 );
 				addImageRow( map1, 150 );
 				addImageRow( map2, 0 );
-				addImageRow( map3, - 150 );
+				addImageRow( map5, - 150 );
 				addImageRow( map4, - 300 );
 
 				function addImageRow( map, y ) {
