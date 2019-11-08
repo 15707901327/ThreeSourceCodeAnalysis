@@ -9,6 +9,9 @@
   <div class="left">
     <h4><a href="#CoordinateSystemConversion">坐标系转换</a></h4>
     <h4><a href="#base">动画</a></h4>
+    <ul class="ul-1-num">
+      <li><a href="#KeyframeTrack">KeyframeTrack</a></li>
+    </ul>
     <h4><a href="#performanceOptimization">性能优化</a></h4>
     <h4><a href="examples/index.html" target="_blank">实例</a></h4>
     <h4><a href="#postprocessing">后期处理</a></h4>
@@ -19,6 +22,7 @@
       <li><a href="#GeneralBlur">GeneralBlur</a></li>
       <li><a href="#RadialBlur">RadialBlur</a></li>
     </ul>
+    <h4><a href="#GLTFformat">GLTF格式说明</a></h4>
     <h4>连接</h4>
     <ul class="ul-1">
       <li><a href="dat_gui_doc/gui.html">dat.gui.js基本用法</a></li>
@@ -54,6 +58,17 @@
             通过配置AnimationAction，您可以确定某个AnimationClip何时在其中一个混音器上播放，暂停或停止，
             是否必须重复剪辑，是否应该使用淡入淡出或时间缩放，以及 其他的东西，比如交叉渐变或同步。</p>
         </div>
+      </section>
+      <section id="KeyframeTrack">
+        <h4>KeyframeTrack</h4>
+        <p>关键帧轨道是定时的关键帧序列，由时间列表和相关值组成，用于对对象特定属性进行动画处理。</p>
+        <p>与JSON模型格式的动画层次结构相反，关键帧轨道不会把单个关键帧作为对象存储到“key”数组中（将每个关键帧的时间与值放在一个位置）。</p>
+        <p>取而代之的是，关键帧轨道总是有两个数组：times组按顺序存储此轨道上所有的关键帧的时间值、values数组对应的存储动画的相关值。</p>
+        <p>属于某个时间点的相关值不仅可以是简单的数值，也可以是矢量活四元数，因此相关值数组可能是时间数组长度的三或四倍。</p>
+        <p>对应于各种可能的动画值类型，KeyframeTrack有几个子类，它们继承了最多的属性和方法：</p>
+        <p>可以在AnimationClipCreator文件中找到有关如何使用各种KeyframeTrack手动创建AnimationClip的一些示例。</p>
+        <p>由于仅为存储在times数组中的离散时间点指定显式值，因此必须插值之间的所有值。</p>
+        <p>轨道的名称对于此轨道与动画节点的特定属性（由PropertyBinding完成）的连接很重要。</p>
       </section>
     </section>
     <section id="performanceOptimization" class="section1">
@@ -162,6 +177,13 @@
         <div class="content">
           <strong><a href="examples/Blur/RadialBlur.html" target="_blank">实例-RadialBlur</a></strong>
         </div>
+      </section>
+    </section>
+    <section id="GLTFformat" class="section1">
+      <div class="title">GLTF格式说明</div>
+      <section>
+        <strong>结构说明地址</strong>
+        <p><a href="https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#scenes" target="_blank">地址</a></p>
       </section>
     </section>
   </div>

@@ -15,7 +15,13 @@ import { _Math } from '../math/Math.js';
  * @author Ben Houston / http://clara.io/
  * @author David Sarno / http://lighthaus.us/
  */
-
+/**
+ * 关键帧片段
+ * @param name 名称
+ * @param duration 持续时间
+ * @param tracks 轨道数组
+ * @constructor
+ */
 function AnimationClip( name, duration, tracks ) {
 
 	this.name = name;
@@ -26,11 +32,8 @@ function AnimationClip( name, duration, tracks ) {
 
 	// this means it should figure out its duration by scanning the tracks
 	if ( this.duration < 0 ) {
-
 		this.resetDuration();
-
 	}
-
 }
 
 function getTrackTypeForValueTypeName( typeName ) {
@@ -391,22 +394,21 @@ Object.assign( AnimationClip, {
 
 Object.assign( AnimationClip.prototype, {
 
+	/**
+	 * 重置持续时间，设置持续时间为轨道中最长时间
+	 * @returns {AnimationClip}
+	 */
 	resetDuration: function () {
 
 		var tracks = this.tracks, duration = 0;
 
 		for ( var i = 0, n = tracks.length; i !== n; ++ i ) {
-
 			var track = this.tracks[ i ];
-
 			duration = Math.max( duration, track.times[ track.times.length - 1 ] );
-
 		}
 
 		this.duration = duration;
-
 		return this;
-
 	},
 
 	trim: function () {
@@ -444,6 +446,20 @@ Object.assign( AnimationClip.prototype, {
 		}
 
 		return this;
+
+	},
+
+	clone: function () {
+
+		var tracks = [];
+
+		for ( var i = 0; i < this.tracks.length; i ++ ) {
+
+			tracks.push( this.tracks[ i ].clone() );
+
+		}
+
+		return new AnimationClip( this.name, this.duration, tracks );
 
 	}
 

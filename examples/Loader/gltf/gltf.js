@@ -2,7 +2,7 @@ import { GLTFLoader } from '../../jsm/loaders/GLTFLoader.js';
 import PGL  from '../../jsm/PGL/PGL.js';
 import Stats from "../../jsm/libs/stats.module.js";
 import {OrbitControls} from "../../jsm/controls/OrbitControls.js";
-import * as THREE from "../../../build/three_r109.module.js";
+import * as THREE from "../../../build/three_r110.module.js";
 
 /**
  * 场景初始化区
@@ -155,8 +155,12 @@ import * as THREE from "../../../build/three_r109.module.js";
 
         var model = gltf.scene;
 
-        console.log(model);
+        console.log(gltf);
+        _this.mixer = new THREE.AnimationMixer(model);
+        var clipAction = _this.mixer.clipAction( gltf.animations[0] );
+        clipAction.play();
 
+        model.scale.set(0.001,0.001,0.001);
         _this.scene.add( model );
       } );
     },
