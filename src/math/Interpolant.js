@@ -20,6 +20,14 @@
  * @author tschw
  */
 
+/**
+ * 插值
+ * @param parameterPositions
+ * @param sampleValues
+ * @param sampleSize
+ * @param resultBuffer
+ * @constructor
+ */
 function Interpolant( parameterPositions, sampleValues, sampleSize, resultBuffer ) {
 
 	this.parameterPositions = parameterPositions;

@@ -21,8 +21,10 @@ function AnimationMixer(root) {
   this._initMemoryManager();
   this._accuIndex = 0;
 
+  // 记录总时间
   this.time = 0;
 
+  // 时间放大
   this.timeScale = 1.0;
 
 }
@@ -31,6 +33,12 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   constructor: AnimationMixer,
 
+  /**
+   * 绑定action
+   * @param action
+   * @param prototypeAction
+   * @private
+   */
   _bindAction: function(action, prototypeAction) {
 
     var root = action._localRoot || this._root,
@@ -43,10 +51,8 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
       bindingsByName = bindingsByRoot[rootUuid];
 
     if (bindingsByName === undefined) {
-
       bindingsByName = {};
       bindingsByRoot[rootUuid] = bindingsByName;
-
     }
 
     for (var i = 0; i !== nTracks; ++i) {
@@ -56,53 +62,41 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
         binding = bindingsByName[trackName];
 
       if (binding !== undefined) {
-
         bindings[i] = binding;
-
       } else {
-
         binding = bindings[i];
-
         if (binding !== undefined) {
-
           // existing binding, make sure the cache knows
-
           if (binding._cacheIndex === null) {
-
             ++binding.referenceCount;
             this._addInactiveBinding(binding, rootUuid, trackName);
-
           }
-
           continue;
-
         }
 
         var path = prototypeAction && prototypeAction._propertyBindings[i].binding.parsedPath;
 
-        binding = new PropertyMixer(
-          PropertyBinding.create(root, trackName, path),
-          track.ValueTypeName, track.getValueSize());
-
+        binding = new PropertyMixer(PropertyBinding.create(root, trackName, path), track.ValueTypeName, track.getValueSize());
         ++binding.referenceCount;
+
         this._addInactiveBinding(binding, rootUuid, trackName);
 
         bindings[i] = binding;
-
       }
-
       interpolants[i].resultBuffer = binding.buffer;
-
     }
-
   },
 
+  /**
+   * 激活动作
+   * @param action
+   * @private
+   */
   _activateAction: function(action) {
 
     if (!this._isActiveAction(action)) {
 
       if (action._cacheIndex === null) {
-
         // this action has been forgotten by the cache, but the user
         // appears to be still using it -> rebind
 
@@ -110,31 +104,22 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
           clipUuid = action._clip.uuid,
           actionsForClip = this._actionsByClip[clipUuid];
 
-        this._bindAction(action,
-          actionsForClip && actionsForClip.knownActions[0]);
+        this._bindAction(action, actionsForClip && actionsForClip.knownActions[0]);
 
         this._addInactiveAction(action, clipUuid, rootUuid);
-
       }
 
       var bindings = action._propertyBindings;
 
       // increment reference counts / sort out state
       for (var i = 0, n = bindings.length; i !== n; ++i) {
-
         var binding = bindings[i];
-
         if (binding.useCount++ === 0) {
-
           this._lendBinding(binding);
           binding.saveOriginalState();
-
         }
-
       }
-
       this._lendAction(action);
-
     }
 
   },
@@ -214,14 +199,24 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
   },
 
   // Memory management for AnimationAction objects
-
+  /**
+   * 激活动作
+   * @param action
+   * @returns {boolean} true 激活 false 未激活
+   * @private
+   */
   _isActiveAction: function(action) {
-
     var index = action._cacheIndex;
     return index !== null && index < this._nActiveActions;
-
   },
 
+  /**
+   * 添加无效动作
+   * @param action
+   * @param clipUuid
+   * @param rootUuid
+   * @private
+   */
   _addInactiveAction: function(action, clipUuid, rootUuid) {
 
     var actions = this._actions,
@@ -229,12 +224,9 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
       actionsForClip = actionsByClip[clipUuid];
 
     if (actionsForClip === undefined) {
-
       actionsForClip = {
-
         knownActions: [action],
         actionByRoot: {}
-
       };
 
       action._byClipCacheIndex = 0;
@@ -242,7 +234,6 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
       actionsByClip[clipUuid] = actionsForClip;
 
     } else {
-
       var knownActions = actionsForClip.knownActions;
 
       action._byClipCacheIndex = knownActions.length;
@@ -254,7 +245,6 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
     actions.push(action);
 
     actionsForClip.actionByRoot[rootUuid] = action;
-
   },
 
   _removeInactiveAction: function(action) {
@@ -495,7 +485,7 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
   // object (this method allocates a lot of dynamic memory in case a
   // previously unknown clip/root combination is specified)
   /**
-   *
+   * 片段动作
    * @param clip 动画片段
    * @param optionalRoot
    * @return {*}
@@ -595,6 +585,11 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
   },
 
   // advance the time and update apply the animation
+  /**
+   * 刷新
+   * @param deltaTime 时间
+   * @returns {EventDispatcher}
+   */
   update: function(deltaTime) {
 
     deltaTime *= this.timeScale;
@@ -608,13 +603,9 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
       accuIndex = this._accuIndex ^= 1;
 
     // run active actions
-
     for (var i = 0; i !== nActions; ++i) {
-
       var action = actions[i];
-
       action._update(time, deltaTime, timeDirection, accuIndex);
-
     }
 
     // update scene graph
@@ -646,7 +637,7 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   },
 
-  // return this mixer's root target object
+  // return this mixer's root t_activateActionarget object
   getRoot: function() {
 
     return this._root;

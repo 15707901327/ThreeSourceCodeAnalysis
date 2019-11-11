@@ -18,7 +18,7 @@ import {
  *
  */
 /**
- *
+ * 动画
  * @param mixer 动画混合器
  * @param clip 动画片段
  * @param localRoot 参数
@@ -65,6 +65,7 @@ function AnimationAction(mixer, clip, localRoot) {
 
   // global mixer time when the action is to be started
   // it's set back to 'null' upon start of the action
+  // 动作开始时间
   this._startTime = null;
 
   // scaled local time of the action
@@ -79,7 +80,9 @@ function AnimationAction(mixer, clip, localRoot) {
 
   this.repetitions = Infinity; // no. of repetitions when looping
 
+  // 标记中断
   this.paused = false; // true -> zero effective time scale
+  // 标记动作是否启用weight
   this.enabled = true; // false -> zero effective weight
 
   this.clampWhenFinished = false;// keep feeding the last frame?
@@ -92,13 +95,13 @@ function AnimationAction(mixer, clip, localRoot) {
 Object.assign(AnimationAction.prototype, {
 
   // State & Scheduling
-
+  /**
+   * 播放动画
+   * @returns {AnimationAction}
+   */
   play: function () {
-
     this._mixer._activateAction(this);
-
     return this;
-
   },
 
   stop: function () {
@@ -338,31 +341,28 @@ Object.assign(AnimationAction.prototype, {
   },
 
   // Interna
-
+  /**
+   * 刷新
+   * @param time 总时间
+   * @param deltaTime 时间段
+   * @param timeDirection 时间的方向
+   * @param accuIndex
+   * @private
+   */
   _update: function (time, deltaTime, timeDirection, accuIndex) {
-
     // called by the mixer
-
     if (!this.enabled) {
-
       // call ._updateWeight() to update ._effectiveWeight
-
       this._updateWeight(time);
       return;
-
     }
 
     var startTime = this._startTime;
-
     if (startTime !== null) {
-
       // check for scheduled start of action
-
       var timeRunning = (time - startTime) * timeDirection;
       if (timeRunning < 0 || timeDirection === 0) {
-
         return; // yet to come / don't decide when delta = 0
-
       }
 
       // start
@@ -373,7 +373,6 @@ Object.assign(AnimationAction.prototype, {
     }
 
     // apply time scale and advance time
-
     deltaTime *= this._updateTimeScale(time);
     var clipTime = this._updateTime(deltaTime);
 
@@ -383,21 +382,23 @@ Object.assign(AnimationAction.prototype, {
     var weight = this._updateWeight(time);
 
     if (weight > 0) {
-
       var interpolants = this._interpolants;
       var propertyMixers = this._propertyBindings;
 
       for (var j = 0, m = interpolants.length; j !== m; ++j) {
-
         interpolants[j].evaluate(clipTime);
         propertyMixers[j].accumulate(accuIndex, weight);
-
       }
-
     }
 
   },
 
+  /**
+   *
+   * @param time 总时间
+   * @returns {number}
+   * @private
+   */
   _updateWeight: function (time) {
 
     var weight = 0;
@@ -432,9 +433,14 @@ Object.assign(AnimationAction.prototype, {
 
     this._effectiveWeight = weight;
     return weight;
-
   },
 
+  /**
+   *
+   * @param time 时间
+   * @returns {number}
+   * @private
+   */
   _updateTimeScale: function (time) {
 
     var timeScale = 0;
