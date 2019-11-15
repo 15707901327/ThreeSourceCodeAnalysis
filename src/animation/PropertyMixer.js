@@ -10,6 +10,13 @@ import { Quaternion } from '../math/Quaternion.js';
  * @author tschw
  */
 
+/**
+ * 属性合成器
+ * @param binding 属性绑定 @see PropertyBinding
+ * @param typeName 轨道类型
+ * @param valueSize 相关值大小
+ * @constructor
+ */
 function PropertyMixer( binding, typeName, valueSize ) {
 
 	this.binding = binding;
@@ -52,6 +59,7 @@ function PropertyMixer( binding, typeName, valueSize ) {
 	this.cumulativeWeight = 0;
 
 	this.useCount = 0;
+	// 参考计数
 	this.referenceCount = 0;
 
 }
@@ -59,6 +67,11 @@ function PropertyMixer( binding, typeName, valueSize ) {
 Object.assign( PropertyMixer.prototype, {
 
 	// accumulate data in the 'incoming' region into 'accu<i>'
+  /**、
+   * 累积
+   * @param accuIndex
+   * @param weight
+   */
 	accumulate: function ( accuIndex, weight ) {
 
 		// note: happily accumulating nothing when weight = 0, the caller knows

@@ -183,7 +183,7 @@ Object.assign( KeyframeTrack.prototype, {
 	},
 
 	/**
-	 * 获取单位值
+	 * 获取相关值的长度
 	 * @returns {number}
 	 */
 	getValueSize: function () {

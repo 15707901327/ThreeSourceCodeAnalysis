@@ -10,7 +10,14 @@ import { QuaternionLinearInterpolant } from '../../math/interpolants/QuaternionL
  * @author David Sarno / http://lighthaus.us/
  * @author tschw
  */
-
+/**
+ * 四元数关键帧轨道
+ * @param name 名称
+ * @param times 时间列表
+ * @param values 相关属性值
+ * @param interpolation 插值类型
+ * @constructor
+ */
 function QuaternionKeyframeTrack( name, times, values, interpolation ) {
 
 	KeyframeTrack.call( this, name, times, values, interpolation );

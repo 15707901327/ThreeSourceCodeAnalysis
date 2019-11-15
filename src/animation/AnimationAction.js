@@ -18,11 +18,14 @@ import {
  *
  */
 /**
- * 动画
+ * 动画动作
  * @param mixer 动画混合器
  * @param clip 动画片段
  * @param localRoot 参数
  * @constructor
+ *
+ * 数据结构：
+ * _propertyBindings:[PropertyMixer...]
  */
 function AnimationAction(mixer, clip, localRoot) {
 
@@ -30,28 +33,35 @@ function AnimationAction(mixer, clip, localRoot) {
   this._clip = clip;
   this._localRoot = localRoot || null;
 
+  // 轨道
   var tracks = clip.tracks,
+    // 轨道个数
     nTracks = tracks.length,
+    // 插值
     interpolants = new Array(nTracks);
 
+  // 插值设置
   var interpolantSettings = {
     endingStart: ZeroCurvatureEnding,
     endingEnd: ZeroCurvatureEnding
   };
 
+  // 初始化轨道插值
   for (var i = 0; i !== nTracks; ++i) {
-
+    // 创建轨道插值
     var interpolant = tracks[i].createInterpolant(null);
     interpolants[i] = interpolant;
     interpolant.settings = interpolantSettings;
-
   }
 
+  // 插值参数
   this._interpolantSettings = interpolantSettings;
 
+  // 插值集合
   this._interpolants = interpolants; // bound by the mixer
 
   // inside: PropertyMixer (managed by the mixer)
+  // 绑定轨道属性信息
   this._propertyBindings = new Array(nTracks);
 
   this._cacheIndex = null; // for the memory manager
@@ -394,7 +404,7 @@ Object.assign(AnimationAction.prototype, {
   },
 
   /**
-   *
+   * 更新权重
    * @param time 总时间
    * @returns {number}
    * @private

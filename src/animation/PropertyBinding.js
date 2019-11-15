@@ -75,34 +75,42 @@ Object.assign( Composite.prototype, {
 
 } );
 
-
+/**
+ * 属性绑定
+ * @param rootNode 模型节点
+ * @param path 轨道名称
+ * @param parsedPath 解析路径
+ * @constructor
+ */
 function PropertyBinding( rootNode, path, parsedPath ) {
 
 	this.path = path;
 	this.parsedPath = parsedPath || PropertyBinding.parseTrackName( path );
 
+	// 获取指定路径的节点
 	this.node = PropertyBinding.findNode( rootNode, this.parsedPath.nodeName ) || rootNode;
 
 	this.rootNode = rootNode;
-
 }
 
 Object.assign( PropertyBinding, {
 
 	Composite: Composite,
 
+	/**
+	 *
+	 * @param root 模型
+	 * @param path 轨道名称
+	 * @param parsedPath 路径
+	 * @returns {Composite|Composite|Composite|Composite|Composite|Composite|*|PropertyBinding}
+	 */
 	create: function ( root, path, parsedPath ) {
 
 		if ( ! ( root && root.isAnimationObjectGroup ) ) {
-
 			return new PropertyBinding( root, path, parsedPath );
-
 		} else {
-
 			return new PropertyBinding.Composite( root, path, parsedPath );
-
 		}
-
 	},
 
 	/**
@@ -208,6 +216,12 @@ Object.assign( PropertyBinding, {
 
 	}(),
 
+	/**
+	 * 根据节点名称获取节点
+	 * @param root 模型
+	 * @param nodeName 节点名称
+	 * @returns {null|*|null|*}
+	 */
 	findNode: function ( root, nodeName ) {
 
 		if ( ! nodeName || nodeName === "" || nodeName === "root" || nodeName === "." || nodeName === - 1 || nodeName === root.name || nodeName === root.uuid ) {

@@ -14,11 +14,26 @@ import {AnimationClip} from './AnimationClip.js';
  * @author Ben Houston / http://clara.io/
  * @author David Sarno / http://lighthaus.us/
  * @author tschw
+ *
+ * 内存结构：
+ * _bindingsByRootAndName：{
+ *   "rootUnit":{
+ *     "trackName": PropertyMixer
+ *   }
+ * }
+ *
+ * _bindings:[PropertyMixer...]
+ * PropertyMixer：{
+ *   _cacheIndex：在数组中的下标
+ * }
  */
 function AnimationMixer(root) {
 
+  // 模型
   this._root = root;
+  // 初始化内存管理器
   this._initMemoryManager();
+
   this._accuIndex = 0;
 
   // 记录总时间
@@ -35,35 +50,36 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   /**
    * 绑定action
-   * @param action
+   * @param action 动画动作
    * @param prototypeAction
    * @private
    */
   _bindAction: function(action, prototypeAction) {
 
-    var root = action._localRoot || this._root,
-      tracks = action._clip.tracks,
-      nTracks = tracks.length,
-      bindings = action._propertyBindings,
-      interpolants = action._interpolants,
-      rootUuid = root.uuid,
+    var root = action._localRoot || this._root, // 模型
+      tracks = action._clip.tracks, // 轨道
+      nTracks = tracks.length,      // 轨道数目
+      bindings = action._propertyBindings,// 绑定轨道属性信息
+      interpolants = action._interpolants,// 插值数据
+      rootUuid = root.uuid,         // 模型id
       bindingsByRoot = this._bindingsByRootAndName,
       bindingsByName = bindingsByRoot[rootUuid];
 
+    // 初始化模型名称
     if (bindingsByName === undefined) {
       bindingsByName = {};
       bindingsByRoot[rootUuid] = bindingsByName;
     }
 
     for (var i = 0; i !== nTracks; ++i) {
-
       var track = tracks[i],
         trackName = track.name,
         binding = bindingsByName[trackName];
 
       if (binding !== undefined) {
         bindings[i] = binding;
-      } else {
+      }
+      else {
         binding = bindings[i];
         if (binding !== undefined) {
           // existing binding, make sure the cache knows
@@ -74,11 +90,12 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
           continue;
         }
 
+        // 创建属性合成器
         var path = prototypeAction && prototypeAction._propertyBindings[i].binding.parsedPath;
-
         binding = new PropertyMixer(PropertyBinding.create(root, trackName, path), track.ValueTypeName, track.getValueSize());
         ++binding.referenceCount;
 
+        // 添加非活动绑定
         this._addInactiveBinding(binding, rootUuid, trackName);
 
         bindings[i] = binding;
@@ -151,6 +168,12 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
   },
 
   // Memory manager
+  /**
+   * 初始化内存管理器
+   * @returns {number|*}
+   * @private
+   *
+   */
   _initMemoryManager: function() {
 
     this._actions = []; // 'nActiveActions' followed by inactive ones
@@ -158,6 +181,7 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     this._actionsByClip = {};
 
+    // 属性合成器集合
     this._bindings = []; // 'nActiveBindings' followed by inactive ones
     this._nActiveBindings = 0;
 
@@ -182,9 +206,7 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
           return scope._bindings.length;
         },
         get inUse() {
-
           return scope._nActiveBindings;
-
         }
       },
       controlInterpolants: {
@@ -309,6 +331,11 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   },
 
+  /**
+   * 借贷行动
+   * @param action
+   * @private
+   */
   _lendAction: function(action) {
 
     // [ active actions |  inactive actions  ]
@@ -356,7 +383,13 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
   },
 
   // Memory management for PropertyMixer objects
-
+  /**
+   * 添加非活动绑定
+   * @param binding 属性合成器 PropertyMixer
+   * @param rootUuid 模型id
+   * @param trackName 轨道名称
+   * @private
+   */
   _addInactiveBinding: function(binding, rootUuid, trackName) {
 
     var bindingsByRoot = this._bindingsByRootAndName,
@@ -365,14 +398,13 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
       bindings = this._bindings;
 
     if (bindingByName === undefined) {
-
       bindingByName = {};
       bindingsByRoot[rootUuid] = bindingByName;
-
     }
 
     bindingByName[trackName] = binding;
 
+    // 在数组中的下标
     binding._cacheIndex = bindings.length;
     bindings.push(binding);
 
@@ -487,16 +519,20 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
   /**
    * 片段动作
    * @param clip 动画片段
-   * @param optionalRoot
+   * @param optionalRoot 参数详细
    * @return {*}
    */
   clipAction: function(clip, optionalRoot) {
 
+    // 模型
     var root = optionalRoot || this._root,
+      // 模型id
       rootUuid = root.uuid,
 
+      // 动画片段
       clipObject = typeof clip === 'string' ? AnimationClip.findByName(root, clip) : clip,
 
+      // 片段id
       clipUuid = clipObject !== null ? clipObject.uuid : clip,
 
       actionsForClip = this._actionsByClip[clipUuid],
@@ -523,8 +559,10 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
     if (clipObject === null) return null;
 
     // allocate all resources required to run it
+    // 创建动画，动作
     var newAction = new AnimationAction(this, clipObject, optionalRoot);
 
+    // 绑定动作
     this._bindAction(newAction, prototypeAction);
 
     // and make the action known to the memory manager
@@ -602,7 +640,7 @@ AnimationMixer.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
       accuIndex = this._accuIndex ^= 1;
 
-    // run active actions
+    // 运行激活的动作
     for (var i = 0; i !== nActions; ++i) {
       var action = actions[i];
       action._update(time, deltaTime, timeDirection, accuIndex);

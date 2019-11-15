@@ -19,29 +19,37 @@
  *
  * @author tschw
  */
-
 /**
  * 插值
- * @param parameterPositions
- * @param sampleValues
- * @param sampleSize
- * @param resultBuffer
+ * @param parameterPositions 时间列表
+ * @param sampleValues 相关值列表
+ * @param sampleSize 相关值长度
+ * @param resultBuffer 结果集合
  * @constructor
  */
 function Interpolant( parameterPositions, sampleValues, sampleSize, resultBuffer ) {
 
+	// 时间列表
 	this.parameterPositions = parameterPositions;
+
 	this._cachedIndex = 0;
 
-	this.resultBuffer = resultBuffer !== undefined ?
-		resultBuffer : new sampleValues.constructor( sampleSize );
+	// 返回结果集
+	this.resultBuffer = resultBuffer !== undefined ? resultBuffer : new sampleValues.constructor( sampleSize );
+	// 相关值
 	this.sampleValues = sampleValues;
+	// 相关值长度
 	this.valueSize = sampleSize;
 
 }
 
 Object.assign( Interpolant.prototype, {
 
+  /**
+   * 评估
+   * @param t
+   * @returns {*|void|*}
+   */
 	evaluate: function ( t ) {
 
 		var pp = this.parameterPositions,

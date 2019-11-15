@@ -8,10 +8,10 @@ import { Quaternion } from '../Quaternion.js';
  */
 /**
  * 四元数线性插值
- * @param parameterPositions 时间
- * @param sampleValues 值
- * @param sampleSize 单位长度
- * @param resultBuffer 结果
+ * @param parameterPositions 时间列表
+ * @param sampleValues 相关值列表
+ * @param sampleSize 相关值的长度
+ * @param resultBuffer 结果集合
  * @constructor
  */
 function QuaternionLinearInterpolant( parameterPositions, sampleValues, sampleSize, resultBuffer ) {
