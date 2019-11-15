@@ -26,7 +26,6 @@ import {
 	BufferGeometry,
 	ClampToEdgeWrapping,
 	Color,
-	DefaultLoadingManager,
 	DirectionalLight,
 	EquirectangularReflectionMapping,
 	Euler,
@@ -63,7 +62,7 @@ import {
 	VectorKeyframeTrack,
 	VertexColors,
 	sRGBEncoding
-} from "../../../build/three_r108.module.js";
+} from "../../../build/three_r110.module.js";
 import { Zlib } from "../libs/inflate.module.min.js";
 import { NURBSCurve } from "../curves/NURBSCurve.js";
 
@@ -75,21 +74,19 @@ var FBXLoader = ( function () {
 
 	function FBXLoader( manager ) {
 
-		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
+		Loader.call( this, manager );
 
 	}
 
-	FBXLoader.prototype = {
+	FBXLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
 
 		constructor: FBXLoader,
-
-		crossOrigin: 'anonymous',
 
 		load: function ( url, onLoad, onProgress, onError ) {
 
 			var self = this;
 
-			var path = ( self.path === undefined ) ? LoaderUtils.extractUrlBase( url ) : self.path;
+			var path = ( self.path === '' ) ? LoaderUtils.extractUrlBase( url ) : self.path;
 
 			var loader = new FileLoader( this.manager );
 			loader.setPath( self.path );
@@ -114,27 +111,6 @@ var FBXLoader = ( function () {
 				}
 
 			}, onProgress, onError );
-
-		},
-
-		setPath: function ( value ) {
-
-			this.path = value;
-			return this;
-
-		},
-
-		setResourcePath: function ( value ) {
-
-			this.resourcePath = value;
-			return this;
-
-		},
-
-		setCrossOrigin: function ( value ) {
-
-			this.crossOrigin = value;
-			return this;
 
 		},
 
@@ -168,16 +144,17 @@ var FBXLoader = ( function () {
 
 			var textureLoader = new TextureLoader( this.manager ).setPath( this.resourcePath || path ).setCrossOrigin( this.crossOrigin );
 
-			return new FBXTreeParser( textureLoader ).parse( fbxTree );
+			return new FBXTreeParser( textureLoader, this.manager ).parse( fbxTree );
 
 		}
 
-	};
+	} );
 
 	// Parse the FBXTree object returned by the BinaryParser or TextParser and return a Group
-	function FBXTreeParser( textureLoader ) {
+	function FBXTreeParser( textureLoader, manager ) {
 
 		this.textureLoader = textureLoader;
+		this.manager = manager;
 
 	}
 
@@ -336,7 +313,7 @@ var FBXLoader = ( function () {
 
 				case 'tga':
 
-					if ( Loader.Handlers.get( '.tga' ) === null ) {
+					if ( this.manager.getHandler( '.tga' ) === null ) {
 
 						console.warn( 'FBXLoader: TGA loader not found, skipping ', fileName );
 
@@ -449,7 +426,7 @@ var FBXLoader = ( function () {
 
 			if ( extension === 'tga' ) {
 
-				var loader = Loader.Handlers.get( '.tga' );
+				var loader = this.manager.getHandler( '.tga' );
 
 				if ( loader === null ) {
 
@@ -953,7 +930,8 @@ var FBXLoader = ( function () {
 
 					}
 
-					model.name = PropertyBinding.sanitizeNodeName( node.attrName );
+					model.name = node.attrName ? PropertyBinding.sanitizeNodeName( node.attrName ) : '';
+
 					model.ID = id;
 
 				}
@@ -987,7 +965,8 @@ var FBXLoader = ( function () {
 							bone.matrixWorld.copy( rawBone.transformLink );
 
 							// set name and id here - otherwise in cases where "subBone" is created it will not have a name / id
-							bone.name = PropertyBinding.sanitizeNodeName( name );
+
+							bone.name = name ? PropertyBinding.sanitizeNodeName( name ) : '';
 							bone.ID = id;
 
 							skeleton.bones[ i ] = bone;
@@ -1599,7 +1578,7 @@ var FBXLoader = ( function () {
 		parseMeshGeometry: function ( relationships, geoNode, deformers ) {
 
 			var skeletons = deformers.skeletons;
-			var morphTargets = deformers.morphTargets;
+			var morphTargets = [];
 
 			var modelNodes = relationships.parents.map( function ( parent ) {
 
@@ -1618,13 +1597,15 @@ var FBXLoader = ( function () {
 
 			}, null );
 
-			var morphTarget = relationships.children.reduce( function ( morphTarget, child ) {
+			relationships.children.forEach( function ( child ) {
 
-				if ( morphTargets[ child.ID ] !== undefined ) morphTarget = morphTargets[ child.ID ];
+				if ( deformers.morphTargets[ child.ID ] !== undefined ) {
 
-				return morphTarget;
+					morphTargets.push( deformers.morphTargets[ child.ID ] );
 
-			}, null );
+				}
+
+			} );
 
 			// Assume one model and get the preRotation from that
 			// if there is more than one model associated with the geometry this may cause problems
@@ -1641,12 +1622,12 @@ var FBXLoader = ( function () {
 
 			var transform = generateTransform( transformData );
 
-			return this.genGeometry( geoNode, skeleton, morphTarget, transform );
+			return this.genGeometry( geoNode, skeleton, morphTargets, transform );
 
 		},
 
 		// Generate a BufferGeometry from a node in FBXTree.Objects.Geometry
-		genGeometry: function ( geoNode, skeleton, morphTarget, preTransform ) {
+		genGeometry: function ( geoNode, skeleton, morphTargets, preTransform ) {
 
 			var geo = new BufferGeometry();
 			if ( geoNode.attrName ) geo.name = geoNode.attrName;
@@ -1658,19 +1639,19 @@ var FBXLoader = ( function () {
 
 			preTransform.applyToBufferAttribute( positionAttribute );
 
-			geo.addAttribute( 'position', positionAttribute );
+			geo.setAttribute( 'position', positionAttribute );
 
 			if ( buffers.colors.length > 0 ) {
 
-				geo.addAttribute( 'color', new Float32BufferAttribute( buffers.colors, 3 ) );
+				geo.setAttribute( 'color', new Float32BufferAttribute( buffers.colors, 3 ) );
 
 			}
 
 			if ( skeleton ) {
 
-				geo.addAttribute( 'skinIndex', new Uint16BufferAttribute( buffers.weightsIndices, 4 ) );
+				geo.setAttribute( 'skinIndex', new Uint16BufferAttribute( buffers.weightsIndices, 4 ) );
 
-				geo.addAttribute( 'skinWeight', new Float32BufferAttribute( buffers.vertexWeights, 4 ) );
+				geo.setAttribute( 'skinWeight', new Float32BufferAttribute( buffers.vertexWeights, 4 ) );
 
 				// used later to bind the skeleton to the model
 				geo.FBX_Deformer = skeleton;
@@ -1684,7 +1665,7 @@ var FBXLoader = ( function () {
 				var normalMatrix = new Matrix3().getNormalMatrix( preTransform );
 				normalMatrix.applyToBufferAttribute( normalAttribute );
 
-				geo.addAttribute( 'normal', normalAttribute );
+				geo.setAttribute( 'normal', normalAttribute );
 
 			}
 
@@ -1700,7 +1681,7 @@ var FBXLoader = ( function () {
 
 				}
 
-				geo.addAttribute( name, new Float32BufferAttribute( buffers.uvs[ i ], 2 ) );
+				geo.setAttribute( name, new Float32BufferAttribute( buffers.uvs[ i ], 2 ) );
 
 			} );
 
@@ -1747,7 +1728,7 @@ var FBXLoader = ( function () {
 
 			}
 
-			this.addMorphTargets( geo, geoNode, morphTarget, preTransform );
+			this.addMorphTargets( geo, geoNode, morphTargets, preTransform );
 
 			return geo;
 
@@ -2120,14 +2101,16 @@ var FBXLoader = ( function () {
 
 		},
 
-		addMorphTargets: function ( parentGeo, parentGeoNode, morphTarget, preTransform ) {
+		addMorphTargets: function ( parentGeo, parentGeoNode, morphTargets, preTransform ) {
 
-			if ( morphTarget === null ) return;
+			if ( morphTargets.length === 0 ) return;
 
 			parentGeo.morphAttributes.position = [];
 			// parentGeo.morphAttributes.normal = []; // not implemented
 
 			var self = this;
+			morphTargets.forEach( function ( morphTarget ) {
+
 			morphTarget.rawTargets.forEach( function ( rawTarget ) {
 
 				var morphGeoNode = fbxTree.Objects.Geometry[ rawTarget.geoID ];
@@ -2137,6 +2120,8 @@ var FBXLoader = ( function () {
 					self.genMorphGeometry( parentGeo, parentGeoNode, morphGeoNode, preTransform, rawTarget.name );
 
 				}
+
+			} );
 
 			} );
 
@@ -2368,7 +2353,7 @@ var FBXLoader = ( function () {
 			} );
 
 			var geometry = new BufferGeometry();
-			geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
+			geometry.setAttribute( 'position', new BufferAttribute( positions, 3 ) );
 
 			return geometry;
 
@@ -2556,7 +2541,7 @@ var FBXLoader = ( function () {
 
 										var node = {
 
-											modelName: PropertyBinding.sanitizeNodeName( rawModel.attrName ),
+											modelName: rawModel.attrName ? PropertyBinding.sanitizeNodeName( rawModel.attrName ) : '',
 											ID: rawModel.id,
 											initialPosition: [ 0, 0, 0 ],
 											initialRotation: [ 0, 0, 0 ],
@@ -2611,7 +2596,7 @@ var FBXLoader = ( function () {
 
 									var node = {
 
-										modelName: PropertyBinding.sanitizeNodeName( rawModel.attrName ),
+										modelName: rawModel.attrName ? PropertyBinding.sanitizeNodeName( rawModel.attrName ) : '',
 										morphName: fbxTree.Objects.Deformer[ deformerID ].attrName,
 
 									};
