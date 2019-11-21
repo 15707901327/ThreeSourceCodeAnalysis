@@ -41,7 +41,7 @@ import { Color } from '../math/Color.js';
  *  alphaMap: new THREE.Texture( <Image> ),
  *
  *  envMap: new THREE.CubeTexture( [posx, negx, posy, negy, posz, negz] ),
- *  combine: THREE.Multiply,
+ *  combine: THREE.MultiplyOperation,
  *  reflectivity: <float>,
  *  refractionRatio: <float>,
  *
@@ -54,6 +54,11 @@ import { Color } from '../math/Color.js';
  * }
  */
 
+/**
+ * 高光材质
+ * @param parameters
+ * @constructor
+ */
 function MeshPhongMaterial( parameters ) {
 
 	Material.call( this );
