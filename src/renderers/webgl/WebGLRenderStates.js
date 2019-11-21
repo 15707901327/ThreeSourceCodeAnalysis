@@ -5,7 +5,7 @@
 import { WebGLLights } from './WebGLLights.js';
 
 /**
- * Webgl渲染状态
+ * 渲染状态
  * @returns {{init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}}
  * @constructor
  */
@@ -64,13 +64,13 @@ function WebGLRenderState() {
 }
 
 /**
- * WebGL渲染状态管理
+ * 渲染状态管理
  * @returns {{get: (function(*, *): {init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}), dispose: dispose}}
  * @constructor
  */
 function WebGLRenderStates() {
 
-	var renderStates = {};
+	var renderStates = new WeakMap();
 
 	function onSceneDispose( event ) {
 
@@ -78,43 +78,42 @@ function WebGLRenderStates() {
 
 		scene.removeEventListener( 'dispose', onSceneDispose );
 
-		delete renderStates[ scene.id ];
+		renderStates.delete( scene );
 
 	}
 
 	/**
 	 * 获取渲染状态
-	 * @param scene
-	 * @param camera
+	 * @param scene 场景
+	 * @param camera 相机
 	 * @returns {{init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}}
 	 */
 	function get( scene, camera ) {
 
 		var renderState;
 
-		if ( renderStates[ scene.id ] === undefined ) {
+		if ( renderStates.has( scene ) === false ) {
 			renderState = new WebGLRenderState();
-			renderStates[ scene.id ] = {};
-			renderStates[ scene.id ][ camera.id ] = renderState;
+			renderStates.set( scene, new WeakMap() );
+			renderStates.get( scene ).set( camera, renderState );
 
 			scene.addEventListener( 'dispose', onSceneDispose );
 		}
 		else {
-			if ( renderStates[ scene.id ][ camera.id ] === undefined ) {
+			if ( renderStates.get( scene ).has( camera ) === false ) {
 				renderState = new WebGLRenderState();
-				renderStates[ scene.id ][ camera.id ] = renderState;
+				renderStates.get( scene ).set( camera, renderState );
 			} else {
-				renderState = renderStates[ scene.id ][ camera.id ];
+				renderState = renderStates.get( scene ).get( camera );
 			}
 		}
 
 		return renderState;
-
 	}
 
 	function dispose() {
 
-		renderStates = {};
+		renderStates = new WeakMap();
 
 	}
 

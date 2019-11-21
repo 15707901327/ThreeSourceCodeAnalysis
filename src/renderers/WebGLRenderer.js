@@ -304,7 +304,7 @@ function WebGLRenderer(parameters) {
     morphtargets = new WebGLMorphtargets(_gl);
     programCache = new WebGLPrograms(_this, extensions, capabilities);
     renderLists = new WebGLRenderLists();
-    renderStates = new WebGLRenderStates();
+    renderStates = new WebGLRenderStates(); // 渲染状态
 
     background = new WebGLBackground(_this, state, objects, _premultipliedAlpha);
 
@@ -1137,7 +1137,7 @@ function WebGLRenderer(parameters) {
   };
 
   /**
-   * 循环渲染物体
+   * 渲染物体
    * @param scene 场景
    * @param camera 相机
    */

@@ -94,24 +94,37 @@ function UniformsCache() {
 	};
 }
 
-var count = 0;
+var nextVersion = 0;
 
+function shadowCastingLightsFirst( lightA, lightB ) {
+
+	return ( lightB.castShadow ? 1 : 0 ) - ( lightA.castShadow ? 1 : 0 );
+
+}
+
+/**
+ * 灯光管理
+ * @returns {{setup: setup, state: {numPointShadows: number, hemi: Array, ambient: number[], version: number, point: Array, probe: Array, pointShadowMap: Array, pointShadowMatrix: Array, directional: Array, directionalShadowMatrix: Array, spot: Array, numDirectionalShadows: number, spotShadowMap: Array, directionalShadowMap: Array, spotShadowMatrix: Array, numSpotShadows: number, rectArea: Array, hash: {directionalLength: number, numPointShadows: number, hemiLength: number, numDirectionalShadows: number, pointLength: number, rectAreaLength: number, numSpotShadows: number, spotLength: number}}}}
+ * @constructor
+ */
 function WebGLLights() {
 
 	var cache = new UniformsCache();
 
 	var state = {
 
-		id: count ++,
+		version: 0,
 
 		hash: {
-			stateID: - 1,
 			directionalLength: - 1,
 			pointLength: - 1,
 			spotLength: - 1,
 			rectAreaLength: - 1,
 			hemiLength: - 1,
-			shadowsLength: - 1
+
+			numDirectionalShadows: - 1,
+			numPointShadows: - 1,
+			numSpotShadows: - 1,
 		},
 
 		ambient: [ 0, 0, 0 ], // 环境光
@@ -126,7 +139,11 @@ function WebGLLights() {
 		point: [],
 		pointShadowMap: [],
 		pointShadowMatrix: [],
-		hemi: []
+		hemi: [],
+
+		numDirectionalShadows: - 1,
+		numPointShadows: - 1,
+		numSpotShadows: - 1
 
 	};
 
@@ -155,8 +172,14 @@ function WebGLLights() {
 		var rectAreaLength = 0;
 		var hemiLength = 0;
 
+    var numDirectionalShadows = 0;
+    var numPointShadows = 0;
+    var numSpotShadows = 0;
+
 		// 视图矩阵
 		var viewMatrix = camera.matrixWorldInverse;
+
+		lights.sort( shadowCastingLightsFirst );
 
 		for ( var i = 0, l = lights.length; i < l; i ++ ) {
 
@@ -208,10 +231,13 @@ function WebGLLights() {
 					uniforms.shadowRadius = shadow.radius;
 					uniforms.shadowMapSize = shadow.mapSize;
 
-				}
-
 				state.directionalShadowMap[ directionalLength ] = shadowMap;
 				state.directionalShadowMatrix[ directionalLength ] = light.shadow.matrix;
+
+					numDirectionalShadows ++;
+
+				}
+
 				state.directional[ directionalLength ] = uniforms;
 
 				directionalLength ++;
@@ -246,10 +272,13 @@ function WebGLLights() {
 					uniforms.shadowRadius = shadow.radius;
 					uniforms.shadowMapSize = shadow.mapSize;
 
-				}
-
 				state.spotShadowMap[ spotLength ] = shadowMap;
 				state.spotShadowMatrix[ spotLength ] = light.shadow.matrix;
+
+					numSpotShadows ++;
+
+				}
+
 				state.spot[ spotLength ] = uniforms;
 
 				spotLength ++;
@@ -311,10 +340,13 @@ function WebGLLights() {
 					uniforms.shadowCameraNear = shadow.camera.near;
 					uniforms.shadowCameraFar = shadow.camera.far;
 
-				}
-
 				state.pointShadowMap[ pointLength ] = shadowMap;
 				state.pointShadowMatrix[ pointLength ] = light.shadow.matrix;
+
+					numPointShadows ++;
+
+				}
+
 				state.point[ pointLength ] = uniforms;
 
 				pointLength ++;
@@ -344,19 +376,43 @@ function WebGLLights() {
 		state.ambient[ 1 ] = g;
 		state.ambient[ 2 ] = b;
 
+		var hash = state.hash;
+
+		if ( hash.directionalLength !== directionalLength ||
+			hash.pointLength !== pointLength ||
+			hash.spotLength !== spotLength ||
+			hash.rectAreaLength !== rectAreaLength ||
+			hash.hemiLength !== hemiLength ||
+			hash.numDirectionalShadows !== numDirectionalShadows ||
+			hash.numPointShadows !== numPointShadows ||
+			hash.numSpotShadows !== numSpotShadows ) {
+
 		state.directional.length = directionalLength;
 		state.spot.length = spotLength;
 		state.rectArea.length = rectAreaLength;
 		state.point.length = pointLength;
 		state.hemi.length = hemiLength;
 
-		state.hash.stateID = state.id;
-		state.hash.directionalLength = directionalLength;
-		state.hash.pointLength = pointLength;
-		state.hash.spotLength = spotLength;
-		state.hash.rectAreaLength = rectAreaLength;
-		state.hash.hemiLength = hemiLength;
-		state.hash.shadowsLength = shadows.length;
+			state.directionalShadowMap.length = numDirectionalShadows;
+			state.pointShadowMap.length = numPointShadows;
+			state.spotShadowMap.length = numSpotShadows;
+			state.directionalShadowMatrix.length = numDirectionalShadows;
+			state.pointShadowMatrix.length = numPointShadows;
+			state.spotShadowMatrix.length = numSpotShadows;
+
+			hash.directionalLength = directionalLength;
+			hash.pointLength = pointLength;
+			hash.spotLength = spotLength;
+			hash.rectAreaLength = rectAreaLength;
+			hash.hemiLength = hemiLength;
+
+			hash.numDirectionalShadows = numDirectionalShadows;
+			hash.numPointShadows = numPointShadows;
+			hash.numSpotShadows = numSpotShadows;
+
+			state.version = nextVersion ++;
+
+		}
 
 	}
 
