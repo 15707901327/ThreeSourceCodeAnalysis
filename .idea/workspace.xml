@@ -4,11 +4,15 @@
     <bookmark url="file://$PROJECT_DIR$/build" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="">
+    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.状态管理">
+      <change beforePath="$PROJECT_DIR$/.idea/ThreeSourceCodeAnalysis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ThreeSourceCodeAnalysis.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r69.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r79.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cameras/Camera.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/cameras/Camera.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/Frustum.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Frustum.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLLights.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLLights.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLRenderStates.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLRenderStates.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLClipping.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLClipping.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -24,10 +28,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/clipping/webgl_clipping.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4956">
-              <caret line="187" column="19" selection-start-line="187" selection-start-column="13" selection-end-line="187" selection-end-column="19" />
+            <state relative-caret-position="108">
+              <caret line="139" selection-start-line="139" selection-end-line="139" />
               <folding>
                 <element signature="n#head#0;n#html#0;n#!!top" />
+                <element signature="e#3620#4090#0" />
+                <element signature="e#4168#4511#0" />
+                <element signature="e#4830#4994#0" />
+                <element signature="e#5017#5378#0" />
               </folding>
             </state>
           </provider>
@@ -36,8 +44,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="31612">
-              <caret line="1186" column="55" selection-start-line="1186" selection-start-column="49" selection-end-line="1186" selection-end-column="55" />
+            <state relative-caret-position="352">
+              <caret line="1196" column="57" selection-start-line="1196" selection-start-column="43" selection-end-line="1196" selection-end-column="57" />
               <folding>
                 <element signature="n#!!doc;n#WebGLRenderer#0" />
               </folding>
@@ -45,40 +53,69 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLRenderStates.js">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLClipping.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+            <state relative-caret-position="52">
+              <caret line="135" column="14" selection-start-line="135" selection-start-column="6" selection-end-line="135" selection-end-column="14" />
               <folding>
-                <element signature="n#!!block;n#init#0;n#!!block;n#WebGLRenderState#0" />
-                <element signature="n#!!doc;n#pushLight#0;n#!!block;n#WebGLRenderState#0" />
-                <element signature="n#!!block;n#pushLight#0;n#!!block;n#WebGLRenderState#0" />
-                <element signature="n#!!block;n#pushShadow#0;n#!!block;n#WebGLRenderState#0" />
-                <element signature="n#!!doc;n#setupLights#0;n#!!block;n#WebGLRenderState#0" />
-                <element signature="n#!!block;n#setupLights#0;n#!!block;n#WebGLRenderState#0" />
-                <element signature="e#845#925#0" />
-                <element signature="e#936#1048#0" />
-                <element signature="n#!!block;n#onSceneDispose#0;n#!!block;n#WebGLRenderStates#0" />
-                <element signature="n#!!doc;n#get#0;n#!!block;n#WebGLRenderStates#0" />
-                <element signature="n#!!block;n#dispose#0;n#!!block;n#WebGLRenderStates#0" />
+                <element signature="e#491#615#0" />
+                <element signature="e#659#1057#0" />
+                <element signature="e#1093#1151#0" />
+                <element signature="e#1185#1241#0" />
+                <element signature="e#1338#2117#0" />
+                <element signature="n#!!block;n#resetGlobalState#0;n#!!block;n#WebGLClipping#0" />
+                <element signature="n#!!doc;n#projectPlanes#0;n#!!block;n#WebGLClipping#0" />
+                <element signature="e#2648#3309#0" />
+                <element signature="e#2940#2995#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLLights.js">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cameras/Camera.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="105" column="7" selection-start-line="105" selection-start-column="7" selection-end-line="105" selection-end-column="7" />
+            <state relative-caret-position="361">
+              <caret line="19" selection-start-line="19" selection-end-line="19" />
               <folding>
-                <element signature="n#!!block;n#UniformsCache#0" />
-                <element signature="n#!!block;n#shadowCastingLightsFirst#0" />
-                <element signature="e#1914#2391#0" />
-                <element signature="n#!!doc;n#setup#0;n#!!block;n#WebGLLights#0" />
-                <element signature="n#!!block;n#setup#0;n#!!block;n#WebGLLights#0" />
-                <element signature="e#8650#8685#0" />
+                <element signature="e#695#966#0" />
+                <element signature="e#1009#1304#0" />
+                <element signature="e#1590#1642#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/math/Frustum.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="588">
+              <caret line="71" column="2" selection-start-line="71" selection-start-column="2" selection-end-line="71" selection-end-column="2" />
+              <folding>
+                <element signature="n#!!doc;n#Frustum#0" />
+                <element signature="n#!!block;n#Frustum#0" />
+                <element signature="e#476#738#0" />
+                <element signature="e#820#1020#0" />
+                <element signature="e#1044#1097#0" />
+                <element signature="e#1127#1266#0" />
+                <element signature="e#1271#1350#0" />
+                <element signature="e#1430#2293#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/math/Plane.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="445">
+              <caret line="46" column="3" selection-start-line="46" selection-start-column="3" selection-end-line="46" selection-end-column="29" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+                <element signature="n#!!block;n#Plane#0" />
+                <element signature="e#660#745#0" />
+                <element signature="e#750#862#0" />
               </folding>
             </state>
           </provider>
@@ -95,12 +132,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_activateAction</find>
-      <find>_update</find>
-      <find>AnimationMixer</find>
-      <find>createInterpolant</find>
-      <find>setInterpolation</find>
-      <find>解析路径</find>
       <find>InterpolantFactoryMethodLinear</find>
       <find>_propertyBindings</find>
       <find>ValueTypeName</find>
@@ -125,6 +156,12 @@
       <find>render</find>
       <find>WebGLRenderStates</find>
       <find>renderStates</find>
+      <find>setFromMatrix</find>
+      <find>_frustum</find>
+      <find>matrixWorldInverse</find>
+      <find>setComponents</find>
+      <find>_clipping</find>
+      <find>numPlanes</find>
     </findStrings>
     <replaceStrings>
       <replace>jpg</replace>
@@ -145,10 +182,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/examples/noise/heightmap.html" />
-        <option value="$PROJECT_DIR$/examples/heatMap/test1.js" />
-        <option value="$PROJECT_DIR$/examples/heatMap/test1.html" />
-        <option value="$PROJECT_DIR$/examples/potClould/demo2.html" />
         <option value="$PROJECT_DIR$/examples/heatMap/test2.html" />
         <option value="$PROJECT_DIR$/examples/heatMap/test3.html" />
         <option value="$PROJECT_DIR$/examples/Mountain/test2.html" />
@@ -193,9 +226,13 @@
         <option value="$PROJECT_DIR$/src/materials/MeshPhongMaterial.js" />
         <option value="$PROJECT_DIR$/src/materials/Material.js" />
         <option value="$PROJECT_DIR$/examples/clipping/webgl_clipping.html" />
-        <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
         <option value="$PROJECT_DIR$/src/renderers/webgl/WebGLRenderStates.js" />
         <option value="$PROJECT_DIR$/src/renderers/webgl/WebGLLights.js" />
+        <option value="$PROJECT_DIR$/../three_r110.js-master/src/math/Frustum.js" />
+        <option value="$PROJECT_DIR$/src/cameras/Camera.js" />
+        <option value="$PROJECT_DIR$/src/math/Frustum.js" />
+        <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
+        <option value="$PROJECT_DIR$/src/renderers/webgl/WebGLClipping.js" />
       </list>
     </option>
   </component>
@@ -215,6 +252,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -222,36 +260,17 @@
               <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="renderers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="renderers" type="462c0819:PsiDirectoryNode" />
-              <item name="webgl" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../three_r110.js-master/src/renderers/webgl/WebGLLights.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../three_r110.js-master/src/renderers/webgl/WebGLClipping.js" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -260,7 +279,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r110.js-master/src/renderers/webgl/WebGLLights.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r110.js-master/src/renderers/webgl/WebGLClipping.js" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -450,14 +469,9 @@
       <workItem from="1574316263453" duration="382000" />
       <workItem from="1574316840015" duration="3386000" />
       <workItem from="1574326458264" duration="3590000" />
-      <workItem from="1574332026767" duration="234000" />
-    </task>
-    <task id="LOCAL-00007" summary="1. 测试gltf加载器">
-      <created>1566808592859</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1566808592859</updated>
+      <workItem from="1574332026767" duration="315000" />
+      <workItem from="1574385165702" duration="4644000" />
+      <workItem from="1574413995929" duration="2677000" />
     </task>
     <task id="LOCAL-00008" summary="1. 更新three_107">
       <created>1566811885220</created>
@@ -795,15 +809,21 @@
       <option name="project" value="LOCAL" />
       <updated>1574329254127</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="1.状态管理">
+      <created>1574332317284</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1574332317285</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="693129000" />
+    <option name="totallyTimeSpent" value="700531000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22321428" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -891,7 +911,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1. 添加深度图实例" />
     <MESSAGE value="1. 天空盒子实例" />
     <MESSAGE value="1. blending实例" />
     <MESSAGE value="1. AdditiveBlending实例" />
@@ -916,7 +935,8 @@
     <MESSAGE value="1.gltf 动画研究" />
     <MESSAGE value="1.fbx格式" />
     <MESSAGE value="1.裁剪面实例" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.裁剪面实例" />
+    <MESSAGE value="1.状态管理" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.状态管理" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -935,42 +955,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="144" column="22" selection-start-line="144" selection-start-column="22" selection-end-line="144" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/controls/demo.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="31" column="9" lean-forward="true" selection-start-line="21" selection-start-column="8" selection-end-line="31" selection-end-column="9" />
-          <folding>
-            <element signature="e#341#433#0" />
-            <element signature="e#452#544#0" />
-            <element signature="e#559#837#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/controls/demo.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="131" column="6" lean-forward="true" selection-start-line="131" selection-start-column="6" selection-end-line="131" selection-end-column="6" />
-          <folding>
-            <element signature="e#1676#1904#0" />
-            <element signature="e#1932#2841#0" />
-            <element signature="e#2055#2619#0" />
-            <element signature="e#2870#3019#0" />
-            <element signature="e#3047#3672#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/models/gltf/animate001/scene.gltf">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/models/gltf/animate001/scene.bin">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1766,67 +1750,153 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/math/Plane.js">
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLLights.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="14" column="18" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="18" />
+        <state relative-caret-position="677">
+          <caret line="161" column="44" selection-start-line="161" selection-start-column="44" selection-end-line="161" selection-end-column="44" />
           <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/clipping/webgl_clipping.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4956">
-          <caret line="187" column="19" selection-start-line="187" selection-start-column="13" selection-end-line="187" selection-end-column="19" />
-          <folding>
-            <element signature="n#head#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="31612">
-          <caret line="1186" column="55" selection-start-line="1186" selection-start-column="49" selection-end-line="1186" selection-end-column="55" />
-          <folding>
-            <element signature="n#!!doc;n#WebGLRenderer#0" />
+            <element signature="n#!!block;n#UniformsCache#0" />
+            <element signature="e#354#1815#0" />
+            <element signature="n#!!block;n#shadowCastingLightsFirst#0" />
+            <element signature="e#2684#3279#0" />
+            <element signature="e#2710#2908#0" />
+            <element signature="n#!!doc;n#setup#0;n#!!block;n#WebGLLights#0" />
+            <element signature="n#!!block;n#setup#0;n#!!block;n#WebGLLights#0" />
+            <element signature="e#10561#10596#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLRenderStates.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+        <state relative-caret-position="392">
+          <caret line="70" column="29" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="29" />
           <folding>
+            <element signature="n#!!doc;n#WebGLRenderState#0" />
+            <element signature="n#!!block;n#WebGLRenderState#0" />
             <element signature="n#!!block;n#init#0;n#!!block;n#WebGLRenderState#0" />
             <element signature="n#!!doc;n#pushLight#0;n#!!block;n#WebGLRenderState#0" />
             <element signature="n#!!block;n#pushLight#0;n#!!block;n#WebGLRenderState#0" />
             <element signature="n#!!block;n#pushShadow#0;n#!!block;n#WebGLRenderState#0" />
             <element signature="n#!!doc;n#setupLights#0;n#!!block;n#WebGLRenderState#0" />
             <element signature="n#!!block;n#setupLights#0;n#!!block;n#WebGLRenderState#0" />
-            <element signature="e#845#925#0" />
-            <element signature="e#936#1048#0" />
+            <element signature="e#840#920#0" />
+            <element signature="e#931#1043#0" />
+            <element signature="n#!!block;n#WebGLRenderStates#0" />
             <element signature="n#!!block;n#onSceneDispose#0;n#!!block;n#WebGLRenderStates#0" />
             <element signature="n#!!doc;n#get#0;n#!!block;n#WebGLRenderStates#0" />
+            <element signature="n#!!block;n#get#0;n#!!block;n#WebGLRenderStates#0" />
             <element signature="n#!!block;n#dispose#0;n#!!block;n#WebGLRenderStates#0" />
+            <element signature="e#2416#2451#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLLights.js">
+    <entry file="file://$PROJECT_DIR$/src/cameras/PerspectiveCamera.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="105" column="7" selection-start-line="105" selection-start-column="7" selection-end-line="105" selection-end-column="7" />
+        <state relative-caret-position="1540">
+          <caret line="197" column="2" selection-start-line="197" selection-start-column="2" selection-end-line="197" selection-end-column="2" />
           <folding>
-            <element signature="n#!!block;n#UniformsCache#0" />
-            <element signature="n#!!block;n#shadowCastingLightsFirst#0" />
-            <element signature="e#1914#2391#0" />
-            <element signature="n#!!doc;n#setup#0;n#!!block;n#WebGLLights#0" />
-            <element signature="n#!!block;n#setup#0;n#!!block;n#WebGLLights#0" />
-            <element signature="e#8650#8685#0" />
+            <element signature="e#0#37#0" expanded="true" />
+            <element signature="n#!!doc;n#PerspectiveCamera#0" />
+            <element signature="e#1103#1504#0" />
+            <element signature="e#1508#1775#0" />
+            <element signature="e#1818#2056#0" />
+            <element signature="e#2060#2138#0" />
+            <element signature="e#2168#2292#0" />
+            <element signature="e#2325#2432#0" />
+            <element signature="e#2462#2587#0" />
+            <element signature="e#2618#2744#0" />
+            <element signature="e#2748#3851#0" />
+            <element signature="e#3924#4387#0" />
+            <element signature="e#4420#4526#0" />
+            <element signature="e#4531#4588#0" />
+            <element signature="e#4626#5388#0" />
+            <element signature="e#5418#5863#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/clipping/webgl_clipping.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="139" selection-start-line="139" selection-end-line="139" />
+          <folding>
+            <element signature="n#head#0;n#html#0;n#!!top" />
+            <element signature="e#3620#4090#0" />
+            <element signature="e#4168#4511#0" />
+            <element signature="e#4830#4994#0" />
+            <element signature="e#5017#5378#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/Plane.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="46" column="3" selection-start-line="46" selection-start-column="3" selection-end-line="46" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+            <element signature="n#!!block;n#Plane#0" />
+            <element signature="e#660#745#0" />
+            <element signature="e#750#862#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/Frustum.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="71" column="2" selection-start-line="71" selection-start-column="2" selection-end-line="71" selection-end-column="2" />
+          <folding>
+            <element signature="n#!!doc;n#Frustum#0" />
+            <element signature="n#!!block;n#Frustum#0" />
+            <element signature="e#476#738#0" />
+            <element signature="e#820#1020#0" />
+            <element signature="e#1044#1097#0" />
+            <element signature="e#1127#1266#0" />
+            <element signature="e#1271#1350#0" />
+            <element signature="e#1430#2293#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cameras/Camera.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="e#695#966#0" />
+            <element signature="e#1009#1304#0" />
+            <element signature="e#1590#1642#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="1196" column="57" selection-start-line="1196" selection-start-column="43" selection-end-line="1196" selection-end-column="57" />
+          <folding>
+            <element signature="n#!!doc;n#WebGLRenderer#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLClipping.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="135" column="14" selection-start-line="135" selection-start-column="6" selection-end-line="135" selection-end-column="14" />
+          <folding>
+            <element signature="e#491#615#0" />
+            <element signature="e#659#1057#0" />
+            <element signature="e#1093#1151#0" />
+            <element signature="e#1185#1241#0" />
+            <element signature="e#1338#2117#0" />
+            <element signature="n#!!block;n#resetGlobalState#0;n#!!block;n#WebGLClipping#0" />
+            <element signature="n#!!doc;n#projectPlanes#0;n#!!block;n#WebGLClipping#0" />
+            <element signature="e#2648#3309#0" />
+            <element signature="e#2940#2995#0" />
           </folding>
         </state>
       </provider>

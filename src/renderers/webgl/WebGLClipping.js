@@ -6,7 +6,7 @@ import { Matrix3 } from '../../math/Matrix3.js';
 import { Plane } from '../../math/Plane.js';
 
 /**
- *
+ * 裁剪
  * @constructor
  */
 function WebGLClipping() {
@@ -14,7 +14,7 @@ function WebGLClipping() {
 	var scope = this,
 
 		globalState = null,
-		numGlobalPlanes = 0,
+		numGlobalPlanes = 0, // 全局建材面的个数
 		localClippingEnabled = false,
 		renderingShadows = false,
 
@@ -24,25 +24,21 @@ function WebGLClipping() {
 		uniform = { value: null, needsUpdate: false };
 
 	this.uniform = uniform;
-	this.numPlanes = 0;
+	this.numPlanes = 0; // 裁剪面数量
 	this.numIntersection = 0;
 
   /**
-	 *
-   * @param planes
-   * @param enableLocalClipping
-   * @param camera
+	 * 初始化
+   * @param planes 裁剪面
+   * @param enableLocalClipping 启动裁剪
+   * @param camera 相机
    * @return {boolean|*}
    */
 	this.init = function ( planes, enableLocalClipping, camera ) {
 
-		var enabled =
-			planes.length !== 0 ||
-			enableLocalClipping ||
-			// enable state of previous frame - the clipping code has to
-			// run another frame in order to reset the state:
-			numGlobalPlanes !== 0 ||
-			localClippingEnabled;
+    // enable state of previous frame - the clipping code has to
+    // run another frame in order to reset the state:
+		var enabled = planes.length !== 0 || enableLocalClipping || numGlobalPlanes !== 0 || localClippingEnabled;
 
 		localClippingEnabled = enableLocalClipping;
 
@@ -125,8 +121,17 @@ function WebGLClipping() {
 
 	}
 
+  /**
+   *
+   * @param planes 裁剪面
+   * @param camera 相机
+   * @param dstOffset 偏移
+   * @param skipTransform
+   * @returns {*}
+   */
 	function projectPlanes( planes, camera, dstOffset, skipTransform ) {
 
+	  // 裁剪面数量
 		var nPlanes = planes !== null ? planes.length : 0,
 			dstArray = null;
 
@@ -142,25 +147,18 @@ function WebGLClipping() {
 				viewNormalMatrix.getNormalMatrix( viewMatrix );
 
 				if ( dstArray === null || dstArray.length < flatSize ) {
-
 					dstArray = new Float32Array( flatSize );
-
 				}
 
 				for ( var i = 0, i4 = dstOffset; i !== nPlanes; ++ i, i4 += 4 ) {
-
 					plane.copy( planes[ i ] ).applyMatrix4( viewMatrix, viewNormalMatrix );
-
 					plane.normal.toArray( dstArray, i4 );
 					dstArray[ i4 + 3 ] = plane.constant;
-
 				}
-
 			}
 
 			uniform.value = dstArray;
 			uniform.needsUpdate = true;
-
 		}
 
 		scope.numPlanes = nPlanes;

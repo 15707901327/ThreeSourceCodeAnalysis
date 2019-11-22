@@ -7,6 +7,9 @@ import {Plane} from './Plane.js';
  * @author alteredq / http://alteredqualia.com/
  * @author bhouston / http://clara.io
  */
+var _sphere = new Sphere();
+var _vector = new Vector3();
+
 /**
  * 由六个平面组成的锥体
  * @param p0
@@ -20,16 +23,13 @@ import {Plane} from './Plane.js';
 function Frustum(p0, p1, p2, p3, p4, p5) {
 
   this.planes = [
-
     (p0 !== undefined) ? p0 : new Plane(),
     (p1 !== undefined) ? p1 : new Plane(),
     (p2 !== undefined) ? p2 : new Plane(),
     (p3 !== undefined) ? p3 : new Plane(),
     (p4 !== undefined) ? p4 : new Plane(),
     (p5 !== undefined) ? p5 : new Plane()
-
   ];
-
 }
 
 Object.assign(Frustum.prototype, {
@@ -70,8 +70,8 @@ Object.assign(Frustum.prototype, {
   },
 
   /**
-   * WebGLRenderer使用它来从Camera的projectionMatrix和matrixWorldInverse设置Frustum。
-   * @param m
+   * 设置视锥体的6个面
+   * @param m 模型矩阵 * 视图矩阵
    * @return {setFromMatrix}
    */
   setFromMatrix: function (m) {
@@ -98,45 +98,28 @@ Object.assign(Frustum.prototype, {
    * 检查对象的边界球是否与Frustum相交。
    * 请注意，对象必须具有Geometry或BufferGeometry，以便可以计算边界球。
    */
-  intersectsObject: function () {
-
-    var sphere = new Sphere();
-
-    return function intersectsObject(object) {
+	intersectsObject: function ( object ) {
 
       var geometry = object.geometry;
 
       if (geometry.boundingSphere === null)
         geometry.computeBoundingSphere();
 
-      //
-      sphere.copy(geometry.boundingSphere)
-        .applyMatrix4(object.matrixWorld);
+		_sphere.copy( geometry.boundingSphere ).applyMatrix4( object.matrixWorld );
 
-      return this.intersectsSphere(sphere);
+		return this.intersectsSphere( _sphere );
 
-    };
+	},
 
-  }(),
+	intersectsSprite: function ( sprite ) {
 
-  /**
-   * 检查精灵是否与Frustum相交
-   */
-  intersectsSprite: function () {
+		_sphere.center.set( 0, 0, 0 );
+		_sphere.radius = 0.7071067811865476;
+		_sphere.applyMatrix4( sprite.matrixWorld );
 
-    var sphere = new Sphere();
+		return this.intersectsSphere( _sphere );
 
-    return function intersectsSprite(sprite) {
-
-      sphere.center.set(0, 0, 0);
-      sphere.radius = 0.7071067811865476;
-      sphere.applyMatrix4(sprite.matrixWorld);
-
-      return this.intersectsSphere(sphere);
-
-    };
-
-  }(),
+	},
 
   /**
    * 如果球体与此平截头体相交，则返回true。
@@ -165,11 +148,7 @@ Object.assign(Frustum.prototype, {
 
   },
 
-  intersectsBox: function () {
-
-    var p = new Vector3();
-
-    return function intersectsBox(box) {
+	intersectsBox: function ( box ) {
 
       var planes = this.planes;
 
@@ -179,11 +158,11 @@ Object.assign(Frustum.prototype, {
 
         // corner at max distance
 
-        p.x = plane.normal.x > 0 ? box.max.x : box.min.x;
-        p.y = plane.normal.y > 0 ? box.max.y : box.min.y;
-        p.z = plane.normal.z > 0 ? box.max.z : box.min.z;
+			_vector.x = plane.normal.x > 0 ? box.max.x : box.min.x;
+			_vector.y = plane.normal.y > 0 ? box.max.y : box.min.y;
+			_vector.z = plane.normal.z > 0 ? box.max.z : box.min.z;
 
-        if (plane.distanceToPoint(p) < 0) {
+			if ( plane.distanceToPoint( _vector ) < 0 ) {
 
           return false;
 
@@ -193,9 +172,7 @@ Object.assign(Frustum.prototype, {
 
       return true;
 
-    };
-
-  }(),
+	},
 
   containsPoint: function (point) {
 
@@ -214,7 +191,6 @@ Object.assign(Frustum.prototype, {
     return true;
 
   }
-
 });
 
 

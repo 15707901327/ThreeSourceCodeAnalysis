@@ -177,11 +177,9 @@ function WebGLRenderer(parameters) {
     _scissorTest = false, // 是否启用裁剪
 
     // frustum
-
     _frustum = new Frustum(),
 
     // clipping
-
     _clipping = new WebGLClipping(),
     _clippingEnabled = false,
     _localClippingEnabled = false,
@@ -1194,6 +1192,7 @@ function WebGLRenderer(parameters) {
     // 设置视锥体
     _frustum.setFromMatrix(_projScreenMatrix);
 
+    // 裁剪
     _localClippingEnabled = this.localClippingEnabled;
     _clippingEnabled = _clipping.init(this.clippingPlanes, _localClippingEnabled, camera);
 

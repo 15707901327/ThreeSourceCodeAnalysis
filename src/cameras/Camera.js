@@ -14,7 +14,7 @@ function Camera() {
 
 	this.type = 'Camera';
 
-	this.matrixWorldInverse = new Matrix4(); // 相机位置矩阵的倒数矩阵 视图矩阵是相机位置矩阵的逆矩阵
+	this.matrixWorldInverse = new Matrix4(); // 视图矩阵
 	this.projectionMatrix = new Matrix4(); // 投影矩阵
 	this.projectionMatrixInverse = new Matrix4(); // 投影矩阵的逆矩阵
 
