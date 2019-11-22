@@ -301,7 +301,7 @@ function WebGLRenderer(parameters) {
     objects = new WebGLObjects(_gl, geometries, attributes, info);
     morphtargets = new WebGLMorphtargets(_gl);
     programCache = new WebGLPrograms(_this, extensions, capabilities);
-    renderLists = new WebGLRenderLists();
+    renderLists = new WebGLRenderLists(); // 渲染列表
     renderStates = new WebGLRenderStates(); // 渲染状态
 
     background = new WebGLBackground(_this, state, objects, _premultipliedAlpha);
@@ -1199,24 +1199,17 @@ function WebGLRenderer(parameters) {
     // 初始化渲染列表
     currentRenderList = renderLists.get(scene, camera);
     currentRenderList.init();
-
-    projectObject(scene, camera, 0, _this.sortObjects);
-
+    projectObject(scene, camera, 0, _this.sortObjects); // 计算渲染列表
     if (_this.sortObjects === true) {
       currentRenderList.sort();
     }
 
-    //
-
+    // 阴影
     if (_clippingEnabled) _clipping.beginShadows();
-
     var shadowsArray = currentRenderState.state.shadowsArray;
-
     shadowMap.render(shadowsArray, scene, camera);
-
     // 设置灯光
     currentRenderState.setupLights(camera);
-
     if (_clippingEnabled) _clipping.endShadows();
 
     //
@@ -1226,13 +1219,10 @@ function WebGLRenderer(parameters) {
     // 设置渲染目标
     if (renderTarget !== undefined) {
       this.setRenderTarget(renderTarget);
-
     }
 
     if (vr.enabled && multiview.isAvailable()) {
-
       multiview.attachCamera(camera);
-
     }
 
     // 渲染背景（更新缓冲区）
@@ -1272,18 +1262,13 @@ function WebGLRenderer(parameters) {
     state.setPolygonOffset(false);
 
     if (vr.enabled) {
-
       if (multiview.isAvailable()) {
-
         multiview.detachCamera(camera);
-
       }
-
       vr.submitFrame();
     }
 
     // _gl.finish();
-
     currentRenderList = null;
     currentRenderState = null;
   };
@@ -1306,14 +1291,17 @@ function WebGLRenderer(parameters) {
     if (visible) {
       if (object.isGroup) {
         groupOrder = object.renderOrder;
-      } else if (object.isLOD) {
+      }
+      else if (object.isLOD) {
         if (object.autoUpdate === true) object.update(camera);
-      } else if (object.isLight) {
+      }
+      else if (object.isLight) {
         currentRenderState.pushLight(object);
         if (object.castShadow) {
           currentRenderState.pushShadow(object);
         }
-      } else if (object.isSprite) {
+      }
+      else if (object.isSprite) {
         if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
           if (sortObjects) {
             _vector3.setFromMatrixPosition(object.matrixWorld)
@@ -1327,13 +1315,15 @@ function WebGLRenderer(parameters) {
             currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
           }
         }
-      } else if (object.isImmediateRenderObject) {
+      }
+      else if (object.isImmediateRenderObject) {
         if (sortObjects) {
           _vector3.setFromMatrixPosition(object.matrixWorld)
           .applyMatrix4(_projScreenMatrix);
         }
         currentRenderList.push(object, null, object.material, groupOrder, _vector3.z, null);
-      } else if (object.isMesh || object.isLine || object.isPoints) {
+      }
+      else if (object.isMesh || object.isLine || object.isPoints) {
         if (object.isSkinnedMesh) {
 
           // update skeleton only once in a frame
@@ -1384,1399 +1374,1399 @@ function WebGLRenderer(parameters) {
         projectObject(children[i], camera, groupOrder, sortObjects);
       }
     }
+  }
 
-    /**
-     * 渲染物体列表中的物体
-     * @param renderList 渲染列表
-     * @param scene 场景
-     * @param camera 相机
-     * @param overrideMaterial
-     */
-    function renderObjects(renderList, scene, camera, overrideMaterial) {
+  /**
+   * 渲染物体列表中的物体
+   * @param renderList 渲染列表
+   * @param scene 场景
+   * @param camera 相机
+   * @param overrideMaterial
+   */
+  function renderObjects(renderList, scene, camera, overrideMaterial) {
 
-      for (var i = 0, l = renderList.length; i < l; i++) {
+    for (var i = 0, l = renderList.length; i < l; i++) {
 
-        var renderItem = renderList[i];
+      var renderItem = renderList[i];
 
-        var object = renderItem.object;
-        var geometry = renderItem.geometry;
-        var material = overrideMaterial === undefined ? renderItem.material : overrideMaterial;
-        var group = renderItem.group;
+      var object = renderItem.object;
+      var geometry = renderItem.geometry;
+      var material = overrideMaterial === undefined ? renderItem.material : overrideMaterial;
+      var group = renderItem.group;
 
-        if (camera.isArrayCamera) {
-          _currentArrayCamera = camera;
+      if (camera.isArrayCamera) {
+        _currentArrayCamera = camera;
 
-          if (vr.enabled && multiview.isAvailable()) {
+        if (vr.enabled && multiview.isAvailable()) {
 
-            renderObject(object, scene, camera, geometry, material, group);
+          renderObject(object, scene, camera, geometry, material, group);
 
-          } else {
+        } else {
 
-            var cameras = camera.cameras;
-            for (var j = 0, jl = cameras.length; j < jl; j++) {
-              var camera2 = cameras[j];
-              if (object.layers.test(camera2.layers)) {
-                state.viewport(_currentViewport.copy(camera2.viewport));
-                currentRenderState.setupLights(camera2);
-                renderObject(object, scene, camera2, geometry, material, group);
-              }
+          var cameras = camera.cameras;
+          for (var j = 0, jl = cameras.length; j < jl; j++) {
+            var camera2 = cameras[j];
+            if (object.layers.test(camera2.layers)) {
+              state.viewport(_currentViewport.copy(camera2.viewport));
+              currentRenderState.setupLights(camera2);
+              renderObject(object, scene, camera2, geometry, material, group);
             }
           }
-
-        } else {
-
-          _currentArrayCamera = null;
-          renderObject(object, scene, camera, geometry, material, group);
         }
-      }
-    }
-
-    /**
-     * 渲染物体
-     * @param object 渲染对象（mesh）
-     * @param scene 场景
-     * @param camera 相机
-     * @param geometry 几何体
-     * @param material 材质
-     * @param group
-     */
-    function renderObject(object, scene, camera, geometry, material, group) {
-
-      // 渲染之前调用方法
-      object.onBeforeRender(_this, scene, camera, geometry, material, group);
-      // 获取渲染状态
-      currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
-
-      // 计算对象的模型视图矩阵
-      object.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, object.matrixWorld);
-      // 获取对象的法线矩阵
-      object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
-
-      if (object.isImmediateRenderObject) {
-
-        state.setMaterial(material);
-
-        var program = setProgram(camera, scene.fog, material, object);
-
-        _currentGeometryProgram.geometry = null;
-        _currentGeometryProgram.program = null;
-        _currentGeometryProgram.wireframe = false;
-
-        renderObjectImmediate(object, program);
 
       } else {
-        _this.renderBufferDirect(camera, scene.fog, geometry, material, object, group);
-      }
 
-      // 渲染之后调用方法
-      object.onAfterRender(_this, scene, camera, geometry, material, group);
-      currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
+        _currentArrayCamera = null;
+        renderObject(object, scene, camera, geometry, material, group);
+      }
+    }
+  }
+
+  /**
+   * 渲染物体
+   * @param object 渲染对象（mesh）
+   * @param scene 场景
+   * @param camera 相机
+   * @param geometry 几何体
+   * @param material 材质
+   * @param group
+   */
+  function renderObject(object, scene, camera, geometry, material, group) {
+
+    // 渲染之前调用方法
+    object.onBeforeRender(_this, scene, camera, geometry, material, group);
+    // 获取渲染状态
+    currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
+
+    // 计算对象的模型视图矩阵
+    object.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, object.matrixWorld);
+    // 获取对象的法线矩阵
+    object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
+
+    if (object.isImmediateRenderObject) {
+
+      state.setMaterial(material);
+
+      var program = setProgram(camera, scene.fog, material, object);
+
+      _currentGeometryProgram.geometry = null;
+      _currentGeometryProgram.program = null;
+      _currentGeometryProgram.wireframe = false;
+
+      renderObjectImmediate(object, program);
+
+    } else {
+      _this.renderBufferDirect(camera, scene.fog, geometry, material, object, group);
     }
 
-    /**
-     * 创建着色器程序以及参数调整
-     * @param material 材质
-     * @param fog
-     * @param object mesh
-     */
-    function initMaterial(material, fog, object) {
+    // 渲染之后调用方法
+    object.onAfterRender(_this, scene, camera, geometry, material, group);
+    currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
+  }
 
-      var materialProperties = properties.get(material);
+  /**
+   * 创建着色器程序以及参数调整
+   * @param material 材质
+   * @param fog
+   * @param object mesh
+   */
+  function initMaterial(material, fog, object) {
 
-      // 获取管理灯光
-      var lights = currentRenderState.state.lights;
-      var shadowsArray = currentRenderState.state.shadowsArray;
+    var materialProperties = properties.get(material);
 
-      var lightsStateVersion = lights.state.version;
+    // 获取管理灯光
+    var lights = currentRenderState.state.lights;
+    var shadowsArray = currentRenderState.state.shadowsArray;
 
-      // 获取参数
-      var parameters = programCache.getParameters(material, lights.state, shadowsArray, fog, _clipping.numPlanes, _clipping.numIntersection, object);
+    var lightsStateVersion = lights.state.version;
 
-      var programCacheKey = programCache.getProgramCacheKey(material, parameters);
+    // 获取参数
+    var parameters = programCache.getParameters(material, lights.state, shadowsArray, fog, _clipping.numPlanes, _clipping.numIntersection, object);
 
-      var program = materialProperties.program;
-      var programChange = true;
+    var programCacheKey = programCache.getProgramCacheKey(material, parameters);
 
-      if (program === undefined) {
-        // new material
-        material.addEventListener('dispose', onMaterialDispose);
+    var program = materialProperties.program;
+    var programChange = true;
 
-      } else if (program.cacheKey !== programCacheKey) {
+    if (program === undefined) {
+      // new material
+      material.addEventListener('dispose', onMaterialDispose);
 
-        // changed glsl or parameters
-        releaseMaterialProgramReference(material);
+    } else if (program.cacheKey !== programCacheKey) {
 
-      } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
+      // changed glsl or parameters
+      releaseMaterialProgramReference(material);
 
-        materialProperties.lightsStateVersion = lightsStateVersion;
+    } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
 
-        programChange = false;
-
-      } else if (parameters.shaderID !== undefined) {
-        // same glsl and uniform list
-        return;
-      } else {
-
-        // only rebuild uniform list
-        programChange = false;
-
-      }
-
-      // 获取shader变量、顶点着色器、片元着色器，创建着色器程序
-      if (programChange) {
-
-        if (parameters.shaderID) {
-
-          var shader = ShaderLib[parameters.shaderID];
-
-          materialProperties.shader = {
-            name: material.type,
-            uniforms: cloneUniforms(shader.uniforms),
-            vertexShader: shader.vertexShader,
-            fragmentShader: shader.fragmentShader
-          };
-
-        } else {
-
-          materialProperties.shader = {
-            name: material.type,
-            uniforms: material.uniforms,
-            vertexShader: material.vertexShader,
-            fragmentShader: material.fragmentShader
-          };
-
-        }
-
-        material.onBeforeCompile(materialProperties.shader, _this);
-
-        // Computing cache key again as onBeforeCompile may have changed the shaders
-        programCacheKey = programCache.getProgramCacheKey(material, parameters);
-
-        program = programCache.acquireProgram(material, materialProperties.shader, parameters, programCacheKey);
-
-        materialProperties.program = program;
-        material.program = program;
-
-      }
-
-      var programAttributes = program.getAttributes();
-
-      if (material.morphTargets) {
-
-        material.numSupportedMorphTargets = 0;
-
-        for (var i = 0; i < _this.maxMorphTargets; i++) {
-
-          if (programAttributes['morphTarget' + i] >= 0) {
-
-            material.numSupportedMorphTargets++;
-
-          }
-
-        }
-
-      }
-
-      if (material.morphNormals) {
-
-        material.numSupportedMorphNormals = 0;
-
-        for (var i = 0; i < _this.maxMorphNormals; i++) {
-
-          if (programAttributes['morphNormal' + i] >= 0) {
-
-            material.numSupportedMorphNormals++;
-
-          }
-
-        }
-
-      }
-
-      // shader变量
-      var uniforms = materialProperties.shader.uniforms;
-
-      if (!material.isShaderMaterial && !material.isRawShaderMaterial || material.clipping === true) {
-        materialProperties.numClippingPlanes = _clipping.numPlanes;
-        materialProperties.numIntersection = _clipping.numIntersection;
-        uniforms.clippingPlanes = _clipping.uniform;
-      }
-
-      materialProperties.fog = fog;
-
-      // store the light setup it was created for
-
-      materialProperties.needsLights = materialNeedsLights(material);
       materialProperties.lightsStateVersion = lightsStateVersion;
 
-      // 添加灯光属性
-      if (materialProperties.needsLights) {
-        // wire up the material to this renderer's lighting state
+      programChange = false;
 
-        uniforms.ambientLightColor.value = lights.state.ambient;
-        uniforms.lightProbe.value = lights.state.probe;
-        uniforms.directionalLights.value = lights.state.directional;
-        uniforms.spotLights.value = lights.state.spot;
-        uniforms.rectAreaLights.value = lights.state.rectArea;
-        uniforms.pointLights.value = lights.state.point;
-        uniforms.hemisphereLights.value = lights.state.hemi;
+    } else if (parameters.shaderID !== undefined) {
+      // same glsl and uniform list
+      return;
+    } else {
 
-        uniforms.directionalShadowMap.value = lights.state.directionalShadowMap;
-        uniforms.directionalShadowMatrix.value = lights.state.directionalShadowMatrix;
-        uniforms.spotShadowMap.value = lights.state.spotShadowMap;
-        uniforms.spotShadowMatrix.value = lights.state.spotShadowMatrix;
-        uniforms.pointShadowMap.value = lights.state.pointShadowMap;
-        uniforms.pointShadowMatrix.value = lights.state.pointShadowMatrix;
-        // TODO (abelnation): add area lights shadow info to uniforms
-      }
-
-      // 获取着色器程序中的uniform变量
-      var progUniforms = materialProperties.program.getUniforms(),
-        uniformsList = WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
-
-      materialProperties.uniformsList = uniformsList;
+      // only rebuild uniform list
+      programChange = false;
 
     }
 
-    /**
-     * 设置着色器中的变量
-     * @param camera 相机
-     * @param fog
-     * @param material 材质
-     * @param object mesh
-     * @return {*}
-     */
-    function setProgram(camera, fog, material, object) {
+    // 获取shader变量、顶点着色器、片元着色器，创建着色器程序
+    if (programChange) {
 
-      textures.resetTextureUnits();
+      if (parameters.shaderID) {
 
-      var materialProperties = properties.get(material);
-      var lights = currentRenderState.state.lights; // 获取灯光数据
+        var shader = ShaderLib[parameters.shaderID];
 
-      if (_clippingEnabled) {
+        materialProperties.shader = {
+          name: material.type,
+          uniforms: cloneUniforms(shader.uniforms),
+          vertexShader: shader.vertexShader,
+          fragmentShader: shader.fragmentShader
+        };
 
-        if (_localClippingEnabled || camera !== _currentCamera) {
+      } else {
 
-          var useCache =
-            camera === _currentCamera &&
-            material.id === _currentMaterialId;
+        materialProperties.shader = {
+          name: material.type,
+          uniforms: material.uniforms,
+          vertexShader: material.vertexShader,
+          fragmentShader: material.fragmentShader
+        };
 
-          // we might want to call this function with some ClippingGroup
-          // object instead of the material, once it becomes feasible
-          // (#8465, #8379)
-          _clipping.setState(
-            material.clippingPlanes, material.clipIntersection, material.clipShadows,
-            camera, materialProperties, useCache);
+      }
+
+      material.onBeforeCompile(materialProperties.shader, _this);
+
+      // Computing cache key again as onBeforeCompile may have changed the shaders
+      programCacheKey = programCache.getProgramCacheKey(material, parameters);
+
+      program = programCache.acquireProgram(material, materialProperties.shader, parameters, programCacheKey);
+
+      materialProperties.program = program;
+      material.program = program;
+
+    }
+
+    var programAttributes = program.getAttributes();
+
+    if (material.morphTargets) {
+
+      material.numSupportedMorphTargets = 0;
+
+      for (var i = 0; i < _this.maxMorphTargets; i++) {
+
+        if (programAttributes['morphTarget' + i] >= 0) {
+
+          material.numSupportedMorphTargets++;
 
         }
 
       }
 
-      if (material.needsUpdate === false) {
+    }
 
-        if (materialProperties.program === undefined) {
-          material.needsUpdate = true;
-        } else if (material.fog && materialProperties.fog !== fog) {
-          material.needsUpdate = true;
+    if (material.morphNormals) {
 
-        } else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
+      material.numSupportedMorphNormals = 0;
 
-          material.needsUpdate = true;
-        } else if (materialProperties.numClippingPlanes !== undefined &&
-          (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
-            materialProperties.numIntersection !== _clipping.numIntersection)) {
-          material.needsUpdate = true;
-        }
+      for (var i = 0; i < _this.maxMorphNormals; i++) {
 
-      }
+        if (programAttributes['morphNormal' + i] >= 0) {
 
-      // 更新着色器程序
-      if (material.needsUpdate) {
-        initMaterial(material, fog, object);
-        material.needsUpdate = false;
-      }
-
-      var refreshProgram = false;
-      var refreshMaterial = false;
-      var refreshLights = false;
-
-      var program = materialProperties.program,
-        p_uniforms = program.getUniforms(),
-        m_uniforms = materialProperties.shader.uniforms;
-
-      if (state.useProgram(program.program)) {
-        refreshProgram = true;
-        refreshMaterial = true;
-        refreshLights = true;
-      }
-
-      if (material.id !== _currentMaterialId) {
-
-        _currentMaterialId = material.id;
-
-        refreshMaterial = true;
-
-      }
-
-      // 设置相机的投影矩阵、视图矩阵
-      if (refreshProgram || _currentCamera !== camera) {
-
-        if (program.numMultiviewViews > 0) {
-
-          multiview.updateCameraProjectionMatricesUniform(camera, p_uniforms);
-
-        } else {
-          // 设置投影矩阵
-          p_uniforms.setValue(_gl, 'projectionMatrix', camera.projectionMatrix);
-
-        }
-
-        if (capabilities.logarithmicDepthBuffer) {
-          p_uniforms.setValue(_gl, 'logDepthBufFC', 2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
-        }
-
-        if (_currentCamera !== camera) {
-
-          _currentCamera = camera;
-
-          // lighting uniforms depend on the camera so enforce an update
-          // now, in case this material supports lights - or later, when
-          // the next material that does gets activated:
-
-          refreshMaterial = true;		// set to true on material change
-          refreshLights = true;		// remains set until update done
-
-        }
-
-        // load material specific uniforms
-        // (shader material also gets them for the sake of genericity)
-
-        if (material.isShaderMaterial ||
-          material.isMeshPhongMaterial ||
-          material.isMeshStandardMaterial ||
-          material.envMap) {
-
-          var uCamPos = p_uniforms.map.cameraPosition;
-
-          if (uCamPos !== undefined) {
-            uCamPos.setValue(_gl, _vector3.setFromMatrixPosition(camera.matrixWorld));
-          }
-
-        }
-
-        if (material.isMeshPhongMaterial ||
-          material.isMeshLambertMaterial ||
-          material.isMeshBasicMaterial ||
-          material.isMeshStandardMaterial ||
-          material.isShaderMaterial) {
-
-          p_uniforms.setValue(_gl, 'isOrthographic', camera.isOrthographicCamera === true);
-
-        }
-
-        if (material.isMeshPhongMaterial ||
-          material.isMeshLambertMaterial ||
-          material.isMeshBasicMaterial ||
-          material.isMeshStandardMaterial ||
-          material.isShaderMaterial ||
-          material.skinning) {
-
-          if (program.numMultiviewViews > 0) {
-
-            multiview.updateCameraViewMatricesUniform(camera, p_uniforms);
-
-          } else {
-
-            // 设置视图矩阵
-            p_uniforms.setValue(_gl, 'viewMatrix', camera.matrixWorldInverse);
-
-          }
+          material.numSupportedMorphNormals++;
 
         }
 
       }
 
-      // skinning uniforms must be set even if material didn't change
-      // auto-setting of texture unit for bone texture must go before other textures
-      // not sure why, but otherwise weird things happen
+    }
 
-      if (material.skinning) {
+    // shader变量
+    var uniforms = materialProperties.shader.uniforms;
 
-        p_uniforms.setOptional(_gl, object, 'bindMatrix');
-        p_uniforms.setOptional(_gl, object, 'bindMatrixInverse');
+    if (!material.isShaderMaterial && !material.isRawShaderMaterial || material.clipping === true) {
+      materialProperties.numClippingPlanes = _clipping.numPlanes;
+      materialProperties.numIntersection = _clipping.numIntersection;
+      uniforms.clippingPlanes = _clipping.uniform;
+    }
 
-        var skeleton = object.skeleton;
+    materialProperties.fog = fog;
 
-        if (skeleton) {
+    // store the light setup it was created for
 
-          var bones = skeleton.bones;
+    materialProperties.needsLights = materialNeedsLights(material);
+    materialProperties.lightsStateVersion = lightsStateVersion;
 
-          if (capabilities.floatVertexTextures) {
+    // 添加灯光属性
+    if (materialProperties.needsLights) {
+      // wire up the material to this renderer's lighting state
 
-            if (skeleton.boneTexture === undefined) {
+      uniforms.ambientLightColor.value = lights.state.ambient;
+      uniforms.lightProbe.value = lights.state.probe;
+      uniforms.directionalLights.value = lights.state.directional;
+      uniforms.spotLights.value = lights.state.spot;
+      uniforms.rectAreaLights.value = lights.state.rectArea;
+      uniforms.pointLights.value = lights.state.point;
+      uniforms.hemisphereLights.value = lights.state.hemi;
 
-              // layout (1 matrix = 4 pixels)
-              //      RGBA RGBA RGBA RGBA (=> column1, column2, column3, column4)
-              //  with  8x8  pixel texture max   16 bones * 4 pixels =  (8 * 8)
-              //       16x16 pixel texture max   64 bones * 4 pixels = (16 * 16)
-              //       32x32 pixel texture max  256 bones * 4 pixels = (32 * 32)
-              //       64x64 pixel texture max 1024 bones * 4 pixels = (64 * 64)
+      uniforms.directionalShadowMap.value = lights.state.directionalShadowMap;
+      uniforms.directionalShadowMatrix.value = lights.state.directionalShadowMatrix;
+      uniforms.spotShadowMap.value = lights.state.spotShadowMap;
+      uniforms.spotShadowMatrix.value = lights.state.spotShadowMatrix;
+      uniforms.pointShadowMap.value = lights.state.pointShadowMap;
+      uniforms.pointShadowMatrix.value = lights.state.pointShadowMatrix;
+      // TODO (abelnation): add area lights shadow info to uniforms
+    }
 
+    // 获取着色器程序中的uniform变量
+    var progUniforms = materialProperties.program.getUniforms(),
+      uniformsList = WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
 
-              var size = Math.sqrt(bones.length * 4); // 4 pixels needed for 1 matrix
-              size = _Math.ceilPowerOfTwo(size);
-              size = Math.max(size, 4);
+    materialProperties.uniformsList = uniformsList;
 
-              var boneMatrices = new Float32Array(size * size * 4); // 4 floats per RGBA pixel
-              boneMatrices.set(skeleton.boneMatrices); // copy current values
+  }
 
-              var boneTexture = new DataTexture(boneMatrices, size, size, RGBAFormat, FloatType);
+  /**
+   * 设置着色器中的变量
+   * @param camera 相机
+   * @param fog
+   * @param material 材质
+   * @param object mesh
+   * @return {*}
+   */
+  function setProgram(camera, fog, material, object) {
 
-              skeleton.boneMatrices = boneMatrices;
-              skeleton.boneTexture = boneTexture;
-              skeleton.boneTextureSize = size;
+    textures.resetTextureUnits();
 
-            }
+    var materialProperties = properties.get(material);
+    var lights = currentRenderState.state.lights; // 获取灯光数据
 
-            p_uniforms.setValue(_gl, 'boneTexture', skeleton.boneTexture, textures);
-            p_uniforms.setValue(_gl, 'boneTextureSize', skeleton.boneTextureSize);
+    if (_clippingEnabled) {
 
-          } else {
+      if (_localClippingEnabled || camera !== _currentCamera) {
 
-            p_uniforms.setOptional(_gl, skeleton, 'boneMatrices');
+        var useCache =
+          camera === _currentCamera &&
+          material.id === _currentMaterialId;
 
-          }
-
-        }
+        // we might want to call this function with some ClippingGroup
+        // object instead of the material, once it becomes feasible
+        // (#8465, #8379)
+        _clipping.setState(
+          material.clippingPlanes, material.clipIntersection, material.clipShadows,
+          camera, materialProperties, useCache);
 
       }
 
-      if (refreshMaterial || materialProperties.receiveShadow !== object.receiveShadow) {
+    }
 
-        materialProperties.receiveShadow = object.receiveShadow;
-        p_uniforms.setValue(_gl, 'receiveShadow', object.receiveShadow);
+    if (material.needsUpdate === false) {
 
+      if (materialProperties.program === undefined) {
+        material.needsUpdate = true;
+      } else if (material.fog && materialProperties.fog !== fog) {
+        material.needsUpdate = true;
+
+      } else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
+
+        material.needsUpdate = true;
+      } else if (materialProperties.numClippingPlanes !== undefined &&
+        (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
+          materialProperties.numIntersection !== _clipping.numIntersection)) {
+        material.needsUpdate = true;
       }
 
-      if (refreshMaterial) {
+    }
 
-        p_uniforms.setValue(_gl, 'toneMappingExposure', _this.toneMappingExposure);
-        p_uniforms.setValue(_gl, 'toneMappingWhitePoint', _this.toneMappingWhitePoint);
+    // 更新着色器程序
+    if (material.needsUpdate) {
+      initMaterial(material, fog, object);
+      material.needsUpdate = false;
+    }
 
-        if (materialProperties.needsLights) {
+    var refreshProgram = false;
+    var refreshMaterial = false;
+    var refreshLights = false;
 
-          // the current material requires lighting info
+    var program = materialProperties.program,
+      p_uniforms = program.getUniforms(),
+      m_uniforms = materialProperties.shader.uniforms;
 
-          // note: all lighting uniforms are always set correctly
-          // they simply reference the renderer's state for their
-          // values
-          //
-          // use the current material's .needsUpdate flags to set
-          // the GL state when required
+    if (state.useProgram(program.program)) {
+      refreshProgram = true;
+      refreshMaterial = true;
+      refreshLights = true;
+    }
 
-          markUniformsLightsNeedsUpdate(m_uniforms, refreshLights);
+    if (material.id !== _currentMaterialId) {
 
-        }
+      _currentMaterialId = material.id;
 
-        // refresh uniforms common to several materials
+      refreshMaterial = true;
 
-        if (fog && material.fog) {
+    }
 
-          refreshUniformsFog(m_uniforms, fog);
-
-        }
-
-        if (material.isMeshBasicMaterial) {
-
-          refreshUniformsCommon(m_uniforms, material);
-
-        } else if (material.isMeshLambertMaterial) {
-
-          refreshUniformsCommon(m_uniforms, material);
-          refreshUniformsLambert(m_uniforms, material);
-
-        } else if (material.isMeshPhongMaterial) {
-
-          refreshUniformsCommon(m_uniforms, material);
-
-          if (material.isMeshToonMaterial) {
-
-            refreshUniformsToon(m_uniforms, material);
-
-          } else {
-
-            refreshUniformsPhong(m_uniforms, material);
-
-          }
-
-        } else if (material.isMeshStandardMaterial) {
-
-          // 刷新属性（opacity、color、map等）
-          refreshUniformsCommon(m_uniforms, material);
-
-          if (material.isMeshPhysicalMaterial) {
-
-            refreshUniformsPhysical(m_uniforms, material);
-
-          } else {
-
-            // 刷新属性（roughness、metalness）
-            refreshUniformsStandard(m_uniforms, material);
-
-          }
-
-        } else if (material.isMeshMatcapMaterial) {
-
-          refreshUniformsCommon(m_uniforms, material);
-
-          refreshUniformsMatcap(m_uniforms, material);
-
-        } else if (material.isMeshDepthMaterial) {
-
-          refreshUniformsCommon(m_uniforms, material);
-          refreshUniformsDepth(m_uniforms, material);
-
-        } else if (material.isMeshDistanceMaterial) {
-
-          refreshUniformsCommon(m_uniforms, material);
-          refreshUniformsDistance(m_uniforms, material);
-
-        } else if (material.isMeshNormalMaterial) {
-
-          refreshUniformsCommon(m_uniforms, material);
-          refreshUniformsNormal(m_uniforms, material);
-
-        } else if (material.isLineBasicMaterial) {
-
-          refreshUniformsLine(m_uniforms, material);
-
-          if (material.isLineDashedMaterial) {
-
-            refreshUniformsDash(m_uniforms, material);
-
-          }
-
-        } else if (material.isPointsMaterial) {
-
-          refreshUniformsPoints(m_uniforms, material);
-
-        } else if (material.isSpriteMaterial) {
-
-          refreshUniformsSprites(m_uniforms, material);
-
-        } else if (material.isShadowMaterial) {
-
-          m_uniforms.color.value.copy(material.color);
-          m_uniforms.opacity.value = material.opacity;
-
-        }
-
-        // RectAreaLight Texture
-        // TODO (mrdoob): Find a nicer implementation
-
-        if (m_uniforms.ltc_1 !== undefined) m_uniforms.ltc_1.value = UniformsLib.LTC_1;
-        if (m_uniforms.ltc_2 !== undefined) m_uniforms.ltc_2.value = UniformsLib.LTC_2;
-
-        WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
-
-        if (material.isShaderMaterial) {
-
-          material.uniformsNeedUpdate = false; // #15581
-
-        }
-
-      }
-
-      if (material.isShaderMaterial && material.uniformsNeedUpdate === true) {
-
-        WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
-        material.uniformsNeedUpdate = false;
-
-      }
-
-      if (material.isSpriteMaterial) {
-
-        p_uniforms.setValue(_gl, 'center', object.center);
-
-      }
-
-      // common matrices
+    // 设置相机的投影矩阵、视图矩阵
+    if (refreshProgram || _currentCamera !== camera) {
 
       if (program.numMultiviewViews > 0) {
 
-        multiview.updateObjectMatricesUniforms(object, camera, p_uniforms);
+        multiview.updateCameraProjectionMatricesUniform(camera, p_uniforms);
 
       } else {
-
-        p_uniforms.setValue(_gl, 'modelViewMatrix', object.modelViewMatrix);
-        p_uniforms.setValue(_gl, 'normalMatrix', object.normalMatrix);
-
-      }
-
-      p_uniforms.setValue(_gl, 'modelMatrix', object.matrixWorld);
-
-      return program;
-
-    }
-
-    // Uniforms (refresh uniforms objects)
-    /**
-     * 刷新uniform属性（opacity、color、map等）
-     * @param uniforms 属性
-     * @param material 当前材质
-     */
-    function refreshUniformsCommon(uniforms, material) {
-
-      uniforms.opacity.value = material.opacity;
-
-      if (material.color) {
-
-        uniforms.diffuse.value.copy(material.color);
+        // 设置投影矩阵
+        p_uniforms.setValue(_gl, 'projectionMatrix', camera.projectionMatrix);
 
       }
 
-      if (material.emissive) {
+      if (capabilities.logarithmicDepthBuffer) {
+        p_uniforms.setValue(_gl, 'logDepthBufFC', 2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
+      }
 
-        uniforms.emissive.value.copy(material.emissive).multiplyScalar(material.emissiveIntensity);
+      if (_currentCamera !== camera) {
+
+        _currentCamera = camera;
+
+        // lighting uniforms depend on the camera so enforce an update
+        // now, in case this material supports lights - or later, when
+        // the next material that does gets activated:
+
+        refreshMaterial = true;		// set to true on material change
+        refreshLights = true;		// remains set until update done
 
       }
 
-      if (material.map) {
+      // load material specific uniforms
+      // (shader material also gets them for the sake of genericity)
 
-        uniforms.map.value = material.map;
+      if (material.isShaderMaterial ||
+        material.isMeshPhongMaterial ||
+        material.isMeshStandardMaterial ||
+        material.envMap) {
 
-      }
+        var uCamPos = p_uniforms.map.cameraPosition;
 
-      if (material.alphaMap) {
-
-        uniforms.alphaMap.value = material.alphaMap;
-
-      }
-
-      if (material.specularMap) {
-
-        uniforms.specularMap.value = material.specularMap;
-
-      }
-
-      if (material.envMap) {
-
-        uniforms.envMap.value = material.envMap;
-
-        // don't flip CubeTexture envMaps, flip everything else:
-        //  WebGLRenderTargetCube will be flipped for backwards compatibility
-        //  WebGLRenderTargetCube.texture will be flipped because it's a Texture and NOT a CubeTexture
-        // this check must be handled differently, or removed entirely, if WebGLRenderTargetCube uses a CubeTexture in the future
-        uniforms.flipEnvMap.value = material.envMap.isCubeTexture ? -1 : 1;
-
-        uniforms.reflectivity.value = material.reflectivity;
-        uniforms.refractionRatio.value = material.refractionRatio;
-
-        uniforms.maxMipLevel.value = properties.get(material.envMap).__maxMipLevel;
-
-      }
-
-      if (material.lightMap) {
-
-        uniforms.lightMap.value = material.lightMap;
-        uniforms.lightMapIntensity.value = material.lightMapIntensity;
-
-      }
-
-      if (material.aoMap) {
-
-        uniforms.aoMap.value = material.aoMap;
-        uniforms.aoMapIntensity.value = material.aoMapIntensity;
-
-      }
-
-      // uv repeat and offset setting priorities
-      // 1. color map
-      // 2. specular map
-      // 3. normal map
-      // 4. bump map
-      // 5. alpha map
-      // 6. emissive map
-
-      var uvScaleMap;
-
-      if (material.map) {
-
-        uvScaleMap = material.map;
-
-      } else if (material.specularMap) {
-
-        uvScaleMap = material.specularMap;
-
-      } else if (material.displacementMap) {
-
-        uvScaleMap = material.displacementMap;
-
-      } else if (material.normalMap) {
-
-        uvScaleMap = material.normalMap;
-
-      } else if (material.bumpMap) {
-
-        uvScaleMap = material.bumpMap;
-
-      } else if (material.roughnessMap) {
-
-        uvScaleMap = material.roughnessMap;
-
-      } else if (material.metalnessMap) {
-
-        uvScaleMap = material.metalnessMap;
-
-      } else if (material.alphaMap) {
-
-        uvScaleMap = material.alphaMap;
-
-      } else if (material.emissiveMap) {
-
-        uvScaleMap = material.emissiveMap;
-
-      }
-
-      if (uvScaleMap !== undefined) {
-
-        // backwards compatibility
-        if (uvScaleMap.isWebGLRenderTarget) {
-
-          uvScaleMap = uvScaleMap.texture;
-
-        }
-
-        if (uvScaleMap.matrixAutoUpdate === true) {
-
-          uvScaleMap.updateMatrix();
-
-        }
-
-        uniforms.uvTransform.value.copy(uvScaleMap.matrix);
-
-      }
-
-    }
-
-    function refreshUniformsLine(uniforms, material) {
-
-      uniforms.diffuse.value.copy(material.color);
-      uniforms.opacity.value = material.opacity;
-
-    }
-
-    function refreshUniformsDash(uniforms, material) {
-
-      uniforms.dashSize.value = material.dashSize;
-      uniforms.totalSize.value = material.dashSize + material.gapSize;
-      uniforms.scale.value = material.scale;
-
-    }
-
-    /**
-     * 更新uniform相关变量
-     * @param uniforms
-     * @param material
-     */
-    function refreshUniformsPoints(uniforms, material) {
-
-      uniforms.diffuse.value.copy(material.color);
-      uniforms.opacity.value = material.opacity;
-      uniforms.size.value = material.size * _pixelRatio;
-      uniforms.scale.value = _height * 0.5;
-
-      if (material.map) {
-
-        uniforms.map.value = material.map;
-
-      }
-
-      if (material.alphaMap) {
-
-        uniforms.alphaMap.value = material.alphaMap;
-
-      }
-
-      // uv repeat and offset setting priorities
-      // 1. color map
-      // 2. alpha map
-
-      var uvScaleMap;
-
-      if (material.map) {
-
-        uvScaleMap = material.map;
-
-      } else if (material.alphaMap) {
-
-        uvScaleMap = material.alphaMap;
-
-      }
-
-      if (uvScaleMap !== undefined) {
-
-        if (uvScaleMap.matrixAutoUpdate === true) {
-
-          uvScaleMap.updateMatrix();
-
-        }
-
-        uniforms.uvTransform.value.copy(uvScaleMap.matrix);
-
-      }
-
-    }
-
-    function refreshUniformsSprites(uniforms, material) {
-
-      uniforms.diffuse.value.copy(material.color);
-      uniforms.opacity.value = material.opacity;
-      uniforms.rotation.value = material.rotation;
-
-      if (material.map) {
-
-        uniforms.map.value = material.map;
-
-      }
-
-      if (material.alphaMap) {
-
-        uniforms.alphaMap.value = material.alphaMap;
-
-      }
-
-      // uv repeat and offset setting priorities
-      // 1. color map
-      // 2. alpha map
-
-      var uvScaleMap;
-
-      if (material.map) {
-
-        uvScaleMap = material.map;
-
-      } else if (material.alphaMap) {
-
-        uvScaleMap = material.alphaMap;
-
-      }
-
-      if (uvScaleMap !== undefined) {
-
-        if (uvScaleMap.matrixAutoUpdate === true) {
-
-          uvScaleMap.updateMatrix();
-
-        }
-
-        uniforms.uvTransform.value.copy(uvScaleMap.matrix);
-
-      }
-
-    }
-
-    function refreshUniformsFog(uniforms, fog) {
-
-      uniforms.fogColor.value.copy(fog.color);
-
-      if (fog.isFog) {
-
-        uniforms.fogNear.value = fog.near;
-        uniforms.fogFar.value = fog.far;
-
-      } else if (fog.isFogExp2) {
-
-        uniforms.fogDensity.value = fog.density;
-
-      }
-
-    }
-
-    function refreshUniformsLambert(uniforms, material) {
-
-      if (material.emissiveMap) {
-
-        uniforms.emissiveMap.value = material.emissiveMap;
-
-      }
-
-    }
-
-    function refreshUniformsPhong(uniforms, material) {
-
-      uniforms.specular.value.copy(material.specular);
-      uniforms.shininess.value = Math.max(material.shininess, 1e-4); // to prevent pow( 0.0, 0.0 )
-
-      if (material.emissiveMap) {
-
-        uniforms.emissiveMap.value = material.emissiveMap;
-
-      }
-
-      if (material.bumpMap) {
-
-        uniforms.bumpMap.value = material.bumpMap;
-        uniforms.bumpScale.value = material.bumpScale;
-        if (material.side === BackSide) uniforms.bumpScale.value *= -1;
-
-      }
-
-      if (material.normalMap) {
-
-        uniforms.normalMap.value = material.normalMap;
-        uniforms.normalScale.value.copy(material.normalScale);
-        if (material.side === BackSide) uniforms.normalScale.value.negate();
-
-      }
-
-      if (material.displacementMap) {
-
-        uniforms.displacementMap.value = material.displacementMap;
-        uniforms.displacementScale.value = material.displacementScale;
-        uniforms.displacementBias.value = material.displacementBias;
-
-      }
-
-    }
-
-    function refreshUniformsToon(uniforms, material) {
-
-      refreshUniformsPhong(uniforms, material);
-
-      if (material.gradientMap) {
-
-        uniforms.gradientMap.value = material.gradientMap;
-
-      }
-
-    }
-
-    /**
-     * 刷新standard属性（roughness、metalness）
-     * @param uniforms
-     * @param material
-     */
-    function refreshUniformsStandard(uniforms, material) {
-
-      uniforms.roughness.value = material.roughness;
-      uniforms.metalness.value = material.metalness;
-
-      if (material.roughnessMap) {
-
-        uniforms.roughnessMap.value = material.roughnessMap;
-
-      }
-
-      if (material.metalnessMap) {
-
-        uniforms.metalnessMap.value = material.metalnessMap;
-
-      }
-
-      if (material.emissiveMap) {
-
-        uniforms.emissiveMap.value = material.emissiveMap;
-
-      }
-
-      if (material.bumpMap) {
-
-        uniforms.bumpMap.value = material.bumpMap;
-        uniforms.bumpScale.value = material.bumpScale;
-        if (material.side === BackSide) uniforms.bumpScale.value *= -1;
-
-      }
-
-      if (material.normalMap) {
-
-        uniforms.normalMap.value = material.normalMap;
-        uniforms.normalScale.value.copy(material.normalScale);
-        if (material.side === BackSide) uniforms.normalScale.value.negate();
-
-      }
-
-      if (material.displacementMap) {
-
-        uniforms.displacementMap.value = material.displacementMap;
-        uniforms.displacementScale.value = material.displacementScale;
-        uniforms.displacementBias.value = material.displacementBias;
-
-      }
-
-      if (material.envMap) {
-
-        //uniforms.envMap.value = material.envMap; // part of uniforms common
-        uniforms.envMapIntensity.value = material.envMapIntensity;
-
-      }
-
-    }
-
-    function refreshUniformsPhysical(uniforms, material) {
-
-      refreshUniformsStandard(uniforms, material);
-
-      uniforms.reflectivity.value = material.reflectivity; // also part of uniforms common
-
-      uniforms.clearcoat.value = material.clearcoat;
-      uniforms.clearcoatRoughness.value = material.clearcoatRoughness;
-      if (material.sheen) uniforms.sheen.value.copy(material.sheen);
-
-      if (material.clearcoatNormalMap) {
-
-        uniforms.clearcoatNormalScale.value.copy(material.clearcoatNormalScale);
-        uniforms.clearcoatNormalMap.value = material.clearcoatNormalMap;
-
-        if (material.side === BackSide) {
-
-          uniforms.clearcoatNormalScale.value.negate();
-
+        if (uCamPos !== undefined) {
+          uCamPos.setValue(_gl, _vector3.setFromMatrixPosition(camera.matrixWorld));
         }
 
       }
 
-      uniforms.transparency.value = material.transparency;
+      if (material.isMeshPhongMaterial ||
+        material.isMeshLambertMaterial ||
+        material.isMeshBasicMaterial ||
+        material.isMeshStandardMaterial ||
+        material.isShaderMaterial) {
 
-    }
-
-    function refreshUniformsMatcap(uniforms, material) {
-
-      if (material.matcap) {
-
-        uniforms.matcap.value = material.matcap;
+        p_uniforms.setValue(_gl, 'isOrthographic', camera.isOrthographicCamera === true);
 
       }
 
-      if (material.bumpMap) {
+      if (material.isMeshPhongMaterial ||
+        material.isMeshLambertMaterial ||
+        material.isMeshBasicMaterial ||
+        material.isMeshStandardMaterial ||
+        material.isShaderMaterial ||
+        material.skinning) {
 
-        uniforms.bumpMap.value = material.bumpMap;
-        uniforms.bumpScale.value = material.bumpScale;
-        if (material.side === BackSide) uniforms.bumpScale.value *= -1;
+        if (program.numMultiviewViews > 0) {
 
-      }
+          multiview.updateCameraViewMatricesUniform(camera, p_uniforms);
 
-      if (material.normalMap) {
-
-        uniforms.normalMap.value = material.normalMap;
-        uniforms.normalScale.value.copy(material.normalScale);
-        if (material.side === BackSide) uniforms.normalScale.value.negate();
-
-      }
-
-      if (material.displacementMap) {
-
-        uniforms.displacementMap.value = material.displacementMap;
-        uniforms.displacementScale.value = material.displacementScale;
-        uniforms.displacementBias.value = material.displacementBias;
-
-      }
-
-    }
-
-    function refreshUniformsDepth(uniforms, material) {
-
-      if (material.displacementMap) {
-
-        uniforms.displacementMap.value = material.displacementMap;
-        uniforms.displacementScale.value = material.displacementScale;
-        uniforms.displacementBias.value = material.displacementBias;
-
-      }
-
-    }
-
-    function refreshUniformsDistance(uniforms, material) {
-
-      if (material.displacementMap) {
-
-        uniforms.displacementMap.value = material.displacementMap;
-        uniforms.displacementScale.value = material.displacementScale;
-        uniforms.displacementBias.value = material.displacementBias;
-
-      }
-
-      uniforms.referencePosition.value.copy(material.referencePosition);
-      uniforms.nearDistance.value = material.nearDistance;
-      uniforms.farDistance.value = material.farDistance;
-
-    }
-
-    function refreshUniformsNormal(uniforms, material) {
-
-      if (material.bumpMap) {
-
-        uniforms.bumpMap.value = material.bumpMap;
-        uniforms.bumpScale.value = material.bumpScale;
-        if (material.side === BackSide) uniforms.bumpScale.value *= -1;
-
-      }
-
-      if (material.normalMap) {
-
-        uniforms.normalMap.value = material.normalMap;
-        uniforms.normalScale.value.copy(material.normalScale);
-        if (material.side === BackSide) uniforms.normalScale.value.negate();
-
-      }
-
-      if (material.displacementMap) {
-
-        uniforms.displacementMap.value = material.displacementMap;
-        uniforms.displacementScale.value = material.displacementScale;
-        uniforms.displacementBias.value = material.displacementBias;
-
-      }
-
-    }
-
-    // If uniforms are marked as clean, they don't need to be loaded to the GPU.
-
-    function markUniformsLightsNeedsUpdate(uniforms, value) {
-
-      uniforms.ambientLightColor.needsUpdate = value;
-      uniforms.lightProbe.needsUpdate = value;
-
-      uniforms.directionalLights.needsUpdate = value;
-      uniforms.pointLights.needsUpdate = value;
-      uniforms.spotLights.needsUpdate = value;
-      uniforms.rectAreaLights.needsUpdate = value;
-      uniforms.hemisphereLights.needsUpdate = value;
-
-    }
-
-    function materialNeedsLights(material) {
-
-      return material.isMeshLambertMaterial || material.isMeshPhongMaterial ||
-        material.isMeshStandardMaterial || material.isShadowMaterial ||
-        (material.isShaderMaterial && material.lights === true);
-
-    }
-
-    //
-    this.setFramebuffer = function(value) {
-
-      if (_framebuffer !== value && _currentRenderTarget === null) _gl.bindFramebuffer(_gl.FRAMEBUFFER, value);
-
-      _framebuffer = value;
-
-    };
-
-    this.getActiveCubeFace = function() {
-
-      return _currentActiveCubeFace;
-
-    };
-
-    this.getActiveMipmapLevel = function() {
-
-      return _currentActiveMipmapLevel;
-
-    };
-
-    this.getRenderTarget = function() {
-
-      return _currentRenderTarget;
-
-    };
-
-    /**
-     * 设置渲染目标
-     * @param renderTarget 渲染目标
-     * @param activeCubeFace
-     * @param activeMipMapLevel
-     */
-    this.setRenderTarget = function(renderTarget, activeCubeFace, activeMipmapLevel) {
-
-      // 设置当前渲染目标类
-      _currentRenderTarget = renderTarget;
-      _currentActiveCubeFace = activeCubeFace;
-      _currentActiveMipmapLevel = activeMipmapLevel;
-
-      // 设置颜色纹理、深度纹理、模板关联
-      if (renderTarget && properties.get(renderTarget).__webglFramebuffer === undefined) {
-        textures.setupRenderTarget(renderTarget);
-      }
-
-      var framebuffer = _framebuffer;
-      var isCube = false;
-
-      // 设置绘图区域
-      if (renderTarget) {
-        var __webglFramebuffer = properties.get(renderTarget).__webglFramebuffer;
-
-        if (renderTarget.isWebGLRenderTargetCube) {
-          framebuffer = __webglFramebuffer[activeCubeFace || 0];
-          isCube = true;
-        } else if (renderTarget.isWebGLMultisampleRenderTarget) {
-          framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
         } else {
-          framebuffer = __webglFramebuffer;
-        }
 
-        // 设置绘图区域
-        _currentViewport.copy(renderTarget.viewport);
-        // 设置裁剪区域
-        _currentScissor.copy(renderTarget.scissor);
-        // 设置是否启用裁剪区域
-        _currentScissorTest = renderTarget.scissorTest;
-      } else {
-        _currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor();
-        _currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor();
-        _currentScissorTest = _scissorTest;
-      }
-
-      if (_currentFramebuffer !== framebuffer) {
-        _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
-        _currentFramebuffer = framebuffer;
-      }
-
-      state.viewport(_currentViewport);
-      state.scissor(_currentScissor);
-      state.setScissorTest(_currentScissorTest);
-
-      if (isCube) {
-        var textureProperties = properties.get(renderTarget.texture);
-        _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + (activeCubeFace || 0), textureProperties.__webglTexture, activeMipmapLevel || 0);
-      }
-    };
-
-    this.readRenderTargetPixels = function(renderTarget, x, y, width, height, buffer, activeCubeFaceIndex) {
-
-      if (!(renderTarget && renderTarget.isWebGLRenderTarget)) {
-
-        console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget.');
-        return;
-
-      }
-
-      var framebuffer = properties.get(renderTarget).__webglFramebuffer;
-
-      if (renderTarget.isWebGLRenderTargetCube && activeCubeFaceIndex !== undefined) {
-
-        framebuffer = framebuffer[activeCubeFaceIndex];
-
-      }
-
-      if (framebuffer) {
-
-        var restore = false;
-
-        if (framebuffer !== _currentFramebuffer) {
-
-          _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
-
-          restore = true;
-
-        }
-
-        try{
-
-          var texture = renderTarget.texture;
-          var textureFormat = texture.format;
-          var textureType = texture.type;
-
-          if (textureFormat !== RGBAFormat && utils.convert(textureFormat) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_FORMAT)) {
-
-            console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.');
-            return;
-
-          }
-
-          if (textureType !== UnsignedByteType && utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // IE11, Edge and Chrome Mac < 52 (#9513)
-            !(textureType === FloatType && (capabilities.isWebGL2 || extensions.get('OES_texture_float') || extensions.get('WEBGL_color_buffer_float'))) && // Chrome Mac >= 52 and Firefox
-            !(textureType === HalfFloatType && (capabilities.isWebGL2 ? extensions.get('EXT_color_buffer_float') : extensions.get('EXT_color_buffer_half_float')))) {
-
-            console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.');
-            return;
-
-          }
-
-          if (_gl.checkFramebufferStatus(_gl.FRAMEBUFFER) === _gl.FRAMEBUFFER_COMPLETE) {
-
-            // the following if statement ensures valid read requests (no out-of-bounds pixels, see #8604)
-
-            if ((x >= 0 && x <= (renderTarget.width - width)) && (y >= 0 && y <= (renderTarget.height - height))) {
-
-              _gl.readPixels(x, y, width, height, utils.convert(textureFormat), utils.convert(textureType), buffer);
-
-            }
-
-          } else {
-
-            console.error('THREE.WebGLRenderer.readRenderTargetPixels: readPixels from renderTarget failed. Framebuffer not complete.');
-
-          }
-
-        }finally{
-
-          if (restore) {
-
-            _gl.bindFramebuffer(_gl.FRAMEBUFFER, _currentFramebuffer);
-
-          }
+          // 设置视图矩阵
+          p_uniforms.setValue(_gl, 'viewMatrix', camera.matrixWorldInverse);
 
         }
 
       }
 
-    };
+    }
 
-    this.copyFramebufferToTexture = function(position, texture, level) {
+    // skinning uniforms must be set even if material didn't change
+    // auto-setting of texture unit for bone texture must go before other textures
+    // not sure why, but otherwise weird things happen
 
-      if (level === undefined) level = 0;
+    if (material.skinning) {
 
-      var levelScale = Math.pow(2, -level);
-      var width = Math.floor(texture.image.width * levelScale);
-      var height = Math.floor(texture.image.height * levelScale);
-      var glFormat = utils.convert(texture.format);
+      p_uniforms.setOptional(_gl, object, 'bindMatrix');
+      p_uniforms.setOptional(_gl, object, 'bindMatrixInverse');
 
-      textures.setTexture2D(texture, 0);
+      var skeleton = object.skeleton;
 
-      _gl.copyTexImage2D(_gl.TEXTURE_2D, level, glFormat, position.x, position.y, width, height, 0);
+      if (skeleton) {
 
-      state.unbindTexture();
+        var bones = skeleton.bones;
 
-    };
+        if (capabilities.floatVertexTextures) {
 
-    this.copyTextureToTexture = function(position, srcTexture, dstTexture, level) {
+          if (skeleton.boneTexture === undefined) {
 
-      var width = srcTexture.image.width;
-      var height = srcTexture.image.height;
-      var glFormat = utils.convert(dstTexture.format);
-      var glType = utils.convert(dstTexture.type);
+            // layout (1 matrix = 4 pixels)
+            //      RGBA RGBA RGBA RGBA (=> column1, column2, column3, column4)
+            //  with  8x8  pixel texture max   16 bones * 4 pixels =  (8 * 8)
+            //       16x16 pixel texture max   64 bones * 4 pixels = (16 * 16)
+            //       32x32 pixel texture max  256 bones * 4 pixels = (32 * 32)
+            //       64x64 pixel texture max 1024 bones * 4 pixels = (64 * 64)
 
-      textures.setTexture2D(dstTexture, 0);
 
-      if (srcTexture.isDataTexture) {
+            var size = Math.sqrt(bones.length * 4); // 4 pixels needed for 1 matrix
+            size = _Math.ceilPowerOfTwo(size);
+            size = Math.max(size, 4);
 
-        _gl.texSubImage2D(_gl.TEXTURE_2D, level || 0, position.x, position.y, width, height, glFormat, glType, srcTexture.image.data);
+            var boneMatrices = new Float32Array(size * size * 4); // 4 floats per RGBA pixel
+            boneMatrices.set(skeleton.boneMatrices); // copy current values
 
-      } else {
+            var boneTexture = new DataTexture(boneMatrices, size, size, RGBAFormat, FloatType);
 
-        _gl.texSubImage2D(_gl.TEXTURE_2D, level || 0, position.x, position.y, glFormat, glType, srcTexture.image);
+            skeleton.boneMatrices = boneMatrices;
+            skeleton.boneTexture = boneTexture;
+            skeleton.boneTextureSize = size;
+
+          }
+
+          p_uniforms.setValue(_gl, 'boneTexture', skeleton.boneTexture, textures);
+          p_uniforms.setValue(_gl, 'boneTextureSize', skeleton.boneTextureSize);
+
+        } else {
+
+          p_uniforms.setOptional(_gl, skeleton, 'boneMatrices');
+
+        }
 
       }
 
-      state.unbindTexture();
+    }
 
-    };
+    if (refreshMaterial || materialProperties.receiveShadow !== object.receiveShadow) {
 
-    this.initTexture = function(texture) {
+      materialProperties.receiveShadow = object.receiveShadow;
+      p_uniforms.setValue(_gl, 'receiveShadow', object.receiveShadow);
 
-      textures.setTexture2D(texture, 0);
+    }
 
-      state.unbindTexture();
+    if (refreshMaterial) {
 
-    };
+      p_uniforms.setValue(_gl, 'toneMappingExposure', _this.toneMappingExposure);
+      p_uniforms.setValue(_gl, 'toneMappingWhitePoint', _this.toneMappingWhitePoint);
 
-    if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
+      if (materialProperties.needsLights) {
 
-      __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', {detail: this})); // eslint-disable-line no-undef
+        // the current material requires lighting info
+
+        // note: all lighting uniforms are always set correctly
+        // they simply reference the renderer's state for their
+        // values
+        //
+        // use the current material's .needsUpdate flags to set
+        // the GL state when required
+
+        markUniformsLightsNeedsUpdate(m_uniforms, refreshLights);
+
+      }
+
+      // refresh uniforms common to several materials
+
+      if (fog && material.fog) {
+
+        refreshUniformsFog(m_uniforms, fog);
+
+      }
+
+      if (material.isMeshBasicMaterial) {
+
+        refreshUniformsCommon(m_uniforms, material);
+
+      } else if (material.isMeshLambertMaterial) {
+
+        refreshUniformsCommon(m_uniforms, material);
+        refreshUniformsLambert(m_uniforms, material);
+
+      } else if (material.isMeshPhongMaterial) {
+
+        refreshUniformsCommon(m_uniforms, material);
+
+        if (material.isMeshToonMaterial) {
+
+          refreshUniformsToon(m_uniforms, material);
+
+        } else {
+
+          refreshUniformsPhong(m_uniforms, material);
+
+        }
+
+      } else if (material.isMeshStandardMaterial) {
+
+        // 刷新属性（opacity、color、map等）
+        refreshUniformsCommon(m_uniforms, material);
+
+        if (material.isMeshPhysicalMaterial) {
+
+          refreshUniformsPhysical(m_uniforms, material);
+
+        } else {
+
+          // 刷新属性（roughness、metalness）
+          refreshUniformsStandard(m_uniforms, material);
+
+        }
+
+      } else if (material.isMeshMatcapMaterial) {
+
+        refreshUniformsCommon(m_uniforms, material);
+
+        refreshUniformsMatcap(m_uniforms, material);
+
+      } else if (material.isMeshDepthMaterial) {
+
+        refreshUniformsCommon(m_uniforms, material);
+        refreshUniformsDepth(m_uniforms, material);
+
+      } else if (material.isMeshDistanceMaterial) {
+
+        refreshUniformsCommon(m_uniforms, material);
+        refreshUniformsDistance(m_uniforms, material);
+
+      } else if (material.isMeshNormalMaterial) {
+
+        refreshUniformsCommon(m_uniforms, material);
+        refreshUniformsNormal(m_uniforms, material);
+
+      } else if (material.isLineBasicMaterial) {
+
+        refreshUniformsLine(m_uniforms, material);
+
+        if (material.isLineDashedMaterial) {
+
+          refreshUniformsDash(m_uniforms, material);
+
+        }
+
+      } else if (material.isPointsMaterial) {
+
+        refreshUniformsPoints(m_uniforms, material);
+
+      } else if (material.isSpriteMaterial) {
+
+        refreshUniformsSprites(m_uniforms, material);
+
+      } else if (material.isShadowMaterial) {
+
+        m_uniforms.color.value.copy(material.color);
+        m_uniforms.opacity.value = material.opacity;
+
+      }
+
+      // RectAreaLight Texture
+      // TODO (mrdoob): Find a nicer implementation
+
+      if (m_uniforms.ltc_1 !== undefined) m_uniforms.ltc_1.value = UniformsLib.LTC_1;
+      if (m_uniforms.ltc_2 !== undefined) m_uniforms.ltc_2.value = UniformsLib.LTC_2;
+
+      WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
+
+      if (material.isShaderMaterial) {
+
+        material.uniformsNeedUpdate = false; // #15581
+
+      }
+
+    }
+
+    if (material.isShaderMaterial && material.uniformsNeedUpdate === true) {
+
+      WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
+      material.uniformsNeedUpdate = false;
+
+    }
+
+    if (material.isSpriteMaterial) {
+
+      p_uniforms.setValue(_gl, 'center', object.center);
+
+    }
+
+    // common matrices
+
+    if (program.numMultiviewViews > 0) {
+
+      multiview.updateObjectMatricesUniforms(object, camera, p_uniforms);
+
+    } else {
+
+      p_uniforms.setValue(_gl, 'modelViewMatrix', object.modelViewMatrix);
+      p_uniforms.setValue(_gl, 'normalMatrix', object.normalMatrix);
+
+    }
+
+    p_uniforms.setValue(_gl, 'modelMatrix', object.matrixWorld);
+
+    return program;
+
+  }
+
+  // Uniforms (refresh uniforms objects)
+  /**
+   * 刷新uniform属性（opacity、color、map等）
+   * @param uniforms 属性
+   * @param material 当前材质
+   */
+  function refreshUniformsCommon(uniforms, material) {
+
+    uniforms.opacity.value = material.opacity;
+
+    if (material.color) {
+
+      uniforms.diffuse.value.copy(material.color);
+
+    }
+
+    if (material.emissive) {
+
+      uniforms.emissive.value.copy(material.emissive).multiplyScalar(material.emissiveIntensity);
+
+    }
+
+    if (material.map) {
+
+      uniforms.map.value = material.map;
+
+    }
+
+    if (material.alphaMap) {
+
+      uniforms.alphaMap.value = material.alphaMap;
+
+    }
+
+    if (material.specularMap) {
+
+      uniforms.specularMap.value = material.specularMap;
+
+    }
+
+    if (material.envMap) {
+
+      uniforms.envMap.value = material.envMap;
+
+      // don't flip CubeTexture envMaps, flip everything else:
+      //  WebGLRenderTargetCube will be flipped for backwards compatibility
+      //  WebGLRenderTargetCube.texture will be flipped because it's a Texture and NOT a CubeTexture
+      // this check must be handled differently, or removed entirely, if WebGLRenderTargetCube uses a CubeTexture in the future
+      uniforms.flipEnvMap.value = material.envMap.isCubeTexture ? -1 : 1;
+
+      uniforms.reflectivity.value = material.reflectivity;
+      uniforms.refractionRatio.value = material.refractionRatio;
+
+      uniforms.maxMipLevel.value = properties.get(material.envMap).__maxMipLevel;
+
+    }
+
+    if (material.lightMap) {
+
+      uniforms.lightMap.value = material.lightMap;
+      uniforms.lightMapIntensity.value = material.lightMapIntensity;
+
+    }
+
+    if (material.aoMap) {
+
+      uniforms.aoMap.value = material.aoMap;
+      uniforms.aoMapIntensity.value = material.aoMapIntensity;
+
+    }
+
+    // uv repeat and offset setting priorities
+    // 1. color map
+    // 2. specular map
+    // 3. normal map
+    // 4. bump map
+    // 5. alpha map
+    // 6. emissive map
+
+    var uvScaleMap;
+
+    if (material.map) {
+
+      uvScaleMap = material.map;
+
+    } else if (material.specularMap) {
+
+      uvScaleMap = material.specularMap;
+
+    } else if (material.displacementMap) {
+
+      uvScaleMap = material.displacementMap;
+
+    } else if (material.normalMap) {
+
+      uvScaleMap = material.normalMap;
+
+    } else if (material.bumpMap) {
+
+      uvScaleMap = material.bumpMap;
+
+    } else if (material.roughnessMap) {
+
+      uvScaleMap = material.roughnessMap;
+
+    } else if (material.metalnessMap) {
+
+      uvScaleMap = material.metalnessMap;
+
+    } else if (material.alphaMap) {
+
+      uvScaleMap = material.alphaMap;
+
+    } else if (material.emissiveMap) {
+
+      uvScaleMap = material.emissiveMap;
+
+    }
+
+    if (uvScaleMap !== undefined) {
+
+      // backwards compatibility
+      if (uvScaleMap.isWebGLRenderTarget) {
+
+        uvScaleMap = uvScaleMap.texture;
+
+      }
+
+      if (uvScaleMap.matrixAutoUpdate === true) {
+
+        uvScaleMap.updateMatrix();
+
+      }
+
+      uniforms.uvTransform.value.copy(uvScaleMap.matrix);
 
     }
 
   }
+
+  function refreshUniformsLine(uniforms, material) {
+
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
+
+  }
+
+  function refreshUniformsDash(uniforms, material) {
+
+    uniforms.dashSize.value = material.dashSize;
+    uniforms.totalSize.value = material.dashSize + material.gapSize;
+    uniforms.scale.value = material.scale;
+
+  }
+
+  /**
+   * 更新uniform相关变量
+   * @param uniforms
+   * @param material
+   */
+  function refreshUniformsPoints(uniforms, material) {
+
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
+    uniforms.size.value = material.size * _pixelRatio;
+    uniforms.scale.value = _height * 0.5;
+
+    if (material.map) {
+
+      uniforms.map.value = material.map;
+
+    }
+
+    if (material.alphaMap) {
+
+      uniforms.alphaMap.value = material.alphaMap;
+
+    }
+
+    // uv repeat and offset setting priorities
+    // 1. color map
+    // 2. alpha map
+
+    var uvScaleMap;
+
+    if (material.map) {
+
+      uvScaleMap = material.map;
+
+    } else if (material.alphaMap) {
+
+      uvScaleMap = material.alphaMap;
+
+    }
+
+    if (uvScaleMap !== undefined) {
+
+      if (uvScaleMap.matrixAutoUpdate === true) {
+
+        uvScaleMap.updateMatrix();
+
+      }
+
+      uniforms.uvTransform.value.copy(uvScaleMap.matrix);
+
+    }
+
+  }
+
+  function refreshUniformsSprites(uniforms, material) {
+
+    uniforms.diffuse.value.copy(material.color);
+    uniforms.opacity.value = material.opacity;
+    uniforms.rotation.value = material.rotation;
+
+    if (material.map) {
+
+      uniforms.map.value = material.map;
+
+    }
+
+    if (material.alphaMap) {
+
+      uniforms.alphaMap.value = material.alphaMap;
+
+    }
+
+    // uv repeat and offset setting priorities
+    // 1. color map
+    // 2. alpha map
+
+    var uvScaleMap;
+
+    if (material.map) {
+
+      uvScaleMap = material.map;
+
+    } else if (material.alphaMap) {
+
+      uvScaleMap = material.alphaMap;
+
+    }
+
+    if (uvScaleMap !== undefined) {
+
+      if (uvScaleMap.matrixAutoUpdate === true) {
+
+        uvScaleMap.updateMatrix();
+
+      }
+
+      uniforms.uvTransform.value.copy(uvScaleMap.matrix);
+
+    }
+
+  }
+
+  function refreshUniformsFog(uniforms, fog) {
+
+    uniforms.fogColor.value.copy(fog.color);
+
+    if (fog.isFog) {
+
+      uniforms.fogNear.value = fog.near;
+      uniforms.fogFar.value = fog.far;
+
+    } else if (fog.isFogExp2) {
+
+      uniforms.fogDensity.value = fog.density;
+
+    }
+
+  }
+
+  function refreshUniformsLambert(uniforms, material) {
+
+    if (material.emissiveMap) {
+
+      uniforms.emissiveMap.value = material.emissiveMap;
+
+    }
+
+  }
+
+  function refreshUniformsPhong(uniforms, material) {
+
+    uniforms.specular.value.copy(material.specular);
+    uniforms.shininess.value = Math.max(material.shininess, 1e-4); // to prevent pow( 0.0, 0.0 )
+
+    if (material.emissiveMap) {
+
+      uniforms.emissiveMap.value = material.emissiveMap;
+
+    }
+
+    if (material.bumpMap) {
+
+      uniforms.bumpMap.value = material.bumpMap;
+      uniforms.bumpScale.value = material.bumpScale;
+      if (material.side === BackSide) uniforms.bumpScale.value *= -1;
+
+    }
+
+    if (material.normalMap) {
+
+      uniforms.normalMap.value = material.normalMap;
+      uniforms.normalScale.value.copy(material.normalScale);
+      if (material.side === BackSide) uniforms.normalScale.value.negate();
+
+    }
+
+    if (material.displacementMap) {
+
+      uniforms.displacementMap.value = material.displacementMap;
+      uniforms.displacementScale.value = material.displacementScale;
+      uniforms.displacementBias.value = material.displacementBias;
+
+    }
+
+  }
+
+  function refreshUniformsToon(uniforms, material) {
+
+    refreshUniformsPhong(uniforms, material);
+
+    if (material.gradientMap) {
+
+      uniforms.gradientMap.value = material.gradientMap;
+
+    }
+
+  }
+
+  /**
+   * 刷新standard属性（roughness、metalness）
+   * @param uniforms
+   * @param material
+   */
+  function refreshUniformsStandard(uniforms, material) {
+
+    uniforms.roughness.value = material.roughness;
+    uniforms.metalness.value = material.metalness;
+
+    if (material.roughnessMap) {
+
+      uniforms.roughnessMap.value = material.roughnessMap;
+
+    }
+
+    if (material.metalnessMap) {
+
+      uniforms.metalnessMap.value = material.metalnessMap;
+
+    }
+
+    if (material.emissiveMap) {
+
+      uniforms.emissiveMap.value = material.emissiveMap;
+
+    }
+
+    if (material.bumpMap) {
+
+      uniforms.bumpMap.value = material.bumpMap;
+      uniforms.bumpScale.value = material.bumpScale;
+      if (material.side === BackSide) uniforms.bumpScale.value *= -1;
+
+    }
+
+    if (material.normalMap) {
+
+      uniforms.normalMap.value = material.normalMap;
+      uniforms.normalScale.value.copy(material.normalScale);
+      if (material.side === BackSide) uniforms.normalScale.value.negate();
+
+    }
+
+    if (material.displacementMap) {
+
+      uniforms.displacementMap.value = material.displacementMap;
+      uniforms.displacementScale.value = material.displacementScale;
+      uniforms.displacementBias.value = material.displacementBias;
+
+    }
+
+    if (material.envMap) {
+
+      //uniforms.envMap.value = material.envMap; // part of uniforms common
+      uniforms.envMapIntensity.value = material.envMapIntensity;
+
+    }
+
+  }
+
+  function refreshUniformsPhysical(uniforms, material) {
+
+    refreshUniformsStandard(uniforms, material);
+
+    uniforms.reflectivity.value = material.reflectivity; // also part of uniforms common
+
+    uniforms.clearcoat.value = material.clearcoat;
+    uniforms.clearcoatRoughness.value = material.clearcoatRoughness;
+    if (material.sheen) uniforms.sheen.value.copy(material.sheen);
+
+    if (material.clearcoatNormalMap) {
+
+      uniforms.clearcoatNormalScale.value.copy(material.clearcoatNormalScale);
+      uniforms.clearcoatNormalMap.value = material.clearcoatNormalMap;
+
+      if (material.side === BackSide) {
+
+        uniforms.clearcoatNormalScale.value.negate();
+
+      }
+
+    }
+
+    uniforms.transparency.value = material.transparency;
+
+  }
+
+  function refreshUniformsMatcap(uniforms, material) {
+
+    if (material.matcap) {
+
+      uniforms.matcap.value = material.matcap;
+
+    }
+
+    if (material.bumpMap) {
+
+      uniforms.bumpMap.value = material.bumpMap;
+      uniforms.bumpScale.value = material.bumpScale;
+      if (material.side === BackSide) uniforms.bumpScale.value *= -1;
+
+    }
+
+    if (material.normalMap) {
+
+      uniforms.normalMap.value = material.normalMap;
+      uniforms.normalScale.value.copy(material.normalScale);
+      if (material.side === BackSide) uniforms.normalScale.value.negate();
+
+    }
+
+    if (material.displacementMap) {
+
+      uniforms.displacementMap.value = material.displacementMap;
+      uniforms.displacementScale.value = material.displacementScale;
+      uniforms.displacementBias.value = material.displacementBias;
+
+    }
+
+  }
+
+  function refreshUniformsDepth(uniforms, material) {
+
+    if (material.displacementMap) {
+
+      uniforms.displacementMap.value = material.displacementMap;
+      uniforms.displacementScale.value = material.displacementScale;
+      uniforms.displacementBias.value = material.displacementBias;
+
+    }
+
+  }
+
+  function refreshUniformsDistance(uniforms, material) {
+
+    if (material.displacementMap) {
+
+      uniforms.displacementMap.value = material.displacementMap;
+      uniforms.displacementScale.value = material.displacementScale;
+      uniforms.displacementBias.value = material.displacementBias;
+
+    }
+
+    uniforms.referencePosition.value.copy(material.referencePosition);
+    uniforms.nearDistance.value = material.nearDistance;
+    uniforms.farDistance.value = material.farDistance;
+
+  }
+
+  function refreshUniformsNormal(uniforms, material) {
+
+    if (material.bumpMap) {
+
+      uniforms.bumpMap.value = material.bumpMap;
+      uniforms.bumpScale.value = material.bumpScale;
+      if (material.side === BackSide) uniforms.bumpScale.value *= -1;
+
+    }
+
+    if (material.normalMap) {
+
+      uniforms.normalMap.value = material.normalMap;
+      uniforms.normalScale.value.copy(material.normalScale);
+      if (material.side === BackSide) uniforms.normalScale.value.negate();
+
+    }
+
+    if (material.displacementMap) {
+
+      uniforms.displacementMap.value = material.displacementMap;
+      uniforms.displacementScale.value = material.displacementScale;
+      uniforms.displacementBias.value = material.displacementBias;
+
+    }
+
+  }
+
+  // If uniforms are marked as clean, they don't need to be loaded to the GPU.
+
+  function markUniformsLightsNeedsUpdate(uniforms, value) {
+
+    uniforms.ambientLightColor.needsUpdate = value;
+    uniforms.lightProbe.needsUpdate = value;
+
+    uniforms.directionalLights.needsUpdate = value;
+    uniforms.pointLights.needsUpdate = value;
+    uniforms.spotLights.needsUpdate = value;
+    uniforms.rectAreaLights.needsUpdate = value;
+    uniforms.hemisphereLights.needsUpdate = value;
+
+  }
+
+  function materialNeedsLights(material) {
+
+    return material.isMeshLambertMaterial || material.isMeshPhongMaterial ||
+      material.isMeshStandardMaterial || material.isShadowMaterial ||
+      (material.isShaderMaterial && material.lights === true);
+
+  }
+
+  //
+  this.setFramebuffer = function(value) {
+
+    if (_framebuffer !== value && _currentRenderTarget === null) _gl.bindFramebuffer(_gl.FRAMEBUFFER, value);
+
+    _framebuffer = value;
+
+  };
+
+  this.getActiveCubeFace = function() {
+
+    return _currentActiveCubeFace;
+
+  };
+
+  this.getActiveMipmapLevel = function() {
+
+    return _currentActiveMipmapLevel;
+
+  };
+
+  this.getRenderTarget = function() {
+
+    return _currentRenderTarget;
+
+  };
+
+  /**
+   * 设置渲染目标
+   * @param renderTarget 渲染目标
+   * @param activeCubeFace
+   * @param activeMipMapLevel
+   */
+  this.setRenderTarget = function(renderTarget, activeCubeFace, activeMipmapLevel) {
+
+    // 设置当前渲染目标类
+    _currentRenderTarget = renderTarget;
+    _currentActiveCubeFace = activeCubeFace;
+    _currentActiveMipmapLevel = activeMipmapLevel;
+
+    // 设置颜色纹理、深度纹理、模板关联
+    if (renderTarget && properties.get(renderTarget).__webglFramebuffer === undefined) {
+      textures.setupRenderTarget(renderTarget);
+    }
+
+    var framebuffer = _framebuffer;
+    var isCube = false;
+
+    // 设置绘图区域
+    if (renderTarget) {
+      var __webglFramebuffer = properties.get(renderTarget).__webglFramebuffer;
+
+      if (renderTarget.isWebGLRenderTargetCube) {
+        framebuffer = __webglFramebuffer[activeCubeFace || 0];
+        isCube = true;
+      } else if (renderTarget.isWebGLMultisampleRenderTarget) {
+        framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
+      } else {
+        framebuffer = __webglFramebuffer;
+      }
+
+      // 设置绘图区域
+      _currentViewport.copy(renderTarget.viewport);
+      // 设置裁剪区域
+      _currentScissor.copy(renderTarget.scissor);
+      // 设置是否启用裁剪区域
+      _currentScissorTest = renderTarget.scissorTest;
+    } else {
+      _currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor();
+      _currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor();
+      _currentScissorTest = _scissorTest;
+    }
+
+    if (_currentFramebuffer !== framebuffer) {
+      _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
+      _currentFramebuffer = framebuffer;
+    }
+
+    state.viewport(_currentViewport);
+    state.scissor(_currentScissor);
+    state.setScissorTest(_currentScissorTest);
+
+    if (isCube) {
+      var textureProperties = properties.get(renderTarget.texture);
+      _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + (activeCubeFace || 0), textureProperties.__webglTexture, activeMipmapLevel || 0);
+    }
+  };
+
+  this.readRenderTargetPixels = function(renderTarget, x, y, width, height, buffer, activeCubeFaceIndex) {
+
+    if (!(renderTarget && renderTarget.isWebGLRenderTarget)) {
+
+      console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget.');
+      return;
+
+    }
+
+    var framebuffer = properties.get(renderTarget).__webglFramebuffer;
+
+    if (renderTarget.isWebGLRenderTargetCube && activeCubeFaceIndex !== undefined) {
+
+      framebuffer = framebuffer[activeCubeFaceIndex];
+
+    }
+
+    if (framebuffer) {
+
+      var restore = false;
+
+      if (framebuffer !== _currentFramebuffer) {
+
+        _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
+
+        restore = true;
+
+      }
+
+      try{
+
+        var texture = renderTarget.texture;
+        var textureFormat = texture.format;
+        var textureType = texture.type;
+
+        if (textureFormat !== RGBAFormat && utils.convert(textureFormat) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_FORMAT)) {
+
+          console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.');
+          return;
+
+        }
+
+        if (textureType !== UnsignedByteType && utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // IE11, Edge and Chrome Mac < 52 (#9513)
+          !(textureType === FloatType && (capabilities.isWebGL2 || extensions.get('OES_texture_float') || extensions.get('WEBGL_color_buffer_float'))) && // Chrome Mac >= 52 and Firefox
+          !(textureType === HalfFloatType && (capabilities.isWebGL2 ? extensions.get('EXT_color_buffer_float') : extensions.get('EXT_color_buffer_half_float')))) {
+
+          console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.');
+          return;
+
+        }
+
+        if (_gl.checkFramebufferStatus(_gl.FRAMEBUFFER) === _gl.FRAMEBUFFER_COMPLETE) {
+
+          // the following if statement ensures valid read requests (no out-of-bounds pixels, see #8604)
+
+          if ((x >= 0 && x <= (renderTarget.width - width)) && (y >= 0 && y <= (renderTarget.height - height))) {
+
+            _gl.readPixels(x, y, width, height, utils.convert(textureFormat), utils.convert(textureType), buffer);
+
+          }
+
+        } else {
+
+          console.error('THREE.WebGLRenderer.readRenderTargetPixels: readPixels from renderTarget failed. Framebuffer not complete.');
+
+        }
+
+      }finally{
+
+        if (restore) {
+
+          _gl.bindFramebuffer(_gl.FRAMEBUFFER, _currentFramebuffer);
+
+        }
+
+      }
+
+    }
+
+  };
+
+  this.copyFramebufferToTexture = function(position, texture, level) {
+
+    if (level === undefined) level = 0;
+
+    var levelScale = Math.pow(2, -level);
+    var width = Math.floor(texture.image.width * levelScale);
+    var height = Math.floor(texture.image.height * levelScale);
+    var glFormat = utils.convert(texture.format);
+
+    textures.setTexture2D(texture, 0);
+
+    _gl.copyTexImage2D(_gl.TEXTURE_2D, level, glFormat, position.x, position.y, width, height, 0);
+
+    state.unbindTexture();
+
+  };
+
+  this.copyTextureToTexture = function(position, srcTexture, dstTexture, level) {
+
+    var width = srcTexture.image.width;
+    var height = srcTexture.image.height;
+    var glFormat = utils.convert(dstTexture.format);
+    var glType = utils.convert(dstTexture.type);
+
+    textures.setTexture2D(dstTexture, 0);
+
+    if (srcTexture.isDataTexture) {
+
+      _gl.texSubImage2D(_gl.TEXTURE_2D, level || 0, position.x, position.y, width, height, glFormat, glType, srcTexture.image.data);
+
+    } else {
+
+      _gl.texSubImage2D(_gl.TEXTURE_2D, level || 0, position.x, position.y, glFormat, glType, srcTexture.image);
+
+    }
+
+    state.unbindTexture();
+
+  };
+
+  this.initTexture = function(texture) {
+
+    textures.setTexture2D(texture, 0);
+
+    state.unbindTexture();
+
+  };
+
+  if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
+
+    __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', {detail: this})); // eslint-disable-line no-undef
+
+  }
+
 }
 
 export {WebGLRenderer};
