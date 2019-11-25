@@ -696,9 +696,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
    */
   function setMaterial(material, frontFaceCW) {
 
-    material.side === DoubleSide
-      ? disable(gl.CULL_FACE)
-      : enable(gl.CULL_FACE);
+    material.side === DoubleSide ? disable(gl.CULL_FACE) : enable(gl.CULL_FACE);
 
     var flipSided = (material.side === BackSide);
     if (frontFaceCW) flipSided = !flipSided;

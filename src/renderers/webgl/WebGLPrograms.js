@@ -3,339 +3,362 @@
  */
 
 import {
-    BackSide,
-    DoubleSide,
-    CubeUVRefractionMapping,
-    CubeUVReflectionMapping,
-    GammaEncoding,
-    LinearEncoding,
-    ObjectSpaceNormalMap
+  BackSide,
+  DoubleSide,
+  CubeUVRefractionMapping,
+  CubeUVReflectionMapping,
+  GammaEncoding,
+  LinearEncoding,
+  ObjectSpaceNormalMap,
+  TangentSpaceNormalMap,
+  NoToneMapping
 } from '../../constants.js';
 import {WebGLProgram} from './WebGLProgram.js';
 
-function WebGLPrograms(renderer, extensions, capabilities, textures) {
+/**
+ * 着色器程序管理
+ * @param renderer 渲染器
+ * @param extensions 扩展
+ * @param capabilities 能力
+ * @constructor
+ */
+function WebGLPrograms( renderer, extensions, capabilities ) {
 
-    var programs = []; // 保存所有的着色器程序
+  var programs = []; // 保存所有的着色器程序
 
-    var shaderIDs = {
-        MeshDepthMaterial: 'depth',
-        MeshDistanceMaterial: 'distanceRGBA',
-        MeshNormalMaterial: 'normal',
-        MeshBasicMaterial: 'basic',
-        MeshLambertMaterial: 'lambert',
-        MeshPhongMaterial: 'phong',
-        MeshToonMaterial: 'phong',
-        MeshStandardMaterial: 'physical',
-        MeshPhysicalMaterial: 'physical',
-        MeshMatcapMaterial: 'matcap',
-        LineBasicMaterial: 'basic',
-        LineDashedMaterial: 'dashed',
-        PointsMaterial: 'points',
-        ShadowMaterial: 'shadow',
-        SpriteMaterial: 'sprite'
-    };
+	var isWebGL2 = capabilities.isWebGL2;
+	var logarithmicDepthBuffer = capabilities.logarithmicDepthBuffer;
+	var floatVertexTextures = capabilities.floatVertexTextures;
+	var precision = capabilities.precision;
+	var maxVertexUniforms = capabilities.maxVertexUniforms;
+	var vertexTextures = capabilities.vertexTextures;
 
-    // 参数名称
-    var parameterNames = [
-        "precision", "supportsVertexTextures", "map", "mapEncoding", "matcap", "matcapEncoding", "envMap", "envMapMode", "envMapEncoding",
-        "lightMap", "aoMap", "emissiveMap", "emissiveMapEncoding", "bumpMap", "normalMap", "objectSpaceNormalMap", "displacementMap", "specularMap",
-        "roughnessMap", "metalnessMap", "gradientMap",
-        "alphaMap", "combine", "vertexColors", "vertexTangents", "fog", "useFog", "fogExp",
-        "flatShading", "sizeAttenuation", "logarithmicDepthBuffer", "skinning",
-        "maxBones", "useVertexTexture", "morphTargets", "morphNormals",
-        "maxMorphTargets", "maxMorphNormals", "premultipliedAlpha",
-        "numDirLights", "numPointLights", "numSpotLights", "numHemiLights", "numRectAreaLights",
-        "shadowMapEnabled", "shadowMapType", "toneMapping", 'physicallyCorrectLights',
-        "alphaTest", "doubleSided", "flipSided", "numClippingPlanes", "numClipIntersection", "depthPacking", "dithering"
-    ];
+  var shaderIDs = {
+    MeshDepthMaterial: 'depth',
+    MeshDistanceMaterial: 'distanceRGBA',
+    MeshNormalMaterial: 'normal',
+    MeshBasicMaterial: 'basic',
+    MeshLambertMaterial: 'lambert',
+    MeshPhongMaterial: 'phong',
+    MeshToonMaterial: 'phong',
+    MeshStandardMaterial: 'physical',
+    MeshPhysicalMaterial: 'physical',
+    MeshMatcapMaterial: 'matcap',
+    LineBasicMaterial: 'basic',
+    LineDashedMaterial: 'dashed',
+    PointsMaterial: 'points',
+    ShadowMaterial: 'shadow',
+    SpriteMaterial: 'sprite'
+  };
+
+  // 参数名称
+  var parameterNames = [
+		"precision", "isWebGL2", "supportsVertexTextures", "outputEncoding", "instancing", "numMultiviewViews",
+		"map", "mapEncoding", "matcap", "matcapEncoding", "envMap", "envMapMode", "envMapEncoding", "envMapCubeUV",
+		"lightMap", "aoMap", "emissiveMap", "emissiveMapEncoding", "bumpMap", "normalMap", "objectSpaceNormalMap", "tangentSpaceNormalMap", "clearcoatNormalMap", "displacementMap", "specularMap",
+    "roughnessMap", "metalnessMap", "gradientMap",
+		"alphaMap", "combine", "vertexColors", "vertexTangents", "vertexUvs", "uvsVertexOnly", "fog", "useFog", "fogExp2",
+    "flatShading", "sizeAttenuation", "logarithmicDepthBuffer", "skinning",
+    "maxBones", "useVertexTexture", "morphTargets", "morphNormals",
+    "maxMorphTargets", "maxMorphNormals", "premultipliedAlpha",
+    "numDirLights", "numPointLights", "numSpotLights", "numHemiLights", "numRectAreaLights",
+		"numDirLightShadows", "numPointLightShadows", "numSpotLightShadows",
+    "shadowMapEnabled", "shadowMapType", "toneMapping", 'physicallyCorrectLights',
+		"alphaTest", "doubleSided", "flipSided", "numClippingPlanes", "numClipIntersection", "depthPacking", "dithering",
+		"sheen"
+  ];
 
 
-    function allocateBones(object) {
+  function allocateBones(object) {
 
-        var skeleton = object.skeleton;
-        var bones = skeleton.bones;
+    var skeleton = object.skeleton;
+    var bones = skeleton.bones;
 
-        if (capabilities.floatVertexTextures) {
+		if ( floatVertexTextures ) {
 
-            return 1024;
+      return 1024;
 
-        } else {
+    } else {
 
-            // default for when object is not specified
-            // ( for example when prebuilding shader to be used with multiple objects )
-            //
-            //  - leave some extra space for other uniforms
-            //  - limit here is ANGLE's 254 max uniform vectors
-            //    (up to 54 should be safe)
+      // default for when object is not specified
+      // ( for example when prebuilding shader to be used with multiple objects )
+      //
+      //  - leave some extra space for other uniforms
+      //  - limit here is ANGLE's 254 max uniform vectors
+      //    (up to 54 should be safe)
 
-            var nVertexUniforms = capabilities.maxVertexUniforms;
-            var nVertexMatrices = Math.floor((nVertexUniforms - 20) / 4);
+			var nVertexUniforms = maxVertexUniforms;
+      var nVertexMatrices = Math.floor((nVertexUniforms - 20) / 4);
 
-            var maxBones = Math.min(nVertexMatrices, bones.length);
+      var maxBones = Math.min(nVertexMatrices, bones.length);
 
-            if (maxBones < bones.length) {
+      if (maxBones < bones.length) {
 
-                console.warn('THREE.WebGLRenderer: Skeleton has ' + bones.length + ' bones. This GPU supports ' + maxBones + '.');
-                return 0;
+        console.warn('THREE.WebGLRenderer: Skeleton has ' + bones.length + ' bones. This GPU supports ' + maxBones + '.');
+        return 0;
 
-            }
+      }
 
-            return maxBones;
-
-        }
-
-    }
-
-    function getTextureEncodingFromMap(map, gammaOverrideLinear) {
-
-        var encoding;
-
-        if (!map) {
-
-            encoding = LinearEncoding;
-
-        } else if (map.isTexture) {
-
-            encoding = map.encoding;
-
-        } else if (map.isWebGLRenderTarget) {
-
-            console.warn("THREE.WebGLPrograms.getTextureEncodingFromMap: don't use render targets as textures. Use their .texture property instead.");
-            encoding = map.texture.encoding;
-
-        }
-
-        // add backwards compatibility for WebGLRenderer.gammaInput/gammaOutput parameter, should probably be removed at some point.
-        if (encoding === LinearEncoding && gammaOverrideLinear) {
-
-            encoding = GammaEncoding;
-
-        }
-
-        return encoding;
+      return maxBones;
 
     }
 
-    /**
-     * 获取构建着色器参数
-     * @param material 材质对象
-     * @param lights 光照的状态
-     * @param shadows
-     * @param fog
-     * @param nClipPlanes
-     * @param nClipIntersection
-     * @param object 对象
-     * @return {{shaderID: *, precision, supportsVertexTextures, outputEncoding, map: boolean, mapEncoding, matcap: boolean, matcapEncoding, envMap: boolean, envMapMode: *, envMapEncoding, envMapCubeUV: boolean, lightMap: boolean, aoMap: boolean, emissiveMap: boolean, emissiveMapEncoding, bumpMap: boolean, normalMap: boolean, objectSpaceNormalMap: boolean, displacementMap: boolean, roughnessMap: boolean, metalnessMap: boolean, specularMap: boolean, alphaMap: boolean, gradientMap: boolean, combine, vertexColors, fog: boolean, useFog, fogExp: *|boolean, flatShading, sizeAttenuation, logarithmicDepthBuffer: *, skinning: boolean, maxBones: *, useVertexTexture, morphTargets, morphNormals, maxMorphTargets: *|number, maxMorphNormals: *|number, numDirLights: number, numPointLights, numSpotLights: number, numRectAreaLights: number, numHemiLights: number, numClippingPlanes: *, numClipIntersection: *, dithering, shadowMapEnabled: boolean|*, shadowMapType: *, toneMapping, physicallyCorrectLights: *|boolean, premultipliedAlpha, alphaTest, doubleSided: boolean, flipSided: boolean, depthPacking: boolean}}
-     */
-    this.getParameters = function (material, lights, shadows, fog, nClipPlanes, nClipIntersection, object) {
+  }
 
-        var shaderID = shaderIDs[material.type];
+  function getTextureEncodingFromMap(map, gammaOverrideLinear) {
 
-        // heuristics to create shader parameters according to lights in the scene
-        // (not to blow over maxLights budget)
+    var encoding;
 
-        var maxBones = object.isSkinnedMesh ? allocateBones(object) : 0;
-        var precision = capabilities.precision;
+    if (!map) {
 
-        if (material.precision !== null) {
+      encoding = LinearEncoding;
 
-            precision = capabilities.getMaxPrecision(material.precision);
+    } else if (map.isTexture) {
 
-            if (precision !== material.precision) {
+      encoding = map.encoding;
 
-                console.warn('THREE.WebGLProgram.getParameters:', material.precision, 'not supported, using', precision, 'instead.');
+    } else if (map.isWebGLRenderTarget) {
 
-            }
+      console.warn("THREE.WebGLPrograms.getTextureEncodingFromMap: don't use render targets as textures. Use their .texture property instead.");
+      encoding = map.texture.encoding;
 
-        }
+    }
 
-        var currentRenderTarget = renderer.getRenderTarget();
+    // add backwards compatibility for WebGLRenderer.gammaInput/gammaOutput parameter, should probably be removed at some point.
+    if (encoding === LinearEncoding && gammaOverrideLinear) {
 
-        var parameters = {
+      encoding = GammaEncoding;
 
-            shaderID: shaderID,
+    }
 
-            precision: precision,
-            supportsVertexTextures: capabilities.vertexTextures,
-            outputEncoding: getTextureEncodingFromMap((!currentRenderTarget) ? null : currentRenderTarget.texture, renderer.gammaOutput),
-            map: !!material.map,
-            mapEncoding: getTextureEncodingFromMap(material.map, renderer.gammaInput),
-            matcap: !!material.matcap,
-            matcapEncoding: getTextureEncodingFromMap(material.matcap, renderer.gammaInput),
-            envMap: !!material.envMap,
-            envMapMode: material.envMap && material.envMap.mapping,
-            envMapEncoding: getTextureEncodingFromMap(material.envMap, renderer.gammaInput),
-            envMapCubeUV: (!!material.envMap) && ((material.envMap.mapping === CubeUVReflectionMapping) || (material.envMap.mapping === CubeUVRefractionMapping)),
-            lightMap: !!material.lightMap,
-            aoMap: !!material.aoMap,
-            emissiveMap: !!material.emissiveMap,
-            emissiveMapEncoding: getTextureEncodingFromMap(material.emissiveMap, renderer.gammaInput),
-            bumpMap: !!material.bumpMap,
-            normalMap: !!material.normalMap,
-            objectSpaceNormalMap: material.normalMapType === ObjectSpaceNormalMap,
-            displacementMap: !!material.displacementMap,
-            roughnessMap: !!material.roughnessMap,
-            metalnessMap: !!material.metalnessMap,
-            specularMap: !!material.specularMap,
-            alphaMap: !!material.alphaMap,
+    return encoding;
 
-            gradientMap: !!material.gradientMap,
+  }
 
-            combine: material.combine,
+  /**
+   * 获取构建着色器参数
+   * @param material 材质对象
+   * @param lights 光照的状态
+   * @param shadows
+   * @param fog
+   * @param nClipPlanes 裁剪面数量
+   * @param nClipIntersection
+   * @param object 对象
+   * @return {{shaderID: *, precision, supportsVertexTextures, outputEncoding, map: boolean, mapEncoding, matcap: boolean, matcapEncoding, envMap: boolean, envMapMode: *, envMapEncoding, envMapCubeUV: boolean, lightMap: boolean, aoMap: boolean, emissiveMap: boolean, emissiveMapEncoding, bumpMap: boolean, normalMap: boolean, objectSpaceNormalMap: boolean, displacementMap: boolean, roughnessMap: boolean, metalnessMap: boolean, specularMap: boolean, alphaMap: boolean, gradientMap: boolean, combine, vertexColors, fog: boolean, useFog, fogExp: *|boolean, flatShading, sizeAttenuation, logarithmicDepthBuffer: *, skinning: boolean, maxBones: *, useVertexTexture, morphTargets, morphNormals, maxMorphTargets: *|number, maxMorphNormals: *|number, numDirLights: number, numPointLights, numSpotLights: number, numRectAreaLights: number, numHemiLights: number, numClippingPlanes: *, numClipIntersection: *, dithering, shadowMapEnabled: boolean|*, shadowMapType: *, toneMapping, physicallyCorrectLights: *|boolean, premultipliedAlpha, alphaTest, doubleSided: boolean, flipSided: boolean, depthPacking: boolean}}
+   */
+  this.getParameters = function(material, lights, shadows, fog, nClipPlanes, nClipIntersection, object) {
 
-            vertexTangents: (material.normalMap && material.vertexTangents),
-            vertexColors: material.vertexColors,
+    var shaderID = shaderIDs[material.type];
 
-            fog: !!fog,
-            useFog: material.fog,
-            fogExp: (fog && fog.isFogExp2),
+    // heuristics to create shader parameters according to lights in the scene
+    // (not to blow over maxLights budget)
 
-            flatShading: material.flatShading,
+    var maxBones = object.isSkinnedMesh ? allocateBones(object) : 0;
 
-            sizeAttenuation: material.sizeAttenuation,
-            logarithmicDepthBuffer: capabilities.logarithmicDepthBuffer,
+    if (material.precision !== null) {
+      precision = capabilities.getMaxPrecision(material.precision);
+      if (precision !== material.precision) {
+        console.warn('THREE.WebGLProgram.getParameters:', material.precision, 'not supported, using', precision, 'instead.');
+      }
+    }
 
-            skinning: material.skinning && maxBones > 0,
-            maxBones: maxBones,
-            useVertexTexture: capabilities.floatVertexTextures,
+    var currentRenderTarget = renderer.getRenderTarget();
+		var numMultiviewViews = currentRenderTarget && currentRenderTarget.isWebGLMultiviewRenderTarget ? currentRenderTarget.numViews : 0;
 
-            morphTargets: material.morphTargets,
-            morphNormals: material.morphNormals,
-            maxMorphTargets: renderer.maxMorphTargets,
-            maxMorphNormals: renderer.maxMorphNormals,
+    var parameters = {
 
-            numDirLights: lights.directional.length, // 光照的数量
-            numPointLights: lights.point.length,
-            numSpotLights: lights.spot.length,
-            numRectAreaLights: lights.rectArea.length,
-            numHemiLights: lights.hemi.length,
+			isWebGL2: isWebGL2,
 
-            numClippingPlanes: nClipPlanes,
-            numClipIntersection: nClipIntersection,
+      shaderID: shaderID,
 
-            dithering: material.dithering,
+      precision: precision,
 
-            shadowMapEnabled: renderer.shadowMap.enabled && object.receiveShadow && shadows.length > 0,
-            shadowMapType: renderer.shadowMap.type,
+			instancing: object.isInstancedMesh === true,
 
-            toneMapping: renderer.toneMapping,
-            physicallyCorrectLights: renderer.physicallyCorrectLights,
+			supportsVertexTextures: vertexTextures,
+			numMultiviewViews: numMultiviewViews,
+      outputEncoding: getTextureEncodingFromMap((!currentRenderTarget) ? null : currentRenderTarget.texture, renderer.gammaOutput),
+      map: !!material.map,
+      mapEncoding: getTextureEncodingFromMap(material.map, renderer.gammaInput),
+      matcap: !!material.matcap,
+      matcapEncoding: getTextureEncodingFromMap(material.matcap, renderer.gammaInput),
+      envMap: !!material.envMap,
+      envMapMode: material.envMap && material.envMap.mapping,
+      envMapEncoding: getTextureEncodingFromMap(material.envMap, renderer.gammaInput),
+      envMapCubeUV: (!!material.envMap) && ((material.envMap.mapping === CubeUVReflectionMapping) || (material.envMap.mapping === CubeUVRefractionMapping)),
+      lightMap: !!material.lightMap,
+      aoMap: !!material.aoMap,
+      emissiveMap: !!material.emissiveMap,
+      emissiveMapEncoding: getTextureEncodingFromMap(material.emissiveMap, renderer.gammaInput),
+      bumpMap: !!material.bumpMap,
+      normalMap: !!material.normalMap,
+      objectSpaceNormalMap: material.normalMapType === ObjectSpaceNormalMap,
+			tangentSpaceNormalMap: material.normalMapType === TangentSpaceNormalMap,
+			clearcoatNormalMap: !! material.clearcoatNormalMap,
+      displacementMap: !!material.displacementMap,
+      roughnessMap: !!material.roughnessMap,
+      metalnessMap: !!material.metalnessMap,
+      specularMap: !!material.specularMap,
+      alphaMap: !!material.alphaMap,
 
-            premultipliedAlpha: material.premultipliedAlpha,
+      gradientMap: !!material.gradientMap,
 
-            alphaTest: material.alphaTest,
-            doubleSided: material.side === DoubleSide,
-            flipSided: material.side === BackSide,
+			sheen: !! material.sheen,
 
-            depthPacking: (material.depthPacking !== undefined) ? material.depthPacking : false
+      combine: material.combine,
 
-        };
+      vertexTangents: (material.normalMap && material.vertexTangents),
+      vertexColors: material.vertexColors,
+			vertexUvs: !! material.map || !! material.bumpMap || !! material.normalMap || !! material.specularMap || !! material.alphaMap || !! material.emissiveMap || !! material.roughnessMap || !! material.metalnessMap || !! material.clearcoatNormalMap || !! material.displacementMap,
+			uvsVertexOnly: ! ( !! material.map || !! material.bumpMap || !! material.normalMap || !! material.specularMap || !! material.alphaMap || !! material.emissiveMap || !! material.roughnessMap || !! material.metalnessMap || !! material.clearcoatNormalMap ) && !! material.displacementMap,
 
-        return parameters;
+      fog: !!fog,
+      useFog: material.fog,
+			fogExp2: ( fog && fog.isFogExp2 ),
 
-    };
+      flatShading: material.flatShading,
 
-    /**
-     * 得到材质的code
-     * @param material 材质
-     * @param parameters 参数
-     * @return {string}
-     */
-    this.getProgramCode = function (material, parameters) {
+      sizeAttenuation: material.sizeAttenuation,
+			logarithmicDepthBuffer: logarithmicDepthBuffer,
 
-        // 片元着色器、顶点着色器
-        var array = [];
+      skinning: material.skinning && maxBones > 0,
+      maxBones: maxBones,
+			useVertexTexture: floatVertexTextures,
 
-        if (parameters.shaderID) {
+      morphTargets: material.morphTargets,
+      morphNormals: material.morphNormals,
+      maxMorphTargets: renderer.maxMorphTargets,
+      maxMorphNormals: renderer.maxMorphNormals,
 
-            array.push(parameters.shaderID);
+      numDirLights: lights.directional.length, // 光照的数量
+      numPointLights: lights.point.length,
+      numSpotLights: lights.spot.length,
+      numRectAreaLights: lights.rectArea.length,
+      numHemiLights: lights.hemi.length,
 
-        } else {
+			numDirLightShadows: lights.directionalShadowMap.length,
+			numPointLightShadows: lights.pointShadowMap.length,
+			numSpotLightShadows: lights.spotShadowMap.length,
 
-            array.push(material.fragmentShader);
-            array.push(material.vertexShader);
+      // 裁剪参数
+      numClippingPlanes: nClipPlanes, // 裁剪面数量
+      numClipIntersection: nClipIntersection,
 
-        }
+      dithering: material.dithering,
 
-        if (material.defines !== undefined) {
+			shadowMapEnabled: renderer.shadowMap.enabled && shadows.length > 0,
+      shadowMapType: renderer.shadowMap.type,
 
-            for (var name in material.defines) {
+			toneMapping: material.toneMapped ? renderer.toneMapping : NoToneMapping,
+      physicallyCorrectLights: renderer.physicallyCorrectLights,
 
-                array.push(name);
-                array.push(material.defines[name]);
+      premultipliedAlpha: material.premultipliedAlpha,
 
-            }
+      alphaTest: material.alphaTest,
+      doubleSided: material.side === DoubleSide,
+      flipSided: material.side === BackSide,
 
-        }
-
-        // 按parameterNames把对应值存入array
-        for (var i = 0; i < parameterNames.length; i++) {
-
-            array.push(parameters[parameterNames[i]]);
-
-        }
-
-        array.push(material.onBeforeCompile.toString());
-
-        array.push(renderer.gammaOutput);
-
-        array.push(renderer.gammaFactor);
-
-        return array.join();
+      depthPacking: (material.depthPacking !== undefined) ? material.depthPacking : false
 
     };
 
-    /**
-     * 获得着色器程序
-     * @param material 材质
-     * @param shader materialProperties.shader
-     * @param parameters 参数
-     * @param code 参数码
-     * @return {*}
-     */
-    this.acquireProgram = function (material, shader, parameters, code) {
+    return parameters;
 
-        var program;
+  };
 
-        // Check if code has been already compiled
-        for (var p = 0, pl = programs.length; p < pl; p++) {
+  /**
+   * 获取着色器缓存的key值
+   * @param material 材质
+   * @param parameters 参数
+   * @return {string}
+   */
+	this.getProgramCacheKey = function ( material, parameters ) {
 
-            var programInfo = programs[p];
+    // 片元着色器、顶点着色器
+    var array = [];
 
-            if (programInfo.code === code) {
-                program = programInfo;
-                ++program.usedTimes;
-                break;
-            }
-        }
+    if (parameters.shaderID) {
+      array.push(parameters.shaderID);
+    } else {
+      array.push(material.fragmentShader);
+      array.push(material.vertexShader);
+    }
 
-        if (program === undefined) {
-            program = new WebGLProgram(renderer, extensions, code, material, shader, parameters, capabilities, textures);
-            programs.push(program);
-        }
+    if (material.defines !== undefined) {
+      for (var name in material.defines) {
+        array.push(name);
+        array.push(material.defines[name]);
+      }
+    }
 
-        return program;
+    // 按parameterNames把对应值存入array
+    for (var i = 0; i < parameterNames.length; i++) {
+      array.push(parameters[parameterNames[i]]);
+    }
 
-    };
+    array.push(material.onBeforeCompile.toString());
 
-    this.releaseProgram = function (program) {
+    array.push(renderer.gammaOutput);
 
-        if (--program.usedTimes === 0) {
+    array.push(renderer.gammaFactor);
 
-            // Remove from unordered set
-            var i = programs.indexOf(program);
-            programs[i] = programs[programs.length - 1];
-            programs.pop();
+    return array.join();
 
-            // Free WebGL resources
-            program.destroy();
+  };
 
-        }
+  /**
+   * 获得着色器程序
+   * @param material 材质
+   * @param shader materialProperties.shader
+   * @param parameters 参数
+   * @param cacheKey 参数码
+   * @return {*}
+   */
+	this.acquireProgram = function ( material, shader, parameters, cacheKey ) {
 
-    };
+    var program;
 
-    // Exposed for resource monitoring & error feedback via renderer.info:
-    this.programs = programs;
+    // Check if code has been already compiled
+    for (var p = 0, pl = programs.length; p < pl; p++) {
+
+			var preexistingProgram = programs[ p ];
+
+			if ( preexistingProgram.cacheKey === cacheKey ) {
+
+				program = preexistingProgram;
+        ++program.usedTimes;
+        break;
+      }
+    }
+
+    if (program === undefined) {
+
+			program = new WebGLProgram( renderer, extensions, cacheKey, material, shader, parameters );
+      programs.push(program);
+    }
+
+    return program;
+
+  };
+
+  this.releaseProgram = function(program) {
+
+    if (--program.usedTimes === 0) {
+
+      // Remove from unordered set
+      var i = programs.indexOf(program);
+      programs[i] = programs[programs.length - 1];
+      programs.pop();
+
+      // Free WebGL resources
+      program.destroy();
+
+    }
+
+  };
+
+  // Exposed for resource monitoring & error feedback via renderer.info:
+  this.programs = programs;
 
 }
 

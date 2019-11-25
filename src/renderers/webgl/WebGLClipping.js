@@ -63,26 +63,26 @@ function WebGLClipping() {
 
 	};
 
+  /**
+   *
+   * @param planes 裁剪面
+   * @param clipIntersection
+   * @param clipShadows
+   * @param camera 相机
+   * @param cache
+   * @param fromCache
+   */
 	this.setState = function ( planes, clipIntersection, clipShadows, camera, cache, fromCache ) {
-
 		if ( ! localClippingEnabled || planes === null || planes.length === 0 || renderingShadows && ! clipShadows ) {
-
 			// there's no local clipping
-
 			if ( renderingShadows ) {
-
 				// there's no global clipping
-
 				projectPlanes( null );
-
 			} else {
-
 				resetGlobalState();
-
 			}
-
-		} else {
-
+		}
+		else {
 			var nGlobal = renderingShadows ? 0 : numGlobalPlanes,
 				lGlobal = nGlobal * 4,
 
@@ -93,9 +93,7 @@ function WebGLClipping() {
 			dstArray = projectPlanes( planes, camera, lGlobal, fromCache );
 
 			for ( var i = 0; i !== lGlobal; ++ i ) {
-
 				dstArray[ i ] = globalState[ i ];
-
 			}
 
 			cache.clippingState = dstArray;
@@ -103,8 +101,6 @@ function WebGLClipping() {
 			this.numPlanes += nGlobal;
 
 		}
-
-
 	};
 
 	function resetGlobalState() {

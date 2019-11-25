@@ -872,7 +872,8 @@ function WebGLRenderer(parameters) {
         }
 
       }
-    } else if (object.isLine) {
+    }
+    else if (object.isLine) {
 
       var lineWidth = material.linewidth;
 
@@ -894,9 +895,11 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else if (object.isPoints) {
+    }
+    else if (object.isPoints) {
       renderer.setMode(_gl.POINTS);
-    } else if (object.isSprite) {
+    }
+    else if (object.isSprite) {
       renderer.setMode(_gl.TRIANGLES);
 
     }
@@ -905,11 +908,13 @@ function WebGLRenderer(parameters) {
 
       renderer.renderInstances(geometry, drawStart, drawCount, object.count);
 
-    } else if (geometry.isInstancedBufferGeometry) {
+    }
+    else if (geometry.isInstancedBufferGeometry) {
 
       renderer.renderInstances(geometry, drawStart, drawCount, geometry.maxInstancedCount);
 
-    } else {
+    }
+    else {
 
       renderer.render(drawStart, drawCount);
     }
@@ -1482,7 +1487,7 @@ function WebGLRenderer(parameters) {
 
     // 获取参数
     var parameters = programCache.getParameters(material, lights.state, shadowsArray, fog, _clipping.numPlanes, _clipping.numIntersection, object);
-
+    // 获取缓存的key值
     var programCacheKey = programCache.getProgramCacheKey(material, parameters);
 
     var program = materialProperties.program;
@@ -1492,21 +1497,25 @@ function WebGLRenderer(parameters) {
       // new material
       material.addEventListener('dispose', onMaterialDispose);
 
-    } else if (program.cacheKey !== programCacheKey) {
+    }
+    else if (program.cacheKey !== programCacheKey) {
 
       // changed glsl or parameters
       releaseMaterialProgramReference(material);
 
-    } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
+    }
+    else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
 
       materialProperties.lightsStateVersion = lightsStateVersion;
 
       programChange = false;
 
-    } else if (parameters.shaderID !== undefined) {
+    }
+    else if (parameters.shaderID !== undefined) {
       // same glsl and uniform list
       return;
-    } else {
+    }
+    else {
 
       // only rebuild uniform list
       programChange = false;
@@ -1517,25 +1526,21 @@ function WebGLRenderer(parameters) {
     if (programChange) {
 
       if (parameters.shaderID) {
-
         var shader = ShaderLib[parameters.shaderID];
-
         materialProperties.shader = {
           name: material.type,
           uniforms: cloneUniforms(shader.uniforms),
           vertexShader: shader.vertexShader,
           fragmentShader: shader.fragmentShader
         };
-
-      } else {
-
+      }
+      else {
         materialProperties.shader = {
           name: material.type,
           uniforms: material.uniforms,
           vertexShader: material.vertexShader,
           fragmentShader: material.fragmentShader
         };
-
       }
 
       material.onBeforeCompile(materialProperties.shader, _this);
@@ -1655,10 +1660,7 @@ function WebGLRenderer(parameters) {
         // we might want to call this function with some ClippingGroup
         // object instead of the material, once it becomes feasible
         // (#8465, #8379)
-        _clipping.setState(
-          material.clippingPlanes, material.clipIntersection, material.clipShadows,
-          camera, materialProperties, useCache);
-
+        _clipping.setState(material.clippingPlanes, material.clipIntersection, material.clipShadows, camera, materialProperties, useCache);
       }
 
     }
