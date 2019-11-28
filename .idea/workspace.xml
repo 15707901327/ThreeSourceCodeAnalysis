@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/build/three_r111.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/three_r111.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/three_r111.module.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLClipping.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLClipping.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLProgram.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLProgram.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLPrograms.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLPrograms.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,8 +24,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/examples/clipping/webgl_clipping.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
-              <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+            <state relative-caret-position="529">
+              <caret line="44" column="37" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="37" />
               <folding>
                 <element signature="n#head#0;n#html#0;n#!!top" />
                 <element signature="e#562#625#0" />
@@ -37,125 +35,6 @@
                 <element signature="e#4168#4511#0" />
                 <element signature="e#4830#4994#0" />
                 <element signature="e#5017#5378#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="27384">
-              <caret line="1550" column="43" selection-start-line="1550" selection-start-column="29" selection-end-line="1550" selection-end-column="43" />
-              <folding>
-                <element signature="n#!!doc;n#WebGLRenderer#0" />
-                <element signature="e#4103#4260#0" />
-                <element signature="e#5364#5437#0" />
-                <element signature="e#6189#6256#0" />
-                <element signature="e#6292#7566#0" />
-                <element signature="e#7057#7289#0" />
-                <element signature="e#7428#7561#0" />
-                <element signature="e#7578#7662#0" />
-                <element signature="e#7962#9953#0" />
-                <element signature="e#10407#10430#0" />
-                <element signature="e#10474#10520#0" />
-                <element signature="e#10560#10669#0" />
-                <element signature="e#10712#10824#0" />
-                <element signature="e#10861#10892#0" />
-                <element signature="e#10897#10940#0" />
-                <element signature="e#10980#11093#0" />
-                <element signature="e#11130#11336#0" />
-                <element signature="e#11341#11443#0" />
-                <element signature="e#11498#11974#0" />
-                <element signature="e#11979#12050#0" />
-                <element signature="e#12098#12353#0" />
-                <element signature="e#12422#12653#0" />
-                <element signature="e#12701#12920#0" />
-                <element signature="e#12961#13003#0" />
-                <element signature="e#13008#13092#0" />
-                <element signature="e#13144#13371#0" />
-                <element signature="e#13411#13452#0" />
-                <element signature="e#13505#13727#0" />
-                <element signature="e#13765#13797#0" />
-                <element signature="e#13842#13899#0" />
-                <element signature="e#13951#13997#0" />
-                <element signature="e#14046#14112#0" />
-                <element signature="e#14149#14195#0" />
-                <element signature="e#14232#14298#0" />
-                <element signature="e#14303#14397#0" />
-                <element signature="e#14445#14703#0" />
-                <element signature="e#14737#14780#0" />
-                <element signature="e#14814#14857#0" />
-                <element signature="e#14893#14936#0" />
-                <element signature="e#14973#15284#0" />
-                <element signature="e#15332#15451#0" />
-                <element signature="e#15494#15611#0" />
-                <element signature="e#15649#15789#0" />
-                <element signature="e#15857#15945#0" />
-                <element signature="e#16001#16193#0" />
-                <element signature="e#16268#16374#0" />
-                <element signature="e#16433#18236#0" />
-                <element signature="e#18241#18401#0" />
-                <element signature="e#18981#19195#0" />
-                <element signature="e#19235#19334#0" />
-                <element signature="e#19488#19576#0" />
-                <element signature="e#19657#19784#0" />
-                <element signature="e#19826#20023#0" />
-                <element signature="e#20087#20125#0" />
-                <element signature="e#20159#20200#0" />
-                <element signature="e#20750#21298#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLPrograms.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7028">
-              <caret line="335" column="42" selection-start-line="335" selection-start-column="34" selection-end-line="335" selection-end-column="42" />
-              <folding>
-                <element signature="n#!!doc;n#WebGLPrograms#0" />
-                <element signature="n#!!block;n#allocateBones#0;n#!!block;n#WebGLPrograms#0" />
-                <element signature="n#!!block;n#getTextureEncodingFromMap#0;n#!!block;n#WebGLPrograms#0" />
-                <element signature="e#10355#10454#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLProgram.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17164">
-              <caret line="964" column="45" lean-forward="true" selection-start-line="964" selection-start-column="45" selection-end-line="964" selection-end-column="45" />
-              <folding>
-                <element signature="n#!!doc" />
-                <element signature="n#!!block;n#addLineNumbers#0" />
-                <element signature="n#!!block;n#getEncodingComponents#0" />
-                <element signature="n#!!block;n#getShaderErrors#0" />
-                <element signature="n#!!block;n#getTexelDecodingFunction#0" />
-                <element signature="n#!!block;n#getTexelEncodingFunction#0" />
-                <element signature="n#!!block;n#getToneMappingFunction#0" />
-                <element signature="n#!!doc;n#generateExtensions#0" />
-                <element signature="n#!!block;n#generateExtensions#0" />
-                <element signature="n#!!block;n#generateDefines#0" />
-                <element signature="n#!!doc;n#fetchAttributeLocations#0" />
-                <element signature="n#!!block;n#fetchAttributeLocations#0" />
-                <element signature="n#!!block;n#filterEmptyLine#0" />
-                <element signature="n#!!doc;n#replaceLightNums#0" />
-                <element signature="n#!!block;n#replaceLightNums#0" />
-                <element signature="n#!!doc;n#replaceClippingPlaneNums#0" />
-                <element signature="n#!!block;n#replaceClippingPlaneNums#0" />
-                <element signature="n#!!block;n#resolveIncludes#0" />
-                <element signature="n#!!block;n#includeReplacer#0" />
-                <element signature="n#!!doc;n#unrollLoops#0" />
-                <element signature="n#!!block;n#unrollLoops#0" />
-                <element signature="n#!!block;n#loopReplacer#0" />
-                <element signature="n#!!block;n#generateShadowMapTypeDefine#0" />
-                <element signature="n#!!block;n#generateEnvMapTypeDefine#0" />
-                <element signature="n#!!block;n#generateEnvMapModeDefine#0" />
-                <element signature="n#!!block;n#generateEnvMapBlendingDefine#0" />
               </folding>
             </state>
           </provider>
@@ -321,7 +200,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/build" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -333,19 +212,19 @@
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r110.js-master/src/renderers/webgl/WebGLProgram.js" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\build" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\clipping" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\Loader\gltf\ceshi" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\models\fbx" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\Loader\fbx" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\PGL" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\tonemapping" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\particles" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\nodes" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\Loader\obj" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\clipping" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\Loader\gltf\ceshi" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\models\fbx" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\Loader\fbx" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\math\interpolants" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -525,14 +404,9 @@
       <workItem from="1574413995929" duration="4331000" />
       <workItem from="1574646430282" duration="9497000" />
       <workItem from="1574673766424" duration="603000" />
-      <workItem from="1574674890294" duration="1842000" />
-    </task>
-    <task id="LOCAL-00010" summary="1. 帧缓存相关说明">
-      <created>1567419828516</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1567419828516</updated>
+      <workItem from="1574674890294" duration="2019000" />
+      <workItem from="1574730244038" duration="638000" />
+      <workItem from="1574932327341" duration="281000" />
     </task>
     <task id="LOCAL-00011" summary="1. 添加深度图实例">
       <created>1567495429612</created>
@@ -870,15 +744,21 @@
       <option name="project" value="LOCAL" />
       <updated>1574418387995</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="1.裁剪管理">
+      <created>1574677318019</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1574677318020</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="714127000" />
+    <option name="totallyTimeSpent" value="715223000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23288691" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -1010,16 +890,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/loaders/LoaderUtils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-364">
-          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-          <folding>
-            <element signature="e#784#841#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/jsm/controls/OrbitControls.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="53">
@@ -1966,23 +1836,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/clipping/webgl_clipping.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
-          <folding>
-            <element signature="n#head#0;n#html#0;n#!!top" />
-            <element signature="e#562#625#0" />
-            <element signature="e#2064#2255#0" />
-            <element signature="e#2537#2588#0" />
-            <element signature="e#3620#4090#0" />
-            <element signature="e#4168#4511#0" />
-            <element signature="e#4830#4994#0" />
-            <element signature="e#5017#5378#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27384">
@@ -2092,6 +1945,30 @@
             <element signature="n#!!block;n#generateEnvMapTypeDefine#0" />
             <element signature="n#!!block;n#generateEnvMapModeDefine#0" />
             <element signature="n#!!block;n#generateEnvMapBlendingDefine#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/three_r111.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="102" column="23" lean-forward="true" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/clipping/webgl_clipping.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="44" column="37" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="37" />
+          <folding>
+            <element signature="n#head#0;n#html#0;n#!!top" />
+            <element signature="e#562#625#0" />
+            <element signature="e#2064#2255#0" />
+            <element signature="e#2537#2588#0" />
+            <element signature="e#3620#4090#0" />
+            <element signature="e#4168#4511#0" />
+            <element signature="e#4830#4994#0" />
+            <element signature="e#5017#5378#0" />
           </folding>
         </state>
       </provider>
