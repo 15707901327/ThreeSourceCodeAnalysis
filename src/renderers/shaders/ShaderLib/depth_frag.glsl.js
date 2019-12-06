@@ -1,3 +1,4 @@
+export default /* glsl */`
 #if DEPTH_PACKING == 3200
 
 	uniform float opacity;
@@ -41,3 +42,4 @@ void main() {
 	#endif
 
 }
+`;

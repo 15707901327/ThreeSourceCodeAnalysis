@@ -14,8 +14,8 @@ function WebGLClipping() {
 	var scope = this,
 
 		globalState = null,
-		numGlobalPlanes = 0, // 全局建材面的个数
-		localClippingEnabled = false,
+		numGlobalPlanes = 0, // 裁剪面数量
+		localClippingEnabled = false, // 对象级裁剪
 		renderingShadows = false,
 
 		plane = new Plane(),
@@ -30,9 +30,9 @@ function WebGLClipping() {
   /**
 	 * 初始化
    * @param planes 裁剪面
-   * @param enableLocalClipping 启动裁剪
+   * @param enableLocalClipping 是否是对象级的裁剪
    * @param camera 相机
-   * @return {boolean|*}
+   * @return {boolean|*} 是否启动裁剪
    */
 	this.init = function ( planes, enableLocalClipping, camera ) {
 
@@ -64,12 +64,12 @@ function WebGLClipping() {
 	};
 
   /**
-   *
+   * 设置裁剪状态
    * @param planes 裁剪面
-   * @param clipIntersection
-   * @param clipShadows
+   * @param clipIntersection 更改剪切平面的行为，以便仅剪切其相交，而不剪切其并集。 默认为false。
+   * @param clipShadows 定义是否根据此材质上指定的剪切平面剪切阴影。 默认为false。
    * @param camera 相机
-   * @param cache
+   * @param cache 缓存
    * @param fromCache
    */
 	this.setState = function ( planes, clipIntersection, clipShadows, camera, cache, fromCache ) {
@@ -96,6 +96,7 @@ function WebGLClipping() {
 				dstArray[ i ] = globalState[ i ];
 			}
 
+			// 平面数据
 			cache.clippingState = dstArray;
 			this.numIntersection = clipIntersection ? this.numPlanes : 0;
 			this.numPlanes += nGlobal;
@@ -118,12 +119,12 @@ function WebGLClipping() {
 	}
 
   /**
-   *
+   * 解析平面数据
    * @param planes 裁剪面
    * @param camera 相机
    * @param dstOffset 偏移
    * @param skipTransform
-   * @returns {*}
+   * @returns {*} 平面数据
    */
 	function projectPlanes( planes, camera, dstOffset, skipTransform ) {
 

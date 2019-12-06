@@ -362,5 +362,4 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
 
 }
 
-
 export {WebGLPrograms};

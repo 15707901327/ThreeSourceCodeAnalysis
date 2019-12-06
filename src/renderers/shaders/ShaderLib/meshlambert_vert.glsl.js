@@ -1,11 +1,12 @@
+export default /* glsl */`
 #define LAMBERT
 
 varying vec3 vLightFront;
+varying vec3 vIndirectFront;
 
 #ifdef DOUBLE_SIDED
-
 	varying vec3 vLightBack;
-
+	varying vec3 vIndirectBack;
 #endif
 
 #include <common>
@@ -14,7 +15,6 @@ varying vec3 vLightFront;
 #include <envmap_pars_vertex>
 #include <bsdfs>
 #include <lights_pars_begin>
-#include <lights_pars_maps>
 #include <color_pars_vertex>
 #include <fog_pars_vertex>
 #include <morphtarget_pars_vertex>
@@ -47,5 +47,5 @@ void main() {
 	#include <lights_lambert_vertex>
 	#include <shadowmap_vertex>
 	#include <fog_vertex>
-
 }
+`;

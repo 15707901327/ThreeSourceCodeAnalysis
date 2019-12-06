@@ -61,21 +61,24 @@ function reversePainterSortStable(a, b) {
  */
 function WebGLRenderList() {
 
+  // 保存对象渲染项信息
   var renderItems = [];
   var renderItemsIndex = 0;
 
   var opaque = [];
   var transparent = [];
 
+  // 默认着色器
   var defaultProgram = {id: -1};
 
+  /**
+   * 初始化
+   */
   function init() {
-
     renderItemsIndex = 0;
 
     opaque.length = 0;
     transparent.length = 0;
-
   }
 
   /**
@@ -83,7 +86,7 @@ function WebGLRenderList() {
    * @param object 对象
    * @param geometry 集合体
    * @param material 材质
-   * @param groupOrder
+   * @param groupOrder 渲染级别
    * @param z 深度值
    * @param group
    */
@@ -92,7 +95,6 @@ function WebGLRenderList() {
     var renderItem = renderItems[renderItemsIndex];
 
     if (renderItem === undefined) {
-
       renderItem = {
         id: object.id,
         object: object,
@@ -104,11 +106,9 @@ function WebGLRenderList() {
         z: z,
         group: group
       };
-
       renderItems[renderItemsIndex] = renderItem;
-
-    } else {
-
+    }
+    else {
       renderItem.id = object.id;
       renderItem.object = object;
       renderItem.geometry = geometry;
@@ -118,7 +118,6 @@ function WebGLRenderList() {
       renderItem.renderOrder = object.renderOrder;
       renderItem.z = z;
       renderItem.group = group;
-
     }
 
     renderItemsIndex++;
@@ -132,24 +131,27 @@ function WebGLRenderList() {
    * @param object 对象
    * @param geometry 集合体
    * @param material 材质
-   * @param groupOrder
+   * @param groupOrder 渲染级别
    * @param z 深度值
    * @param group
    */
   function push(object, geometry, material, groupOrder, z, group) {
-
     var renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
-
     (material.transparent === true ? transparent : opaque).push(renderItem);
-
   }
 
+  /**
+   *
+   * @param object 对象
+   * @param geometry 几何体
+   * @param material 材质
+   * @param groupOrder 0
+   * @param z 0
+   * @param group null
+   */
   function unshift(object, geometry, material, groupOrder, z, group) {
-
     var renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
-
     (material.transparent === true ? transparent : opaque).unshift(renderItem);
-
   }
 
   /**

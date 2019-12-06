@@ -1,3 +1,4 @@
+export default /* glsl */`
 uniform float scale;
 attribute float lineDistance;
 
@@ -23,3 +24,4 @@ void main() {
 	#include <fog_vertex>
 
 }
+`;

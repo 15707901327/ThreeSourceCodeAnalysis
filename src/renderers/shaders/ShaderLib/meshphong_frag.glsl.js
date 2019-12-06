@@ -1,14 +1,11 @@
+export default /* glsl */`
+#define PHONG
+
 uniform vec3 diffuse;
 uniform vec3 emissive;
+uniform vec3 specular;
+uniform float shininess;
 uniform float opacity;
-
-varying vec3 vLightFront;
-
-#ifdef DOUBLE_SIDED
-
-	varying vec3 vLightBack;
-
-#endif
 
 #include <common>
 #include <packing>
@@ -21,13 +18,16 @@ varying vec3 vLightFront;
 #include <aomap_pars_fragment>
 #include <lightmap_pars_fragment>
 #include <emissivemap_pars_fragment>
+#include <envmap_common_pars_fragment>
 #include <envmap_pars_fragment>
+#include <gradientmap_pars_fragment>
+#include <fog_pars_fragment>
 #include <bsdfs>
 #include <lights_pars_begin>
-#include <lights_pars_maps>
-#include <fog_pars_fragment>
+#include <lights_phong_pars_fragment>
 #include <shadowmap_pars_fragment>
-#include <shadowmask_pars_fragment>
+#include <bumpmap_pars_fragment>
+#include <normalmap_pars_fragment>
 #include <specularmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
 #include <clipping_planes_pars_fragment>
@@ -46,31 +46,20 @@ void main() {
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
 	#include <specularmap_fragment>
+	#include <normal_fragment_begin>
+	#include <normal_fragment_maps>
 	#include <emissivemap_fragment>
 
 	// accumulation
-	reflectedLight.indirectDiffuse = getAmbientLightIrradiance( ambientLightColor );
-
-	#include <lightmap_fragment>
-
-	reflectedLight.indirectDiffuse *= BRDF_Diffuse_Lambert( diffuseColor.rgb );
-
-	#ifdef DOUBLE_SIDED
-
-		reflectedLight.directDiffuse = ( gl_FrontFacing ) ? vLightFront : vLightBack;
-
-	#else
-
-		reflectedLight.directDiffuse = vLightFront;
-
-	#endif
-
-	reflectedLight.directDiffuse *= BRDF_Diffuse_Lambert( diffuseColor.rgb ) * getShadowMask();
+	#include <lights_phong_fragment>
+	#include <lights_fragment_begin>
+	#include <lights_fragment_maps>
+	#include <lights_fragment_end>
 
 	// modulation
 	#include <aomap_fragment>
 
-	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;
+	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
 
 	#include <envmap_fragment>
 
@@ -83,3 +72,4 @@ void main() {
 	#include <dithering_fragment>
 
 }
+`;

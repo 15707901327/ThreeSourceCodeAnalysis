@@ -11,6 +11,15 @@ import { Mesh } from '../../objects/Mesh.js';
 import { ShaderLib } from '../shaders/ShaderLib.js';
 import { cloneUniforms } from '../shaders/UniformsUtils.js';
 
+/**
+ * 渲染背景
+ * @param renderer 渲染列表
+ * @param state 状态管理
+ * @param objects 对象管理
+ * @param premultipliedAlpha
+ * @returns {{setClearColor: setClearColor, getClearColor: (function(): *), render: render, getClearAlpha: (function(): number), setClearAlpha: setClearAlpha}}
+ * @constructor
+ */
 function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 
 	var clearColor = new Color( 0x000000 );
@@ -24,7 +33,7 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 	var currentBackgroundVersion = 0;
 
 	/**
-	 * 更新缓冲区
+	 * 背景对象添加到渲染列表中
 	 * @param renderList 渲染列表
 	 * @param scene 场景
 	 * @param camera 相机
@@ -40,9 +49,7 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 		var session = vr.getSession && vr.getSession();
 
 		if ( session && session.environmentBlendMode === 'additive' ) {
-
 			background = null;
-
 		}
 
 		if ( background === null ) {
@@ -67,9 +74,7 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 
 			if ( boxMesh === undefined ) {
 
-				boxMesh = new Mesh(
-					new BoxBufferGeometry( 1, 1, 1 ),
-					new ShaderMaterial( {
+				boxMesh = new Mesh(new BoxBufferGeometry( 1, 1, 1 ), new ShaderMaterial( {
 						type: 'BackgroundCubeMaterial',
 						uniforms: cloneUniforms( ShaderLib.cube.uniforms ),
 						vertexShader: ShaderLib.cube.vertexShader,
@@ -78,27 +83,20 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 						depthTest: false,
 						depthWrite: false,
 						fog: false
-					} )
-				);
+					} ));
 
-				boxMesh.geometry.removeAttribute( 'normal' );
-				boxMesh.geometry.removeAttribute( 'uv' );
+				boxMesh.geometry.deleteAttribute( 'normal' );
+				boxMesh.geometry.deleteAttribute( 'uv' );
 
 				boxMesh.onBeforeRender = function ( renderer, scene, camera ) {
-
 					this.matrixWorld.copyPosition( camera.matrixWorld );
-
 				};
 
 				// enable code injection for non-built-in material
 				Object.defineProperty( boxMesh.material, 'map', {
-
 					get: function () {
-
 						return this.uniforms.tCube.value;
-
 					}
-
 				} );
 
 				objects.update( boxMesh );
@@ -109,14 +107,11 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 			boxMesh.material.uniforms.tCube.value = texture;
 			boxMesh.material.uniforms.tFlip.value = ( background.isWebGLRenderTargetCube ) ? 1 : - 1;
 
-			if ( currentBackground !== background ||
-			     currentBackgroundVersion !== texture.version ) {
-
+			if ( currentBackground !== background || currentBackgroundVersion !== texture.version ) {
 				boxMesh.material.needsUpdate = true;
 
 				currentBackground = background;
 				currentBackgroundVersion = texture.version;
-
 			}
 
 			// push to the pre-sorted opaque render list
@@ -141,17 +136,13 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 					} )
 				);
 
-				planeMesh.geometry.removeAttribute( 'normal' );
+				planeMesh.geometry.deleteAttribute( 'normal' );
 
 				// enable code injection for non-built-in material
 				Object.defineProperty( planeMesh.material, 'map', {
-
 					get: function () {
-
 						return this.uniforms.t2D.value;
-
 					}
-
 				} );
 
 				objects.update( planeMesh );
@@ -161,29 +152,22 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 			planeMesh.material.uniforms.t2D.value = background;
 
 			if ( background.matrixAutoUpdate === true ) {
-
 				background.updateMatrix();
-
 			}
 
 			planeMesh.material.uniforms.uvTransform.value.copy( background.matrix );
 
-			if ( currentBackground !== background ||
-				   currentBackgroundVersion !== background.version ) {
+			if ( currentBackground !== background || currentBackgroundVersion !== background.version ) {
 
 				planeMesh.material.needsUpdate = true;
 
 				currentBackground = background;
 				currentBackgroundVersion = background.version;
-
 			}
-
 
 			// push to the pre-sorted opaque render list
 			renderList.unshift( planeMesh, planeMesh.geometry, planeMesh.material, 0, 0, null );
-
 		}
-
 	}
 
   /**
@@ -198,33 +182,24 @@ function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
 	return {
 
 		getClearColor: function () {
-
 			return clearColor;
-
 		},
 		setClearColor: function ( color, alpha ) {
-
 			clearColor.set( color );
 			clearAlpha = alpha !== undefined ? alpha : 1;
 			setClear( clearColor, clearAlpha );
-
 		},
 		getClearAlpha: function () {
-
 			return clearAlpha;
-
 		},
 		setClearAlpha: function ( alpha ) {
-
 			clearAlpha = alpha;
 			setClear( clearColor, clearAlpha );
-
 		},
 		render: render
 
 	};
 
 }
-
 
 export { WebGLBackground };

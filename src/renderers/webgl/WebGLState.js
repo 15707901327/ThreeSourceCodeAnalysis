@@ -14,6 +14,8 @@ import {
   CullFaceFront,
   CullFaceBack,
   CullFaceNone,
+	DoubleSide,
+	BackSide,
   CustomBlending,
   MultiplyBlending,
   SubtractiveBlending,
@@ -21,8 +23,21 @@ import {
   NoBlending,
   NormalBlending,
   AddEquation,
-  DoubleSide,
-  BackSide
+	SubtractEquation,
+	ReverseSubtractEquation,
+	MinEquation,
+	MaxEquation,
+	ZeroFactor,
+	OneFactor,
+	SrcColorFactor,
+	SrcAlphaFactor,
+	SrcAlphaSaturateFactor,
+	DstColorFactor,
+	DstAlphaFactor,
+	OneMinusSrcColorFactor,
+	OneMinusSrcAlphaFactor,
+	OneMinusDstColorFactor,
+	OneMinusDstAlphaFactor
 } from '../../constants.js';
 import {Vector4} from '../../math/Vector4.js';
 
@@ -35,7 +50,9 @@ import {Vector4} from '../../math/Vector4.js';
  * @return {{buffers: {color: ColorBuffer, depth: DepthBuffer, stencil: StencilBuffer}, initAttributes: initAttributes, enableAttribute: enableAttribute, enableAttributeAndDivisor: enableAttributeAndDivisor, disableUnusedAttributes: disableUnusedAttributes, enable: enable, disable: disable, getCompressedTextureFormats: getCompressedTextureFormats, useProgram: useProgram, setBlending: setBlending, setMaterial: setMaterial, setFlipSided: setFlipSided, setCullFace: setCullFace, setLineWidth: setLineWidth, setPolygonOffset: setPolygonOffset, setScissorTest: setScissorTest, activeTexture: activeTexture, bindTexture: bindTexture, compressedTexImage2D: compressedTexImage2D, texImage2D: texImage2D, scissor: scissor, viewport: viewport, reset: reset}}
  * @constructor
  */
-function WebGLState(gl, extensions, utils, capabilities) {
+function WebGLState(gl, extensions, capabilities) {
+
+	var isWebGL2 = capabilities.isWebGL2;
 
   function ColorBuffer() {
 
@@ -364,8 +381,6 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
   var enabledCapabilities = {}; // 保存功能开启状态
 
-  var compressedTextureFormats = null;
-
   var currentProgram = null; // 当前使用的着色器程序
 
   var currentBlendingEnabled = null; // 当前混合
@@ -486,9 +501,9 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
     if (attributeDivisors[attribute] !== meshPerAttribute) {
 
-      var extension = capabilities.isWebGL2 ? gl : extensions.get('ANGLE_instanced_arrays');
+			var extension = isWebGL2 ? gl : extensions.get('ANGLE_instanced_arrays');
 
-      extension[capabilities.isWebGL2 ? 'vertexAttribDivisor' : 'vertexAttribDivisorANGLE'](attribute, meshPerAttribute);
+			extension[isWebGL2 ? 'vertexAttribDivisor' : 'vertexAttribDivisorANGLE'](attribute, meshPerAttribute);
       attributeDivisors[attribute] = meshPerAttribute;
 
     }
@@ -529,35 +544,10 @@ function WebGLState(gl, extensions, utils, capabilities) {
     if (enabledCapabilities[id] !== false) {
       gl.disable(id);
       enabledCapabilities[id] = false;
-    }
-  }
-
-  function getCompressedTextureFormats() {
-
-    if (compressedTextureFormats === null) {
-
-      compressedTextureFormats = [];
-
-      if (extensions.get('WEBGL_compressed_texture_pvrtc') ||
-        extensions.get('WEBGL_compressed_texture_s3tc') ||
-        extensions.get('WEBGL_compressed_texture_etc1') ||
-        extensions.get('WEBGL_compressed_texture_astc')) {
-
-        var formats = gl.getParameter(gl.COMPRESSED_TEXTURE_FORMATS);
-
-        for (var i = 0; i < formats.length; i++) {
-
-          compressedTextureFormats.push(formats[i]);
-
-        }
 
       }
 
     }
-
-    return compressedTextureFormats;
-
-  }
 
   function useProgram(program) {
 
@@ -574,6 +564,44 @@ function WebGLState(gl, extensions, utils, capabilities) {
     return false;
 
   }
+
+	var equationToGL = {
+		[AddEquation]: gl.FUNC_ADD,
+		[SubtractEquation]: gl.FUNC_SUBTRACT,
+		[ReverseSubtractEquation]: gl.FUNC_REVERSE_SUBTRACT
+	};
+
+	if (isWebGL2) {
+
+		equationToGL[MinEquation] = gl.MIN;
+		equationToGL[MaxEquation] = gl.MAX;
+
+	} else {
+
+		var extension = extensions.get('EXT_blend_minmax');
+
+		if (extension !== null) {
+
+			equationToGL[MinEquation] = extension.MIN_EXT;
+			equationToGL[MaxEquation] = extension.MAX_EXT;
+
+		}
+
+	}
+
+	var factorToGL = {
+		[ZeroFactor]: gl.ZERO,
+		[OneFactor]: gl.ONE,
+		[SrcColorFactor]: gl.SRC_COLOR,
+		[SrcAlphaFactor]: gl.SRC_ALPHA,
+		[SrcAlphaSaturateFactor]: gl.SRC_ALPHA_SATURATE,
+		[DstColorFactor]: gl.DST_COLOR,
+		[DstAlphaFactor]: gl.DST_ALPHA,
+		[OneMinusSrcColorFactor]: gl.ONE_MINUS_SRC_COLOR,
+		[OneMinusSrcAlphaFactor]: gl.ONE_MINUS_SRC_ALPHA,
+		[OneMinusDstColorFactor]: gl.ONE_MINUS_DST_COLOR,
+		[OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA
+	};
 
   /**
    * 设置混合
@@ -671,14 +699,18 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
     // 设置混合方程
     if (blendEquation !== currentBlendEquation || blendEquationAlpha !== currentBlendEquationAlpha) {
-      gl.blendEquationSeparate(utils.convert(blendEquation), utils.convert(blendEquationAlpha));
+
+			gl.blendEquationSeparate(equationToGL[blendEquation], equationToGL[blendEquationAlpha]);
+
       currentBlendEquation = blendEquation;
       currentBlendEquationAlpha = blendEquationAlpha;
     }
 
     // 设置混合方程参数
     if (blendSrc !== currentBlendSrc || blendDst !== currentBlendDst || blendSrcAlpha !== currentBlendSrcAlpha || blendDstAlpha !== currentBlendDstAlpha) {
-      gl.blendFuncSeparate(utils.convert(blendSrc), utils.convert(blendDst), utils.convert(blendSrcAlpha), utils.convert(blendDstAlpha));
+
+			gl.blendFuncSeparate(factorToGL[blendSrc], factorToGL[blendDst], factorToGL[blendSrcAlpha], factorToGL[blendDstAlpha]);
+
       currentBlendSrc = blendSrc;
       currentBlendDst = blendDst;
       currentBlendSrcAlpha = blendSrcAlpha;
@@ -717,7 +749,8 @@ function WebGLState(gl, extensions, utils, capabilities) {
 		stencilBuffer.setTest( stencilWrite );
 		if ( stencilWrite ) {
 
-			stencilBuffer.setFunc( material.stencilFunc, material.stencilRef, material.stencilMask );
+			stencilBuffer.setMask(material.stencilWriteMask);
+			stencilBuffer.setFunc(material.stencilFunc, material.stencilRef, material.stencilFuncMask);
 			stencilBuffer.setOp( material.stencilFail, material.stencilZFail, material.stencilZPass );
 
 		}
@@ -873,7 +906,24 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
       boundTexture.type = webglType;
       boundTexture.texture = webglTexture;
+
+		}
+
     }
+
+	function unbindTexture() {
+
+		var boundTexture = currentBoundTextures[currentTextureSlot];
+
+		if (boundTexture !== undefined && boundTexture.type !== undefined) {
+
+			gl.bindTexture(boundTexture.type, null);
+
+			boundTexture.type = undefined;
+			boundTexture.texture = undefined;
+
+		}
+
   }
 
   function compressedTexImage2D() {
@@ -951,8 +1001,6 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
     enabledCapabilities = {};
 
-    compressedTextureFormats = null;
-
     currentTextureSlot = null;
     currentBoundTextures = {};
 
@@ -983,7 +1031,6 @@ function WebGLState(gl, extensions, utils, capabilities) {
     disableUnusedAttributes: disableUnusedAttributes,
     enable: enable,
     disable: disable,
-    getCompressedTextureFormats: getCompressedTextureFormats,
 
     useProgram: useProgram,
 
@@ -1000,6 +1047,7 @@ function WebGLState(gl, extensions, utils, capabilities) {
 
     activeTexture: activeTexture,
     bindTexture: bindTexture,
+		unbindTexture: unbindTexture,
     compressedTexImage2D: compressedTexImage2D,
     texImage2D: texImage2D,
     texImage3D: texImage3D,

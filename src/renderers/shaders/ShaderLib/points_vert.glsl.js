@@ -1,3 +1,4 @@
+export default /* glsl */`
 uniform float size;
 uniform float scale;
 
@@ -15,10 +16,14 @@ void main() {
 	#include <morphtarget_vertex>
 	#include <project_vertex>
 
+	gl_PointSize = size;
+
 	#ifdef USE_SIZEATTENUATION
-		gl_PointSize = size * ( scale / - mvPosition.z );
-	#else
-		gl_PointSize = size;
+
+		bool isPerspective = isPerspectiveMatrix( projectionMatrix );
+
+		if ( isPerspective ) gl_PointSize *= ( scale / - mvPosition.z );
+
 	#endif
 
 	#include <logdepthbuf_vertex>
@@ -27,3 +32,4 @@ void main() {
 	#include <fog_vertex>
 
 }
+`;

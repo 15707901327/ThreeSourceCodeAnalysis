@@ -14,13 +14,14 @@ function WebGLRenderState() {
 	var lights = new WebGLLights();
 
 	var lightsArray = []; // 记录渲染的灯光
-	var shadowsArray = [];
+	var shadowsArray = []; // 记录渲染阴影
 
+  /**
+   * 初始化
+   */
 	function init() {
-
 		lightsArray.length = 0;
 		shadowsArray.length = 0;
-
 	}
 
 	/**
@@ -123,6 +124,5 @@ function WebGLRenderStates() {
 	};
 
 }
-
 
 export { WebGLRenderStates };

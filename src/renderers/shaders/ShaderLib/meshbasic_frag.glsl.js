@@ -1,3 +1,4 @@
+export default /* glsl */`
 uniform vec3 diffuse;
 uniform float opacity;
 
@@ -15,6 +16,7 @@ uniform float opacity;
 #include <alphamap_pars_fragment>
 #include <aomap_pars_fragment>
 #include <lightmap_pars_fragment>
+#include <envmap_common_pars_fragment>
 #include <envmap_pars_fragment>
 #include <fog_pars_fragment>
 #include <specularmap_pars_fragment>
@@ -64,3 +66,4 @@ void main() {
 	#include <fog_fragment>
 
 }
+`;

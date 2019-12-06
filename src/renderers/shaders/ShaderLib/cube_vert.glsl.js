@@ -1,10 +1,11 @@
-varying vec3 vWorldPosition;
+export default /* glsl */`
+varying vec3 vWorldDirection;
 
 #include <common>
 
 void main() {
 
-	vWorldPosition = transformDirection( position, modelMatrix );
+	vWorldDirection = transformDirection( position, modelMatrix );
 
 	#include <begin_vertex>
 	#include <project_vertex>
@@ -12,3 +13,4 @@ void main() {
 	gl_Position.z = gl_Position.w; // set z to camera.far
 
 }
+`;

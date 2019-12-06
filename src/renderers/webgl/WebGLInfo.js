@@ -2,6 +2,12 @@
  * @author Mugen87 / https://github.com/Mugen87
  */
 
+/**
+ * 渲染信息管理
+ * @param gl 上下文
+ * @returns {{memory: {textures: number, geometries: number}, autoReset: boolean, reset: reset, update: update, programs: null, render: {triangles: number, calls: number, lines: number, frame: number, points: number}}}
+ * @constructor
+ */
 function WebGLInfo( gl ) {
 
 	var memory = {
@@ -58,6 +64,9 @@ function WebGLInfo( gl ) {
 
 	}
 
+  /**
+   * 重新设置
+   */
 	function reset() {
 
 		render.frame ++;

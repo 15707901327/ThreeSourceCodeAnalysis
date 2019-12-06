@@ -1,3 +1,4 @@
+export default /* glsl */`
 uniform vec3 color;
 uniform float opacity;
 
@@ -16,3 +17,4 @@ void main() {
 	#include <fog_fragment>
 
 }
+`;

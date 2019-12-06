@@ -1,4 +1,5 @@
-#define PHONG
+export default /* glsl */`
+#define MATCAP
 
 varying vec3 vViewPosition;
 
@@ -8,24 +9,19 @@ varying vec3 vViewPosition;
 
 #endif
 
-#include <common> // 定义的常量和一些常用的方法
-#include <uv_pars_vertex> // 定义贴图的uv坐标（map）
-#include <uv2_pars_vertex>
+#include <common>
+#include <uv_pars_vertex>
 #include <displacementmap_pars_vertex>
-#include <envmap_pars_vertex>
-#include <color_pars_vertex>
 #include <fog_pars_vertex>
 #include <morphtarget_pars_vertex>
 #include <skinning_pars_vertex>
-#include <shadowmap_pars_vertex>
+
 #include <logdepthbuf_pars_vertex>
 #include <clipping_planes_pars_vertex>
 
 void main() {
-    // 计算uv的坐标
+
 	#include <uv_vertex>
-	#include <uv2_vertex>
-	#include <color_vertex>
 
 	#include <beginnormal_vertex>
 	#include <morphnormal_vertex>
@@ -33,25 +29,23 @@ void main() {
 	#include <skinnormal_vertex>
 	#include <defaultnormal_vertex>
 
-#ifndef FLAT_SHADED // Normal computed with derivatives when FLAT_SHADED
+	#ifndef FLAT_SHADED // Normal computed with derivatives when FLAT_SHADED
 
-	vNormal = normalize( transformedNormal );
+		vNormal = normalize( transformedNormal );
 
-#endif
+	#endif
 
 	#include <begin_vertex>
 	#include <morphtarget_vertex>
 	#include <skinning_vertex>
 	#include <displacementmap_vertex>
 	#include <project_vertex>
+
 	#include <logdepthbuf_vertex>
 	#include <clipping_planes_vertex>
+	#include <fog_vertex>
 
 	vViewPosition = - mvPosition.xyz;
 
-	#include <worldpos_vertex>
-	#include <envmap_vertex>
-	#include <shadowmap_vertex>
-	#include <fog_vertex>
-
 }
+`;

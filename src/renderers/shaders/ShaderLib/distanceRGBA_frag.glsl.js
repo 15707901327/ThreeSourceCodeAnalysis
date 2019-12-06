@@ -1,3 +1,4 @@
+export default /* glsl */`
 #define DISTANCE
 
 uniform vec3 referencePosition;
@@ -29,3 +30,4 @@ void main () {
 	gl_FragColor = packDepthToRGBA( dist );
 
 }
+`;

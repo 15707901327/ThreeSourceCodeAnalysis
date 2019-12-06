@@ -48,5 +48,4 @@ function WebGLProperties() {
 
 }
 
-
 export { WebGLProperties };

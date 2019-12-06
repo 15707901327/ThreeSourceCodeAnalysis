@@ -1,8 +1,8 @@
+export default /* glsl */`
 uniform vec3 diffuse;
 uniform float opacity;
 
 #include <common>
-#include <packing>
 #include <color_pars_fragment>
 #include <map_particle_pars_fragment>
 #include <fog_pars_fragment>
@@ -31,3 +31,4 @@ void main() {
 	#include <fog_fragment>
 
 }
+`;

@@ -1,10 +1,18 @@
-#define PHYSICAL
+export default /* glsl */`
+#define STANDARD
 
 varying vec3 vViewPosition;
 
 #ifndef FLAT_SHADED
 
 	varying vec3 vNormal;
+
+	#ifdef USE_TANGENT
+
+		varying vec3 vTangent;
+		varying vec3 vBitangent;
+
+	#endif
 
 #endif
 
@@ -36,6 +44,13 @@ void main() {
 
 	vNormal = normalize( transformedNormal );
 
+	#ifdef USE_TANGENT
+
+		vTangent = normalize( transformedTangent );
+		vBitangent = normalize( cross( vNormal, vTangent ) * tangent.w );
+
+	#endif
+
 #endif
 
 	#include <begin_vertex>
@@ -53,3 +68,4 @@ void main() {
 	#include <fog_vertex>
 
 }
+`;

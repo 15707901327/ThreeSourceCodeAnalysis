@@ -1,4 +1,11 @@
-#define PHYSICAL
+export default /* glsl */`
+#define STANDARD
+
+#ifdef PHYSICAL
+	#define REFLECTIVITY
+	#define CLEARCOAT
+	#define TRANSPARENCY
+#endif
 
 uniform vec3 diffuse;
 uniform vec3 emissive;
@@ -6,9 +13,21 @@ uniform float roughness;
 uniform float metalness;
 uniform float opacity;
 
-#ifndef STANDARD
-	uniform float clearCoat;
-	uniform float clearCoatRoughness;
+#ifdef TRANSPARENCY
+	uniform float transparency;
+#endif
+
+#ifdef REFLECTIVITY
+	uniform float reflectivity;
+#endif
+
+#ifdef CLEARCOAT
+	uniform float clearcoat;
+	uniform float clearcoatRoughness;
+#endif
+
+#ifdef USE_SHEEN
+	uniform vec3 sheen;
 #endif
 
 varying vec3 vViewPosition;
@@ -16,6 +35,13 @@ varying vec3 vViewPosition;
 #ifndef FLAT_SHADED
 
 	varying vec3 vNormal;
+
+	#ifdef USE_TANGENT
+
+		varying vec3 vTangent;
+		varying vec3 vBitangent;
+
+	#endif
 
 #endif
 
@@ -30,16 +56,17 @@ varying vec3 vViewPosition;
 #include <aomap_pars_fragment>
 #include <lightmap_pars_fragment>
 #include <emissivemap_pars_fragment>
-#include <envmap_pars_fragment>
-#include <fog_pars_fragment>
 #include <bsdfs>
 #include <cube_uv_reflection_fragment>
+#include <envmap_common_pars_fragment>
+#include <envmap_physical_pars_fragment>
+#include <fog_pars_fragment>
 #include <lights_pars_begin>
-#include <lights_pars_maps>
 #include <lights_physical_pars_fragment>
 #include <shadowmap_pars_fragment>
 #include <bumpmap_pars_fragment>
 #include <normalmap_pars_fragment>
+#include <clearcoat_normalmap_pars_fragment>
 #include <roughnessmap_pars_fragment>
 #include <metalnessmap_pars_fragment>
 #include <logdepthbuf_pars_fragment>
@@ -62,6 +89,8 @@ void main() {
 	#include <metalnessmap_fragment>
 	#include <normal_fragment_begin>
 	#include <normal_fragment_maps>
+	#include <clearcoat_normal_fragment_begin>
+	#include <clearcoat_normal_fragment_maps>
 	#include <emissivemap_fragment>
 
 	// accumulation
@@ -75,6 +104,11 @@ void main() {
 
 	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
 
+	// this is a stub for the transparency model
+	#ifdef TRANSPARENCY
+		diffuseColor.a *= saturate( 1. - transparency + linearToRelativeLuminance( reflectedLight.directSpecular + reflectedLight.indirectSpecular ) );
+	#endif
+
 	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
 
 	#include <tonemapping_fragment>
@@ -84,3 +118,4 @@ void main() {
 	#include <dithering_fragment>
 
 }
+`;
