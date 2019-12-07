@@ -237,9 +237,9 @@ function replaceLightNums(string, parameters) {
 }
 
 /**
- *
- * @param string
- * @param parameters
+ * 替换刨切字符串
+ * @param string 着色器字符串
+ * @param parameters 着色器参数
  * @return {string}
  */
 function replaceClippingPlaneNums(string, parameters) {
@@ -284,9 +284,7 @@ var loopPattern = /#pragma unroll_loop[\s]+?for \( int i \= (\d+)\; i < (\d+)\; 
  * @return {string | void}
  */
 function unrollLoops(string) {
-
   return string.replace(loopPattern, loopReplacer);
-
 }
 
 function loopReplacer(match, start, end, snippet) {
@@ -437,13 +435,14 @@ function generateEnvMapBlendingDefine(parameters) {
  * @param extensions 扩展
  * @param cacheKey key
  * @param material 材质
- * @param shader
+ * @param shader shader参数
  * @param parameters 参数
  * @returns {WebGLProgram}
  * @constructor
  */
 function WebGLProgram(renderer, extensions, cacheKey, material, shader, parameters) {
 
+  // 获取上下文
   var gl = renderer.getContext();
 
   var defines = material.defines;
@@ -462,6 +461,7 @@ function WebGLProgram(renderer, extensions, cacheKey, material, shader, paramete
 
   var customDefines = generateDefines(defines);
 
+  // 创建着色器
   var program = gl.createProgram();
 
   var prefixVertex, prefixFragment;
@@ -495,8 +495,8 @@ function WebGLProgram(renderer, extensions, cacheKey, material, shader, paramete
 
     }
 
-  } else {
-
+  }
+  else {
     prefixVertex = [
 
       generatePrecision(parameters),
@@ -620,7 +620,6 @@ function WebGLProgram(renderer, extensions, cacheKey, material, shader, paramete
       '\n'
 
     ].filter(filterEmptyLine).join('\n');
-
     prefixFragment = [
 
       customExtensions,
@@ -706,17 +705,19 @@ function WebGLProgram(renderer, extensions, cacheKey, material, shader, paramete
       '\n'
 
     ].filter(filterEmptyLine).join('\n');
-
   }
 
   vertexShader = resolveIncludes(vertexShader);
   vertexShader = replaceLightNums(vertexShader, parameters);
+  // 替换刨切的面数
   vertexShader = replaceClippingPlaneNums(vertexShader, parameters);
 
   fragmentShader = resolveIncludes(fragmentShader);
   fragmentShader = replaceLightNums(fragmentShader, parameters);
+  // 替换刨切的面数
   fragmentShader = replaceClippingPlaneNums(fragmentShader, parameters);
 
+  // 替换代码中的循环
   vertexShader = unrollLoops(vertexShader);
   fragmentShader = unrollLoops(fragmentShader);
 

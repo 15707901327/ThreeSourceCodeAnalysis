@@ -1550,9 +1550,10 @@ function WebGLRenderer(parameters) {
 
       material.onBeforeCompile(materialProperties.shader, _this);
 
-      // Computing cache key again as onBeforeCompile may have changed the shaders
+      // 计算着色器的key
       programCacheKey = programCache.getProgramCacheKey(material, parameters);
 
+      // 创建着色器
       program = programCache.acquireProgram(material, materialProperties.shader, parameters, programCacheKey);
 
       materialProperties.program = program;
@@ -1560,6 +1561,7 @@ function WebGLRenderer(parameters) {
 
     }
 
+    // 获着色器中的变量
     var programAttributes = program.getAttributes();
 
     if (material.morphTargets) {
@@ -1594,12 +1596,14 @@ function WebGLRenderer(parameters) {
 
     }
 
-    // shader变量
+    // 材质输入的变量
     var uniforms = materialProperties.shader.uniforms;
 
+    // 刨切参数
     if (!material.isShaderMaterial && !material.isRawShaderMaterial || material.clipping === true) {
       materialProperties.numClippingPlanes = _clipping.numPlanes;
       materialProperties.numIntersection = _clipping.numIntersection;
+      // 设置刨切面的参数
       uniforms.clippingPlanes = _clipping.uniform;
     }
 
@@ -1634,9 +1638,7 @@ function WebGLRenderer(parameters) {
     // 获取着色器程序中的uniform变量
     var progUniforms = materialProperties.program.getUniforms(),
       uniformsList = WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
-
     materialProperties.uniformsList = uniformsList;
-
   }
 
   /**
