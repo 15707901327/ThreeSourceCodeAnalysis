@@ -9,6 +9,12 @@ import {
 import { Pass } from "../postprocessing/Pass.js";
 import { CopyShader } from "../shaders/CopyShader.js";
 
+/**
+ * 贴图通道
+ * @param map
+ * @param opacity
+ * @constructor
+ */
 var TexturePass = function ( map, opacity ) {
 
 	Pass.call( this );
@@ -18,19 +24,18 @@ var TexturePass = function ( map, opacity ) {
 
 	var shader = CopyShader;
 
+	// 贴图
 	this.map = map;
 	this.opacity = ( opacity !== undefined ) ? opacity : 1.0;
 
 	this.uniforms = UniformsUtils.clone( shader.uniforms );
 
 	this.material = new ShaderMaterial( {
-
 		uniforms: this.uniforms,
 		vertexShader: shader.vertexShader,
 		fragmentShader: shader.fragmentShader,
 		depthTest: false,
 		depthWrite: false
-
 	} );
 
 	this.needsSwap = false;
@@ -43,6 +48,12 @@ TexturePass.prototype = Object.assign( Object.create( Pass.prototype ), {
 
 	constructor: TexturePass,
 
+  /**
+   * 渲染
+   * @param renderer
+   * @param writeBuffer
+   * @param readBuffer
+   */
 	render: function ( renderer, writeBuffer, readBuffer /*, deltaTime, maskActive */ ) {
 
 		var oldAutoClear = renderer.autoClear;

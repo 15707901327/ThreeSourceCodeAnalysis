@@ -5,7 +5,7 @@
 import {
 	ShaderMaterial,
 	UniformsUtils
-} from "../../../build/three_r108.module.js";
+} from "../../../build/three.module.js";
 import { Pass } from "../postprocessing/Pass.js";
 
 /**
@@ -41,30 +41,30 @@ ShaderPass.prototype = Object.assign( Object.create( Pass.prototype ), {
 
 	constructor: ShaderPass,
 
+  /**
+   * 渲染
+   * @param renderer 渲染器
+   * @param writeBuffer 写入目标
+   * @param readBuffer 读取目标
+   */
 	render: function ( renderer, writeBuffer, readBuffer /*, deltaTime, maskActive */ ) {
 
 		if ( this.uniforms[ this.textureID ] ) {
-
 			this.uniforms[ this.textureID ].value = readBuffer.texture;
-
 		}
 
 		this.fsQuad.material = this.material;
 
 		if ( this.renderToScreen ) {
-
 			renderer.setRenderTarget( null );
 			this.fsQuad.render( renderer );
-
-		} else {
-
+		}
+		else {
 			renderer.setRenderTarget( writeBuffer );
 			// TODO: Avoid using autoClear properties, see https://github.com/mrdoob/three.js/pull/15571#issuecomment-465669600
 			if ( this.clear ) renderer.clear( renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil );
 			this.fsQuad.render( renderer );
-
 		}
-
 	}
 
 } );

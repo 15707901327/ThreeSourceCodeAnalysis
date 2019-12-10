@@ -2,7 +2,7 @@ import {
   OrthographicCamera,
   PlaneBufferGeometry,
   Mesh
-} from "../../../build/three_r108.module.js";
+} from "../../../build/three.module.js";
 
 /**
  * 渲染通道基类

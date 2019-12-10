@@ -2584,10 +2584,12 @@ function WebGLRenderer(parameters) {
 
   };
 
+  /**
+   * 获取当前渲染目标
+   * @returns {*}
+   */
   this.getRenderTarget = function() {
-
     return _currentRenderTarget;
-
   };
 
   /**

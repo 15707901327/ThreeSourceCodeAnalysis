@@ -16,7 +16,7 @@ import {
 	ShaderMaterial,
 	UniformsUtils,
 	WebGLRenderTarget
-} from "../../../build/three_r108.module.js";
+} from "../../../build/three.module.js";
 import { Pass } from "../postprocessing/Pass.js";
 import { CopyShader } from "../shaders/CopyShader.js";
 import { LuminosityShader } from "../shaders/LuminosityShader.js";

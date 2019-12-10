@@ -14,8 +14,8 @@ import {
   CullFaceFront,
   CullFaceBack,
   CullFaceNone,
-	DoubleSide,
-	BackSide,
+  DoubleSide,
+  BackSide,
   CustomBlending,
   MultiplyBlending,
   SubtractiveBlending,
@@ -23,21 +23,21 @@ import {
   NoBlending,
   NormalBlending,
   AddEquation,
-	SubtractEquation,
-	ReverseSubtractEquation,
-	MinEquation,
-	MaxEquation,
-	ZeroFactor,
-	OneFactor,
-	SrcColorFactor,
-	SrcAlphaFactor,
-	SrcAlphaSaturateFactor,
-	DstColorFactor,
-	DstAlphaFactor,
-	OneMinusSrcColorFactor,
-	OneMinusSrcAlphaFactor,
-	OneMinusDstColorFactor,
-	OneMinusDstAlphaFactor
+  SubtractEquation,
+  ReverseSubtractEquation,
+  MinEquation,
+  MaxEquation,
+  ZeroFactor,
+  OneFactor,
+  SrcColorFactor,
+  SrcAlphaFactor,
+  SrcAlphaSaturateFactor,
+  DstColorFactor,
+  DstAlphaFactor,
+  OneMinusSrcColorFactor,
+  OneMinusSrcAlphaFactor,
+  OneMinusDstColorFactor,
+  OneMinusDstAlphaFactor
 } from '../../constants.js';
 import {Vector4} from '../../math/Vector4.js';
 
@@ -52,7 +52,7 @@ import {Vector4} from '../../math/Vector4.js';
  */
 function WebGLState(gl, extensions, capabilities) {
 
-	var isWebGL2 = capabilities.isWebGL2;
+  var isWebGL2 = capabilities.isWebGL2;
 
   function ColorBuffer() {
 
@@ -68,7 +68,7 @@ function WebGLState(gl, extensions, capabilities) {
        * 设置在绘制或呈现WebGLFramebuffer时启用或禁用哪些颜色组件
        * @param colorMask true 启动 false 禁用
        */
-      setMask: function (colorMask) {
+      setMask: function(colorMask) {
 
         if (currentColorMask !== colorMask && !locked) {
 
@@ -79,13 +79,13 @@ function WebGLState(gl, extensions, capabilities) {
 
       },
 
-      setLocked: function (lock) {
+      setLocked: function(lock) {
 
         locked = lock;
 
       },
 
-      setClear: function (r, g, b, a, premultipliedAlpha) {
+      setClear: function(r, g, b, a, premultipliedAlpha) {
 
         if (premultipliedAlpha === true) {
 
@@ -106,7 +106,7 @@ function WebGLState(gl, extensions, capabilities) {
 
       },
 
-      reset: function () {
+      reset: function() {
 
         locked = false;
 
@@ -133,7 +133,7 @@ function WebGLState(gl, extensions, capabilities) {
        * 隐藏面消除 true 启动 false 不启动
        * @param depthTest
        */
-      setTest: function (depthTest) {
+      setTest: function(depthTest) {
         if (depthTest) {
           enable(gl.DEPTH_TEST);
         } else {
@@ -144,7 +144,7 @@ function WebGLState(gl, extensions, capabilities) {
       /**
        * @param depthMask 指定是锁定深度缓存区的写入操作（false），还是释放（true）
        */
-      setMask: function (depthMask) {
+      setMask: function(depthMask) {
 
         if (currentDepthMask !== depthMask && !locked) {
 
@@ -159,13 +159,13 @@ function WebGLState(gl, extensions, capabilities) {
        * 将传入像素深度与当前深度缓冲区值进行比较的函数
        * @param depthFunc
        */
-      setFunc: function (depthFunc) {
+      setFunc: function(depthFunc) {
 
         if (currentDepthFunc !== depthFunc) {
 
           if (depthFunc) {
 
-            switch (depthFunc) {
+            switch(depthFunc){
 
               case NeverDepth:
 
@@ -225,7 +225,7 @@ function WebGLState(gl, extensions, capabilities) {
 
       },
 
-      setLocked: function (lock) {
+      setLocked: function(lock) {
 
         locked = lock;
 
@@ -235,14 +235,14 @@ function WebGLState(gl, extensions, capabilities) {
        * 指定绘图区域的深度
        * @param depth
        */
-      setClear: function (depth) {
+      setClear: function(depth) {
         if (currentDepthClear !== depth) {
           gl.clearDepth(depth);
           currentDepthClear = depth;
         }
       },
 
-      reset: function () {
+      reset: function() {
 
         locked = false;
 
@@ -258,6 +258,7 @@ function WebGLState(gl, extensions, capabilities) {
 
   function StencilBuffer() {
 
+    // 锁定操作
     var locked = false;
 
     var currentStencilMask = null;
@@ -271,25 +272,17 @@ function WebGLState(gl, extensions, capabilities) {
 
     return {
 
-      setTest: function (stencilTest) {
-
-				if ( ! locked ) {
-
-        if (stencilTest) {
-
-          enable(gl.STENCIL_TEST);
-
-        } else {
-
-          disable(gl.STENCIL_TEST);
-
+      setTest: function(stencilTest) {
+        if (!locked) {
+          if (stencilTest) {
+            enable(gl.STENCIL_TEST);
+          } else {
+            disable(gl.STENCIL_TEST);
+          }
         }
-
-				}
-
       },
 
-      setMask: function (stencilMask) {
+      setMask: function(stencilMask) {
 
         if (currentStencilMask !== stencilMask && !locked) {
 
@@ -300,7 +293,7 @@ function WebGLState(gl, extensions, capabilities) {
 
       },
 
-      setFunc: function (stencilFunc, stencilRef, stencilMask) {
+      setFunc: function(stencilFunc, stencilRef, stencilMask) {
 
         if (currentStencilFunc !== stencilFunc ||
           currentStencilRef !== stencilRef ||
@@ -316,7 +309,13 @@ function WebGLState(gl, extensions, capabilities) {
 
       },
 
-      setOp: function (stencilFail, stencilZFail, stencilZPass) {
+      /**
+       *
+       * @param stencilFail
+       * @param stencilZFail
+       * @param stencilZPass
+       */
+      setOp: function(stencilFail, stencilZFail, stencilZPass) {
 
         if (currentStencilFail !== stencilFail ||
           currentStencilZFail !== stencilZFail ||
@@ -327,18 +326,16 @@ function WebGLState(gl, extensions, capabilities) {
           currentStencilFail = stencilFail;
           currentStencilZFail = stencilZFail;
           currentStencilZPass = stencilZPass;
-
         }
-
       },
 
-      setLocked: function (lock) {
+      setLocked: function(lock) {
 
         locked = lock;
 
       },
 
-      setClear: function (stencil) {
+      setClear: function(stencil) {
 
         if (currentStencilClear !== stencil) {
 
@@ -349,7 +346,7 @@ function WebGLState(gl, extensions, capabilities) {
 
       },
 
-      reset: function () {
+      reset: function() {
 
         locked = false;
 
@@ -414,8 +411,7 @@ function WebGLState(gl, extensions, capabilities) {
     version = parseFloat(/^WebGL\ ([0-9])/.exec(glVersion)[1]);
     lineWidthAvailable = (version >= 1.0);
 
-  }
-  else if (glVersion.indexOf('OpenGL ES') !== -1) {
+  } else if (glVersion.indexOf('OpenGL ES') !== -1) {
 
     version = parseFloat(/^OpenGL\ ES\ ([0-9])/.exec(glVersion)[1]);
     lineWidthAvailable = (version >= 2.0);
@@ -501,9 +497,9 @@ function WebGLState(gl, extensions, capabilities) {
 
     if (attributeDivisors[attribute] !== meshPerAttribute) {
 
-			var extension = isWebGL2 ? gl : extensions.get('ANGLE_instanced_arrays');
+      var extension = isWebGL2 ? gl : extensions.get('ANGLE_instanced_arrays');
 
-			extension[isWebGL2 ? 'vertexAttribDivisor' : 'vertexAttribDivisorANGLE'](attribute, meshPerAttribute);
+      extension[isWebGL2 ? 'vertexAttribDivisor' : 'vertexAttribDivisorANGLE'](attribute, meshPerAttribute);
       attributeDivisors[attribute] = meshPerAttribute;
 
     }
@@ -545,9 +541,9 @@ function WebGLState(gl, extensions, capabilities) {
       gl.disable(id);
       enabledCapabilities[id] = false;
 
-      }
-
     }
+
+  }
 
   function useProgram(program) {
 
@@ -565,43 +561,43 @@ function WebGLState(gl, extensions, capabilities) {
 
   }
 
-	var equationToGL = {
-		[AddEquation]: gl.FUNC_ADD,
-		[SubtractEquation]: gl.FUNC_SUBTRACT,
-		[ReverseSubtractEquation]: gl.FUNC_REVERSE_SUBTRACT
-	};
+  var equationToGL = {
+    [AddEquation]: gl.FUNC_ADD,
+    [SubtractEquation]: gl.FUNC_SUBTRACT,
+    [ReverseSubtractEquation]: gl.FUNC_REVERSE_SUBTRACT
+  };
 
-	if (isWebGL2) {
+  if (isWebGL2) {
 
-		equationToGL[MinEquation] = gl.MIN;
-		equationToGL[MaxEquation] = gl.MAX;
+    equationToGL[MinEquation] = gl.MIN;
+    equationToGL[MaxEquation] = gl.MAX;
 
-	} else {
+  } else {
 
-		var extension = extensions.get('EXT_blend_minmax');
+    var extension = extensions.get('EXT_blend_minmax');
 
-		if (extension !== null) {
+    if (extension !== null) {
 
-			equationToGL[MinEquation] = extension.MIN_EXT;
-			equationToGL[MaxEquation] = extension.MAX_EXT;
+      equationToGL[MinEquation] = extension.MIN_EXT;
+      equationToGL[MaxEquation] = extension.MAX_EXT;
 
-		}
+    }
 
-	}
+  }
 
-	var factorToGL = {
-		[ZeroFactor]: gl.ZERO,
-		[OneFactor]: gl.ONE,
-		[SrcColorFactor]: gl.SRC_COLOR,
-		[SrcAlphaFactor]: gl.SRC_ALPHA,
-		[SrcAlphaSaturateFactor]: gl.SRC_ALPHA_SATURATE,
-		[DstColorFactor]: gl.DST_COLOR,
-		[DstAlphaFactor]: gl.DST_ALPHA,
-		[OneMinusSrcColorFactor]: gl.ONE_MINUS_SRC_COLOR,
-		[OneMinusSrcAlphaFactor]: gl.ONE_MINUS_SRC_ALPHA,
-		[OneMinusDstColorFactor]: gl.ONE_MINUS_DST_COLOR,
-		[OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA
-	};
+  var factorToGL = {
+    [ZeroFactor]: gl.ZERO,
+    [OneFactor]: gl.ONE,
+    [SrcColorFactor]: gl.SRC_COLOR,
+    [SrcAlphaFactor]: gl.SRC_ALPHA,
+    [SrcAlphaSaturateFactor]: gl.SRC_ALPHA_SATURATE,
+    [DstColorFactor]: gl.DST_COLOR,
+    [DstAlphaFactor]: gl.DST_ALPHA,
+    [OneMinusSrcColorFactor]: gl.ONE_MINUS_SRC_COLOR,
+    [OneMinusSrcAlphaFactor]: gl.ONE_MINUS_SRC_ALPHA,
+    [OneMinusDstColorFactor]: gl.ONE_MINUS_DST_COLOR,
+    [OneMinusDstAlphaFactor]: gl.ONE_MINUS_DST_ALPHA
+  };
 
   /**
    * 设置混合
@@ -643,7 +639,7 @@ function WebGLState(gl, extensions, capabilities) {
 
         // 设置混合方程参数
         if (premultipliedAlpha) {
-          switch (blending) {
+          switch(blending){
             case NormalBlending:
               gl.blendFuncSeparate(gl.ONE, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
               break;
@@ -660,9 +656,8 @@ function WebGLState(gl, extensions, capabilities) {
               console.error('THREE.WebGLState: Invalid blending: ', blending);
               break;
           }
-        }
-        else {
-          switch (blending) {
+        } else {
+          switch(blending){
             case NormalBlending:
               gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
               break;
@@ -700,7 +695,7 @@ function WebGLState(gl, extensions, capabilities) {
     // 设置混合方程
     if (blendEquation !== currentBlendEquation || blendEquationAlpha !== currentBlendEquationAlpha) {
 
-			gl.blendEquationSeparate(equationToGL[blendEquation], equationToGL[blendEquationAlpha]);
+      gl.blendEquationSeparate(equationToGL[blendEquation], equationToGL[blendEquationAlpha]);
 
       currentBlendEquation = blendEquation;
       currentBlendEquationAlpha = blendEquationAlpha;
@@ -709,7 +704,7 @@ function WebGLState(gl, extensions, capabilities) {
     // 设置混合方程参数
     if (blendSrc !== currentBlendSrc || blendDst !== currentBlendDst || blendSrcAlpha !== currentBlendSrcAlpha || blendDstAlpha !== currentBlendDstAlpha) {
 
-			gl.blendFuncSeparate(factorToGL[blendSrc], factorToGL[blendDst], factorToGL[blendSrcAlpha], factorToGL[blendDstAlpha]);
+      gl.blendFuncSeparate(factorToGL[blendSrc], factorToGL[blendDst], factorToGL[blendSrcAlpha], factorToGL[blendDstAlpha]);
 
       currentBlendSrc = blendSrc;
       currentBlendDst = blendDst;
@@ -745,15 +740,15 @@ function WebGLState(gl, extensions, capabilities) {
     depthBuffer.setMask(material.depthWrite);
     colorBuffer.setMask(material.colorWrite);
 
-		var stencilWrite = material.stencilWrite;
-		stencilBuffer.setTest( stencilWrite );
-		if ( stencilWrite ) {
+    var stencilWrite = material.stencilWrite;
+    stencilBuffer.setTest(stencilWrite);
+    if (stencilWrite) {
 
-			stencilBuffer.setMask(material.stencilWriteMask);
-			stencilBuffer.setFunc(material.stencilFunc, material.stencilRef, material.stencilFuncMask);
-			stencilBuffer.setOp( material.stencilFail, material.stencilZFail, material.stencilZPass );
+      stencilBuffer.setMask(material.stencilWriteMask);
+      stencilBuffer.setFunc(material.stencilFunc, material.stencilRef, material.stencilFuncMask);
+      stencilBuffer.setOp(material.stencilFail, material.stencilZFail, material.stencilZPass);
 
-		}
+    }
 
     setPolygonOffset(material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits);
 
@@ -907,32 +902,32 @@ function WebGLState(gl, extensions, capabilities) {
       boundTexture.type = webglType;
       boundTexture.texture = webglTexture;
 
-		}
-
     }
 
-	function unbindTexture() {
+  }
 
-		var boundTexture = currentBoundTextures[currentTextureSlot];
+  function unbindTexture() {
 
-		if (boundTexture !== undefined && boundTexture.type !== undefined) {
+    var boundTexture = currentBoundTextures[currentTextureSlot];
 
-			gl.bindTexture(boundTexture.type, null);
+    if (boundTexture !== undefined && boundTexture.type !== undefined) {
 
-			boundTexture.type = undefined;
-			boundTexture.texture = undefined;
+      gl.bindTexture(boundTexture.type, null);
 
-		}
+      boundTexture.type = undefined;
+      boundTexture.texture = undefined;
+
+    }
 
   }
 
   function compressedTexImage2D() {
 
-    try {
+    try{
 
       gl.compressedTexImage2D.apply(gl, arguments);
 
-    } catch (error) {
+    }catch(error){
 
       console.error('THREE.WebGLState:', error);
 
@@ -944,20 +939,20 @@ function WebGLState(gl, extensions, capabilities) {
    * 将image指定的图像分配给绑定的目标上的纹理对象。
    */
   function texImage2D() {
-    try {
+    try{
       gl.texImage2D.apply(gl, arguments);
-    } catch (error) {
+    }catch(error){
       console.error('THREE.WebGLState:', error);
     }
   }
 
   function texImage3D() {
 
-    try {
+    try{
 
       gl.texImage3D.apply(gl, arguments);
 
-    } catch (error) {
+    }catch(error){
 
       console.error('THREE.WebGLState:', error);
 
@@ -1047,7 +1042,7 @@ function WebGLState(gl, extensions, capabilities) {
 
     activeTexture: activeTexture,
     bindTexture: bindTexture,
-		unbindTexture: unbindTexture,
+    unbindTexture: unbindTexture,
     compressedTexImage2D: compressedTexImage2D,
     texImage2D: texImage2D,
     texImage3D: texImage3D,

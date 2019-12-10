@@ -11,7 +11,7 @@ import {
   RGBAFormat,
   Vector2,
   WebGLRenderTarget
-} from "../../../build/three_r108.module.js";
+} from "../../../build/three.module.js";
 import {CopyShader} from "../../shaders/CopyShader.js";
 import {ShaderPass} from "../postprocessing/ShaderPass.js";
 import {MaskPass} from "../postprocessing/MaskPass.js";
@@ -42,7 +42,8 @@ var EffectComposer = function(renderer, renderTarget) {
 
     renderTarget = new WebGLRenderTarget(this._width * this._pixelRatio, this._height * this._pixelRatio, parameters);
     renderTarget.texture.name = 'EffectComposer.rt1';
-  } else {
+  }
+  else {
     this._pixelRatio = 1;
     this._width = renderTarget.width;
     this._height = renderTarget.height;
@@ -114,7 +115,7 @@ Object.assign(EffectComposer.prototype, {
 
   /**
    * 渲染
-   * @param deltaTime
+   * @param deltaTime 时间
    */
   render: function(deltaTime) {
 
@@ -134,7 +135,7 @@ Object.assign(EffectComposer.prototype, {
       if (pass.enabled === false) continue;
 
       // 调用渲染通道的渲染
-      pass.renderToScreen = (this.renderToScreen && this.isLastEnabledPass(i));
+      pass.renderToScreen = (this.renderToScreen && this.isLastEnabledPass(i)); // 计算是否渲染到屏幕
       pass.render(this.renderer, this.writeBuffer, this.readBuffer, deltaTime, maskActive);
 
       if (pass.needsSwap) {
