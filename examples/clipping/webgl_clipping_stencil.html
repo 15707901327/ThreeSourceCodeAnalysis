@@ -12,7 +12,7 @@
 </div>
 
 <script type="module">
-  import * as THREE from '../../build/three_r111.module.js';
+  import * as THREE from '../../build/three.module.js';
   import {OrbitControls} from '../jsm/controls/OrbitControls.js';
   import {GUI} from '../jsm/libs/dat.gui.module.js';
   import Stats from '../jsm/libs/stats.module.js';
@@ -69,18 +69,6 @@
     baseMat.stencilWrite = true;
     baseMat.stencilFunc = THREE.AlwaysStencilFunc;
 
-    // back faces
-    var mat0 = baseMat.clone();
-    mat0.side = THREE.BackSide;
-    mat0.clippingPlanes = [plane];
-    mat0.stencilFail = THREE.IncrementWrapStencilOp;
-    mat0.stencilZFail = THREE.IncrementWrapStencilOp;
-    mat0.stencilZPass = THREE.IncrementWrapStencilOp;
-
-    var mesh0 = new THREE.Mesh(geometry, mat0);
-    mesh0.renderOrder = renderOrder;
-    group.add(mesh0);
-
     // front faces
     var mat1 = baseMat.clone();
     mat1.side = THREE.FrontSide;
@@ -92,6 +80,18 @@
     var mesh1 = new THREE.Mesh(geometry, mat1);
     mesh1.renderOrder = renderOrder;
     group.add(mesh1);
+
+    // back faces
+    var mat0 = baseMat.clone();
+    mat0.side = THREE.BackSide;
+    mat0.clippingPlanes = [plane];
+    mat0.stencilFail = THREE.IncrementWrapStencilOp;
+    mat0.stencilZFail = THREE.IncrementWrapStencilOp;
+    mat0.stencilZPass = THREE.IncrementWrapStencilOp;
+
+    var mesh0 = new THREE.Mesh(geometry, mat0);
+    mesh0.renderOrder = renderOrder;
+    group.add(mesh0);
 
     return group;
 
