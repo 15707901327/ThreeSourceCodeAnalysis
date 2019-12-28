@@ -18,8 +18,8 @@
     <div class="left">
       <h4><a href="#BaseUse">基本用法</a></h4>
       <ul class="ul-1">
-        <li><a href="#Folder">控制项分组</a></li>
         <li><a href="#Control">各种类型的控件</a></li>
+        <li><a href="#Folder">控制项分组（Folder）</a></li>
       </ul>
     </div>
     <div class="right">
@@ -53,13 +53,6 @@
             <ul class="ul-1">
               <li>width:设置宽度</li>
             </ul>
-          </div>
-        </section>
-        <section id="Folder">
-          <h4>创建项分组</h4>
-          <div class="content">
-            <p>var folder1 = panel.addFolder('Visibility');</p>
-            <p>folder1.open();// 展开分组项</p>
           </div>
         </section>
         <section id="Control">
@@ -97,6 +90,24 @@
                 <p>gui.add(controls, 'rotationSpeed', { Stopped: 0, Slow: 0.02, Fast: 5 });</p>
               </li>
             </ul>
+          </div>
+        </section>
+      </section>
+      <section id="Folder" class="section1">
+        <h4 class="title">创建项分组(Folder)</h4>
+        <section>
+          <h4>创建项分组</h4>
+          <div class="content">
+            <p>var folder = gui.addFolder('Visibility');</p>
+          </div>
+        </section>
+        <section>
+          <h4>方法说明</h4>
+          <div class="content">
+            <strong>open():</strong>
+            <p>folder.open();// 展开分组项</p>
+            <strong>remove():</strong>
+            <p>folder.remove(controller);// 删除控制器</p>
           </div>
         </section>
       </section>
