@@ -1,15 +1,16 @@
 * {
     margin: 0;
     padding: 0;
+    font-size: 16px;
+}
+
+html,body{
+    width: 100%;
+    height: 100%;
 }
 
 h1 {
     text-align: center;
-}
-
-html,body{
-    height: 100%;
-    width: 100%;
 }
 
 p {
@@ -73,29 +74,89 @@ ul {
     border-radius: 28px;
 }
 
-.wrapper {
-    margin: 0 auto;
-    width: 80%;
-    min-width: 800px;
+/**************** 连接 ***************/
+.header {
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    background-color: #d7d7d7;
+    border-bottom: 1px solid #cacaca;
 }
 
-.l-r-wrapper {
-    min-width: 800px;
-    min-height: 929px;
+.header ul {
+    text-align: right;
+    margin-right: 5%;
+    height: calc(100% - 15px);
+    padding-top: 15px;
+}
+
+.header ul li {
+    display: inline-block;
+    vertical-align: baseline;
+    background: darkgrey;
+    margin: 0 5px;
+    padding: 0 15px;
+    height: 100%;
+    border-radius: 5px 5px 0 0;
+}
+
+.header ul .li_heightLight{
+    background: #43d4cd;
+    box-shadow: 0 0 3px #206e9c;
+}
+
+.header ul :after{
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 100%;
+    vertical-align: middle;
+}
+
+/*************内容*****************/
+.content {
+    height: calc(100% - 60px);
+    padding-top: 60px;
+    overflow: hidden;
     background-color: #f0f0f0;
 }
 
+.l-r-wrapper {
+    height: 100%;
+}
+
 .left {
-    width: 300px;
+    height: 100%;
+    width: 15%;
     float: left;
-    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.left::-webkit-scrollbar {
+    width: 4px;
+}
+
+.left::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.left::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.1);
+
 }
 
 .right {
     background-color: #fff;
-    overflow: hidden;
+    overflow: auto;
     height: 100%;
-    min-height: 929px;
+}
+
+.right::-webkit-scrollbar {
+    width: 0;
 }
 
 .divLeft{
@@ -103,8 +164,10 @@ ul {
     margin: 20px 20px 20px 0;
 }
 .section1 {
-    margin-top: 20px;
-    border-top: 1px dashed burlywood;
+    border: 1px solid burlywood;
+    border-radius: 10px;
+    margin: 15px;
+    background-color: #f0f0f0;
 }
 
 .section1 .title {
@@ -114,8 +177,13 @@ ul {
     padding: 5px 0;
 }
 
+section {
+    clear: both;
+}
+
 section .content {
     margin-left: 2em;
+    padding: 0;
 }
 
 .bg-1 {

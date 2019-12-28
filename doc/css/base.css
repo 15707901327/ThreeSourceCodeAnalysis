@@ -1,0 +1,49 @@
+body{
+    background: #f8f8f8;
+}
+
+header{
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 0 0 2px #eeeded
+}
+
+.wrapper {
+    margin: 0 auto;
+    padding: 3rem 3rem 1rem 3rem;
+}
+
+.wrapper .content{
+    background: #ffffff;
+    border: 1px solid #f8f8f8;
+    margin-top: 1rem;
+    border-radius: 0.2rem;
+    box-shadow: 0.1rem 0.1rem 1.1rem 1.1rem #eeeded;
+    padding: 1rem;
+}
+
+section .title{
+    font-size: 1.5rem;
+    padding: 1.5rem 0;
+}
+section .img1{
+    width: 100%;
+}
+
+section pre{
+    background: black;
+    color: #ffffff;
+    border-radius: 0.5rem;
+}
+
+.divRight{
+    float: right;
+    margin: 0.5rem;
+    background: #5d5b5b;
+    box-shadow: 0.1rem 0.1rem 0.5rem 0.5rem #5d5b5b;
+}
