@@ -27,7 +27,7 @@
     }
   </style>
 
-  <script src="../../build/three_r101.js"></script>
+  <script src="../../build/three_r110.min.js"></script>
   <script src="../js/loaders/DRACOLoader.js"></script>
   <script src="../js/loaders/GLTFLoader.js"></script>
   <script src="../js/Car.js"></script>
@@ -159,7 +159,7 @@
 				var loader = new THREE.GLTFLoader();
 				loader.setDRACOLoader(new THREE.DRACOLoader());
 
-				loader.load('../models/gltf/ferrari.glb', function (gltf) {
+				loader.load('../../models/gltf/ferrari.glb', function (gltf) {
 
 					carModel = gltf.scene.children[0];
 
