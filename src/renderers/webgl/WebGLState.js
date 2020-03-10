@@ -906,6 +906,9 @@ function WebGLState(gl, extensions, capabilities) {
 
   }
 
+  /**
+   * 解绑当前纹理
+   */
   function unbindTexture() {
 
     var boundTexture = currentBoundTextures[currentTextureSlot];
@@ -916,9 +919,7 @@ function WebGLState(gl, extensions, capabilities) {
 
       boundTexture.type = undefined;
       boundTexture.texture = undefined;
-
     }
-
   }
 
   function compressedTexImage2D() {

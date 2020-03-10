@@ -470,8 +470,12 @@ function WebGLRenderer(parameters) {
 
   };
 
+  /**
+   * 获取当前视口
+   * @param target
+   * @returns {never}
+   */
   this.getCurrentViewport = function(target) {
-
     if (target === undefined) {
 
       console.warn('WebGLRenderer: .getCurrentViewport() now requires a Vector4 as an argument');
@@ -479,9 +483,7 @@ function WebGLRenderer(parameters) {
       target = new Vector4();
 
     }
-
     return target.copy(_currentViewport);
-
   };
 
   this.getViewport = function(target) {
@@ -2734,6 +2736,12 @@ function WebGLRenderer(parameters) {
 
   };
 
+  /**
+   * 拷贝帧缓冲到贴图
+   * @param position 复制开始位置
+   * @param texture 复制目标纹理
+   * @param level 水平
+   */
   this.copyFramebufferToTexture = function(position, texture, level) {
 
     if (level === undefined) level = 0;
@@ -2744,11 +2752,9 @@ function WebGLRenderer(parameters) {
     var glFormat = utils.convert(texture.format);
 
     textures.setTexture2D(texture, 0);
-
     _gl.copyTexImage2D(_gl.TEXTURE_2D, level, glFormat, position.x, position.y, width, height, 0);
 
     state.unbindTexture();
-
   };
 
   this.copyTextureToTexture = function(position, srcTexture, dstTexture, level) {
