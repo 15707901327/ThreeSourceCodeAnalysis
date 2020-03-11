@@ -771,7 +771,7 @@ function WebGLRenderer(parameters) {
    */
   this.renderBufferDirect = function(camera, fog, geometry, material, object, group) {
 
-    // 控制缠绕方向 true 反转缠绕方向
+    // 计算顺时针缠绕，还是逆时针缠绕
     var frontFaceCW = (object.isMesh && object.matrixWorld.determinant() < 0);
 
     // 根据材质设置绘制图形的方式（剔除、缠绕方向、混合、偏移）
@@ -888,8 +888,7 @@ function WebGLRenderer(parameters) {
         }
 
       }
-    }
-    else if (object.isLine) {
+    } else if (object.isLine) {
 
       var lineWidth = material.linewidth;
 
@@ -911,11 +910,9 @@ function WebGLRenderer(parameters) {
 
       }
 
-    }
-    else if (object.isPoints) {
+    } else if (object.isPoints) {
       renderer.setMode(_gl.POINTS);
-    }
-    else if (object.isSprite) {
+    } else if (object.isSprite) {
       renderer.setMode(_gl.TRIANGLES);
 
     }
@@ -924,13 +921,11 @@ function WebGLRenderer(parameters) {
 
       renderer.renderInstances(geometry, drawStart, drawCount, object.count);
 
-    }
-    else if (geometry.isInstancedBufferGeometry) {
+    } else if (geometry.isInstancedBufferGeometry) {
 
       renderer.renderInstances(geometry, drawStart, drawCount, geometry.maxInstancedCount);
 
-    }
-    else {
+    } else {
       renderer.render(drawStart, drawCount);
     }
   };
@@ -1198,7 +1193,6 @@ function WebGLRenderer(parameters) {
     if (camera.parent === null) camera.updateMatrixWorld();
 
     if (vr.enabled && vr.isPresenting()) {
-
       camera = vr.getCamera(camera);
     }
 
@@ -1221,6 +1215,7 @@ function WebGLRenderer(parameters) {
     // 初始化渲染列表
     currentRenderList = renderLists.get(scene, camera);
     currentRenderList.init();
+
     // 对象添加到渲染列表
     projectObject(scene, camera, 0, _this.sortObjects);
     if (_this.sortObjects === true) {
@@ -1231,6 +1226,7 @@ function WebGLRenderer(parameters) {
     if (_clippingEnabled) _clipping.beginShadows();
     var shadowsArray = currentRenderState.state.shadowsArray;
     shadowMap.render(shadowsArray, scene, camera);
+
     // 设置灯光
     currentRenderState.setupLights(camera);
     if (_clippingEnabled) _clipping.endShadows();
@@ -1259,8 +1255,7 @@ function WebGLRenderer(parameters) {
 
       if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera, overrideMaterial);
       if (transparentObjects.length) renderObjects(transparentObjects, scene, camera, overrideMaterial);
-    }
-    else {
+    } else {
       // opaque pass (front-to-back order)
       if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera);
       // transparent pass (back-to-front order)
@@ -1314,23 +1309,21 @@ function WebGLRenderer(parameters) {
     if (visible) {
       if (object.isGroup) {
         groupOrder = object.renderOrder;
-      }
-      else if (object.isLOD) {
+      } else if (object.isLOD) {
         if (object.autoUpdate === true) object.update(camera);
-      }
-      else if (object.isLight) {
+      } else if (object.isLight) {
         currentRenderState.pushLight(object);
         if (object.castShadow) {
           currentRenderState.pushShadow(object);
         }
-      }
-      else if (object.isSprite) {
+      } else if (object.isSprite) {
         if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
           if (sortObjects) {
             _vector3.setFromMatrixPosition(object.matrixWorld)
             .applyMatrix4(_projScreenMatrix);
           }
 
+          // 解析几何体，几何体属性分配缓冲区对象
           var geometry = objects.update(object);
           var material = object.material;
 
@@ -1338,15 +1331,13 @@ function WebGLRenderer(parameters) {
             currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
           }
         }
-      }
-      else if (object.isImmediateRenderObject) {
+      } else if (object.isImmediateRenderObject) {
         if (sortObjects) {
           _vector3.setFromMatrixPosition(object.matrixWorld)
           .applyMatrix4(_projScreenMatrix);
         }
         currentRenderList.push(object, null, object.material, groupOrder, _vector3.z, null);
-      }
-      else if (object.isMesh || object.isLine || object.isPoints) {
+      } else if (object.isMesh || object.isLine || object.isPoints) {
         if (object.isSkinnedMesh) {
           // update skeleton only once in a frame
           if (object.skeleton.frame !== info.render.frame) {
@@ -1362,7 +1353,7 @@ function WebGLRenderer(parameters) {
             _vector3.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix);
           }
 
-          // 更新几何体及参数
+          // 解析几何体，几何体属性分配缓冲区对象
           var geometry = objects.update(object);
           var material = object.material;
 
@@ -1378,8 +1369,7 @@ function WebGLRenderer(parameters) {
                 currentRenderList.push(object, geometry, groupMaterial, groupOrder, _vector3.z, group);
               }
             }
-          }
-          else if (material.visible) {
+          } else if (material.visible) {
             currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
           }
         }
@@ -1407,17 +1397,16 @@ function WebGLRenderer(parameters) {
 
       var renderItem = renderList[i];
 
-      var object = renderItem.object;
-      var geometry = renderItem.geometry;
-      var material = overrideMaterial === undefined ? renderItem.material : overrideMaterial;
+      var object = renderItem.object; // 渲染对象
+      var geometry = renderItem.geometry; // 渲染对象几何体
+      var material = overrideMaterial === undefined ? renderItem.material : overrideMaterial; // 渲染材质
       var group = renderItem.group;
 
       if (camera.isArrayCamera) {
         _currentArrayCamera = camera;
         if (vr.enabled && multiview.isAvailable()) {
           renderObject(object, scene, camera, geometry, material, group);
-        }
-        else {
+        } else {
 
           var cameras = camera.cameras;
           for (var j = 0, jl = cameras.length; j < jl; j++) {
@@ -1430,8 +1419,7 @@ function WebGLRenderer(parameters) {
           }
         }
 
-      }
-      else {
+      } else {
         _currentArrayCamera = null;
         renderObject(object, scene, camera, geometry, material, group);
       }
@@ -1451,6 +1439,7 @@ function WebGLRenderer(parameters) {
 
     // 渲染之前调用方法
     object.onBeforeRender(_this, scene, camera, geometry, material, group);
+
     // 获取渲染状态
     currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
 
@@ -1471,8 +1460,7 @@ function WebGLRenderer(parameters) {
 
       renderObjectImmediate(object, program);
 
-    }
-    else {
+    } else {
       _this.renderBufferDirect(camera, scene.fog, geometry, material, object, group);
     }
 
@@ -1509,22 +1497,18 @@ function WebGLRenderer(parameters) {
     if (program === undefined) {
       // new material
       material.addEventListener('dispose', onMaterialDispose);
-    }
-    else if (program.cacheKey !== programCacheKey) {
+    } else if (program.cacheKey !== programCacheKey) {
 
       // changed glsl or parameters
       releaseMaterialProgramReference(material);
 
-    }
-    else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
+    } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
       materialProperties.lightsStateVersion = lightsStateVersion;
       programChange = false;
-    }
-    else if (parameters.shaderID !== undefined) {
+    } else if (parameters.shaderID !== undefined) {
       // same glsl and uniform list
       return;
-    }
-    else {
+    } else {
       // only rebuild uniform list
       programChange = false;
     }
@@ -1540,8 +1524,7 @@ function WebGLRenderer(parameters) {
           vertexShader: shader.vertexShader,
           fragmentShader: shader.fragmentShader
         };
-      }
-      else {
+      } else {
         materialProperties.shader = {
           name: material.type,
           uniforms: material.uniforms,
@@ -1891,14 +1874,12 @@ function WebGLRenderer(parameters) {
 
         refreshUniformsCommon(m_uniforms, material);
 
-      }
-      else if (material.isMeshLambertMaterial) {
+      } else if (material.isMeshLambertMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsLambert(m_uniforms, material);
 
-      }
-      else if (material.isMeshPhongMaterial) {
+      } else if (material.isMeshPhongMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
 
@@ -1912,8 +1893,7 @@ function WebGLRenderer(parameters) {
 
         }
 
-      }
-      else if (material.isMeshStandardMaterial) {
+      } else if (material.isMeshStandardMaterial) {
 
         // 刷新属性（opacity、color、map等）
         refreshUniformsCommon(m_uniforms, material);
@@ -1929,33 +1909,28 @@ function WebGLRenderer(parameters) {
 
         }
 
-      }
-      else if (material.isMeshMatcapMaterial) {
+      } else if (material.isMeshMatcapMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
 
         refreshUniformsMatcap(m_uniforms, material);
 
-      }
-      else if (material.isMeshDepthMaterial) {
+      } else if (material.isMeshDepthMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsDepth(m_uniforms, material);
 
-      }
-      else if (material.isMeshDistanceMaterial) {
+      } else if (material.isMeshDistanceMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsDistance(m_uniforms, material);
 
-      }
-      else if (material.isMeshNormalMaterial) {
+      } else if (material.isMeshNormalMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsNormal(m_uniforms, material);
 
-      }
-      else if (material.isLineBasicMaterial) {
+      } else if (material.isLineBasicMaterial) {
 
         refreshUniformsLine(m_uniforms, material);
 
@@ -1965,18 +1940,15 @@ function WebGLRenderer(parameters) {
 
         }
 
-      }
-      else if (material.isPointsMaterial) {
+      } else if (material.isPointsMaterial) {
 
         refreshUniformsPoints(m_uniforms, material);
 
-      }
-      else if (material.isSpriteMaterial) {
+      } else if (material.isSpriteMaterial) {
 
         refreshUniformsSprites(m_uniforms, material);
 
-      }
-      else if (material.isShadowMaterial) {
+      } else if (material.isShadowMaterial) {
 
         m_uniforms.color.value.copy(material.color);
         m_uniforms.opacity.value = material.opacity;

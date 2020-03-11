@@ -42,7 +42,7 @@ function BufferGeometry() {
   this.attributes = {}; // 保存属性信息
 
   this.morphAttributes = {};
-	this.morphTargetsRelative = false;
+  this.morphTargetsRelative = false;
 
   this.groups = [];
 
@@ -105,7 +105,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     }
 
-		return this.setAttribute( name, attribute );
+    return this.setAttribute(name, attribute);
 
   },
 
@@ -115,20 +115,24 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   },
 
-	setAttribute: function ( name, attribute ) {
+  setAttribute: function(name, attribute) {
 
-		this.attributes[ name ] = attribute;
+    this.attributes[name] = attribute;
 
-		return this;
+    return this;
 
-	},
+  },
 
-	deleteAttribute: function ( name ) {
+  /**
+   * 删除属性
+   * @param name 属性名称
+   * @returns {EventDispatcher}
+   */
+  deleteAttribute: function(name) {
 
     delete this.attributes[name];
 
     return this;
-
   },
 
   addGroup: function(start, count, materialIndex) {
@@ -309,14 +313,14 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
       var positions = new Float32BufferAttribute(geometry.vertices.length * 3, 3);
       var colors = new Float32BufferAttribute(geometry.colors.length * 3, 3);
 
-			this.setAttribute( 'position', positions.copyVector3sArray( geometry.vertices ) );
-			this.setAttribute( 'color', colors.copyColorsArray( geometry.colors ) );
+      this.setAttribute('position', positions.copyVector3sArray(geometry.vertices));
+      this.setAttribute('color', colors.copyColorsArray(geometry.colors));
 
       if (geometry.lineDistances && geometry.lineDistances.length === geometry.vertices.length) {
 
         var lineDistances = new Float32BufferAttribute(geometry.lineDistances.length, 1);
 
-				this.setAttribute( 'lineDistance', lineDistances.copyArray( geometry.lineDistances ) );
+        this.setAttribute('lineDistance', lineDistances.copyArray(geometry.lineDistances));
 
       }
 
@@ -332,8 +336,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
       }
 
-    }
-    else if (object.isMesh) {
+    } else if (object.isMesh) {
       if (geometry && geometry.isGeometry) {
         this.fromGeometry(geometry);
       }
@@ -352,7 +355,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     }
 
-		this.setAttribute( 'position', new Float32BufferAttribute( position, 3 ) );
+    this.setAttribute('position', new Float32BufferAttribute(position, 3));
 
     return this;
 
@@ -511,26 +514,26 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
   fromDirectGeometry: function(geometry) {
 
     var positions = new Float32Array(geometry.vertices.length * 3);
-		this.setAttribute( 'position', new BufferAttribute( positions, 3 ).copyVector3sArray( geometry.vertices ) );
+    this.setAttribute('position', new BufferAttribute(positions, 3).copyVector3sArray(geometry.vertices));
 
     if (geometry.normals.length > 0) {
       var normals = new Float32Array(geometry.normals.length * 3);
-			this.setAttribute( 'normal', new BufferAttribute( normals, 3 ).copyVector3sArray( geometry.normals ) );
+      this.setAttribute('normal', new BufferAttribute(normals, 3).copyVector3sArray(geometry.normals));
     }
 
     if (geometry.colors.length > 0) {
       var colors = new Float32Array(geometry.colors.length * 3);
-			this.setAttribute( 'color', new BufferAttribute( colors, 3 ).copyColorsArray( geometry.colors ) );
+      this.setAttribute('color', new BufferAttribute(colors, 3).copyColorsArray(geometry.colors));
     }
 
     if (geometry.uvs.length > 0) {
       var uvs = new Float32Array(geometry.uvs.length * 2);
-			this.setAttribute( 'uv', new BufferAttribute( uvs, 2 ).copyVector2sArray( geometry.uvs ) );
+      this.setAttribute('uv', new BufferAttribute(uvs, 2).copyVector2sArray(geometry.uvs));
     }
 
     if (geometry.uvs2.length > 0) {
       var uvs2 = new Float32Array(geometry.uvs2.length * 2);
-			this.setAttribute( 'uv2', new BufferAttribute( uvs2, 2 ).copyVector2sArray( geometry.uvs2 ) );
+      this.setAttribute('uv2', new BufferAttribute(uvs2, 2).copyVector2sArray(geometry.uvs2));
     }
 
     // groups
@@ -560,12 +563,12 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
     // skinning
     if (geometry.skinIndices.length > 0) {
       var skinIndices = new Float32BufferAttribute(geometry.skinIndices.length * 4, 4);
-			this.setAttribute( 'skinIndex', skinIndices.copyVector4sArray( geometry.skinIndices ) );
+      this.setAttribute('skinIndex', skinIndices.copyVector4sArray(geometry.skinIndices));
     }
 
     if (geometry.skinWeights.length > 0) {
       var skinWeights = new Float32BufferAttribute(geometry.skinWeights.length * 4, 4);
-			this.setAttribute( 'skinWeight', skinWeights.copyVector4sArray( geometry.skinWeights ) );
+      this.setAttribute('skinWeight', skinWeights.copyVector4sArray(geometry.skinWeights));
     }
 
     //
@@ -581,37 +584,37 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   computeBoundingBox: function() {
 
-      if (this.boundingBox === null) {
+    if (this.boundingBox === null) {
 
-        this.boundingBox = new Box3();
+      this.boundingBox = new Box3();
 
-      }
+    }
 
-      var position = this.attributes.position;
-      var morphAttributesPosition = this.morphAttributes.position;
+    var position = this.attributes.position;
+    var morphAttributesPosition = this.morphAttributes.position;
 
-      if (position !== undefined) {
+    if (position !== undefined) {
 
-        this.boundingBox.setFromBufferAttribute(position);
+      this.boundingBox.setFromBufferAttribute(position);
 
-        // process morph attributes if present
+      // process morph attributes if present
 
-        if (morphAttributesPosition) {
+      if (morphAttributesPosition) {
 
-          for (var i = 0, il = morphAttributesPosition.length; i < il; i++) {
+        for (var i = 0, il = morphAttributesPosition.length; i < il; i++) {
 
-            var morphAttribute = morphAttributesPosition[i];
-            _box.setFromBufferAttribute(morphAttribute);
+          var morphAttribute = morphAttributesPosition[i];
+          _box.setFromBufferAttribute(morphAttribute);
 
-					if ( this.morphTargetsRelative ) {
+          if (this.morphTargetsRelative) {
 
-						_vector.addVectors( this.boundingBox.min, _box.min );
-						this.boundingBox.expandByPoint( _vector );
+            _vector.addVectors(this.boundingBox.min, _box.min);
+            this.boundingBox.expandByPoint(_vector);
 
-						_vector.addVectors( this.boundingBox.max, _box.max );
-						this.boundingBox.expandByPoint( _vector );
+            _vector.addVectors(this.boundingBox.max, _box.max);
+            this.boundingBox.expandByPoint(_vector);
 
-					} else {
+          } else {
 
             this.boundingBox.expandByPoint(_box.min);
             this.boundingBox.expandByPoint(_box.max);
@@ -620,21 +623,21 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
         }
 
-			}
-
-      } else {
-
-        this.boundingBox.makeEmpty();
-
       }
 
-      if (isNaN(this.boundingBox.min.x) || isNaN(this.boundingBox.min.y) || isNaN(this.boundingBox.min.z)) {
+    } else {
 
-        console.error('THREE.BufferGeometry.computeBoundingBox: Computed min/max have NaN values. The "position" attribute is likely to have NaN values.', this);
+      this.boundingBox.makeEmpty();
 
-      }
+    }
 
-    },
+    if (isNaN(this.boundingBox.min.x) || isNaN(this.boundingBox.min.y) || isNaN(this.boundingBox.min.z)) {
+
+      console.error('THREE.BufferGeometry.computeBoundingBox: Computed min/max have NaN values. The "position" attribute is likely to have NaN values.', this);
+
+    }
+
+  },
   /**
    * 计算模型的最小包围球的大小
    */
@@ -663,24 +666,24 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
           var morphAttribute = morphAttributesPosition[i];
           _boxMorphTargets.setFromBufferAttribute(morphAttribute);
 
-					if ( this.morphTargetsRelative ) {
+          if (this.morphTargetsRelative) {
 
-						_vector.addVectors( _box.min, _boxMorphTargets.min );
-						_box.expandByPoint( _vector );
+            _vector.addVectors(_box.min, _boxMorphTargets.min);
+            _box.expandByPoint(_vector);
 
-						_vector.addVectors( _box.max, _boxMorphTargets.max );
-						_box.expandByPoint( _vector );
+            _vector.addVectors(_box.max, _boxMorphTargets.max);
+            _box.expandByPoint(_vector);
 
-					} else {
+          } else {
 
-          _box.expandByPoint(_boxMorphTargets.min);
-          _box.expandByPoint(_boxMorphTargets.max);
+            _box.expandByPoint(_boxMorphTargets.min);
+            _box.expandByPoint(_boxMorphTargets.max);
+
+          }
 
         }
 
       }
-
-			}
 
       _box.getCenter(center);
 
@@ -704,18 +707,18 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
         for (var i = 0, il = morphAttributesPosition.length; i < il; i++) {
 
           var morphAttribute = morphAttributesPosition[i];
-					var morphTargetsRelative = this.morphTargetsRelative;
+          var morphTargetsRelative = this.morphTargetsRelative;
 
           for (var j = 0, jl = morphAttribute.count; j < jl; j++) {
 
             _vector.fromBufferAttribute(morphAttribute, j);
 
-						if ( morphTargetsRelative ) {
+            if (morphTargetsRelative) {
 
-							_offset.fromBufferAttribute( position, j );
-							_vector.add( _offset );
+              _offset.fromBufferAttribute(position, j);
+              _vector.add(_offset);
 
-						}
+            }
 
             maxRadiusSq = Math.max(maxRadiusSq, center.distanceToSquared(_vector));
 
@@ -754,7 +757,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
       if (attributes.normal === undefined) {
 
-				this.setAttribute( 'normal', new BufferAttribute( new Float32Array( positions.length ), 3 ) );
+        this.setAttribute('normal', new BufferAttribute(new Float32Array(positions.length), 3));
 
       } else {
 
@@ -964,7 +967,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
       var newAttribute = convertBufferAttribute(attribute, indices);
 
-			geometry2.setAttribute( name, newAttribute );
+      geometry2.setAttribute(name, newAttribute);
 
     }
 
@@ -991,7 +994,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     }
 
-		geometry2.morphTargetsRelative = this.morphTargetsRelative;
+    geometry2.morphTargetsRelative = this.morphTargetsRelative;
 
     // groups
 
@@ -1098,12 +1101,12 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     }
 
-		if ( hasMorphAttributes ) {
+    if (hasMorphAttributes) {
 
-			data.data.morphAttributes = morphAttributes;
-			data.data.morphTargetsRelative = this.morphTargetsRelative;
+      data.data.morphAttributes = morphAttributes;
+      data.data.morphTargetsRelative = this.morphTargetsRelative;
 
-		}
+    }
 
     var groups = this.groups;
 
@@ -1194,7 +1197,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
     for (name in attributes) {
 
       var attribute = attributes[name];
-			this.setAttribute( name, attribute.clone() );
+      this.setAttribute(name, attribute.clone());
 
     }
 
@@ -1217,7 +1220,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     }
 
-		this.morphTargetsRelative = source.morphTargetsRelative;
+    this.morphTargetsRelative = source.morphTargetsRelative;
 
     // groups
 

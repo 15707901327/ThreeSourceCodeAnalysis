@@ -11,7 +11,7 @@
 function WebGLInfo( gl ) {
 
 	var memory = {
-		geometries: 0,
+		geometries: 0, // 记录当前解析几何体的数量
 		textures: 0
 	};
 

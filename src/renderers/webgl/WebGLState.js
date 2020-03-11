@@ -719,15 +719,18 @@ function WebGLState(gl, extensions, capabilities) {
   /**
    * 根据材质设置绘制图形的方式（剔除、缠绕方向、混合、偏移）
    * @param material 材质
-   * @param frontFaceCW 控制缠绕方向 true 反转缠绕方向
+   * @param frontFaceCW false 顺时针缠绕 true 逆时针缠绕
    */
   function setMaterial(material, frontFaceCW) {
 
+    // 开启剔除效果
     material.side === DoubleSide ? disable(gl.CULL_FACE) : enable(gl.CULL_FACE);
 
+    // 翻面
     var flipSided = (material.side === BackSide);
     if (frontFaceCW) flipSided = !flipSided;
 
+    // 设置缠绕方向来确定多边形正反面
     setFlipSided(flipSided);
 
     // 设置材质混合
@@ -761,19 +764,12 @@ function WebGLState(gl, extensions, capabilities) {
   function setFlipSided(flipSided) {
 
     if (currentFlipSided !== flipSided) {
-
       if (flipSided) {
-
         gl.frontFace(gl.CW);
-
       } else {
-
         gl.frontFace(gl.CCW);
-
       }
-
       currentFlipSided = flipSided;
-
     }
 
   }

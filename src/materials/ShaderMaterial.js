@@ -21,7 +21,11 @@ import {cloneUniforms} from '../renderers/shaders/UniformsUtils.js';
  *  morphNormals: <bool>
  * }
  */
-
+/**
+ * 着色器材质
+ * @param parameters
+ * @constructor
+ */
 function ShaderMaterial(parameters) {
 
   Material.call(this);

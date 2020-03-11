@@ -88,8 +88,8 @@ function WebGLGeometries( gl, attributes, info ) {
 	}
 
 	/**
-	 * 更新几何体
-	 * @param geometry
+	 * 为几何体属性创建存储空间
+	 * @param geometry 几何体
 	 */
 	function update( geometry ) {
 
@@ -100,6 +100,7 @@ function WebGLGeometries( gl, attributes, info ) {
 			attributes.update( index, gl.ELEMENT_ARRAY_BUFFER );
 		}
 
+		// 给属性创建存储空间，并保存地址
 		for ( var name in geometryAttributes ) {
 			attributes.update( geometryAttributes[ name ], gl.ARRAY_BUFFER );
 		}

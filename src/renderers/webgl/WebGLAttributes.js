@@ -60,10 +60,10 @@ function WebGLAttributes( gl ) {
 		}
 
 		return {
-			buffer: buffer,
-			type: type,
+			buffer: buffer, // 属性的缓冲空间
+			type: type, // 属性类型
 			bytesPerElement: array.BYTES_PER_ELEMENT,
-			version: attribute.version
+			version: attribute.version // 版本
 		};
 
 	}
@@ -118,7 +118,7 @@ function WebGLAttributes( gl ) {
 	}
 
 	/**
-	 * 管理属性的缓冲空间
+	 * 更新属性的缓冲空间
 	 * @param attribute
 	 * @param bufferType
 	 */
