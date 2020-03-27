@@ -1,10 +1,10 @@
-import { _Math } from './Math.js';
+import { MathUtils } from './MathUtils.js';
 
 /**
  * @author mrdoob / http://mrdoob.com/
  */
 
-var ColorKeywords = { 'aliceblue': 0xF0F8FF, 'antiquewhite': 0xFAEBD7, 'aqua': 0x00FFFF, 'aquamarine': 0x7FFFD4, 'azure': 0xF0FFFF,
+var _colorKeywords = { 'aliceblue': 0xF0F8FF, 'antiquewhite': 0xFAEBD7, 'aqua': 0x00FFFF, 'aquamarine': 0x7FFFD4, 'azure': 0xF0FFFF,
 	'beige': 0xF5F5DC, 'bisque': 0xFFE4C4, 'black': 0x000000, 'blanchedalmond': 0xFFEBCD, 'blue': 0x0000FF, 'blueviolet': 0x8A2BE2,
 	'brown': 0xA52A2A, 'burlywood': 0xDEB887, 'cadetblue': 0x5F9EA0, 'chartreuse': 0x7FFF00, 'chocolate': 0xD2691E, 'coral': 0xFF7F50,
 	'cornflowerblue': 0x6495ED, 'cornsilk': 0xFFF8DC, 'crimson': 0xDC143C, 'cyan': 0x00FFFF, 'darkblue': 0x00008B, 'darkcyan': 0x008B8B,
@@ -29,6 +29,9 @@ var ColorKeywords = { 'aliceblue': 0xF0F8FF, 'antiquewhite': 0xFAEBD7, 'aqua': 0
 	'springgreen': 0x00FF7F, 'steelblue': 0x4682B4, 'tan': 0xD2B48C, 'teal': 0x008080, 'thistle': 0xD8BFD8, 'tomato': 0xFF6347, 'turquoise': 0x40E0D0,
 	'violet': 0xEE82EE, 'wheat': 0xF5DEB3, 'white': 0xFFFFFF, 'whitesmoke': 0xF5F5F5, 'yellow': 0xFFFF00, 'yellowgreen': 0x9ACD32 };
 
+var _hslA = { h: 0, s: 0, l: 0 };
+var _hslB = { h: 0, s: 0, l: 0 };
+
 function Color( r, g, b ) {
 	if ( g === undefined && b === undefined ) {
 		// r is THREE.Color, hex or string
@@ -36,6 +39,30 @@ function Color( r, g, b ) {
 	}
 
 	return this.setRGB( r, g, b );
+
+}
+
+function hue2rgb( p, q, t ) {
+
+	if ( t < 0 ) t += 1;
+	if ( t > 1 ) t -= 1;
+	if ( t < 1 / 6 ) return p + ( q - p ) * 6 * t;
+	if ( t < 1 / 2 ) return q;
+	if ( t < 2 / 3 ) return p + ( q - p ) * 6 * ( 2 / 3 - t );
+	return p;
+
+}
+
+function SRGBToLinear( c ) {
+
+	return ( c < 0.04045 ) ? c * 0.0773993808 : Math.pow( c * 0.9478672986 + 0.0521327014, 2.4 );
+
+}
+
+function LinearToSRGB( c ) {
+
+	return ( c < 0.0031308 ) ? c * 12.92 : 1.055 * ( Math.pow( c, 0.41666 ) ) - 0.055;
+
 }
 
 Object.assign( Color.prototype, {
@@ -96,25 +123,12 @@ Object.assign( Color.prototype, {
 
 	},
 
-	setHSL: function () {
-
-		function hue2rgb( p, q, t ) {
-
-			if ( t < 0 ) t += 1;
-			if ( t > 1 ) t -= 1;
-			if ( t < 1 / 6 ) return p + ( q - p ) * 6 * t;
-			if ( t < 1 / 2 ) return q;
-			if ( t < 2 / 3 ) return p + ( q - p ) * 6 * ( 2 / 3 - t );
-			return p;
-
-		}
-
-		return function setHSL( h, s, l ) {
+	setHSL: function ( h, s, l ) {
 
 			// h,s,l ranges are in 0.0 - 1.0
-			h = _Math.euclideanModulo( h, 1 );
-			s = _Math.clamp( s, 0, 1 );
-			l = _Math.clamp( l, 0, 1 );
+		h = MathUtils.euclideanModulo( h, 1 );
+		s = MathUtils.clamp( s, 0, 1 );
+		l = MathUtils.clamp( l, 0, 1 );
 
 			if ( s === 0 ) {
 
@@ -133,9 +147,7 @@ Object.assign( Color.prototype, {
 
 			return this;
 
-		};
-
-	}(),
+	},
 
 	setStyle: function ( style ) {
 
@@ -246,8 +258,18 @@ Object.assign( Color.prototype, {
 
 		if ( style && style.length > 0 ) {
 
+			return this.setColorName( style );
+
+		}
+
+		return this;
+
+	},
+
+	setColorName: function ( style ) {
+
 			// color keywords
-			var hex = ColorKeywords[ style ];
+		var hex = _colorKeywords[ style ];
 
 			if ( hex !== undefined ) {
 
@@ -260,8 +282,6 @@ Object.assign( Color.prototype, {
 				console.warn( 'THREE.Color: Unknown color ' + style );
 
 			}
-
-		}
 
 		return this;
 
@@ -325,15 +345,7 @@ Object.assign( Color.prototype, {
 
 	},
 
-	copySRGBToLinear: function () {
-
-		function SRGBToLinear( c ) {
-
-			return ( c < 0.04045 ) ? c * 0.0773993808 : Math.pow( c * 0.9478672986 + 0.0521327014, 2.4 );
-
-		}
-
-		return function copySRGBToLinear( color ) {
+	copySRGBToLinear: function ( color ) {
 
 			this.r = SRGBToLinear( color.r );
 			this.g = SRGBToLinear( color.g );
@@ -341,19 +353,9 @@ Object.assign( Color.prototype, {
 
 			return this;
 
-		};
+	},
 
-	}(),
-
-	copyLinearToSRGB: function () {
-
-		function LinearToSRGB( c ) {
-
-			return ( c < 0.0031308 ) ? c * 12.92 : 1.055 * ( Math.pow( c, 0.41666 ) ) - 0.055;
-
-		}
-
-		return function copyLinearToSRGB( color ) {
+	copyLinearToSRGB: function ( color ) {
 
 			this.r = LinearToSRGB( color.r );
 			this.g = LinearToSRGB( color.g );
@@ -361,9 +363,7 @@ Object.assign( Color.prototype, {
 
 			return this;
 
-		};
-
-	}(),
+	},
 
 	convertSRGBToLinear: function () {
 
@@ -449,23 +449,17 @@ Object.assign( Color.prototype, {
 
 	},
 
-	offsetHSL: function () {
+	offsetHSL: function ( h, s, l ) {
 
-		var hsl = {};
+		this.getHSL( _hslA );
 
-		return function ( h, s, l ) {
+		_hslA.h += h; _hslA.s += s; _hslA.l += l;
 
-			this.getHSL( hsl );
-
-			hsl.h += h; hsl.s += s; hsl.l += l;
-
-			this.setHSL( hsl.h, hsl.s, hsl.l );
+		this.setHSL( _hslA.h, _hslA.s, _hslA.l );
 
 			return this;
 
-		};
-
-	}(),
+	},
 
 	add: function ( color ) {
 
@@ -537,27 +531,20 @@ Object.assign( Color.prototype, {
 
 	},
 
-	lerpHSL: function () {
+	lerpHSL: function ( color, alpha ) {
 
-		var hslA = { h: 0, s: 0, l: 0 };
-		var hslB = { h: 0, s: 0, l: 0 };
+		this.getHSL( _hslA );
+		color.getHSL( _hslB );
 
-		return function lerpHSL( color, alpha ) {
-
-			this.getHSL( hslA );
-			color.getHSL( hslB );
-
-			var h = _Math.lerp( hslA.h, hslB.h, alpha );
-			var s = _Math.lerp( hslA.s, hslB.s, alpha );
-			var l = _Math.lerp( hslA.l, hslB.l, alpha );
+		var h = MathUtils.lerp( _hslA.h, _hslB.h, alpha );
+		var s = MathUtils.lerp( _hslA.s, _hslB.s, alpha );
+		var l = MathUtils.lerp( _hslA.l, _hslB.l, alpha );
 
 			this.setHSL( h, s, l );
 
 			return this;
 
-		};
-
-	}(),
+	},
 
 	equals: function ( c ) {
 
@@ -598,5 +585,6 @@ Object.assign( Color.prototype, {
 
 } );
 
+Color.NAMES = _colorKeywords;
 
 export { Color };

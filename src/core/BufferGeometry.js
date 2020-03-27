@@ -12,7 +12,7 @@ import {DirectGeometry} from './DirectGeometry.js';
 import {Object3D} from './Object3D.js';
 import {Matrix4} from '../math/Matrix4.js';
 import {Matrix3} from '../math/Matrix3.js';
-import {_Math} from '../math/Math.js';
+import { MathUtils } from '../math/MathUtils.js';
 import {arrayMax} from '../utils.js';
 
 /**
@@ -33,7 +33,7 @@ function BufferGeometry() {
 
   Object.defineProperty(this, 'id', {value: _bufferGeometryId += 2});
 
-  this.uuid = _Math.generateUUID();
+	this.uuid = MathUtils.generateUUID();
 
   this.name = '';
   this.type = 'BufferGeometry';
@@ -69,7 +69,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   /**
    * 设置顶点索引
-   * @param index 索引值
+   * @param index 索引值数组
    */
   setIndex: function(index) {
 
@@ -80,47 +80,21 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
     }
   },
 
-  /**
-   * 把属性添加到this.attributes中
-   * @param name
-   * @param attribute
-   * @return {*}
-   */
-  addAttribute: function(name, attribute) {
-
-    if (!(attribute && attribute.isBufferAttribute) && !(attribute && attribute.isInterleavedBufferAttribute)) {
-
-      console.warn('THREE.BufferGeometry: .addAttribute() now expects ( name, attribute ).');
-
-      return this.addAttribute(name, new BufferAttribute(arguments[1], arguments[2]));
-
-    }
-
-    if (name === 'index') {
-
-      console.warn('THREE.BufferGeometry.addAttribute: Use .setIndex() for index attribute.');
-      this.setIndex(attribute);
-
-      return this;
-
-    }
-
-    return this.setAttribute(name, attribute);
-
-  },
-
   getAttribute: function(name) {
 
     return this.attributes[name];
 
   },
 
+  /**
+   * 设置attribute属性
+   * @param name 属性名称
+   * @param attribute 属性值
+   * @returns {EventDispatcher}
+   */
   setAttribute: function(name, attribute) {
-
     this.attributes[name] = attribute;
-
     return this;
-
   },
 
   /**
@@ -163,13 +137,14 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
     this.drawRange.count = count;
   },
 
-  applyMatrix: function(matrix) {
+	applyMatrix4: function ( matrix ) {
 
     var position = this.attributes.position;
 
     if (position !== undefined) {
 
-      matrix.applyToBufferAttribute(position);
+			position.applyMatrix4( matrix );
+
       position.needsUpdate = true;
 
     }
@@ -180,7 +155,8 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
       var normalMatrix = new Matrix3().getNormalMatrix(matrix);
 
-      normalMatrix.applyToBufferAttribute(normal);
+			normal.applyNormalMatrix( normalMatrix );
+
       normal.needsUpdate = true;
 
     }
@@ -189,10 +165,8 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     if (tangent !== undefined) {
 
-      var normalMatrix = new Matrix3().getNormalMatrix(matrix);
+			tangent.transformDirection( matrix );
 
-      // Tangent is vec4, but the '.w' component is a sign value (+1/-1).
-      normalMatrix.applyToBufferAttribute(tangent);
       tangent.needsUpdate = true;
 
     }
@@ -219,7 +193,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     _m1.makeRotationX(angle);
 
-    this.applyMatrix(_m1);
+		this.applyMatrix4( _m1 );
 
     return this;
 
@@ -231,7 +205,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     _m1.makeRotationY(angle);
 
-    this.applyMatrix(_m1);
+		this.applyMatrix4( _m1 );
 
     return this;
 
@@ -243,7 +217,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     _m1.makeRotationZ(angle);
 
-    this.applyMatrix(_m1);
+		this.applyMatrix4( _m1 );
 
     return this;
 
@@ -255,7 +229,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     _m1.makeTranslation(x, y, z);
 
-    this.applyMatrix(_m1);
+		this.applyMatrix4( _m1 );
 
     return this;
 
@@ -267,7 +241,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     _m1.makeScale(x, y, z);
 
-    this.applyMatrix(_m1);
+		this.applyMatrix4( _m1 );
 
     return this;
 
@@ -279,7 +253,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     _obj.updateMatrix();
 
-    this.applyMatrix(_obj.matrix);
+		this.applyMatrix4( _obj.matrix );
 
     return this;
 

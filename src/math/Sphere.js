@@ -1,6 +1,8 @@
 import {Box3} from './Box3.js';
 import {Vector3} from './Vector3.js';
 
+var _box = new Box3();
+
 /**
  * @author bhouston / http://clara.io
  * @author mrdoob / http://mrdoob.com/
@@ -30,14 +32,7 @@ Object.assign(Sphere.prototype, {
 
   },
 
-  /**
-   * 设置圆心和半径
-   */
-  setFromPoints: function () {
-
-    var box = new Box3();
-
-    return function setFromPoints(points, optionalCenter) {
+	setFromPoints: function ( points, optionalCenter ) {
 
       var center = this.center;
 
@@ -47,7 +42,7 @@ Object.assign(Sphere.prototype, {
 
       } else {
 
-        box.setFromPoints(points).getCenter(center);
+			_box.setFromPoints( points ).getCenter( center );
 
       }
 
@@ -63,9 +58,7 @@ Object.assign(Sphere.prototype, {
 
       return this;
 
-    };
-
-  }(),
+	},
 
   clone: function () {
 

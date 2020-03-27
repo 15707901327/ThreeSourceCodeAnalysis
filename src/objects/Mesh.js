@@ -6,7 +6,7 @@ import {Matrix4} from '../math/Matrix4.js';
 import {Object3D} from '../core/Object3D.js';
 import {Triangle} from '../math/Triangle.js';
 import {Face3} from '../core/Face3.js';
-import {DoubleSide, BackSide, TrianglesDrawMode} from '../constants.js';
+import { DoubleSide, BackSide } from '../constants.js';
 import {MeshBasicMaterial} from '../materials/MeshBasicMaterial.js';
 import {BufferGeometry} from '../core/BufferGeometry.js';
 
@@ -47,9 +47,7 @@ function Mesh(geometry, material) {
   this.type = 'Mesh';
 
   this.geometry = geometry !== undefined ? geometry : new BufferGeometry();
-  this.material = material !== undefined ? material : new MeshBasicMaterial({color: Math.random() * 0xffffff});
-
-  this.drawMode = TrianglesDrawMode; // 绘制图形的方式
+	this.material = material !== undefined ? material : new MeshBasicMaterial();
 
   this.updateMorphTargets();
 
@@ -61,17 +59,9 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
 
   isMesh: true,
 
-  setDrawMode: function(value) {
-
-    this.drawMode = value;
-
-  },
-
   copy: function(source) {
 
     Object3D.prototype.copy.call(this, source);
-
-    this.drawMode = source.drawMode;
 
     if (source.morphTargetInfluences !== undefined) {
 
@@ -174,6 +164,7 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
       var index = geometry.index;
       var position = geometry.attributes.position;
       var morphPosition = geometry.morphAttributes.position;
+			var morphTargetsRelative = geometry.morphTargetsRelative;
       var uv = geometry.attributes.uv;
       var uv2 = geometry.attributes.uv2;
       var groups = geometry.groups;
@@ -202,7 +193,7 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
               b = index.getX(j + 1);
               c = index.getX(j + 2);
 
-              intersection = checkBufferGeometryIntersection(this, groupMaterial, raycaster, _ray, position, morphPosition, uv, uv2, a, b, c);
+							intersection = checkBufferGeometryIntersection( this, groupMaterial, raycaster, _ray, position, morphPosition, morphTargetsRelative, uv, uv2, a, b, c );
 
               if (intersection) {
 
@@ -227,7 +218,7 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
             b = index.getX(i + 1);
             c = index.getX(i + 2);
 
-            intersection = checkBufferGeometryIntersection(this, material, raycaster, _ray, position, morphPosition, uv, uv2, a, b, c);
+						intersection = checkBufferGeometryIntersection( this, material, raycaster, _ray, position, morphPosition, morphTargetsRelative, uv, uv2, a, b, c );
 
             if (intersection) {
 
@@ -260,7 +251,7 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
               b = j + 1;
               c = j + 2;
 
-              intersection = checkBufferGeometryIntersection(this, groupMaterial, raycaster, _ray, position, morphPosition, uv, uv2, a, b, c);
+							intersection = checkBufferGeometryIntersection( this, groupMaterial, raycaster, _ray, position, morphPosition, morphTargetsRelative, uv, uv2, a, b, c );
 
               if (intersection) {
 
@@ -285,7 +276,7 @@ Mesh.prototype = Object.assign(Object.create(Object3D.prototype), {
             b = i + 1;
             c = i + 2;
 
-            intersection = checkBufferGeometryIntersection(this, material, raycaster, _ray, position, morphPosition, uv, uv2, a, b, c);
+						intersection = checkBufferGeometryIntersection( this, material, raycaster, _ray, position, morphPosition, morphTargetsRelative, uv, uv2, a, b, c );
 
             if (intersection) {
 
@@ -388,7 +379,7 @@ function checkIntersection(object, material, raycaster, ray, pA, pB, pC, point) 
 
 }
 
-function checkBufferGeometryIntersection(object, material, raycaster, ray, position, morphPosition, uv, uv2, a, b, c) {
+function checkBufferGeometryIntersection( object, material, raycaster, ray, position, morphPosition, morphTargetsRelative, uv, uv2, a, b, c ) {
 
   _vA.fromBufferAttribute(position, a);
   _vB.fromBufferAttribute(position, b);
@@ -413,11 +404,21 @@ function checkBufferGeometryIntersection(object, material, raycaster, ray, posit
       _tempB.fromBufferAttribute(morphAttribute, b);
       _tempC.fromBufferAttribute(morphAttribute, c);
 
+			if ( morphTargetsRelative ) {
+
+				_morphA.addScaledVector( _tempA, influence );
+				_morphB.addScaledVector( _tempB, influence );
+				_morphC.addScaledVector( _tempC, influence );
+
+			} else {
+
       _morphA.addScaledVector(_tempA.sub(_vA), influence);
       _morphB.addScaledVector(_tempB.sub(_vB), influence);
       _morphC.addScaledVector(_tempC.sub(_vC), influence);
 
     }
+
+		}
 
     _vA.add(_morphA);
     _vB.add(_morphB);

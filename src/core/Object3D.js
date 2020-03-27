@@ -5,8 +5,7 @@ import {EventDispatcher} from './EventDispatcher.js';
 import {Euler} from '../math/Euler.js';
 import {Layers} from './Layers.js';
 import {Matrix3} from '../math/Matrix3.js';
-import {_Math} from '../math/Math.js';
-import {TrianglesDrawMode} from '../constants.js';
+import { MathUtils } from '../math/MathUtils.js';
 
 var _object3DId = 0;
 
@@ -38,7 +37,7 @@ function Object3D() {
 
   Object.defineProperty(this, 'id', {value: _object3DId++});
 
-  this.uuid = _Math.generateUUID();
+	this.uuid = MathUtils.generateUUID();
 
   this.name = '';
   this.type = 'Object3D';
@@ -55,15 +54,11 @@ function Object3D() {
   var scale = new Vector3(1, 1, 1);
 
   function onRotationChange() {
-
     quaternion.setFromEuler(rotation, false);
-
   }
 
   function onQuaternionChange() {
-
     rotation.setFromQuaternion(quaternion, undefined, false);
-
   }
 
   rotation._onChange(onRotationChange);
@@ -133,7 +128,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
   onAfterRender: function() {
   },
 
-  applyMatrix: function(matrix) {
+	applyMatrix4: function ( matrix ) {
 
     if (this.matrixAutoUpdate) this.updateMatrix();
 
@@ -269,6 +264,12 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   },
 
+  /**
+   * 设置视点
+   * @param x
+   * @param y
+   * @param z
+   */
   lookAt: function(x, y, z) {
 
     // This method does not support objects having non-uniformly-scaled parent(s)
@@ -310,6 +311,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
     }
 
   },
+
   /**
    * 把object对象放到children数组中，从原有得父类中移除该对象
    * @param object 可以是一个值，也可以是多个值
@@ -318,30 +320,20 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
   add: function(object) {
 
     if (arguments.length > 1) {
-
       for (var i = 0; i < arguments.length; i++) {
-
         this.add(arguments[i]);
-
       }
-
       return this;
-
     }
 
     if (object === this) {
-
       console.error("THREE.Object3D.add: object can't be added as a child of itself.", object);
       return this;
-
     }
 
     if ((object && object.isObject3D)) {
-
       if (object.parent !== null) {
-
         object.parent.remove(object);
-
       }
 
       object.parent = this;
@@ -350,9 +342,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
       object.dispatchEvent(_addedEvent);
 
     } else {
-
       console.error("THREE.Object3D.add: object not an instance of THREE.Object3D.", object);
-
     }
 
     return this;
@@ -404,7 +394,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
     }
 
-    object.applyMatrix(_m1);
+		object.applyMatrix4( _m1 );
 
     object.updateWorldMatrix(false, false);
 
@@ -609,14 +599,17 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   },
 
+  /**
+   * 更新世界矩阵坐标
+   * @param updateParents 更新父类矩阵
+   * @param updateChildren 更新子类矩阵
+   */
   updateWorldMatrix: function(updateParents, updateChildren) {
 
     var parent = this.parent;
 
     if (updateParents === true && parent !== null) {
-
       parent.updateWorldMatrix(true, false);
-
     }
 
     if (this.matrixAutoUpdate) this.updateMatrix();
@@ -626,9 +619,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
       this.matrixWorld.copy(this.matrix);
 
     } else {
-
       this.matrixWorld.multiplyMatrices(this.parent.matrixWorld, this.matrix);
-
     }
 
     // update children
@@ -698,7 +689,13 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
     // object specific properties
 
-    if (this.isMesh && this.drawMode !== TrianglesDrawMode) object.drawMode = this.drawMode;
+		if ( this.isInstancedMesh ) {
+
+			object.type = 'InstancedMesh';
+			object.count = this.count;
+			object.instanceMatrix = this.instanceMatrix.toJSON();
+
+		}
 
     //
 

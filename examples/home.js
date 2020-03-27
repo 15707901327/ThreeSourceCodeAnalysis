@@ -34,7 +34,7 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       this.initScene();
       this.initCamera();
       this.initLight();
-      this.initOrbitControls();
+      // this.initOrbitControls();
       this.initStats();
       this.initObject();
 
@@ -45,7 +45,9 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
         requestAnimationFrame(animate);
 
         //更新控制器
-        _this.orbitControls.update();
+        if (_this.orbitControls) {
+          _this.orbitControls.update();
+        }
         _this.render();
         _this.stats.update();
       }
@@ -71,7 +73,7 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
         antialias: true
       });
       this.webGLRenderer.setSize(this.getWidth(), this.getHeight());
-      this.webGLRenderer.setClearColor(0x00ff00);
+      this.webGLRenderer.setClearColor(0x000000);
       this.container.appendChild(this.webGLRenderer.domElement);
     },
     initScene: function() {
@@ -84,15 +86,16 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
     },
     initCamera: function() {
       this.camera = new THREE.PerspectiveCamera(45, this.getWidth() / this.getHeight(), 0.1, 30000);
-      this.camera.position.set(0, 100, 100);
+      this.camera.position.set(3, 3, 7);
+      this.camera.lookAt(0, 0, 0);
     },
     initLight: function() {
-      var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-      this.scene.add(ambientLight);
+      // var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      // this.scene.add(ambientLight);
 
-      var light = new THREE.DirectionalLight(0xffffff, 1.0);
-      light.position.set(0.5, 3.0, 4.0);
-      this.scene.add(light);
+      // var light = new THREE.DirectionalLight(0xffffff, 1.0);
+      // light.position.set(0.5, 3.0, 4.0);
+      // this.scene.add(light);
 
       // var helper = new THREE.DirectionalLightHelper( light, 4 );
       // this.scene.add( helper );
@@ -145,22 +148,49 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
     },
 
     initObject: function() {
+      var geometry = new THREE.BufferGeometry();
 
-      var onProgress = function(xhr) {};
-      var onError = function() {};
-      let _this = this;
-      new MTLLoader()
-      .setPath('models/obj/blending/')
-      .load('test004.mtl', function(materials) {
-        // materials.preload();
-        new OBJLoader()
-        .setMaterials(materials)
-        .setPath('models/obj/blending/')
-        .load('test004.obj', function(object) {
-          object.children[0].material.blending = THREE.AdditiveBlending;
-          _this.scene.add(object);
-        }, onProgress, onError);
+      var vertices = new Float32Array([
+        1.0, 1.0, 1.0,
+        -1.0, 1.0, 1.0,
+        -1.0, -1.0, 1.0,
+
+        1.0, -1.0, 1.0,
+        1.0, -1.0, -1.0,
+        1.0, 1.0, -1.0,
+
+        -1.0, 1.0, -1.0,
+        -1.0, -1.0, -1.0
+      ]); // 顶点
+      var color = new Float32Array([
+        // 颜色
+        1.0, 1.0, 1.0,  // v0 White
+        1.0, 0.0, 1.0,  // v1 Magenta
+        1.0, 0.0, 0.0,  // v2 Red
+        1.0, 1.0, 0.0,  // v3 Yellow
+        0.0, 1.0, 0.0,  // v4 Green
+        0.0, 1.0, 1.0,  // v5 Cyan
+        0.0, 0.0, 1.0,  // v6 Blue
+        0.0, 0.0, 0.0   // v7 Black
+      ]);
+      var indices = [
+        0, 1, 2, 0, 2, 3,    // front
+        0, 3, 4, 0, 4, 5,    // right
+        0, 5, 6, 0, 6, 1,    // up
+        1, 6, 7, 1, 7, 2,    // left
+        7, 4, 3, 7, 3, 2,    // down
+        4, 7, 6, 4, 6, 5     // back
+      ]; // 顶点索引
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(color, 3));
+      geometry.setIndex(indices);
+
+      var material = new THREE.MeshBasicMaterial({
+        vertexColors: true
       });
+      var mesh = new THREE.Mesh(geometry, material);
+      this.scene.add(mesh);
     },
     /**
      * 添加天空盒子
@@ -211,7 +241,7 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
 $(function() {
   var scene3D = new PGL.scene3D({}, {
     container: document.getElementById("container"),
-    enabledSkyBox: true
+    enabledSkyBox: false
   });
   scene3D.init();
 });

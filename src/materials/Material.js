@@ -1,17 +1,6 @@
 import {EventDispatcher} from '../core/EventDispatcher.js';
-import {
-  NoColors,
-  FrontSide,
-  FlatShading,
-  NormalBlending,
-  LessEqualDepth,
-  AddEquation,
-  OneMinusSrcAlphaFactor,
-  SrcAlphaFactor,
-  AlwaysStencilFunc,
-  KeepStencilOp
-} from '../constants.js';
-import {_Math} from '../math/Math.js';
+import { FrontSide, FlatShading, NormalBlending, LessEqualDepth, AddEquation, OneMinusSrcAlphaFactor, SrcAlphaFactor, AlwaysStencilFunc, KeepStencilOp } from '../constants.js';
+import { MathUtils } from '../math/MathUtils.js';
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -28,7 +17,7 @@ function Material() {
 
   Object.defineProperty(this, 'id', {value: materialId++});
 
-  this.uuid = _Math.generateUUID();
+	this.uuid = MathUtils.generateUUID();
 
   this.name = '';
   this.type = 'Material';
@@ -38,8 +27,7 @@ function Material() {
   this.blending = NormalBlending; // 控制渲染时是否混合
   this.side = FrontSide; // 控制渲染面
   this.flatShading = false;
-  this.vertexTangents = false;
-  this.vertexColors = NoColors; // THREE.NoColors, THREE.VertexColors, THREE.FaceColors
+	this.vertexColors = false;
 
   // 控制透明度
   this.opacity = 1;
@@ -92,7 +80,7 @@ function Material() {
 
   this.userData = {};
 
-  this.needsUpdate = true; // 设置是否需要修改材质
+	this.version = 0;
 
 }
 
@@ -258,7 +246,7 @@ Material.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
     if (this.blending !== NormalBlending) data.blending = this.blending;
     if (this.flatShading === true) data.flatShading = this.flatShading;
     if (this.side !== FrontSide) data.side = this.side;
-    if (this.vertexColors !== NoColors) data.vertexColors = this.vertexColors;
+		if ( this.vertexColors ) data.vertexColors = true;
 
     if (this.opacity < 1) data.opacity = this.opacity;
     if (this.transparent === true) data.transparent = this.transparent;
@@ -355,7 +343,6 @@ Material.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
     this.blending = source.blending;
     this.side = source.side;
     this.flatShading = source.flatShading;
-    this.vertexTangents = source.vertexTangents;
     this.vertexColors = source.vertexColors;
 
     this.opacity = source.opacity;
@@ -431,5 +418,15 @@ Material.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
 });
 
+// 适配之前属性needsUpdate
+Object.defineProperty( Material.prototype, 'needsUpdate', {
+
+	set: function ( value ) {
+
+		if ( value === true ) this.version ++;
+
+	}
+
+} );
 
 export {Material};

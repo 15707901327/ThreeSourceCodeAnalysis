@@ -1,24 +1,29 @@
+/**
+ * @author supereggbert / http://www.paulbrunt.co.uk/
+ * @author mrdoob / http://mrdoob.com/
+ * @author alteredq / http://alteredqualia.com/
+ * @author szimek / https://github.com/szimek/
+ * @author tschw
+ */
+
 import {
   RGBAFormat,
   HalfFloatType,
   FloatType,
   UnsignedByteType,
-  TriangleFanDrawMode,
-  TriangleStripDrawMode,
-  TrianglesDrawMode,
+  LinearEncoding,
   LinearToneMapping,
   BackSide
 } from '../constants.js';
-import {_Math} from '../math/Math.js';
+import {MathUtils} from '../math/MathUtils.js';
 import {DataTexture} from '../textures/DataTexture.js';
 import {Frustum} from '../math/Frustum.js';
 import {Matrix4} from '../math/Matrix4.js';
-import {ShaderLib} from './shaders/ShaderLib.js';
 import {UniformsLib} from './shaders/UniformsLib.js';
-import {cloneUniforms} from './shaders/UniformsUtils.js';
 import {Vector2} from '../math/Vector2.js';
 import {Vector3} from '../math/Vector3.js';
 import {Vector4} from '../math/Vector4.js';
+import {Scene} from '../scenes/Scene.js';
 import {WebGLAnimation} from './webgl/WebGLAnimation.js';
 import {WebGLAttributes} from './webgl/WebGLAttributes.js';
 import {WebGLBackground} from './webgl/WebGLBackground.js';
@@ -40,32 +45,8 @@ import {WebGLState} from './webgl/WebGLState.js';
 import {WebGLTextures} from './webgl/WebGLTextures.js';
 import {WebGLUniforms} from './webgl/WebGLUniforms.js';
 import {WebGLUtils} from './webgl/WebGLUtils.js';
-import {WebGLMultiview} from './webgl/WebGLMultiview.js';
-import {WebVRManager} from './webvr/WebVRManager.js';
-import {WebXRManager} from './webvr/WebXRManager.js';
+import {WebXRManager} from './webxr/WebXRManager.js';
 
-/**
- * @author supereggbert / http://www.paulbrunt.co.uk/
- * @author mrdoob / http://mrdoob.com/
- * @author alteredq / http://alteredqualia.com/
- * @author szimek / https://github.com/szimek/
- * @author tschw
- */
-
-/**
- * 渲染器
- * @param parameters{Object}
- *  canvas : canvas元素
- *  context  ：上下文
- *  alpha：如果它的值是 true，它提供了一个alpha缓冲区到画布上。默认情况下，它的值是 false
- *  depth：如果它的值是true，会得到一个绘图的缓冲区，其中包含至少16位的深度缓冲。默认情况下，它的值是true
- *  stencil：如果它的值是true，会得到一个绘图的缓冲区，其中包含至少8位的模板缓存。默认情况下，它的值是true
- *  antialias：如果它的值是true，会得到一个绘图缓冲区，执行抗锯齿。默认情况下，它的值是false
- *  premultipliedAlpha：如果它的值是true，会得到一个绘图缓冲区，其中包含的颜色与预乘alpha。默认情况下它的值是true
- *  preserveDrawingBuffer：如果它的值是true，缓冲区将不会被清零，直到被清除或由作者改写将保留它们的值。默认情况下，它的值是false
- *  powerPreference：
- * @property domElement canvas元素
- */
 function WebGLRenderer(parameters) {
 
   parameters = parameters || {};
@@ -116,8 +97,7 @@ function WebGLRenderer(parameters) {
   // physically based shading
 
   this.gammaFactor = 2.0;	// for backwards compatibility
-  this.gammaInput = false;
-  this.gammaOutput = false;
+  this.outputEncoding = LinearEncoding;
 
   // physical lights
 
@@ -171,6 +151,8 @@ function WebGLRenderer(parameters) {
     _height = _canvas.height,
 
     _pixelRatio = 1,
+    _opaqueSort = null,
+    _transparentSort = null,
 
     _viewport = new Vector4(0, 0, _width, _height), // 设置绘图区域
     _scissor = new Vector4(0, 0, _width, _height), // 设置裁剪区域
@@ -298,8 +280,7 @@ function WebGLRenderer(parameters) {
     // 管理渲染物体属性
     properties = new WebGLProperties();
     textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
-    attributes = new WebGLAttributes(_gl);
-    // 几何体管理
+    attributes = new WebGLAttributes(_gl, capabilities);
     geometries = new WebGLGeometries(_gl, attributes, info);
     // 对象管理
     objects = new WebGLObjects(_gl, geometries, attributes, info);
@@ -328,15 +309,11 @@ function WebGLRenderer(parameters) {
 
   initGLContext();
 
-  // vr
+  // xr
 
-  var vr = (typeof navigator !== 'undefined' && 'xr' in navigator) ? new WebXRManager(_this, _gl) : new WebVRManager(_this);
+  var xr = new WebXRManager(_this, _gl);
 
-  this.vr = vr;
-
-  // Multiview
-
-  var multiview = new WebGLMultiview(_this, _gl);
+  this.xr = xr;
 
   // shadow map
 
@@ -414,7 +391,7 @@ function WebGLRenderer(parameters) {
    */
   this.setSize = function(width, height, updateStyle) {
 
-    if (vr.isPresenting()) {
+    if (xr.isPresenting) {
 
       console.warn('THREE.WebGLRenderer: Can\'t change size while VR device is presenting.');
       return;
@@ -549,6 +526,18 @@ function WebGLRenderer(parameters) {
 
   };
 
+  this.setOpaqueSort = function(method) {
+
+    _opaqueSort = method;
+
+  };
+
+  this.setTransparentSort = function(method) {
+
+    _transparentSort = method;
+
+  };
+
   // Clearing
 
   this.getClearColor = function() {
@@ -624,7 +613,7 @@ function WebGLRenderer(parameters) {
     properties.dispose();
     objects.dispose();
 
-    vr.dispose();
+    xr.dispose();
 
     animation.stop();
 
@@ -760,6 +749,8 @@ function WebGLRenderer(parameters) {
 
   };
 
+  var tempScene = new Scene();
+
   /**
    * 渲染物体
    * @param camera 相机
@@ -769,16 +760,18 @@ function WebGLRenderer(parameters) {
    * @param object 渲染网格
    * @param group
    */
-  this.renderBufferDirect = function(camera, fog, geometry, material, object, group) {
+  this.renderBufferDirect = function(camera, scene, geometry, material, object, group) {
+
+    if (scene === null) scene = tempScene; // renderBufferDirect second parameter used to be fog (could be null)
 
     // 计算顺时针缠绕，还是逆时针缠绕
     var frontFaceCW = (object.isMesh && object.matrixWorld.determinant() < 0);
 
+    // 设置着色器中的uniform
+    var program = setProgram(camera, scene, material, object);
+
     // 根据材质设置绘制图形的方式（剔除、缠绕方向、混合、偏移）
     state.setMaterial(material, frontFaceCW);
-
-    // 设置着色器中的变量
-    var program = setProgram(camera, fog, material, object);
 
     var updateBuffers = false;
 
@@ -793,22 +786,21 @@ function WebGLRenderer(parameters) {
 
     }
 
-    if (object.morphTargetInfluences) {
+    if (material.morphTargets || material.morphNormals) {
+
       morphtargets.update(object, geometry, material, program);
       updateBuffers = true;
     }
 
-    //
-
     var index = geometry.index;
     var position = geometry.attributes.position;
 
-    //
-
-    if (index !== null && index.count === 0) return;
-    if (position === undefined || position.count === 0) return;
-
-    //
+    if (index === null) {
+      if (position === undefined || position.count === 0) return;
+    }
+    else if (index.count === 0) {
+      return;
+    }
 
     var rangeFactor = 1;
 
@@ -821,18 +813,16 @@ function WebGLRenderer(parameters) {
     var renderer = bufferRenderer;
 
     if (index !== null) {
-
       attribute = attributes.get(index);
 
       renderer = indexedBufferRenderer;
       renderer.setIndex(attribute);
-
     }
 
     // 着色器关联顶点属性
     if (updateBuffers) {
 
-      // 设置顶点相关信息
+      // 设置attribute变量
       setupVertexAttributes(object, geometry, material, program);
 
       if (index !== null) {
@@ -841,13 +831,7 @@ function WebGLRenderer(parameters) {
     }
 
     //
-    var dataCount = Infinity;
-
-    if (index !== null) {
-      dataCount = index.count;
-    } else if (position !== undefined) {
-      dataCount = position.count;
-    }
+    var dataCount = (index !== null) ? index.count : position.count;
 
     var rangeStart = geometry.drawRange.start * rangeFactor;
     var rangeCount = geometry.drawRange.count * rangeFactor;
@@ -871,24 +855,12 @@ function WebGLRenderer(parameters) {
 
       } else {
 
-        switch(object.drawMode){
-
-          case TrianglesDrawMode:
-            renderer.setMode(_gl.TRIANGLES);
-            break;
-
-          case TriangleStripDrawMode:
-            renderer.setMode(_gl.TRIANGLE_STRIP);
-            break;
-
-          case TriangleFanDrawMode:
-            renderer.setMode(_gl.TRIANGLE_FAN);
-            break;
-
-        }
+        renderer.setMode(_gl.TRIANGLES);
 
       }
-    } else if (object.isLine) {
+
+    }
+    else if (object.isLine) {
 
       var lineWidth = material.linewidth;
 
@@ -910,9 +882,11 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else if (object.isPoints) {
+    }
+    else if (object.isPoints) {
       renderer.setMode(_gl.POINTS);
-    } else if (object.isSprite) {
+    }
+    else if (object.isSprite) {
       renderer.setMode(_gl.TRIANGLES);
 
     }
@@ -921,11 +895,13 @@ function WebGLRenderer(parameters) {
 
       renderer.renderInstances(geometry, drawStart, drawCount, object.count);
 
-    } else if (geometry.isInstancedBufferGeometry) {
+    }
+    else if (geometry.isInstancedBufferGeometry) {
 
       renderer.renderInstances(geometry, drawStart, drawCount, geometry.maxInstancedCount);
 
-    } else {
+    }
+    else {
       renderer.render(drawStart, drawCount);
     }
   };
@@ -1100,6 +1076,8 @@ function WebGLRenderer(parameters) {
 
     currentRenderState.setupLights(camera);
 
+    var compiled = {};
+
     scene.traverse(function(object) {
 
       if (object.material) {
@@ -1108,13 +1086,19 @@ function WebGLRenderer(parameters) {
 
           for (var i = 0; i < object.material.length; i++) {
 
-            initMaterial(object.material[i], scene.fog, object);
+            if (object.material[i].uuid in compiled === false) {
+
+              initMaterial(object.material[i], scene, object);
+              compiled[object.material[i].uuid] = true;
+
+            }
 
           }
 
-        } else {
+        } else if (object.material.uuid in compiled === false) {
 
-          initMaterial(object.material, scene.fog, object);
+          initMaterial(object.material, scene, object);
+          compiled[object.material.uuid] = true;
 
         }
 
@@ -1130,7 +1114,7 @@ function WebGLRenderer(parameters) {
 
   function onAnimationFrame(time) {
 
-    if (vr.isPresenting()) return;
+    if (xr.isPresenting) return;
     if (onAnimationFrameCallback) onAnimationFrameCallback(time);
 
   }
@@ -1143,7 +1127,7 @@ function WebGLRenderer(parameters) {
   this.setAnimationLoop = function(callback) {
 
     onAnimationFrameCallback = callback;
-    vr.setAnimationLoop(callback);
+    xr.setAnimationLoop(callback);
 
     animation.start();
 
@@ -1192,8 +1176,10 @@ function WebGLRenderer(parameters) {
     // 更新相机矩阵和视锥
     if (camera.parent === null) camera.updateMatrixWorld();
 
-    if (vr.enabled && vr.isPresenting()) {
-      camera = vr.getCamera(camera);
+    if (xr.enabled && xr.isPresenting) {
+
+      camera = xr.getCamera(camera);
+
     }
 
     // 获取当前渲染状态
@@ -1204,8 +1190,7 @@ function WebGLRenderer(parameters) {
 
     // 投影矩阵 * 视图矩阵
     _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-    // 设置视锥体
-    _frustum.setFromMatrix(_projScreenMatrix);
+    _frustum.setFromProjectionMatrix(_projScreenMatrix);
 
     // 裁剪
     _localClippingEnabled = this.localClippingEnabled;
@@ -1218,8 +1203,13 @@ function WebGLRenderer(parameters) {
 
     // 对象添加到渲染列表
     projectObject(scene, camera, 0, _this.sortObjects);
+
+    currentRenderList.finish();
+
     if (_this.sortObjects === true) {
-      currentRenderList.sort();
+
+      currentRenderList.sort(_opaqueSort, _transparentSort);
+
     }
 
     // 阴影
@@ -1237,10 +1227,6 @@ function WebGLRenderer(parameters) {
     // 设置渲染目标
     if (renderTarget !== undefined) {
       this.setRenderTarget(renderTarget);
-    }
-
-    if (vr.enabled && multiview.isAvailable()) {
-      multiview.attachCamera(camera);
     }
 
     // 背景对象添加到渲染列表
@@ -1278,13 +1264,6 @@ function WebGLRenderer(parameters) {
     state.buffers.color.setMask(true);
 
     state.setPolygonOffset(false);
-
-    if (vr.enabled) {
-      if (multiview.isAvailable()) {
-        multiview.detachCamera(camera);
-      }
-      vr.submitFrame();
-    }
 
     // _gl.finish();
     currentRenderList = null;
@@ -1404,19 +1383,16 @@ function WebGLRenderer(parameters) {
 
       if (camera.isArrayCamera) {
         _currentArrayCamera = camera;
-        if (vr.enabled && multiview.isAvailable()) {
-          renderObject(object, scene, camera, geometry, material, group);
-        } else {
 
-          var cameras = camera.cameras;
-          for (var j = 0, jl = cameras.length; j < jl; j++) {
-            var camera2 = cameras[j];
-            if (object.layers.test(camera2.layers)) {
-              state.viewport(_currentViewport.copy(camera2.viewport));
-              currentRenderState.setupLights(camera2);
-              renderObject(object, scene, camera2, geometry, material, group);
-            }
+        var cameras = camera.cameras;
+        for (var j = 0, jl = cameras.length; j < jl; j++) {
+          var camera2 = cameras[j];
+          if (object.layers.test(camera2.layers)) {
+            state.viewport(_currentViewport.copy(camera2.viewport));
+            currentRenderState.setupLights(camera2);
+            renderObject(object, scene, camera2, geometry, material, group);
           }
+
         }
 
       } else {
@@ -1450,9 +1426,9 @@ function WebGLRenderer(parameters) {
 
     if (object.isImmediateRenderObject) {
 
-      state.setMaterial(material);
+      var program = setProgram(camera, scene, material, object);
 
-      var program = setProgram(camera, scene.fog, material, object);
+      state.setMaterial(material);
 
       _currentGeometryProgram.geometry = null;
       _currentGeometryProgram.program = null;
@@ -1461,7 +1437,7 @@ function WebGLRenderer(parameters) {
       renderObjectImmediate(object, program);
 
     } else {
-      _this.renderBufferDirect(camera, scene.fog, geometry, material, object, group);
+      _this.renderBufferDirect(camera, scene, geometry, material, object, group);
     }
 
     // 渲染之后调用方法
@@ -1470,12 +1446,12 @@ function WebGLRenderer(parameters) {
   }
 
   /**
-   * 创建着色器程序以及参数调整
-   * @param material 材质
-   * @param fog
-   * @param object mesh
+   * 创建着色器，并创建unform变量连接
+   * @param material
+   * @param scene
+   * @param object
    */
-  function initMaterial(material, fog, object) {
+  function initMaterial(material, scene, object) {
 
     // 获取材质渲染属性
     var materialProperties = properties.get(material);
@@ -1486,10 +1462,9 @@ function WebGLRenderer(parameters) {
 
     var lightsStateVersion = lights.state.version;
 
-    // 获取构建着色器参数
-    var parameters = programCache.getParameters(material, lights.state, shadowsArray, fog, _clipping.numPlanes, _clipping.numIntersection, object);
-    // 获取缓存的key值
-    var programCacheKey = programCache.getProgramCacheKey(material, parameters);
+    // 获取材质参数
+    var parameters = programCache.getParameters(material, lights.state, shadowsArray, scene, _clipping.numPlanes, _clipping.numIntersection, object);
+    var programCacheKey = programCache.getProgramCacheKey(parameters);
 
     var program = materialProperties.program;
     var programChange = true;
@@ -1516,32 +1491,12 @@ function WebGLRenderer(parameters) {
     // 获取shader变量、顶点着色器、片元着色器，创建着色器程序
     if (programChange) {
 
-      if (parameters.shaderID) {
-        var shader = ShaderLib[parameters.shaderID];
-        materialProperties.shader = {
-          name: material.type,
-          uniforms: cloneUniforms(shader.uniforms),
-          vertexShader: shader.vertexShader,
-          fragmentShader: shader.fragmentShader
-        };
-      } else {
-        materialProperties.shader = {
-          name: material.type,
-          uniforms: material.uniforms,
-          vertexShader: material.vertexShader,
-          fragmentShader: material.fragmentShader
-        };
-      }
-
-      material.onBeforeCompile(materialProperties.shader, _this);
-
-      // 计算着色器的key
-      programCacheKey = programCache.getProgramCacheKey(material, parameters);
-
-      // 创建着色器
-      program = programCache.acquireProgram(material, materialProperties.shader, parameters, programCacheKey);
+      program = programCache.acquireProgram(parameters, programCacheKey);
 
       materialProperties.program = program;
+      materialProperties.uniforms = parameters.uniforms;
+      materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
+      materialProperties.outputEncoding = _this.outputEncoding;
       material.program = program;
 
     }
@@ -1581,8 +1536,8 @@ function WebGLRenderer(parameters) {
 
     }
 
-    // 材质输入的变量
-    var uniforms = materialProperties.shader.uniforms;
+    // 获取材质统一变量
+    var uniforms = materialProperties.uniforms;
 
     // 刨切参数
     if (!material.isShaderMaterial && !material.isRawShaderMaterial || material.clipping === true) {
@@ -1592,10 +1547,9 @@ function WebGLRenderer(parameters) {
       uniforms.clippingPlanes = _clipping.uniform;
     }
 
-    materialProperties.fog = fog;
+    materialProperties.fog = scene.fog;
 
     // store the light setup it was created for
-
     materialProperties.needsLights = materialNeedsLights(material);
     materialProperties.lightsStateVersion = lightsStateVersion;
 
@@ -1606,9 +1560,12 @@ function WebGLRenderer(parameters) {
       uniforms.ambientLightColor.value = lights.state.ambient;
       uniforms.lightProbe.value = lights.state.probe;
       uniforms.directionalLights.value = lights.state.directional;
+      uniforms.directionalLightShadows.value = lights.state.directionalShadow;
       uniforms.spotLights.value = lights.state.spot;
+      uniforms.spotLightShadows.value = lights.state.spotShadow;
       uniforms.rectAreaLights.value = lights.state.rectArea;
       uniforms.pointLights.value = lights.state.point;
+      uniforms.pointLightShadows.value = lights.state.pointShadow;
       uniforms.hemisphereLights.value = lights.state.hemi;
 
       uniforms.directionalShadowMap.value = lights.state.directionalShadowMap;
@@ -1627,22 +1584,23 @@ function WebGLRenderer(parameters) {
   }
 
   /**
-   * 设置着色器中的变量
-   * @param camera 相机
-   * @param fog
-   * @param material 材质
-   * @param object mesh
-   * @return {*}
+   * 创建着色器，并设置unform变量
+   * @param camera
+   * @param scene
+   * @param material
+   * @param object
+   * @returns {*}
    */
-  function setProgram(camera, fog, material, object) {
+  function setProgram(camera, scene, material, object) {
 
     textures.resetTextureUnits();
 
-    // 获取材质渲染属性
-    var materialProperties = properties.get(material);
-    var lights = currentRenderState.state.lights; // 获取灯光数据
+    var fog = scene.fog;
+    var environment = material.isMeshStandardMaterial ? scene.environment : null;
 
-    // 启动裁剪，设置基础数据
+    var materialProperties = properties.get(material);
+    var lights = currentRenderState.state.lights;
+
     if (_clippingEnabled) {
       if (_localClippingEnabled || camera !== _currentCamera) {
 
@@ -1659,24 +1617,36 @@ function WebGLRenderer(parameters) {
     if (material.version === materialProperties.__version) {
 
       if (materialProperties.program === undefined) {
-        material.needsUpdate = true;
+
+        initMaterial(material, scene, object);
+
       } else if (material.fog && materialProperties.fog !== fog) {
-        material.needsUpdate = true;
+
+        initMaterial(material, scene, object);
+
+      } else if (materialProperties.environment !== environment) {
+
+        initMaterial(material, scene, object);
 
       } else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
 
-        material.needsUpdate = true;
+        initMaterial(material, scene, object);
+
       } else if (materialProperties.numClippingPlanes !== undefined &&
         (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
           materialProperties.numIntersection !== _clipping.numIntersection)) {
-        material.needsUpdate = true;
+
+        initMaterial(material, scene, object);
+
+      } else if (materialProperties.outputEncoding !== _this.outputEncoding) {
+
+        initMaterial(material, scene, object);
+
       }
 
-    }
+    } else {
 
-    // 更新着色器程序
-    if (material.version !== materialProperties.__version) {
-      initMaterial(material, fog, object);
+      initMaterial(material, scene, object);
       materialProperties.__version = material.version;
     }
 
@@ -1686,7 +1656,7 @@ function WebGLRenderer(parameters) {
 
     var program = materialProperties.program,
       p_uniforms = program.getUniforms(),
-      m_uniforms = materialProperties.shader.uniforms;
+      m_uniforms = materialProperties.uniforms;
 
     if (state.useProgram(program.program)) {
       refreshProgram = true;
@@ -1704,23 +1674,11 @@ function WebGLRenderer(parameters) {
 
     // 设置相机的投影矩阵、视图矩阵
     if (refreshProgram || _currentCamera !== camera) {
-
-      if (program.numMultiviewViews > 0) {
-
-        multiview.updateCameraProjectionMatricesUniform(camera, p_uniforms);
-
-      } else {
-        // 设置投影矩阵
-        p_uniforms.setValue(_gl, 'projectionMatrix', camera.projectionMatrix);
-
-      }
-
+      p_uniforms.setValue(_gl, 'projectionMatrix', camera.projectionMatrix);
       if (capabilities.logarithmicDepthBuffer) {
         p_uniforms.setValue(_gl, 'logDepthBufFC', 2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
       }
-
       if (_currentCamera !== camera) {
-
         _currentCamera = camera;
 
         // lighting uniforms depend on the camera so enforce an update
@@ -1737,6 +1695,7 @@ function WebGLRenderer(parameters) {
 
       if (material.isShaderMaterial ||
         material.isMeshPhongMaterial ||
+        material.isMeshToonMaterial ||
         material.isMeshStandardMaterial ||
         material.envMap) {
 
@@ -1749,6 +1708,7 @@ function WebGLRenderer(parameters) {
       }
 
       if (material.isMeshPhongMaterial ||
+        material.isMeshToonMaterial ||
         material.isMeshLambertMaterial ||
         material.isMeshBasicMaterial ||
         material.isMeshStandardMaterial ||
@@ -1759,22 +1719,14 @@ function WebGLRenderer(parameters) {
       }
 
       if (material.isMeshPhongMaterial ||
+        material.isMeshToonMaterial ||
         material.isMeshLambertMaterial ||
         material.isMeshBasicMaterial ||
         material.isMeshStandardMaterial ||
         material.isShaderMaterial ||
         material.skinning) {
 
-        if (program.numMultiviewViews > 0) {
-
-          multiview.updateCameraViewMatricesUniform(camera, p_uniforms);
-
-        } else {
-
-          // 设置视图矩阵
-          p_uniforms.setValue(_gl, 'viewMatrix', camera.matrixWorldInverse);
-
-        }
+        p_uniforms.setValue(_gl, 'viewMatrix', camera.matrixWorldInverse);
 
       }
 
@@ -1782,7 +1734,7 @@ function WebGLRenderer(parameters) {
 
     // skinning uniforms must be set even if material didn't change
     // auto-setting of texture unit for bone texture must go before other textures
-    // not sure why, but otherwise weird things happen
+    // otherwise textures used for skinning can take over texture units reserved for other material textures
 
     if (material.skinning) {
 
@@ -1808,7 +1760,7 @@ function WebGLRenderer(parameters) {
 
 
             var size = Math.sqrt(bones.length * 4); // 4 pixels needed for 1 matrix
-            size = _Math.ceilPowerOfTwo(size);
+            size = MathUtils.ceilPowerOfTwo(size);
             size = Math.max(size, 4);
 
             var boneMatrices = new Float32Array(size * size * 4); // 4 floats per RGBA pixel
@@ -1870,67 +1822,69 @@ function WebGLRenderer(parameters) {
 
       }
 
+      // 获取材质中的属性值到m_uniforms中
       if (material.isMeshBasicMaterial) {
-
         refreshUniformsCommon(m_uniforms, material);
-
-      } else if (material.isMeshLambertMaterial) {
+      }
+      else if (material.isMeshLambertMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsLambert(m_uniforms, material);
 
-      } else if (material.isMeshPhongMaterial) {
+      }
+      else if (material.isMeshToonMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
+        refreshUniformsToon(m_uniforms, material);
 
-        if (material.isMeshToonMaterial) {
+      }
+      else if (material.isMeshPhongMaterial) {
 
-          refreshUniformsToon(m_uniforms, material);
-
-        } else {
-
-          refreshUniformsPhong(m_uniforms, material);
-
-        }
-
-      } else if (material.isMeshStandardMaterial) {
-
-        // 刷新属性（opacity、color、map等）
         refreshUniformsCommon(m_uniforms, material);
+        refreshUniformsPhong(m_uniforms, material);
+
+      }
+      else if (material.isMeshStandardMaterial) {
+
+        refreshUniformsCommon(m_uniforms, material, environment);
 
         if (material.isMeshPhysicalMaterial) {
 
-          refreshUniformsPhysical(m_uniforms, material);
+          refreshUniformsPhysical(m_uniforms, material, environment);
 
         } else {
 
-          // 刷新属性（roughness、metalness）
-          refreshUniformsStandard(m_uniforms, material);
+          refreshUniformsStandard(m_uniforms, material, environment);
 
         }
 
-      } else if (material.isMeshMatcapMaterial) {
+      }
+      else if (material.isMeshMatcapMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
 
         refreshUniformsMatcap(m_uniforms, material);
 
-      } else if (material.isMeshDepthMaterial) {
+      }
+      else if (material.isMeshDepthMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsDepth(m_uniforms, material);
 
-      } else if (material.isMeshDistanceMaterial) {
+      }
+      else if (material.isMeshDistanceMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsDistance(m_uniforms, material);
 
-      } else if (material.isMeshNormalMaterial) {
+      }
+      else if (material.isMeshNormalMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsNormal(m_uniforms, material);
 
-      } else if (material.isLineBasicMaterial) {
+      }
+      else if (material.isLineBasicMaterial) {
 
         refreshUniformsLine(m_uniforms, material);
 
@@ -1940,15 +1894,18 @@ function WebGLRenderer(parameters) {
 
         }
 
-      } else if (material.isPointsMaterial) {
+      }
+      else if (material.isPointsMaterial) {
 
         refreshUniformsPoints(m_uniforms, material);
 
-      } else if (material.isSpriteMaterial) {
+      }
+      else if (material.isSpriteMaterial) {
 
         refreshUniformsSprites(m_uniforms, material);
 
-      } else if (material.isShadowMaterial) {
+      }
+      else if (material.isShadowMaterial) {
 
         m_uniforms.color.value.copy(material.color);
         m_uniforms.opacity.value = material.opacity;
@@ -1957,7 +1914,6 @@ function WebGLRenderer(parameters) {
 
       // RectAreaLight Texture
       // TODO (mrdoob): Find a nicer implementation
-
       if (m_uniforms.ltc_1 !== undefined) m_uniforms.ltc_1.value = UniformsLib.LTC_1;
       if (m_uniforms.ltc_2 !== undefined) m_uniforms.ltc_2.value = UniformsLib.LTC_2;
 
@@ -1986,77 +1942,55 @@ function WebGLRenderer(parameters) {
 
     // common matrices
 
-    if (program.numMultiviewViews > 0) {
-
-      multiview.updateObjectMatricesUniforms(object, camera, p_uniforms);
-
-    } else {
-
-      p_uniforms.setValue(_gl, 'modelViewMatrix', object.modelViewMatrix);
-      p_uniforms.setValue(_gl, 'normalMatrix', object.normalMatrix);
-
-    }
-
+    p_uniforms.setValue(_gl, 'modelViewMatrix', object.modelViewMatrix);
+    p_uniforms.setValue(_gl, 'normalMatrix', object.normalMatrix);
     p_uniforms.setValue(_gl, 'modelMatrix', object.matrixWorld);
 
     return program;
 
   }
 
-  // Uniforms (refresh uniforms objects)
   /**
-   * 刷新uniform属性（opacity、color、map等）
-   * @param uniforms 属性
-   * @param material 当前材质
+   * Uniforms (refresh uniforms objects)
+   * @param uniforms 统一变量集合
+   * @param material 材质
+   * @param environment
    */
-  function refreshUniformsCommon(uniforms, material) {
-
+  function refreshUniformsCommon(uniforms, material, environment) {
     uniforms.opacity.value = material.opacity;
 
     if (material.color) {
-
       uniforms.diffuse.value.copy(material.color);
-
     }
 
     if (material.emissive) {
-
       uniforms.emissive.value.copy(material.emissive).multiplyScalar(material.emissiveIntensity);
-
     }
 
     if (material.map) {
-
       uniforms.map.value = material.map;
-
     }
 
     if (material.alphaMap) {
-
       uniforms.alphaMap.value = material.alphaMap;
-
     }
 
     if (material.specularMap) {
-
       uniforms.specularMap.value = material.specularMap;
-
     }
 
-    if (material.envMap) {
+    var envMap = material.envMap || environment;
 
-      uniforms.envMap.value = material.envMap;
+    if (envMap) {
 
-      // don't flip CubeTexture envMaps, flip everything else:
-      //  WebGLRenderTargetCube will be flipped for backwards compatibility
-      //  WebGLRenderTargetCube.texture will be flipped because it's a Texture and NOT a CubeTexture
-      // this check must be handled differently, or removed entirely, if WebGLRenderTargetCube uses a CubeTexture in the future
-      uniforms.flipEnvMap.value = material.envMap.isCubeTexture ? -1 : 1;
+      uniforms.envMap.value = envMap;
+
+      uniforms.flipEnvMap.value = envMap.isCubeTexture ? -1 : 1;
 
       uniforms.reflectivity.value = material.reflectivity;
       uniforms.refractionRatio.value = material.refractionRatio;
 
-      uniforms.maxMipLevel.value = properties.get(material.envMap).__maxMipLevel;
+      uniforms.maxMipLevel.value = properties.get(envMap).__maxMipLevel;
 
     }
 
@@ -2088,35 +2022,43 @@ function WebGLRenderer(parameters) {
 
       uvScaleMap = material.map;
 
-    } else if (material.specularMap) {
+    }
+    else if (material.specularMap) {
 
       uvScaleMap = material.specularMap;
 
-    } else if (material.displacementMap) {
+    }
+    else if (material.displacementMap) {
 
       uvScaleMap = material.displacementMap;
 
-    } else if (material.normalMap) {
+    }
+    else if (material.normalMap) {
 
       uvScaleMap = material.normalMap;
 
-    } else if (material.bumpMap) {
+    }
+    else if (material.bumpMap) {
 
       uvScaleMap = material.bumpMap;
 
-    } else if (material.roughnessMap) {
+    }
+    else if (material.roughnessMap) {
 
       uvScaleMap = material.roughnessMap;
 
-    } else if (material.metalnessMap) {
+    }
+    else if (material.metalnessMap) {
 
       uvScaleMap = material.metalnessMap;
 
-    } else if (material.alphaMap) {
+    }
+    else if (material.alphaMap) {
 
       uvScaleMap = material.alphaMap;
 
-    } else if (material.emissiveMap) {
+    }
+    else if (material.emissiveMap) {
 
       uvScaleMap = material.emissiveMap;
 
@@ -2138,6 +2080,42 @@ function WebGLRenderer(parameters) {
       }
 
       uniforms.uvTransform.value.copy(uvScaleMap.matrix);
+
+    }
+
+    // uv repeat and offset setting priorities for uv2
+    // 1. ao map
+    // 2. light map
+
+    var uv2ScaleMap;
+
+    if (material.aoMap) {
+
+      uv2ScaleMap = material.aoMap;
+
+    }
+    else if (material.lightMap) {
+
+      uv2ScaleMap = material.lightMap;
+
+    }
+
+    if (uv2ScaleMap !== undefined) {
+
+      // backwards compatibility
+      if (uv2ScaleMap.isWebGLRenderTarget) {
+
+        uv2ScaleMap = uv2ScaleMap.texture;
+
+      }
+
+      if (uv2ScaleMap.matrixAutoUpdate === true) {
+
+        uv2ScaleMap.updateMatrix();
+
+      }
+
+      uniforms.uv2Transform.value.copy(uv2ScaleMap.matrix);
 
     }
 
@@ -2326,7 +2304,8 @@ function WebGLRenderer(parameters) {
 
   function refreshUniformsToon(uniforms, material) {
 
-    refreshUniformsPhong(uniforms, material);
+    uniforms.specular.value.copy(material.specular);
+    uniforms.shininess.value = Math.max(material.shininess, 1e-4); // to prevent pow( 0.0, 0.0 )
 
     if (material.gradientMap) {
 
@@ -2334,14 +2313,39 @@ function WebGLRenderer(parameters) {
 
     }
 
+    if (material.emissiveMap) {
+
+      uniforms.emissiveMap.value = material.emissiveMap;
+
+    }
+
+    if (material.bumpMap) {
+
+      uniforms.bumpMap.value = material.bumpMap;
+      uniforms.bumpScale.value = material.bumpScale;
+      if (material.side === BackSide) uniforms.bumpScale.value *= -1;
+
+    }
+
+    if (material.normalMap) {
+
+      uniforms.normalMap.value = material.normalMap;
+      uniforms.normalScale.value.copy(material.normalScale);
+      if (material.side === BackSide) uniforms.normalScale.value.negate();
+
+    }
+
+    if (material.displacementMap) {
+
+      uniforms.displacementMap.value = material.displacementMap;
+      uniforms.displacementScale.value = material.displacementScale;
+      uniforms.displacementBias.value = material.displacementBias;
+
+    }
+
   }
 
-  /**
-   * 刷新standard属性（roughness、metalness）
-   * @param uniforms
-   * @param material
-   */
-  function refreshUniformsStandard(uniforms, material) {
+  function refreshUniformsStandard(uniforms, material, environment) {
 
     uniforms.roughness.value = material.roughness;
     uniforms.metalness.value = material.metalness;
@@ -2388,7 +2392,7 @@ function WebGLRenderer(parameters) {
 
     }
 
-    if (material.envMap) {
+    if (material.envMap || environment) {
 
       //uniforms.envMap.value = material.envMap; // part of uniforms common
       uniforms.envMapIntensity.value = material.envMapIntensity;
@@ -2397,9 +2401,9 @@ function WebGLRenderer(parameters) {
 
   }
 
-  function refreshUniformsPhysical(uniforms, material) {
+  function refreshUniformsPhysical(uniforms, material, environment) {
 
-    refreshUniformsStandard(uniforms, material);
+    refreshUniformsStandard(uniforms, material, environment);
 
     uniforms.reflectivity.value = material.reflectivity; // also part of uniforms common
 
@@ -2522,8 +2526,11 @@ function WebGLRenderer(parameters) {
     uniforms.lightProbe.needsUpdate = value;
 
     uniforms.directionalLights.needsUpdate = value;
+    uniforms.directionalLightShadows.needsUpdate = value;
     uniforms.pointLights.needsUpdate = value;
+    uniforms.pointLightShadows.needsUpdate = value;
     uniforms.spotLights.needsUpdate = value;
+    uniforms.spotLightShadows.needsUpdate = value;
     uniforms.rectAreaLights.needsUpdate = value;
     uniforms.hemisphereLights.needsUpdate = value;
 
@@ -2531,7 +2538,7 @@ function WebGLRenderer(parameters) {
 
   function materialNeedsLights(material) {
 
-    return material.isMeshLambertMaterial || material.isMeshPhongMaterial ||
+    return material.isMeshLambertMaterial || material.isMeshToonMaterial || material.isMeshPhongMaterial ||
       material.isMeshStandardMaterial || material.isShadowMaterial ||
       (material.isShaderMaterial && material.lights === true);
 
@@ -2591,7 +2598,8 @@ function WebGLRenderer(parameters) {
     if (renderTarget) {
       var __webglFramebuffer = properties.get(renderTarget).__webglFramebuffer;
 
-      if (renderTarget.isWebGLRenderTargetCube) {
+      if (renderTarget.isWebGLCubeRenderTarget) {
+
         framebuffer = __webglFramebuffer[activeCubeFace || 0];
         isCube = true;
       } else if (renderTarget.isWebGLMultisampleRenderTarget) {
@@ -2638,7 +2646,7 @@ function WebGLRenderer(parameters) {
 
     var framebuffer = properties.get(renderTarget).__webglFramebuffer;
 
-    if (renderTarget.isWebGLRenderTargetCube && activeCubeFaceIndex !== undefined) {
+    if (renderTarget.isWebGLCubeRenderTarget && activeCubeFaceIndex !== undefined) {
 
       framebuffer = framebuffer[activeCubeFaceIndex];
 
