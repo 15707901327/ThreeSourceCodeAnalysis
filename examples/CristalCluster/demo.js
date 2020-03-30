@@ -1,5 +1,6 @@
-import {MTLLoader} from './jsm/loaders/MTLLoader.js';
-import {OBJLoader} from './jsm/loaders/OBJLoader.js';
+import {MTLLoader} from '../jsm/loaders/MTLLoader.js';
+import {OBJLoader} from '../jsm/loaders/OBJLoader.js';
+import {CristalCluster} from './CristalCluster.js';
 
 /**
  * 场景初始化区
@@ -90,8 +91,8 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       this.camera.lookAt(0, 0, 0);
     },
     initLight: function() {
-      // var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-      // this.scene.add(ambientLight);
+      var ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+      this.scene.add(ambientLight);
 
       // var light = new THREE.DirectionalLight(0xffffff, 1.0);
       // light.position.set(0.5, 3.0, 4.0);
@@ -100,12 +101,12 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       // var helper = new THREE.DirectionalLightHelper( light, 4 );
       // this.scene.add( helper );
 
-      // var SpotLight = new THREE.SpotLight(0xffffff, .6);
-      // SpotLight.castShadow = true;
-      // SpotLight.position.set(-200, 200, -200);
-      // SpotLight.shadow.mapSize.width = 4096;
-      // SpotLight.shadow.mapSize.height = 4096;
-      // this.scene.add(SpotLight);
+      var SpotLight = new THREE.SpotLight(0xffffff, .6);
+      SpotLight.castShadow = true;
+      SpotLight.position.set(-200, 200, -200);
+      SpotLight.shadow.mapSize.width = 4096;
+      SpotLight.shadow.mapSize.height = 4096;
+      this.scene.add(SpotLight);
     },
     initOrbitControls: function() {
       this.orbitControls = new THREE.OrbitControls(this.camera, this.webGLRenderer.domElement);
@@ -127,13 +128,6 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       this.orbitControls.enablePan = true;
       this.orbitControls.enableRotatePhi = false;
       var orbitControls = this.orbitControls;
-
-      document.getElementById("item1").addEventListener("click", function(event) {
-        orbitControls.handleScale(-1);
-      });
-      document.getElementById("item2").addEventListener("click", function(event) {
-        orbitControls.handleScale(1);
-      });
     },
     initStats: function() {
       this.stats = new Stats();
@@ -148,6 +142,10 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
     },
 
     initObject: function() {
+
+      var cristalCluster = new CristalCluster(10, 40);
+      var cluster = cristalCluster.getCluster();
+
       var geometry = new THREE.BufferGeometry();
 
       var vertices = new Float32Array([
@@ -182,12 +180,12 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
         4, 7, 6, 4, 6, 5     // back
       ]; // 顶点索引
 
-      geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-      geometry.setAttribute('color', new THREE.Float32BufferAttribute(color, 3));
-      geometry.setIndex(indices);
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(cluster.positions, 3));
+      geometry.setAttribute('uvs', new THREE.Float32BufferAttribute(cluster.uvs, 2));
+      geometry.setIndex(cluster.indices);
 
       var material = new THREE.MeshBasicMaterial({
-        vertexColors: true
+        color: 0xff0000
       });
       var mesh = new THREE.Mesh(geometry, material);
       this.scene.add(mesh);
