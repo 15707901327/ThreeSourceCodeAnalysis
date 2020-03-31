@@ -181,18 +181,6 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
         4, 7, 6, 4, 6, 5     // back
       ]; // 顶点索引
 
-      var normals = [
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-      ];
-
       // 顶点坐标
       var posA = new THREE.Vector3();
       var posB = new THREE.Vector3();
