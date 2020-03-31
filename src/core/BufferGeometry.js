@@ -69,7 +69,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   /**
    * 设置顶点索引
-   * @param index 索引值数组
+   * @param index 索引值
    */
   setIndex: function(index) {
 
@@ -717,8 +717,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     // backwards compatibility
 
-  }
-  ,
+  },
 
   computeVertexNormals: function() {
 
@@ -822,8 +821,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
       attributes.normal.needsUpdate = true;
 
     }
-  }
-  ,
+  },
 
   merge: function(geometry, offset) {
 
@@ -870,8 +868,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     return this;
 
-  }
-  ,
+  },
 
   normalizeNormals: function() {
 
@@ -889,8 +886,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     }
 
-  }
-  ,
+  },
 
   toNonIndexed: function() {
 
@@ -983,8 +979,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     return geometry2;
 
-  }
-  ,
+  },
 
   toJSON: function() {
 
@@ -1103,8 +1098,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     return data;
 
-  }
-  ,
+  },
 
   clone: function() {
 
@@ -1134,8 +1128,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     return new BufferGeometry().copy(this);
 
-  }
-  ,
+  },
 
   copy: function(source) {
 
@@ -1238,8 +1231,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     return this;
 
-  }
-  ,
+  },
 
   dispose: function() {
 

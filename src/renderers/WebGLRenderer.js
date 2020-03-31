@@ -617,6 +617,8 @@ function WebGLRenderer(parameters) {
 
     animation.stop();
 
+		this.forceContextLoss();
+
   };
 
   // Events
@@ -1233,8 +1235,9 @@ function WebGLRenderer(parameters) {
     background.render(currentRenderList, scene, camera, forceClear);
 
     // render scene
-    var opaqueObjects = currentRenderList.opaque; // 当前不透明渲染列表
-    var transparentObjects = currentRenderList.transparent;  // 当前透明渲染列表
+
+		var opaqueObjects = currentRenderList.opaque;
+		var transparentObjects = currentRenderList.transparent;
 
     if (scene.overrideMaterial) {
       var overrideMaterial = scene.overrideMaterial;
@@ -2410,6 +2413,18 @@ function WebGLRenderer(parameters) {
     uniforms.clearcoat.value = material.clearcoat;
     uniforms.clearcoatRoughness.value = material.clearcoatRoughness;
     if (material.sheen) uniforms.sheen.value.copy(material.sheen);
+
+		if ( material.clearcoatMap ) {
+
+			uniforms.clearcoatMap.value = material.clearcoatMap;
+
+		}
+
+		if ( material.clearcoatRoughnessMap ) {
+
+			uniforms.clearcoatRoughnessMap.value = material.clearcoatRoughnessMap;
+
+		}
 
     if (material.clearcoatNormalMap) {
 

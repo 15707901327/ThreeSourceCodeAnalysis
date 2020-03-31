@@ -2,15 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/examples/CristalCluster/CristalCluster.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/CristalCluster/cuon-matrix.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/CristalCluster/demo.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/CristalCluster/demo.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/CristalCluster/polygonVertexGenerator.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/CristalCluster/pyramidVertex.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/three_r115.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/buffergeometry/MeshPhongMaterial/webgl_buffergeometry.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three_r114.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three_r114.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three.module.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three_r114.module.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r100.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r100.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r100.module.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r101.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r101.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r101.module.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r104.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three_r115.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r104.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r104.module.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three_r115.module.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r95.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r95.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r95.module.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r98.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r98.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r98.module.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r99.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r99.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r99.module.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/left.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/BufferGeometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/BufferGeometry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -22,46 +41,20 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/CristalCluster/CristalCluster.js">
+        <entry file="file://$PROJECT_DIR$/examples/buffergeometry/MeshPhongMaterial/webgl_buffergeometry.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="3" column="58" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="58" />
+            <state relative-caret-position="2212">
+              <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
               <folding>
-                <element signature="e#0#54#0" expanded="true" />
-                <element signature="e#407#2460#0" />
-                <element signature="n#!!block;n#extendIndices#0" />
-                <element signature="n#!!block;n#transformVertex#0" />
-                <element signature="n#!!block;n#createRandomFaceNumber#0" />
-                <element signature="n#!!block;n#createRandomDisthringFactor#0" />
-                <element signature="n#!!block;n#createRandomScaleFactor#0" />
-                <element signature="n#!!block;n#createRandomRotateCenter#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/CristalCluster/demo.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="146" column="48" selection-start-line="146" selection-start-column="48" selection-end-line="146" selection-end-column="48" />
-              <folding>
-                <element signature="e#0#54#0" expanded="true" />
-                <element signature="e#784#808#0" />
-                <element signature="e#830#1775#0" />
-                <element signature="e#1811#2089#0" />
-                <element signature="e#2117#2363#0" />
-                <element signature="e#2392#2576#0" />
-                <element signature="e#3280#4300#0" />
-                <element signature="e#4328#4417#0" />
-                <element signature="e#4442#4507#0" />
-                <element signature="e#4535#4673#0" />
-                <element signature="e#4793#4999#0" />
-                <element signature="e#5043#5353#0" />
-                <element signature="e#5376#5607#0" />
-                <element signature="e#5865#5901#0" />
+                <element signature="e#480#530#0" expanded="true" />
+                <element signature="e#1871#3157#0" />
+                <element signature="e#3187#3220#0" />
+                <element signature="e#3616#3758#0" />
+                <element signature="e#4291#4460#0" />
+                <element signature="e#4491#4572#0" />
+                <element signature="e#4496#4645#0" />
               </folding>
             </state>
           </provider>
@@ -70,12 +63,9 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/examples/left.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+            <state relative-caret-position="285">
+              <caret line="12" column="111" selection-start-line="12" selection-start-column="111" selection-end-line="12" selection-end-column="111" />
               <folding>
-                <element signature="n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#ul#0;n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#li#1;n#ul#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
@@ -106,44 +96,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="12" selection-start-column="12" selection-end-column="12" />
-              <folding>
-                <element signature="n#div#0;n#html#0;n#!!top" />
-                <element signature="n#div#1;n#html#0;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/BufferGeometry.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8988">
-              <caret line="504" column="27" selection-start-line="504" selection-start-column="25" selection-end-line="504" selection-end-column="27" />
-              <folding>
-                <element signature="n#!!block;n#BufferGeometry#0" />
-                <element signature="e#1573#1603#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/CristalCluster/demo.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
-              <folding>
-                <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -156,8 +108,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>updateWorldMatrix</find>
-      <find>this.updateWorldMatrix(true, false);</find>
       <find>updateMorphTargets</find>
       <find>add</find>
       <find>this.render</find>
@@ -165,7 +115,6 @@
       <find>precision</find>
       <find>initOrbitControls</find>
       <find>getProgramCacheKey</find>
-      <find>renderBufferDirect</find>
       <find>ShaderChunk</find>
       <find>ShaderLib</find>
       <find>PGL.WebGLShader</find>
@@ -186,6 +135,9 @@
       <find>fetchAttributeLocations</find>
       <find>createBuffer</find>
       <find>uv</find>
+      <find>renderBufferDirect</find>
+      <find>indexedBufferRenderer</find>
+      <find>renderer</find>
     </findStrings>
     <replaceStrings>
       <replace>jpg</replace>
@@ -206,10 +158,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_masking.html" />
-        <option value="$PROJECT_DIR$/examples/clipping/webgl_clipping.html" />
-        <option value="$PROJECT_DIR$/examples/jsm/controls/OrbitControls.js" />
-        <option value="$PROJECT_DIR$/examples/clipping/webgl_clipping_stencil.html" />
         <option value="$PROJECT_DIR$/examples/decals/webgl_decals.html" />
         <option value="$PROJECT_DIR$/examples/jsm/geometries/DecalGeometry.js" />
         <option value="$PROJECT_DIR$/doc/dat.gui/gui.html" />
@@ -236,7 +184,6 @@
         <option value="$PROJECT_DIR$/src/cameras/PerspectiveCamera.js" />
         <option value="$PROJECT_DIR$/src/utils.js" />
         <option value="$PROJECT_DIR$/src/core/BufferAttribute.js" />
-        <option value="$PROJECT_DIR$/src/core/BufferGeometry.js" />
         <option value="$PROJECT_DIR$/src/math/Color.js" />
         <option value="$PROJECT_DIR$/src/scenes/Scene.js" />
         <option value="$PROJECT_DIR$/src/core/Object3D.js" />
@@ -248,7 +195,6 @@
         <option value="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk.js" />
         <option value="$PROJECT_DIR$/src/renderers/webgl/WebGLProgram.js" />
         <option value="$PROJECT_DIR$/src/renderers/webgl/WebGLUniforms.js" />
-        <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
         <option value="$PROJECT_DIR$/examples/home.js" />
         <option value="$PROJECT_DIR$/examples/CristalCluster/demo.html" />
         <option value="$PROJECT_DIR$/examples/CristalCluster/cuon-matrix.js" />
@@ -256,6 +202,12 @@
         <option value="$PROJECT_DIR$/examples/CristalCluster/polygonVertexGenerator.js" />
         <option value="$PROJECT_DIR$/examples/CristalCluster/CristalCluster.js" />
         <option value="$PROJECT_DIR$/examples/CristalCluster/demo.js" />
+        <option value="$PROJECT_DIR$/src/core/BufferGeometry.js" />
+        <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
+        <option value="$PROJECT_DIR$/../three_r115.js-master/src/renderers/webgl/WebGLIndexedBufferRenderer.js" />
+        <option value="$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js" />
+        <option value="$PROJECT_DIR$/examples/buffergeometry/webgl_buffergeometry.html" />
+        <option value="$PROJECT_DIR$/examples/buffergeometry/MeshPhongMaterial/webgl_buffergeometry.html" />
         <option value="$PROJECT_DIR$/examples/left.html" />
       </list>
     </option>
@@ -303,18 +255,14 @@
               <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
               <item name="examples" type="462c0819:PsiDirectoryNode" />
-              <item name="CristalCluster" type="462c0819:PsiDirectoryNode" />
+              <item name="buffergeometry" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
+              <item name="buffergeometry" type="462c0819:PsiDirectoryNode" />
+              <item name="MeshPhongMaterial" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -336,22 +284,22 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="ts.external.directory.path" value="D:\soft\WebStorm 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r114.js-master/src/renderers/webgl/WebGLUniforms.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r115.js-master/src/renderers/webgl/WebGLIndexedBufferRenderer.js" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\build" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\CristalCluster" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\materials" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\models\json" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\buffergeometry\MeshPhongMaterial" />
+      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\buffergeometry" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\OffScreenRendering" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\doc\dat.gui" />
       <recent name="D:\workHome\ThreeSourceCodeAnalysis\doc" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\models\gltf" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\decals" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\CristalCluster" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\build" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src\materials" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\models\json" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\materials\wra" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -599,14 +547,8 @@
       <workItem from="1585273608948" duration="7326000" />
       <workItem from="1585536171271" duration="1187000" />
       <workItem from="1585538172587" duration="2238000" />
-      <workItem from="1585556939758" duration="4413000" />
-    </task>
-    <task id="LOCAL-00025" summary="1. 混合">
-      <created>1568775406260</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1568775406260</updated>
+      <workItem from="1585556939758" duration="5244000" />
+      <workItem from="1585616706725" duration="7368000" />
     </task>
     <task id="LOCAL-00026" summary="1. 混合">
       <created>1568790485867</created>
@@ -944,11 +886,18 @@
       <option name="project" value="LOCAL" />
       <updated>1585291856139</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="1.水晶效果">
+      <created>1585561835027</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1585561835028</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="930679000" />
+    <option name="totallyTimeSpent" value="938878000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
@@ -1041,7 +990,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1.粒子渐变" />
     <MESSAGE value="1.噪声湍流" />
     <MESSAGE value="1.细胞噪声 (Celluar Noise)" />
     <MESSAGE value="1.山体显示" />
@@ -1066,7 +1014,8 @@
     <MESSAGE value="1.离屏渲染实例-镜面光晕" />
     <MESSAGE value="1.文档" />
     <MESSAGE value="1.修改文档" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.修改文档" />
+    <MESSAGE value="1.水晶效果" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.水晶效果" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1080,55 +1029,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLState.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-560">
-          <caret line="718" column="2" selection-start-line="718" selection-start-column="2" selection-end-line="718" selection-end-column="2" />
-          <folding>
-            <element signature="n#!!doc" />
-            <element signature="n#!!doc;n#WebGLState#0" />
-            <element signature="e#16944#17054#0" />
-            <element signature="e#17936#18194#0" />
-            <element signature="e#20485#21081#0" />
-            <element signature="e#21085#21106#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/materials/wireframe/webgl_materials_wireframe.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="31" column="3" lean-forward="true" selection-start-line="31" selection-start-column="3" selection-end-line="31" selection-end-column="3" />
-          <folding>
-            <element signature="n#head#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#1931#1989#0" />
-            <element signature="e#3035#3078#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/math/Euler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/math/Math.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/webgl_loader_assimp.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="72" column="19" selection-start-line="72" selection-start-column="13" selection-end-line="72" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/water/webgl_shaders_ocean.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3411">
@@ -1216,13 +1116,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/three.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cameras/Camera.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
@@ -1262,17 +1155,6 @@
             <element signature="e#4531#4588#0" />
             <element signature="e#4626#5388#0" />
             <element signature="e#5418#5863#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
-          <folding>
-            <element signature="n#!!doc;n#arrayMax#0" />
-            <element signature="n#!!block;n#arrayMax#0" />
           </folding>
         </state>
       </provider>
@@ -1468,18 +1350,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="782" column="37" selection-start-line="782" selection-start-column="30" selection-end-line="782" selection-end-column="37" />
-          <folding>
-            <element signature="e#19035#19108#0" />
-            <element signature="e#19141#19162#0" />
-            <element signature="e#19227#19315#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLPrograms.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="226">
@@ -1650,78 +1520,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/examples/CristalCluster/demo.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/BufferGeometry.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8988">
-          <caret line="504" column="27" selection-start-line="504" selection-start-column="25" selection-end-line="504" selection-end-column="27" />
-          <folding>
-            <element signature="n#!!block;n#BufferGeometry#0" />
-            <element signature="e#1573#1603#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/CristalCluster/CristalCluster.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="3" column="58" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-            <element signature="e#407#2460#0" />
-            <element signature="n#!!block;n#extendIndices#0" />
-            <element signature="n#!!block;n#transformVertex#0" />
-            <element signature="n#!!block;n#createRandomFaceNumber#0" />
-            <element signature="n#!!block;n#createRandomDisthringFactor#0" />
-            <element signature="n#!!block;n#createRandomScaleFactor#0" />
-            <element signature="n#!!block;n#createRandomRotateCenter#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
-          <folding>
-            <element signature="n#div#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/CristalCluster/demo.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="146" column="48" selection-start-line="146" selection-start-column="48" selection-end-line="146" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-            <element signature="e#784#808#0" />
-            <element signature="e#830#1775#0" />
-            <element signature="e#1811#2089#0" />
-            <element signature="e#2117#2363#0" />
-            <element signature="e#2392#2576#0" />
-            <element signature="e#3280#4300#0" />
-            <element signature="e#4328#4417#0" />
-            <element signature="e#4442#4507#0" />
-            <element signature="e#4535#4673#0" />
-            <element signature="e#4793#4999#0" />
-            <element signature="e#5043#5353#0" />
-            <element signature="e#5376#5607#0" />
-            <element signature="e#5865#5901#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/examples/Mountain/test2.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -1746,14 +1544,192 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="12" selection-start-column="12" selection-end-column="12" />
+          <folding>
+            <element signature="n#div#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/CristalCluster/CristalCluster.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="3" column="58" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="58" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+            <element signature="e#407#2460#0" />
+            <element signature="n#!!block;n#extendIndices#0" />
+            <element signature="n#!!block;n#transformVertex#0" />
+            <element signature="n#!!block;n#createRandomFaceNumber#0" />
+            <element signature="n#!!block;n#createRandomDisthringFactor#0" />
+            <element signature="n#!!block;n#createRandomScaleFactor#0" />
+            <element signature="n#!!block;n#createRandomRotateCenter#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="n#!!doc;n#arrayMin#0" />
+            <element signature="n#!!block;n#arrayMin#0" />
+            <element signature="n#!!doc;n#arrayMax#0" />
+            <element signature="n#!!block;n#arrayMax#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/BufferGeometry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="76" column="29" lean-forward="true" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="29" />
+          <folding>
+            <element signature="n#!!block;n#BufferGeometry#0" />
+            <element signature="e#1573#1603#0" />
+            <element signature="e#1608#1653#0" />
+            <element signature="e#1907#1948#0" />
+            <element signature="e#1953#2061#0" />
+            <element signature="e#2104#2165#0" />
+            <element signature="e#2170#2243#0" />
+            <element signature="e#2278#2336#0" />
+            <element signature="e#2389#2538#0" />
+            <element signature="e#2567#2596#0" />
+            <element signature="e#2601#2662#0" />
+            <element signature="e#2702#2775#0" />
+            <element signature="e#2813#3551#0" />
+            <element signature="e#3581#3709#0" />
+            <element signature="e#3739#3867#0" />
+            <element signature="e#3897#4025#0" />
+            <element signature="e#4059#4174#0" />
+            <element signature="e#4204#4309#0" />
+            <element signature="e#4339#4452#0" />
+            <element signature="e#4476#4637#0" />
+            <element signature="e#4642#4725#0" />
+            <element signature="e#4760#5928#0" />
+            <element signature="e#5965#6234#0" />
+            <element signature="e#6239#6315#0" />
+            <element signature="e#6353#8828#0" />
+            <element signature="e#8833#8894#0" />
+            <element signature="e#8930#9078#0" />
+            <element signature="e#9083#9162#0" />
+            <element signature="e#9204#11466#0" />
+            <element signature="e#11502#12847#0" />
+            <element signature="e#12851#12879#0" />
+            <element signature="e#12916#15393#0" />
+            <element signature="e#15429#15467#0" />
+            <element signature="e#15508#17737#0" />
+            <element signature="e#17779#18861#0" />
+            <element signature="e#18898#19203#0" />
+            <element signature="e#19236#21083#0" />
+            <element signature="e#21095#23343#0" />
+            <element signature="e#23384#23861#0" />
+            <element signature="e#23892#25632#0" />
+            <element signature="e#25660#25710#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="36" column="31" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="31" />
+          <folding>
+            <element signature="n#!!doc;n#setMode#0;n#!!block;n#WebGLIndexedBufferRenderer#0" />
+            <element signature="n#!!block;n#setMode#0;n#!!block;n#WebGLIndexedBufferRenderer#0" />
+            <element signature="n#!!block;n#setIndex#0;n#!!block;n#WebGLIndexedBufferRenderer#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/CristalCluster/demo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-135">
+          <caret line="3" column="64" lean-forward="true" selection-start-line="3" selection-start-column="64" selection-end-line="3" selection-end-column="64" />
+          <folding>
+            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1876">
+          <caret line="889" column="5" lean-forward="true" selection-start-line="889" selection-start-column="5" selection-end-line="889" selection-end-column="5" />
+          <folding>
+            <element signature="e#19035#19108#0" />
+            <element signature="e#19141#19162#0" />
+            <element signature="e#19227#19315#0" />
+            <element signature="e#19396#19521#0" />
+            <element signature="e#19563#19765#0" />
+            <element signature="e#19682#19759#0" />
+            <element signature="e#20656#21070#0" />
+            <element signature="e#21101#21144#0" />
+            <element signature="e#21175#21222#0" />
+            <element signature="e#21256#21343#0" />
+            <element signature="e#21393#21494#0" />
+            <element signature="e#36408#36708#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/CristalCluster/demo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="136" column="31" selection-start-line="136" selection-start-column="25" selection-end-line="136" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+            <element signature="e#4665#4871#0" />
+            <element signature="e#4915#5225#0" />
+            <element signature="e#5248#5479#0" />
+            <element signature="e#5765#5798#0" />
+            <element signature="e#6186#6216#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/three_r114.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="99" column="2" selection-start-line="99" selection-start-column="2" selection-end-line="99" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/three_r115.module.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/three_r115.min.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/buffergeometry/MeshPhongMaterial/webgl_buffergeometry.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2212">
+          <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
+          <folding>
+            <element signature="e#480#530#0" expanded="true" />
+            <element signature="e#1871#3157#0" />
+            <element signature="e#3187#3220#0" />
+            <element signature="e#3616#3758#0" />
+            <element signature="e#4291#4460#0" />
+            <element signature="e#4491#4572#0" />
+            <element signature="e#4496#4645#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/examples/left.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+        <state relative-caret-position="285">
+          <caret line="12" column="111" selection-start-line="12" selection-start-column="111" selection-end-line="12" selection-end-column="111" />
           <folding>
-            <element signature="n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#ul#0;n#li#0;n#ul#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#li#1;n#ul#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#li#2;n#ul#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#li#3;n#ul#0;n#body#0;n#html#0;n#!!top" />
