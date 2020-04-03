@@ -617,7 +617,7 @@ function WebGLRenderer(parameters) {
 
     animation.stop();
 
-		this.forceContextLoss();
+    this.forceContextLoss();
 
   };
 
@@ -799,8 +799,7 @@ function WebGLRenderer(parameters) {
 
     if (index === null) {
       if (position === undefined || position.count === 0) return;
-    }
-    else if (index.count === 0) {
+    } else if (index.count === 0) {
       return;
     }
 
@@ -861,8 +860,7 @@ function WebGLRenderer(parameters) {
 
       }
 
-    }
-    else if (object.isLine) {
+    } else if (object.isLine) {
 
       var lineWidth = material.linewidth;
 
@@ -884,11 +882,9 @@ function WebGLRenderer(parameters) {
 
       }
 
-    }
-    else if (object.isPoints) {
+    } else if (object.isPoints) {
       renderer.setMode(_gl.POINTS);
-    }
-    else if (object.isSprite) {
+    } else if (object.isSprite) {
       renderer.setMode(_gl.TRIANGLES);
 
     }
@@ -897,13 +893,11 @@ function WebGLRenderer(parameters) {
 
       renderer.renderInstances(geometry, drawStart, drawCount, object.count);
 
-    }
-    else if (geometry.isInstancedBufferGeometry) {
+    } else if (geometry.isInstancedBufferGeometry) {
 
       renderer.renderInstances(geometry, drawStart, drawCount, geometry.maxInstancedCount);
 
-    }
-    else {
+    } else {
       renderer.render(drawStart, drawCount);
     }
   };
@@ -1236,8 +1230,8 @@ function WebGLRenderer(parameters) {
 
     // render scene
 
-		var opaqueObjects = currentRenderList.opaque;
-		var transparentObjects = currentRenderList.transparent;
+    var opaqueObjects = currentRenderList.opaque;
+    var transparentObjects = currentRenderList.transparent;
 
     if (scene.overrideMaterial) {
       var overrideMaterial = scene.overrideMaterial;
@@ -1475,18 +1469,22 @@ function WebGLRenderer(parameters) {
     if (program === undefined) {
       // new material
       material.addEventListener('dispose', onMaterialDispose);
-    } else if (program.cacheKey !== programCacheKey) {
+    }
+    else if (program.cacheKey !== programCacheKey) {
 
       // changed glsl or parameters
       releaseMaterialProgramReference(material);
 
-    } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
+    }
+    else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
       materialProperties.lightsStateVersion = lightsStateVersion;
       programChange = false;
-    } else if (parameters.shaderID !== undefined) {
+    }
+    else if (parameters.shaderID !== undefined) {
       // same glsl and uniform list
       return;
-    } else {
+    }
+    else {
       // only rebuild uniform list
       programChange = false;
     }
@@ -1602,7 +1600,7 @@ function WebGLRenderer(parameters) {
     var environment = material.isMeshStandardMaterial ? scene.environment : null;
 
     var materialProperties = properties.get(material);
-    var lights = currentRenderState.state.lights;
+    var lights = currentRenderState.state.lights; // 获取灯光数据
 
     if (_clippingEnabled) {
       if (_localClippingEnabled || camera !== _currentCamera) {
@@ -1648,7 +1646,6 @@ function WebGLRenderer(parameters) {
       }
 
     } else {
-
       initMaterial(material, scene, object);
       materialProperties.__version = material.version;
     }
@@ -1703,11 +1700,9 @@ function WebGLRenderer(parameters) {
         material.envMap) {
 
         var uCamPos = p_uniforms.map.cameraPosition;
-
         if (uCamPos !== undefined) {
           uCamPos.setValue(_gl, _vector3.setFromMatrixPosition(camera.matrixWorld));
         }
-
       }
 
       if (material.isMeshPhongMaterial ||
@@ -1797,6 +1792,7 @@ function WebGLRenderer(parameters) {
 
     }
 
+    // 刷新材质属性
     if (refreshMaterial) {
 
       p_uniforms.setValue(_gl, 'toneMappingExposure', _this.toneMappingExposure);
@@ -1842,10 +1838,8 @@ function WebGLRenderer(parameters) {
 
       }
       else if (material.isMeshPhongMaterial) {
-
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsPhong(m_uniforms, material);
-
       }
       else if (material.isMeshStandardMaterial) {
 
@@ -2268,6 +2262,11 @@ function WebGLRenderer(parameters) {
 
   }
 
+  /**
+   * 设置高亮材质uniform属性
+   * @param uniforms
+   * @param material
+   */
   function refreshUniformsPhong(uniforms, material) {
 
     uniforms.specular.value.copy(material.specular);
@@ -2414,17 +2413,17 @@ function WebGLRenderer(parameters) {
     uniforms.clearcoatRoughness.value = material.clearcoatRoughness;
     if (material.sheen) uniforms.sheen.value.copy(material.sheen);
 
-		if ( material.clearcoatMap ) {
+    if (material.clearcoatMap) {
 
-			uniforms.clearcoatMap.value = material.clearcoatMap;
+      uniforms.clearcoatMap.value = material.clearcoatMap;
 
-		}
+    }
 
-		if ( material.clearcoatRoughnessMap ) {
+    if (material.clearcoatRoughnessMap) {
 
-			uniforms.clearcoatRoughnessMap.value = material.clearcoatRoughnessMap;
+      uniforms.clearcoatRoughnessMap.value = material.clearcoatRoughnessMap;
 
-		}
+    }
 
     if (material.clearcoatNormalMap) {
 
@@ -2551,6 +2550,11 @@ function WebGLRenderer(parameters) {
 
   }
 
+  /**
+   *
+   * @param material
+   * @returns {*|boolean}
+   */
   function materialNeedsLights(material) {
 
     return material.isMeshLambertMaterial || material.isMeshToonMaterial || material.isMeshPhongMaterial ||

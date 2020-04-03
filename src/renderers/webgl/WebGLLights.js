@@ -2,103 +2,144 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import { Color } from '../../math/Color.js';
-import { Matrix4 } from '../../math/Matrix4.js';
-import { Vector2 } from '../../math/Vector2.js';
-import { Vector3 } from '../../math/Vector3.js';
+import {Color} from '../../math/Color.js';
+import {Matrix4} from '../../math/Matrix4.js';
+import {Vector2} from '../../math/Vector2.js';
+import {Vector3} from '../../math/Vector3.js';
 
 function UniformsCache() {
 
-	/**
-	 * [灯光id：灯光的相关属性]
-	 */
-	var lights = {};
+  /**
+   * [灯光id：灯光的相关属性]
+   */
+  var lights = {};
 
-	return {
+  return {
 
-		get: function ( light ) {
+    get: function(light) {
 
-			if ( lights[ light.id ] !== undefined ) {
-				return lights[ light.id ];
-			}
+      if (lights[light.id] !== undefined) {
+        return lights[light.id];
+      }
 
-			var uniforms;
+      var uniforms;
 
-			switch ( light.type ) {
-				case 'DirectionalLight':
-					uniforms = {
-						direction: new Vector3(),
-						color: new Color(),
+      switch(light.type){
+        case 'DirectionalLight':
+          uniforms = {
+            direction: new Vector3(),
+            color: new Color()
+          };
+          break;
+        case 'SpotLight':
+          uniforms = {
+            position: new Vector3(),
+            direction: new Vector3(),
+            color: new Color(),
+            distance: 0,
+            coneCos: 0,
+            penumbraCos: 0,
+            decay: 0
+          };
+          break;
+        case 'PointLight':
+          uniforms = {
+            position: new Vector3(),
+            color: new Color(),
+            distance: 0,
+            decay: 0
+          };
+          break;
+        case 'HemisphereLight':
+          uniforms = {
+            direction: new Vector3(),
+            skyColor: new Color(),
+            groundColor: new Color()
+          };
+          break;
+        case 'RectAreaLight':
+          uniforms = {
+            color: new Color(),
+            position: new Vector3(),
+            halfWidth: new Vector3(),
+            halfHeight: new Vector3()
+          };
+          break;
 
-						shadow: false,
-						shadowBias: 0,
-						shadowRadius: 1,
-						shadowMapSize: new Vector2()
-					};
-					break;
-				case 'SpotLight':
-					uniforms = {
-						position: new Vector3(),
-						direction: new Vector3(),
-						color: new Color(),
-						distance: 0,
-						coneCos: 0,
-						penumbraCos: 0,
-						decay: 0,
+      }
 
-						shadow: false,
-						shadowBias: 0,
-						shadowRadius: 1,
-						shadowMapSize: new Vector2()
-					};
-					break;
-				case 'PointLight':
-					uniforms = {
-						position: new Vector3(),
-						color: new Color(),
-						distance: 0,
-						decay: 0,
+      lights[light.id] = uniforms;
 
-						shadow: false,
-						shadowBias: 0,
-						shadowRadius: 1,
-						shadowMapSize: new Vector2(),
-						shadowCameraNear: 1,
-						shadowCameraFar: 1000
-					};
-					break;
-				case 'HemisphereLight':
-					uniforms = {
-						direction: new Vector3(),
-						skyColor: new Color(),
-						groundColor: new Color()
-					};
-					break;
-				case 'RectAreaLight':
-					uniforms = {
-						color: new Color(),
-						position: new Vector3(),
-						halfWidth: new Vector3(),
-						halfHeight: new Vector3()
-						// TODO (abelnation): set RectAreaLight shadow uniforms
-					};
-					break;
-			}
+      return uniforms;
 
-			lights[ light.id ] = uniforms;
+    }
 
-			return uniforms;
+  };
 
-		}
+}
 
-	};
+function ShadowUniformsCache() {
+
+  var lights = {};
+
+  return {
+
+    get: function(light) {
+
+      if (lights[light.id] !== undefined) {
+
+        return lights[light.id];
+
+      }
+
+      var uniforms;
+
+      switch(light.type){
+
+        case 'DirectionalLight':
+          uniforms = {
+            shadowBias: 0,
+            shadowRadius: 1,
+            shadowMapSize: new Vector2()
+          };
+          break;
+
+        case 'SpotLight':
+          uniforms = {
+            shadowBias: 0,
+            shadowRadius: 1,
+            shadowMapSize: new Vector2()
+          };
+          break;
+
+        case 'PointLight':
+          uniforms = {
+            shadowBias: 0,
+            shadowRadius: 1,
+            shadowMapSize: new Vector2(),
+            shadowCameraNear: 1,
+            shadowCameraFar: 1000
+          };
+          break;
+
+        // TODO (abelnation): set RectAreaLight shadow uniforms
+
+      }
+
+      lights[light.id] = uniforms;
+
+      return uniforms;
+
+    }
+
+  };
 }
 
 var nextVersion = 0;
 
-function shadowCastingLightsFirst( lightA, lightB ) {
+function shadowCastingLightsFirst(lightA, lightB) {
 
-	return ( lightB.castShadow ? 1 : 0 ) - ( lightA.castShadow ? 1 : 0 );
+  return (lightB.castShadow ? 1 : 0) - (lightA.castShadow ? 1 : 0);
 
 }
 
@@ -109,318 +150,322 @@ function shadowCastingLightsFirst( lightA, lightB ) {
  */
 function WebGLLights() {
 
-	var cache = new UniformsCache();
+  var cache = new UniformsCache();
 
-	var state = {
+  var shadowCache = ShadowUniformsCache();
 
-		version: 0,
+  var state = {
 
-		hash: {
-			directionalLength: - 1,
-			pointLength: - 1,
-			spotLength: - 1,
-			rectAreaLength: - 1,
-			hemiLength: - 1,
+    version: 0,
 
-			numDirectionalShadows: - 1,
-			numPointShadows: - 1,
-			numSpotShadows: - 1,
-		},
+    hash: {
+      directionalLength: -1,
+      pointLength: -1,
+      spotLength: -1,
+      rectAreaLength: -1,
+      hemiLength: -1,
 
-		ambient: [ 0, 0, 0 ], // 环境光
-		probe: [], // 放置9个三维点
-		directional: [], // 放置灯光属性
-		directionalShadowMap: [],
-		directionalShadowMatrix: [],
-		spot: [],
-		spotShadowMap: [],
-		spotShadowMatrix: [],
-		rectArea: [],
-		point: [],
-		pointShadowMap: [],
-		pointShadowMatrix: [],
-		hemi: [],
+      numDirectionalShadows: -1,
+      numPointShadows: -1,
+      numSpotShadows: -1
+    },
 
-		numDirectionalShadows: - 1,
-		numPointShadows: - 1,
-		numSpotShadows: - 1
+    ambient: [0, 0, 0], // 环境光 颜色*强度
+    probe: [], // 放置9个三维点
+    directional: [], // 放置灯光属性
+    directionalShadowMap: [],
+    directionalShadowMatrix: [],
+    spot: [],
+    spotShadow: [],
+    spotShadowMap: [],
+    spotShadowMatrix: [],
+    rectArea: [],
+    point: [],
+    pointShadow: [],
+    pointShadowMap: [],
+    pointShadowMatrix: [],
+    hemi: []
 
-	};
+  };
 
-	for ( var i = 0; i < 9; i ++ ) state.probe.push( new Vector3() );
+  for (var i = 0; i < 9; i++) state.probe.push(new Vector3());
 
-	var vector3 = new Vector3();
-	var matrix4 = new Matrix4();
-	var matrix42 = new Matrix4();
+  var vector3 = new Vector3();
+  var matrix4 = new Matrix4();
+  var matrix42 = new Matrix4();
 
-	/**
-	 * 设置灯光
-	 * @param lights 灯光数组
-	 * @param shadows
-	 * @param camera 相机
-	 */
-	function setup( lights, shadows, camera ) {
+  /**
+   * 设置灯光
+   * @param lights 灯光数组
+   * @param shadows
+   * @param camera 相机
+   */
+  function setup(lights, shadows, camera) {
 
-		var r = 0, g = 0, b = 0;
+    // 灯光颜色分量
+    var r = 0, g = 0, b = 0;
 
-		// 初始化probe
-		for ( var i = 0; i < 9; i ++ ) state.probe[ i ].set( 0, 0, 0 );
+    // 初始化probe
+    for (var i = 0; i < 9; i++) state.probe[i].set(0, 0, 0);
 
-		var directionalLength = 0; // 方向长度
-		var pointLength = 0;
-		var spotLength = 0;
-		var rectAreaLength = 0;
-		var hemiLength = 0;
+    var directionalLength = 0; // 方向长度
+    var pointLength = 0;
+    var spotLength = 0;
+    var rectAreaLength = 0;
+    var hemiLength = 0;
 
     var numDirectionalShadows = 0;
     var numPointShadows = 0;
     var numSpotShadows = 0;
 
-		// 视图矩阵
-		var viewMatrix = camera.matrixWorldInverse;
+    // 视图矩阵
+    var viewMatrix = camera.matrixWorldInverse;
 
-		lights.sort( shadowCastingLightsFirst );
+    lights.sort(shadowCastingLightsFirst);
 
-		for ( var i = 0, l = lights.length; i < l; i ++ ) {
+    // 便利灯光，处理灯光，获取灯光颜色分量
+    for (var i = 0, l = lights.length; i < l; i++) {
 
-			var light = lights[ i ];
+      var light = lights[i];
 
-			var color = light.color; // 颜色
-			var intensity = light.intensity; // 强度
-			var distance = light.distance; // 距离
+      var color = light.color; // 颜色
+      var intensity = light.intensity; // 强度
+      var distance = light.distance; // 距离
 
-			// 阴影贴图
-			var shadowMap = ( light.shadow && light.shadow.map ) ? light.shadow.map.texture : null;
+      // 阴影贴图
+      var shadowMap = (light.shadow && light.shadow.map) ? light.shadow.map.texture : null;
 
-			if ( light.isAmbientLight ) {
-				r += color.r * intensity;
-				g += color.g * intensity;
-				b += color.b * intensity;
-			}
-			else if ( light.isLightProbe ) {
+      if (light.isAmbientLight) {
+        r += color.r * intensity;
+        g += color.g * intensity;
+        b += color.b * intensity;
+      } else if (light.isLightProbe) {
 
-				for ( var j = 0; j < 9; j ++ ) {
+        for (var j = 0; j < 9; j++) {
 
-					state.probe[ j ].addScaledVector( light.sh.coefficients[ j ], intensity );
+          state.probe[j].addScaledVector(light.sh.coefficients[j], intensity);
 
-				}
+        }
 
-			}
-			else if ( light.isDirectionalLight ) {
+      } else if (light.isDirectionalLight) {
 
-				var uniforms = cache.get( light );
+        var uniforms = cache.get(light);
 
-				// 颜色是灯光颜色 * 灯光强度
-				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
-				// 获取光源位置
-				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
-				// 获取光源指向位置
-				vector3.setFromMatrixPosition( light.target.matrixWorld );
-				// 计算光源的方向
-				uniforms.direction.sub( vector3 );
-				// 用视图矩阵对向量进行变换（归一化）
-				uniforms.direction.transformDirection( viewMatrix );
+        // 颜色是灯光颜色 * 灯光强度
+        uniforms.color.copy(light.color).multiplyScalar(light.intensity);
+        // 获取光源位置
+        uniforms.direction.setFromMatrixPosition(light.matrixWorld);
+        // 获取光源指向位置
+        vector3.setFromMatrixPosition(light.target.matrixWorld);
+        // 计算光源的方向
+        uniforms.direction.sub(vector3);
+        // 用视图矩阵对向量进行变换（归一化）
+        uniforms.direction.transformDirection(viewMatrix);
 
-				uniforms.shadow = light.castShadow;
+        uniforms.shadow = light.castShadow;
 
-				if ( light.castShadow ) {
+        if (light.castShadow) {
 
-					var shadow = light.shadow;
+          var shadow = light.shadow;
 
-					uniforms.shadowBias = shadow.bias;
-					uniforms.shadowRadius = shadow.radius;
-					uniforms.shadowMapSize = shadow.mapSize;
+          var shadowUniforms = shadowCache.get(light);
 
-				state.directionalShadowMap[ directionalLength ] = shadowMap;
-				state.directionalShadowMatrix[ directionalLength ] = light.shadow.matrix;
+          shadowUniforms.shadowBias = shadow.bias;
+          shadowUniforms.shadowRadius = shadow.radius;
+          shadowUniforms.shadowMapSize = shadow.mapSize;
 
-					numDirectionalShadows ++;
+          state.directionalShadow[directionalLength] = shadowUniforms;
+          state.directionalShadowMap[directionalLength] = shadowMap;
+          state.directionalShadowMatrix[directionalLength] = light.shadow.matrix;
 
-				}
+          numDirectionalShadows++;
 
-				state.directional[ directionalLength ] = uniforms;
+        }
 
-				directionalLength ++;
+        state.directional[directionalLength] = uniforms;
 
-			}
-			else if ( light.isSpotLight ) {
+        directionalLength++;
 
-				var uniforms = cache.get( light );
+      } else if (light.isSpotLight) {
 
-				uniforms.position.setFromMatrixPosition( light.matrixWorld );
-				uniforms.position.applyMatrix4( viewMatrix );
+        var uniforms = cache.get(light);
 
-				uniforms.color.copy( color ).multiplyScalar( intensity );
-				uniforms.distance = distance;
+        uniforms.position.setFromMatrixPosition(light.matrixWorld);
+        uniforms.position.applyMatrix4(viewMatrix);
 
-				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
-				vector3.setFromMatrixPosition( light.target.matrixWorld );
-				uniforms.direction.sub( vector3 );
-				uniforms.direction.transformDirection( viewMatrix );
+        uniforms.color.copy(color).multiplyScalar(intensity);
+        uniforms.distance = distance;
 
-				uniforms.coneCos = Math.cos( light.angle );
-				uniforms.penumbraCos = Math.cos( light.angle * ( 1 - light.penumbra ) );
-				uniforms.decay = light.decay;
+        uniforms.direction.setFromMatrixPosition(light.matrixWorld);
+        vector3.setFromMatrixPosition(light.target.matrixWorld);
+        uniforms.direction.sub(vector3);
+        uniforms.direction.transformDirection(viewMatrix);
 
-				uniforms.shadow = light.castShadow;
+        uniforms.coneCos = Math.cos(light.angle);
+        uniforms.penumbraCos = Math.cos(light.angle * (1 - light.penumbra));
+        uniforms.decay = light.decay;
 
-				if ( light.castShadow ) {
+        if (light.castShadow) {
 
-					var shadow = light.shadow;
+          var shadow = light.shadow;
 
-					uniforms.shadowBias = shadow.bias;
-					uniforms.shadowRadius = shadow.radius;
-					uniforms.shadowMapSize = shadow.mapSize;
+          var shadowUniforms = shadowCache.get(light);
 
-				state.spotShadowMap[ spotLength ] = shadowMap;
-				state.spotShadowMatrix[ spotLength ] = light.shadow.matrix;
+          shadowUniforms.shadowBias = shadow.bias;
+          shadowUniforms.shadowRadius = shadow.radius;
+          shadowUniforms.shadowMapSize = shadow.mapSize;
 
-					numSpotShadows ++;
+          state.spotShadow[spotLength] = shadowUniforms;
+          state.spotShadowMap[spotLength] = shadowMap;
+          state.spotShadowMatrix[spotLength] = light.shadow.matrix;
 
-				}
+          numSpotShadows++;
 
-				state.spot[ spotLength ] = uniforms;
+        }
 
-				spotLength ++;
+        state.spot[spotLength] = uniforms;
 
-			}
-			else if ( light.isRectAreaLight ) {
+        spotLength++;
 
-				var uniforms = cache.get( light );
+      } else if (light.isRectAreaLight) {
 
-				// (a) intensity is the total visible light emitted
-				//uniforms.color.copy( color ).multiplyScalar( intensity / ( light.width * light.height * Math.PI ) );
+        var uniforms = cache.get(light);
 
-				// (b) intensity is the brightness of the light
-				uniforms.color.copy( color ).multiplyScalar( intensity );
+        // (a) intensity is the total visible light emitted
+        //uniforms.color.copy( color ).multiplyScalar( intensity / ( light.width * light.height * Math.PI ) );
 
-				uniforms.position.setFromMatrixPosition( light.matrixWorld );
-				uniforms.position.applyMatrix4( viewMatrix );
+        // (b) intensity is the brightness of the light
+        uniforms.color.copy(color).multiplyScalar(intensity);
 
-				// extract local rotation of light to derive width/height half vectors
-				matrix42.identity();
-				matrix4.copy( light.matrixWorld );
-				matrix4.premultiply( viewMatrix );
-				matrix42.extractRotation( matrix4 );
+        uniforms.position.setFromMatrixPosition(light.matrixWorld);
+        uniforms.position.applyMatrix4(viewMatrix);
 
-				uniforms.halfWidth.set( light.width * 0.5, 0.0, 0.0 );
-				uniforms.halfHeight.set( 0.0, light.height * 0.5, 0.0 );
+        // extract local rotation of light to derive width/height half vectors
+        matrix42.identity();
+        matrix4.copy(light.matrixWorld);
+        matrix4.premultiply(viewMatrix);
+        matrix42.extractRotation(matrix4);
 
-				uniforms.halfWidth.applyMatrix4( matrix42 );
-				uniforms.halfHeight.applyMatrix4( matrix42 );
+        uniforms.halfWidth.set(light.width * 0.5, 0.0, 0.0);
+        uniforms.halfHeight.set(0.0, light.height * 0.5, 0.0);
 
-				// TODO (abelnation): RectAreaLight distance?
-				// uniforms.distance = distance;
+        uniforms.halfWidth.applyMatrix4(matrix42);
+        uniforms.halfHeight.applyMatrix4(matrix42);
 
-				state.rectArea[ rectAreaLength ] = uniforms;
+        // TODO (abelnation): RectAreaLight distance?
+        // uniforms.distance = distance;
 
-				rectAreaLength ++;
+        state.rectArea[rectAreaLength] = uniforms;
 
-			}
-			else if ( light.isPointLight ) {
+        rectAreaLength++;
 
-				var uniforms = cache.get( light );
+      } else if (light.isPointLight) {
 
-				uniforms.position.setFromMatrixPosition( light.matrixWorld );
-				uniforms.position.applyMatrix4( viewMatrix );
+        var uniforms = cache.get(light);
 
-				uniforms.color.copy( light.color ).multiplyScalar( light.intensity );
-				uniforms.distance = light.distance;
-				uniforms.decay = light.decay;
+        uniforms.position.setFromMatrixPosition(light.matrixWorld);
+        uniforms.position.applyMatrix4(viewMatrix);
 
-				uniforms.shadow = light.castShadow;
+        uniforms.color.copy(light.color).multiplyScalar(light.intensity);
+        uniforms.distance = light.distance;
+        uniforms.decay = light.decay;
 
-				if ( light.castShadow ) {
+        if (light.castShadow) {
 
-					var shadow = light.shadow;
+          var shadow = light.shadow;
 
-					uniforms.shadowBias = shadow.bias;
-					uniforms.shadowRadius = shadow.radius;
-					uniforms.shadowMapSize = shadow.mapSize;
-					uniforms.shadowCameraNear = shadow.camera.near;
-					uniforms.shadowCameraFar = shadow.camera.far;
+          var shadowUniforms = shadowCache.get(light);
 
-				state.pointShadowMap[ pointLength ] = shadowMap;
-				state.pointShadowMatrix[ pointLength ] = light.shadow.matrix;
+          shadowUniforms.shadowBias = shadow.bias;
+          shadowUniforms.shadowRadius = shadow.radius;
+          shadowUniforms.shadowMapSize = shadow.mapSize;
+          shadowUniforms.shadowCameraNear = shadow.camera.near;
+          shadowUniforms.shadowCameraFar = shadow.camera.far;
 
-					numPointShadows ++;
+          state.pointShadow[pointLength] = shadowUniforms;
+          state.pointShadowMap[pointLength] = shadowMap;
+          state.pointShadowMatrix[pointLength] = light.shadow.matrix;
 
-				}
+          numPointShadows++;
 
-				state.point[ pointLength ] = uniforms;
+        }
 
-				pointLength ++;
+        state.point[pointLength] = uniforms;
 
-			}
-			else if ( light.isHemisphereLight ) {
+        pointLength++;
 
-				var uniforms = cache.get( light );
+      } else if (light.isHemisphereLight) {
 
-				uniforms.direction.setFromMatrixPosition( light.matrixWorld );
-				uniforms.direction.transformDirection( viewMatrix );
-				uniforms.direction.normalize();
+        var uniforms = cache.get(light);
 
-				uniforms.skyColor.copy( light.color ).multiplyScalar( intensity );
-				uniforms.groundColor.copy( light.groundColor ).multiplyScalar( intensity );
+        uniforms.direction.setFromMatrixPosition(light.matrixWorld);
+        uniforms.direction.transformDirection(viewMatrix);
+        uniforms.direction.normalize();
 
-				state.hemi[ hemiLength ] = uniforms;
+        uniforms.skyColor.copy(light.color).multiplyScalar(intensity);
+        uniforms.groundColor.copy(light.groundColor).multiplyScalar(intensity);
 
-				hemiLength ++;
+        state.hemi[hemiLength] = uniforms;
 
-			}
+        hemiLength++;
 
-		}
+      }
 
-		// 环境光
-		state.ambient[ 0 ] = r;
-		state.ambient[ 1 ] = g;
-		state.ambient[ 2 ] = b;
+    }
 
-		var hash = state.hash;
+    // 环境光
+    state.ambient[0] = r;
+    state.ambient[1] = g;
+    state.ambient[2] = b;
 
-		if ( hash.directionalLength !== directionalLength ||
-			hash.pointLength !== pointLength ||
-			hash.spotLength !== spotLength ||
-			hash.rectAreaLength !== rectAreaLength ||
-			hash.hemiLength !== hemiLength ||
-			hash.numDirectionalShadows !== numDirectionalShadows ||
-			hash.numPointShadows !== numPointShadows ||
-			hash.numSpotShadows !== numSpotShadows ) {
+    var hash = state.hash;
 
-		state.directional.length = directionalLength;
-		state.spot.length = spotLength;
-		state.rectArea.length = rectAreaLength;
-		state.point.length = pointLength;
-		state.hemi.length = hemiLength;
+    if (hash.directionalLength !== directionalLength ||
+      hash.pointLength !== pointLength ||
+      hash.spotLength !== spotLength ||
+      hash.rectAreaLength !== rectAreaLength ||
+      hash.hemiLength !== hemiLength ||
+      hash.numDirectionalShadows !== numDirectionalShadows ||
+      hash.numPointShadows !== numPointShadows ||
+      hash.numSpotShadows !== numSpotShadows) {
 
-			state.directionalShadowMap.length = numDirectionalShadows;
-			state.pointShadowMap.length = numPointShadows;
-			state.spotShadowMap.length = numSpotShadows;
-			state.directionalShadowMatrix.length = numDirectionalShadows;
-			state.pointShadowMatrix.length = numPointShadows;
-			state.spotShadowMatrix.length = numSpotShadows;
+      state.directional.length = directionalLength;
+      state.spot.length = spotLength;
+      state.rectArea.length = rectAreaLength;
+      state.point.length = pointLength;
+      state.hemi.length = hemiLength;
 
-			hash.directionalLength = directionalLength;
-			hash.pointLength = pointLength;
-			hash.spotLength = spotLength;
-			hash.rectAreaLength = rectAreaLength;
-			hash.hemiLength = hemiLength;
+      state.directionalShadow.length = numDirectionalShadows;
+      state.directionalShadowMap.length = numDirectionalShadows;
+      state.pointShadow.length = numPointShadows;
+      state.pointShadowMap.length = numPointShadows;
+      state.spotShadow.length = numSpotShadows;
+      state.spotShadowMap.length = numSpotShadows;
+      state.directionalShadowMatrix.length = numDirectionalShadows;
+      state.pointShadowMatrix.length = numPointShadows;
+      state.spotShadowMatrix.length = numSpotShadows;
 
-			hash.numDirectionalShadows = numDirectionalShadows;
-			hash.numPointShadows = numPointShadows;
-			hash.numSpotShadows = numSpotShadows;
+      hash.directionalLength = directionalLength;
+      hash.pointLength = pointLength;
+      hash.spotLength = spotLength;
+      hash.rectAreaLength = rectAreaLength;
+      hash.hemiLength = hemiLength;
 
-			state.version = nextVersion ++;
+      hash.numDirectionalShadows = numDirectionalShadows;
+      hash.numPointShadows = numPointShadows;
+      hash.numSpotShadows = numSpotShadows;
 
-		}
+      state.version = nextVersion++;
 
-	}
+    }
 
-	return {
-		setup: setup,
-		state: state
-	};
+  }
+
+  return {
+    setup: setup,
+    state: state
+  };
 
 }
 
-export { WebGLLights };
+export {WebGLLights};

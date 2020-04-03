@@ -1,5 +1,5 @@
-import {MTLLoader} from './jsm/loaders/MTLLoader.js';
-import {OBJLoader} from './jsm/loaders/OBJLoader.js';
+import {MTLLoader} from '../../jsm/loaders/MTLLoader.js';
+import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
 
 /**
  * 场景初始化区
@@ -90,12 +90,12 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       this.camera.lookAt(0, 0, 0);
     },
     initLight: function() {
-      // var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-      // this.scene.add(ambientLight);
+      var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      this.scene.add(ambientLight);
 
-      var light = new THREE.DirectionalLight(0xffffff, 0.5);
-      light.position.set(1.5, 3.0, 4.0);
-      this.scene.add(light);
+      // var light = new THREE.DirectionalLight(0xffffff, 0.5);
+      // light.position.set(1.5, 3.0, 4.0);
+      // this.scene.add(light);
 
       // var helper = new THREE.DirectionalLightHelper( light, 4 );
       // this.scene.add( helper );
@@ -258,11 +258,12 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       geometry.setIndex(indices);
 
       var material = new THREE.MeshPhongMaterial({
-        color: 0xaaaaaa,
-        specular: 0xffffff,
-        shininess: 250,
-        side: THREE.DoubleSide,
-        vertexColors: true
+        // color: 0xaaaaaa,
+        // specular: 0xffffff,
+        // shininess: 250,
+        // side: THREE.DoubleSide,
+        vertexColors: true,
+        // flatShading: true,
       });
       var mesh = new THREE.Mesh(geometry, material);
       this.scene.add(mesh);

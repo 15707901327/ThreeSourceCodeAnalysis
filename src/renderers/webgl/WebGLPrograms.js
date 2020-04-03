@@ -47,7 +47,7 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
   var parameterNames = [
 		"precision", "isWebGL2", "supportsVertexTextures", "outputEncoding", "instancing",
 		"map", "mapEncoding", "matcap", "matcapEncoding", "envMap", "envMapMode", "envMapEncoding", "envMapCubeUV",
-		"lightMap", "lightMapEncoding", "aoMap", "emissiveMap", "emissiveMapEncoding", "bumpMap", "normalMap", "objectSpaceNormalMap", "tangentSpaceNormalMap", "clearcoatNormalMap", "displacementMap", "specularMap",
+		"lightMap", "lightMapEncoding", "aoMap", "emissiveMap", "emissiveMapEncoding", "bumpMap", "normalMap", "objectSpaceNormalMap", "tangentSpaceNormalMap", "clearcoatMap", "clearcoatRoughnessMap", "clearcoatNormalMap", "displacementMap", "specularMap",
     "roughnessMap", "metalnessMap", "gradientMap",
 		"alphaMap", "combine", "vertexColors", "vertexTangents", "vertexUvs", "uvsVertexOnly", "fog", "useFog", "fogExp2",
     "flatShading", "sizeAttenuation", "logarithmicDepthBuffer", "skinning",
@@ -174,9 +174,6 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
 
     var shaderID = shaderIDs[material.type];
 
-    // heuristics to create shader parameters according to lights in the scene
-    // (not to blow over maxLights budget)
-
     var maxBones = object.isSkinnedMesh ? allocateBones(object) : 0;
 
     if (material.precision !== null) {
@@ -229,6 +226,8 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
       normalMap: !!material.normalMap,
       objectSpaceNormalMap: material.normalMapType === ObjectSpaceNormalMap,
 			tangentSpaceNormalMap: material.normalMapType === TangentSpaceNormalMap,
+			clearcoatMap: !! material.clearcoatMap,
+			clearcoatRoughnessMap: !! material.clearcoatRoughnessMap,
 			clearcoatNormalMap: !! material.clearcoatNormalMap,
       displacementMap: !!material.displacementMap,
       roughnessMap: !!material.roughnessMap,
@@ -243,8 +242,8 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
       combine: material.combine,
 
       vertexTangents: (material.normalMap && material.vertexTangents),
-      vertexColors: material.vertexColors,
-			vertexUvs: !! material.map || !! material.bumpMap || !! material.normalMap || !! material.specularMap || !! material.alphaMap || !! material.emissiveMap || !! material.roughnessMap || !! material.metalnessMap || !! material.clearcoatNormalMap || !! material.displacementMap,
+      vertexColors: material.vertexColors, // 是否使用顶点颜色
+			vertexUvs: !! material.map || !! material.bumpMap || !! material.normalMap || !! material.specularMap || !! material.alphaMap || !! material.emissiveMap || !! material.roughnessMap || !! material.metalnessMap || !! material.clearcoatMap || !! material.clearcoatRoughnessMap || !! material.clearcoatNormalMap || !! material.displacementMap,
 			uvsVertexOnly: ! ( !! material.map || !! material.bumpMap || !! material.normalMap || !! material.specularMap || !! material.alphaMap || !! material.emissiveMap || !! material.roughnessMap || !! material.metalnessMap || !! material.clearcoatNormalMap ) && !! material.displacementMap,
 
       fog: !!fog,
@@ -299,7 +298,7 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
 
 			extensionDerivatives: material.extensions && material.extensions.derivatives,
 			extensionFragDepth: material.extensions && material.extensions.fragDepth,
-			extensionDrawbuffers: material.extensions && material.extensions.drawBuffers,
+			extensionDrawBuffers: material.extensions && material.extensions.drawBuffers,
 			extensionShaderTextureLOD: material.extensions && material.extensions.shaderTextureLOD,
 
 			rendererExtensionFragDepth: isWebGL2 || extensions.get( 'EXT_frag_depth' ) !== null,

@@ -657,7 +657,11 @@ function setValueT6Array( gl, v, textures ) {
 }
 
 // Helper to pick the right setter for a pure (bottom-level) array
-
+/**
+ *
+ * @param type
+ * @returns {setValueV3fArray|setValueV4fArray|setValueV3iArray|setValueV1fArray|setValueV4iArray|setValueM4Array|setValueM2Array|setValueT6Array|setValueT1Array|setValueV2iArray|setValueV1iArray|setValueM3Array|setValueV2fArray}
+ */
 function getPureArraySetter( type ) {
 
 	switch ( type ) {
@@ -688,9 +692,7 @@ function getPureArraySetter( type ) {
 		case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
 		case 0x8dc5: // SAMPLER_CUBE_SHADOW
 			return setValueT6Array;
-
 	}
-
 }
 
 // --- Uniform Classes ---
@@ -720,9 +722,7 @@ function PureArrayUniform( id, activeInfo, addr ) {
 	this.cache = [];
 	this.size = activeInfo.size;
 	this.setValue = getPureArraySetter( activeInfo.type );
-
 	// this.path = activeInfo.name; // DEBUG
-
 }
 
 PureArrayUniform.prototype.updateCache = function ( data ) {
@@ -784,7 +784,7 @@ function addUniform( container, uniformObject ) {
 }
 
 /**
- *
+ * 解析uniform变量
  * @param activeInfo{WebGLActiveInfo}
  * @param addr 属性地址
  * @param container{WebGLUniforms}

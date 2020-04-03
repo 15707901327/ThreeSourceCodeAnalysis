@@ -265,7 +265,8 @@ function includeReplacer(match, include) {
 
 // Unroll Loops
 
-var loopPattern = /#pragma unroll_loop[\s]+?for \( int i \= (\d+)\; i < (\d+)\; i \+\+ \) \{([\s\S]+?)(?=\})\}/g;
+var deprecatedUnrollLoopPattern = /#pragma unroll_loop[\s]+?for \( int i \= (\d+)\; i < (\d+)\; i \+\+ \) \{([\s\S]+?)(?=\})\}/g;
+var unrollLoopPattern = /#pragma unroll_loop_start[\s]+?for \( int i \= (\d+)\; i < (\d+)\; i \+\+ \) \{([\s\S]+?)(?=\})\}[\s]+?#pragma unroll_loop_end/g;
 
 /**
  *
@@ -273,7 +274,18 @@ var loopPattern = /#pragma unroll_loop[\s]+?for \( int i \= (\d+)\; i < (\d+)\; 
  * @return {string | void}
  */
 function unrollLoops(string) {
-  return string.replace(loopPattern, loopReplacer);
+
+	return string
+		.replace( unrollLoopPattern, loopReplacer )
+		.replace( deprecatedUnrollLoopPattern, deprecatedLoopReplacer );
+
+}
+
+function deprecatedLoopReplacer( match, start, end, snippet ) {
+
+	console.warn( 'WebGLProgram: #pragma unroll_loop shader syntax is deprecated. Please use #pragma unroll_loop_start syntax instead.' );
+	return loopReplacer( match, start, end, snippet );
+
 }
 
 function loopReplacer(match, start, end, snippet) {
@@ -504,6 +516,8 @@ function WebGLProgram( renderer, cacheKey, parameters ) {
       (parameters.normalMap && parameters.objectSpaceNormalMap) ? '#define OBJECTSPACE_NORMALMAP' : '',
       (parameters.normalMap && parameters.tangentSpaceNormalMap) ? '#define TANGENTSPACE_NORMALMAP' : '',
 
+			parameters.clearcoatMap ? '#define USE_CLEARCOATMAP' : '',
+			parameters.clearcoatRoughnessMap ? '#define USE_CLEARCOAT_ROUGHNESSMAP' : '',
       parameters.clearcoatNormalMap ? '#define USE_CLEARCOAT_NORMALMAP' : '',
       parameters.displacementMap && parameters.supportsVertexTextures ? '#define USE_DISPLACEMENTMAP' : '',
       parameters.specularMap ? '#define USE_SPECULARMAP' : '',
@@ -558,10 +572,9 @@ function WebGLProgram( renderer, cacheKey, parameters ) {
 
       '#endif',
 
+      // 添加颜色变量
       '#ifdef USE_COLOR',
-
       '	attribute vec3 color;',
-
       '#endif',
 
       '#ifdef USE_MORPHTARGETS',
@@ -605,7 +618,7 @@ function WebGLProgram( renderer, cacheKey, parameters ) {
 
       generatePrecision(parameters),
 
-			'#define SHADER_NAME ' + parameters.shaderName,
+			'#define SHADER_NAME ' + parameters.shaderName, // 着色器名称
 
       customDefines,
 
@@ -629,6 +642,8 @@ function WebGLProgram( renderer, cacheKey, parameters ) {
       parameters.normalMap ? '#define USE_NORMALMAP' : '',
       (parameters.normalMap && parameters.objectSpaceNormalMap) ? '#define OBJECTSPACE_NORMALMAP' : '',
       (parameters.normalMap && parameters.tangentSpaceNormalMap) ? '#define TANGENTSPACE_NORMALMAP' : '',
+			parameters.clearcoatMap ? '#define USE_CLEARCOATMAP' : '',
+			parameters.clearcoatRoughnessMap ? '#define USE_CLEARCOAT_ROUGHNESSMAP' : '',
       parameters.clearcoatNormalMap ? '#define USE_CLEARCOAT_NORMALMAP' : '',
       parameters.specularMap ? '#define USE_SPECULARMAP' : '',
       parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
@@ -638,7 +653,7 @@ function WebGLProgram( renderer, cacheKey, parameters ) {
       parameters.sheen ? '#define USE_SHEEN' : '',
 
       parameters.vertexTangents ? '#define USE_TANGENT' : '',
-      parameters.vertexColors ? '#define USE_COLOR' : '',
+      parameters.vertexColors ? '#define USE_COLOR' : '', // 顶点颜色
       parameters.vertexUvs ? '#define USE_UV' : '',
       parameters.uvsVertexOnly ? '#define UVS_VERTEX_ONLY' : '',
 
@@ -661,7 +676,7 @@ function WebGLProgram( renderer, cacheKey, parameters ) {
 
 			( ( parameters.extensionShaderTextureLOD || parameters.envMap ) && parameters.rendererExtensionShaderTextureLod ) ? '#define TEXTURE_LOD_EXT' : '',
 
-      'uniform mat4 viewMatrix;',
+      'uniform mat4 viewMatrix;', // 视图矩阵
       'uniform vec3 cameraPosition;',
       'uniform bool isOrthographic;',
 

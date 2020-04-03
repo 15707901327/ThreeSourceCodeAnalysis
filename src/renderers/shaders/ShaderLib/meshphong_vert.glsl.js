@@ -14,7 +14,8 @@ varying vec3 vViewPosition;
 #include <uv2_pars_vertex>
 #include <displacementmap_pars_vertex>
 #include <envmap_pars_vertex>
-#include <color_pars_vertex>
+// 顶点颜色varying
+#include <color_pars_vertex> 
 #include <fog_pars_vertex>
 #include <morphtarget_pars_vertex>
 #include <skinning_pars_vertex>

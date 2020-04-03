@@ -77,6 +77,7 @@ function MeshPhongMaterial( parameters ) {
 	this.aoMap = null;
 	this.aoMapIntensity = 1.0;
 
+  // 自发光
 	this.emissive = new Color( 0x000000 );
 	this.emissiveIntensity = 1.0;
 	this.emissiveMap = null;
