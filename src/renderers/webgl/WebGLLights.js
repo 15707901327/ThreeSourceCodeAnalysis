@@ -65,7 +65,6 @@ function UniformsCache() {
             halfHeight: new Vector3()
           };
           break;
-
       }
 
       lights[light.id] = uniforms;
@@ -159,7 +158,7 @@ function WebGLLights() {
     version: 0,
 
     hash: {
-      directionalLength: -1,
+      directionalLength: -1, // 记录平行光数量
       pointLength: -1,
       spotLength: -1,
       rectAreaLength: -1,
@@ -172,7 +171,7 @@ function WebGLLights() {
 
     ambient: [0, 0, 0], // 环境光 颜色*强度
     probe: [], // 放置9个三维点
-    directional: [], // 放置灯光属性
+    directional: [], // 放置平行光属性
     directionalShadowMap: [],
     directionalShadowMatrix: [],
     spot: [],
@@ -190,7 +189,7 @@ function WebGLLights() {
 
   for (var i = 0; i < 9; i++) state.probe.push(new Vector3());
 
-  var vector3 = new Vector3();
+  var vector3 = new Vector3(); // 光源target
   var matrix4 = new Matrix4();
   var matrix42 = new Matrix4();
 
@@ -208,7 +207,7 @@ function WebGLLights() {
     // 初始化probe
     for (var i = 0; i < 9; i++) state.probe[i].set(0, 0, 0);
 
-    var directionalLength = 0; // 方向长度
+    var directionalLength = 0; // 平行光数量
     var pointLength = 0;
     var spotLength = 0;
     var rectAreaLength = 0;
@@ -239,25 +238,22 @@ function WebGLLights() {
         r += color.r * intensity;
         g += color.g * intensity;
         b += color.b * intensity;
-      } else if (light.isLightProbe) {
-
+      }
+      else if (light.isLightProbe) {
         for (var j = 0; j < 9; j++) {
-
           state.probe[j].addScaledVector(light.sh.coefficients[j], intensity);
-
         }
-
-      } else if (light.isDirectionalLight) {
+      }
+      else if (light.isDirectionalLight) {
 
         var uniforms = cache.get(light);
 
         // 颜色是灯光颜色 * 灯光强度
         uniforms.color.copy(light.color).multiplyScalar(light.intensity);
-        // 获取光源位置
-        uniforms.direction.setFromMatrixPosition(light.matrixWorld);
-        // 获取光源指向位置
-        vector3.setFromMatrixPosition(light.target.matrixWorld);
+
         // 计算光源的方向
+        uniforms.direction.setFromMatrixPosition(light.matrixWorld);
+        vector3.setFromMatrixPosition(light.target.matrixWorld);
         uniforms.direction.sub(vector3);
         // 用视图矩阵对向量进行变换（归一化）
         uniforms.direction.transformDirection(viewMatrix);
@@ -286,7 +282,8 @@ function WebGLLights() {
 
         directionalLength++;
 
-      } else if (light.isSpotLight) {
+      }
+      else if (light.isSpotLight) {
 
         var uniforms = cache.get(light);
 
@@ -327,7 +324,8 @@ function WebGLLights() {
 
         spotLength++;
 
-      } else if (light.isRectAreaLight) {
+      }
+      else if (light.isRectAreaLight) {
 
         var uniforms = cache.get(light);
 
@@ -359,7 +357,8 @@ function WebGLLights() {
 
         rectAreaLength++;
 
-      } else if (light.isPointLight) {
+      }
+      else if (light.isPointLight) {
 
         var uniforms = cache.get(light);
 
@@ -394,7 +393,8 @@ function WebGLLights() {
 
         pointLength++;
 
-      } else if (light.isHemisphereLight) {
+      }
+      else if (light.isHemisphereLight) {
 
         var uniforms = cache.get(light);
 

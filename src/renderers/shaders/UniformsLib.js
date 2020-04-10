@@ -15,7 +15,7 @@ var UniformsLib = {
 
     map: {value: null},
     uvTransform: {value: new Matrix3()},
-		uv2Transform: { value: new Matrix3() },
+    uv2Transform: {value: new Matrix3()},
 
     alphaMap: {value: null},
 
@@ -116,10 +116,12 @@ var UniformsLib = {
       value: [],
       properties: {
         direction: {},
-			color: {}
-		} },
+        color: {}
+      }
+    },
 
-		directionalLightShadows: { value: [], properties: {
+    directionalLightShadows: {
+      value: [], properties: {
         shadowBias: {},
         shadowRadius: {},
         shadowMapSize: {}
@@ -138,10 +140,12 @@ var UniformsLib = {
         distance: {},
         coneCos: {},
         penumbraCos: {},
-			decay: {}
-		} },
+        decay: {}
+      }
+    },
 
-		spotLightShadows: { value: [], properties: {
+    spotLightShadows: {
+      value: [], properties: {
         shadowBias: {},
         shadowRadius: {},
         shadowMapSize: {}
@@ -157,10 +161,12 @@ var UniformsLib = {
         color: {},
         position: {},
         decay: {},
-			distance: {}
-		} },
+        distance: {}
+      }
+    },
 
-		pointLightShadows: { value: [], properties: {
+    pointLightShadows: {
+      value: [], properties: {
         shadowBias: {},
         shadowRadius: {},
         shadowMapSize: {},
@@ -200,7 +206,7 @@ var UniformsLib = {
     size: {value: 1.0},
     scale: {value: 1.0},
     map: {value: null},
-		alphaMap: { value: null },
+    alphaMap: {value: null},
     uvTransform: {value: new Matrix3()}
 
   },
@@ -212,7 +218,7 @@ var UniformsLib = {
     center: {value: new Vector2(0.5, 0.5)},
     rotation: {value: 0.0},
     map: {value: null},
-		alphaMap: { value: null },
+    alphaMap: {value: null},
     uvTransform: {value: new Matrix3()}
 
   }

@@ -1238,7 +1238,8 @@ function WebGLRenderer(parameters) {
 
       if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera, overrideMaterial);
       if (transparentObjects.length) renderObjects(transparentObjects, scene, camera, overrideMaterial);
-    } else {
+    }
+    else {
       // opaque pass (front-to-back order)
       if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera);
       // transparent pass (back-to-front order)
@@ -1453,7 +1454,7 @@ function WebGLRenderer(parameters) {
     // 获取材质渲染属性
     var materialProperties = properties.get(material);
 
-    // 获取管理灯光
+    // 获取管理灯光对象
     var lights = currentRenderState.state.lights;
     var shadowsArray = currentRenderState.state.shadowsArray;
 
@@ -1645,7 +1646,8 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else {
+    }
+    else {
       initMaterial(material, scene, object);
       materialProperties.__version = material.version;
     }

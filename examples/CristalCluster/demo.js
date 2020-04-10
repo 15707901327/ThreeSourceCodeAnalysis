@@ -1,7 +1,7 @@
 import {MTLLoader} from '../jsm/loaders/MTLLoader.js';
 import {OBJLoader} from '../jsm/loaders/OBJLoader.js';
 import {CristalCluster} from './CristalCluster.js';
-import { VertexNormalsHelper } from '../jsm/helpers/VertexNormalsHelper.js';
+import {VertexNormalsHelper} from '../jsm/helpers/VertexNormalsHelper.js';
 
 /**
  * 场景初始化区
@@ -327,10 +327,11 @@ import { VertexNormalsHelper } from '../jsm/helpers/VertexNormalsHelper.js';
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
       // geometry.setAttribute('uvs', new THREE.Float32BufferAttribute(uvs, 2));
       // geometry.setAttribute("color", new THREE.Float32BufferAttribute(color, 3));
-      geometry.setAttribute('normal', new THREE.Float32BufferAttribute(vertexNormals, 3));
+      // geometry.setAttribute('normal', new THREE.Float32BufferAttribute(vertexNormals, 3));
 
       var material = new THREE.MeshPhongMaterial({
         // vertexColors: true
+        flatShading: true
       });
       var mesh = new THREE.Mesh(geometry, material);
 

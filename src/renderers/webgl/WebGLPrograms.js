@@ -157,7 +157,7 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
   /**
    * 获取材质参数
    * @param material
-   * @param lights
+   * @param lights 灯光管理对象
    * @param shadows
    * @param scene
    * @param nClipPlanes
@@ -264,7 +264,7 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
       maxMorphTargets: renderer.maxMorphTargets,
       maxMorphNormals: renderer.maxMorphNormals,
 
-      numDirLights: lights.directional.length, // 光照的数量
+      numDirLights: lights.directional.length, // 平行光的数量
       numPointLights: lights.point.length,
       numSpotLights: lights.spot.length,
       numRectAreaLights: lights.rectArea.length,
@@ -358,7 +358,7 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
   };
 
   /**
-   *
+   * 获取着色器
    * @param parameters 材质参数
    * @param cacheKey 材质key
    * @returns {WebGLProgram}
@@ -381,7 +381,6 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
     }
 
     if (program === undefined) {
-
 			program = new WebGLProgram( renderer, cacheKey, parameters );
       programs.push(program);
     }

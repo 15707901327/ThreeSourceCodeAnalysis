@@ -411,6 +411,7 @@ function setValueT6( gl, v, textures ) {
 
 	if ( cache[ 0 ] !== unit ) {
 
+    // 将纹理传递给取样器
 		gl.uniform1i( this.addr, unit );
 		cache[ 0 ] = unit;
 
@@ -695,8 +696,13 @@ function getPureArraySetter( type ) {
 	}
 }
 
-// --- Uniform Classes ---
-
+/**
+ * --- Uniform Classes ---
+ * @param id 名称
+ * @param activeInfo 信息
+ * @param addr 地址
+ * @constructor
+ */
 function SingleUniform( id, activeInfo, addr ) {
 
 	this.id = id;
@@ -705,7 +711,6 @@ function SingleUniform( id, activeInfo, addr ) {
 	this.setValue = getSingularSetter( activeInfo.type );
 
 	// this.path = activeInfo.name; // DEBUG
-
 }
 
 /**
@@ -778,6 +783,11 @@ var RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
 // Note: These portions can be read in a non-overlapping fashion and
 // allow straightforward parsing of the hierarchy that WebGL encodes
 // in the uniform names.
+/**
+ * 添加统一变量
+ * @param container
+ * @param uniformObject
+ */
 function addUniform( container, uniformObject ) {
 	container.seq.push( uniformObject );
 	container.map[ uniformObject.id ] = uniformObject;
@@ -785,7 +795,7 @@ function addUniform( container, uniformObject ) {
 
 /**
  * 解析uniform变量
- * @param activeInfo{WebGLActiveInfo}
+ * @param activeInfo{WebGLActiveInfo} uniform变量的相关信息
  * @param addr 属性地址
  * @param container{WebGLUniforms}
  */
@@ -799,6 +809,18 @@ function parseUniform( activeInfo, addr, container ) {
 
 	while ( true ) {
 
+    /**
+     * exec() 方法用于检索字符串中的正则表达式的匹配。
+     * 返回一个数组：
+     *  0：正则表达式匹配的文本
+     *  1：RegExpObject 的第 1 个子表达式相匹配的文本
+     *  2：RegExpObject 的第 2 个子表达式相匹配的文本（如果有的话）
+     *  index： 属性声明的是匹配文本的第一个字符的位置
+     *  input：属性则存放的是被检索的字符串 string
+     *  但是，当 RegExpObject 是一个全局正则表达式时，它会在 RegExpObject 的 lastIndex 属性指定的字符处开始检索字符串 string。
+     *  当 exec() 找到了与表达式相匹配的文本时，在匹配后，它将把 RegExpObject 的 lastIndex 属性设置为匹配文本的最后一个字符的下一个位置。
+     *  这就是说，您可以通过反复调用 exec() 方法来遍历字符串中的所有匹配文本。当 exec() 再也找不到匹配的文本时，它将返回 null，并把 lastIndex 属性重置为 0。
+     */
 		var match = RePathPart.exec( path ),
 			matchEnd = RePathPart.lastIndex,
 
@@ -906,7 +928,7 @@ WebGLUniforms.upload = function ( gl, seq, values, textures ) {
 };
 
 /**
- *
+ * 比较同时存在的属性，添加到数组
  * @param seq
  * @param values
  * @return {Array}

@@ -26,8 +26,8 @@ function Material() {
 
   this.blending = NormalBlending; // 控制渲染时是否混合
   this.side = FrontSide; // 控制渲染面
-  this.flatShading = false;
-	this.vertexColors = false;
+  this.flatShading = false; // 控制自动计算法线
+	this.vertexColors = false; // 控制是否使用顶点颜色
 
   // 控制透明度
   this.opacity = 1;

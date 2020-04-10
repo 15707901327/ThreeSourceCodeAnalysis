@@ -93,9 +93,9 @@ import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
       var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
       this.scene.add(ambientLight);
 
-      // var light = new THREE.DirectionalLight(0xffffff, 0.5);
-      // light.position.set(1.5, 3.0, 4.0);
-      // this.scene.add(light);
+      var light = new THREE.DirectionalLight(0xffffff, 0.5);
+      light.position.set(1.5, 3.0, 4.0);
+      this.scene.add(light);
 
       // var helper = new THREE.DirectionalLightHelper( light, 4 );
       // this.scene.add( helper );
