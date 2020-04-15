@@ -719,6 +719,9 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   },
 
+  /**
+   * 计算顶点法线
+   */
   computeVertexNormals: function() {
 
     var index = this.index;
@@ -728,22 +731,16 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
       var positions = attributes.position.array;
 
+      // 重置顶点法线
       if (attributes.normal === undefined) {
-
         this.setAttribute('normal', new BufferAttribute(new Float32Array(positions.length), 3));
-
-      } else {
-
+      }
+      else {
         // reset existing normals to zero
-
         var array = attributes.normal.array;
-
         for (var i = 0, il = array.length; i < il; i++) {
-
           array[i] = 0;
-
         }
-
       }
 
       var normals = attributes.normal.array;
@@ -753,11 +750,9 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
       var cb = new Vector3(), ab = new Vector3();
 
       // indexed elements
-
+      // 计算法线
       if (index) {
-
         var indices = index.array;
-
         for (var i = 0, il = index.count; i < il; i += 3) {
 
           vA = indices[i + 0] * 3;
@@ -785,11 +780,9 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
           normals[vC + 2] += cb.z;
 
         }
-
-      } else {
-
+      }
+      else {
         // non-indexed elements (unconnected triangle soup)
-
         for (var i = 0, il = positions.length; i < il; i += 9) {
 
           pA.fromArray(positions, i);
@@ -819,7 +812,6 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
       this.normalizeNormals();
 
       attributes.normal.needsUpdate = true;
-
     }
   },
 
@@ -870,6 +862,9 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   },
 
+  /**
+   * 归一化法线
+   */
   normalizeNormals: function() {
 
     var normals = this.attributes.normal;

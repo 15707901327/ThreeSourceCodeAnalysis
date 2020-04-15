@@ -860,7 +860,8 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else if (object.isLine) {
+    }
+    else if (object.isLine) {
 
       var lineWidth = material.linewidth;
 
@@ -882,21 +883,19 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else if (object.isPoints) {
+    }
+    else if (object.isPoints) {
       renderer.setMode(_gl.POINTS);
-    } else if (object.isSprite) {
+    }
+    else if (object.isSprite) {
       renderer.setMode(_gl.TRIANGLES);
-
     }
 
     if (object.isInstancedMesh) {
-
       renderer.renderInstances(geometry, drawStart, drawCount, object.count);
-
-    } else if (geometry.isInstancedBufferGeometry) {
-
+    }
+    else if (geometry.isInstancedBufferGeometry) {
       renderer.renderInstances(geometry, drawStart, drawCount, geometry.maxInstancedCount);
-
     } else {
       renderer.render(drawStart, drawCount);
     }
