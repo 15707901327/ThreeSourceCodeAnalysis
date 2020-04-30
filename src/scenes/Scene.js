@@ -14,7 +14,7 @@ function Scene() {
 	this.type = 'Scene';
 
 	this.background = null;
-	this.environment = null;
+	this.environment = null; // 环境
 	this.fog = null;
 	this.overrideMaterial = null;
 

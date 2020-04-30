@@ -4,7 +4,6 @@
 
 import {
   DataTextureLoader,
-  DefaultLoadingManager,
   FloatType,
   HalfFloatType,
   LinearEncoding,
@@ -14,30 +13,31 @@ import {
   RGBEFormat,
   RGBFormat,
   UnsignedByteType
-} from "../../../build/three_r108.module.js";
+} from "../../../build/three.module.js";
 
 // https://github.com/mrdoob/three.js/issues/5552
 // http://en.wikipedia.org/wiki/RGBE_image_format
 
 var RGBELoader = function(manager) {
-  this.manager = (manager !== undefined) ? manager : DefaultLoadingManager;
-  this.type = UnsignedByteType; // 数据类型
+
+	DataTextureLoader.call( this, manager );
+
+	this.type = UnsignedByteType;
+
 };
 
-// extend DataTextureLoader
-RGBELoader.prototype = Object.create(DataTextureLoader.prototype);
+RGBELoader.prototype = Object.assign( Object.create( DataTextureLoader.prototype ), {
 
-/**
- * adapted from http://www.graphics.cornell.edu/~bjw/rgbe.html
- * @param buffer
- * @returns {null|{data: Uint8Array | number | * | Float32Array | Uint16Array, exposure: number, width: number, format: number, header: string, type: number, gamma: number, height: number}}
- * @private
- */
-RGBELoader.prototype._parser = function(buffer) {
+	constructor: RGBELoader,
 
+	// adapted from http://www.graphics.cornell.edu/~bjw/rgbe.html
+
+	parse: function ( buffer ) {
+
+		var
   /* return codes for rgbe routines */
   // RGBE_RETURN_SUCCESS = 0,
-  var RGBE_RETURN_FAILURE = -1,
+			RGBE_RETURN_FAILURE = - 1,
 
     /* default error routine.  change this to change error handling */
     rgbe_read_error = 1,
@@ -491,27 +491,16 @@ RGBELoader.prototype._parser = function(buffer) {
 
   return null;
 
-};
+	},
 
-/**
- * 设置数据类型
- * @param value
- * @returns {RGBELoader}
- */
-RGBELoader.prototype.setDataType = function(value) {
+	setDataType: function ( value ) {
+
   this.type = value;
   return this;
-};
 
-RGBELoader.prototype.setType = function(value) {
+	},
 
-  console.warn('THREE.RGBELoader: .setType() has been renamed to .setDataType().');
-
-  return this.setDataType(value);
-
-};
-
-RGBELoader.prototype.load = function(url, onLoad, onProgress, onError) {
+	load: function ( url, onLoad, onProgress, onError ) {
 
   function onLoadCallback(texture, texData) {
 
@@ -552,6 +541,8 @@ RGBELoader.prototype.load = function(url, onLoad, onProgress, onError) {
 
   return DataTextureLoader.prototype.load.call(this, url, onLoadCallback, onProgress, onError);
 
-};
+	}
+
+} );
 
 export {RGBELoader};

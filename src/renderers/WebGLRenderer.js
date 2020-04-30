@@ -1046,27 +1046,23 @@ function WebGLRenderer(parameters) {
 
   }
 
-  // Compile
-
+  /**
+   * Compile 创建着色器
+   * @param scene
+   * @param camera
+   */
   this.compile = function(scene, camera) {
 
     currentRenderState = renderStates.get(scene, camera);
     currentRenderState.init();
 
     scene.traverse(function(object) {
-
       if (object.isLight) {
-
         currentRenderState.pushLight(object);
-
         if (object.castShadow) {
-
           currentRenderState.pushShadow(object);
-
         }
-
       }
-
     });
 
     currentRenderState.setupLights(camera);
@@ -1090,17 +1086,13 @@ function WebGLRenderer(parameters) {
 
           }
 
-        } else if (object.material.uuid in compiled === false) {
-
+        }
+        else if (object.material.uuid in compiled === false) {
           initMaterial(object.material, scene, object);
           compiled[object.material.uuid] = true;
-
         }
-
       }
-
     });
-
   };
 
   // Animation Loop
@@ -1620,30 +1612,34 @@ function WebGLRenderer(parameters) {
 
         initMaterial(material, scene, object);
 
-      } else if (material.fog && materialProperties.fog !== fog) {
+      }
+      else if (material.fog && materialProperties.fog !== fog) {
 
         initMaterial(material, scene, object);
 
-      } else if (materialProperties.environment !== environment) {
+      }
+      else if (materialProperties.environment !== environment) {
 
         initMaterial(material, scene, object);
 
-      } else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
+      }
+      else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
 
         initMaterial(material, scene, object);
 
-      } else if (materialProperties.numClippingPlanes !== undefined &&
+      }
+      else if (materialProperties.numClippingPlanes !== undefined &&
         (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
           materialProperties.numIntersection !== _clipping.numIntersection)) {
 
         initMaterial(material, scene, object);
 
-      } else if (materialProperties.outputEncoding !== _this.outputEncoding) {
+      }
+      else if (materialProperties.outputEncoding !== _this.outputEncoding) {
 
         initMaterial(material, scene, object);
 
       }
-
     }
     else {
       initMaterial(material, scene, object);
