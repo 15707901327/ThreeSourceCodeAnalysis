@@ -1,6 +1,3 @@
-import {Material} from './Material.js';
-import {cloneUniforms} from '../renderers/shaders/UniformsUtils.js';
-
 /**
  * @author alteredq / http://alteredqualia.com/
  *
@@ -21,11 +18,13 @@ import {cloneUniforms} from '../renderers/shaders/UniformsUtils.js';
  *  morphNormals: <bool>
  * }
  */
-/**
- * 着色器材质
- * @param parameters
- * @constructor
- */
+
+import { Material } from './Material.js';
+import { cloneUniforms } from '../renderers/shaders/UniformsUtils.js';
+
+import default_vertex from '../renderers/shaders/ShaderChunk/default_vertex.glsl.js';
+import default_fragment from '../renderers/shaders/ShaderChunk/default_fragment.glsl.js';
+
 function ShaderMaterial(parameters) {
 
   Material.call(this);
@@ -33,10 +32,10 @@ function ShaderMaterial(parameters) {
   this.type = 'ShaderMaterial';
 
   this.defines = {};
-  this.uniforms = {};
+  this.uniforms = {}; // 保存统一变量
 
-  this.vertexShader = 'void main() {\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}';
-  this.fragmentShader = 'void main() {\n\tgl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );\n}';
+	this.vertexShader = default_vertex;
+	this.fragmentShader = default_fragment;
 
   this.linewidth = 1;
 
@@ -72,15 +71,11 @@ function ShaderMaterial(parameters) {
   if (parameters !== undefined) {
 
     if (parameters.attributes !== undefined) {
-
       console.error('THREE.ShaderMaterial: attributes should now be defined in THREE.BufferGeometry instead.');
-
     }
 
     this.setValues(parameters);
-
   }
-
 }
 
 ShaderMaterial.prototype = Object.create(Material.prototype);

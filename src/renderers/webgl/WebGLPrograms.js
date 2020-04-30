@@ -174,6 +174,9 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
 
     var shaderID = shaderIDs[material.type];
 
+		// heuristics to create shader parameters according to lights in the scene
+		// (not to blow over maxLights budget)
+
     var maxBones = object.isSkinnedMesh ? allocateBones(object) : 0;
 
     if (material.precision !== null) {
@@ -192,7 +195,7 @@ function WebGLPrograms( renderer, extensions, capabilities ) {
 
 			isWebGL2: isWebGL2,
 
-      shaderID: shaderID,
+      shaderID: shaderID, // 着色器id
 			shaderName: shaderobject.name,
 
 			uniforms: shaderobject.uniforms,

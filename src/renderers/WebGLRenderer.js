@@ -1202,9 +1202,7 @@ function WebGLRenderer(parameters) {
     currentRenderList.finish();
 
     if (_this.sortObjects === true) {
-
       currentRenderList.sort(_opaqueSort, _transparentSort);
-
     }
 
     // 阴影
@@ -1599,6 +1597,7 @@ function WebGLRenderer(parameters) {
     var fog = scene.fog;
     var environment = material.isMeshStandardMaterial ? scene.environment : null;
 
+    // 材质对象属性
     var materialProperties = properties.get(material);
     var lights = currentRenderState.state.lights; // 获取灯光数据
 
