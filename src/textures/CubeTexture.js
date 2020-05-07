@@ -22,12 +22,12 @@ import { CubeReflectionMapping, RGBFormat } from '../constants.js';
 function CubeTexture( images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding ) {
 
 	images = images !== undefined ? images : [];
-	mapping = mapping !== undefined ? mapping : CubeReflectionMapping;
-	format = format !== undefined ? format : RGBFormat;
+	mapping = mapping !== undefined ? mapping : CubeReflectionMapping; // 纹理映射方式
+	format = format !== undefined ? format : RGBFormat; // 纹理数据格式
 
 	Texture.call( this, images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding );
 
-	this.flipY = false;
+	this.flipY = false; // 图像Y轴反转
 }
 
 CubeTexture.prototype = Object.create( Texture.prototype );

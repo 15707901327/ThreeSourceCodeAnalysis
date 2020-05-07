@@ -3,7 +3,7 @@
  */
 
 import { Cache } from './Cache.js';
-import { DefaultLoadingManager } from './LoadingManager.js';
+import { Loader } from './Loader.js';
 
 /**
  * 加载图片
@@ -12,13 +12,13 @@ import { DefaultLoadingManager } from './LoadingManager.js';
  */
 function ImageLoader( manager ) {
 
-	this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
+	Loader.call( this, manager );
 
 }
 
-Object.assign( ImageLoader.prototype, {
+ImageLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
 
-	crossOrigin: 'anonymous',
+	constructor: ImageLoader,
 
   /**
    * @param url 加载路径
@@ -86,9 +86,7 @@ Object.assign( ImageLoader.prototype, {
 		image.addEventListener( 'error', onImageError, false );
 
 		if ( url.substr( 0, 5 ) !== 'data:' ) {
-
 			if ( this.crossOrigin !== undefined ) image.crossOrigin = this.crossOrigin;
-
 		}
 
 		scope.manager.itemStart( url );
@@ -96,20 +94,6 @@ Object.assign( ImageLoader.prototype, {
 		image.src = url;
 
 		return image;
-
-	},
-
-	setCrossOrigin: function ( value ) {
-
-		this.crossOrigin = value;
-		return this;
-
-	},
-
-	setPath: function ( value ) {
-
-		this.path = value;
-		return this;
 
 	}
 

@@ -860,8 +860,7 @@ function WebGLRenderer(parameters) {
 
       }
 
-    }
-    else if (object.isLine) {
+    } else if (object.isLine) {
 
       var lineWidth = material.linewidth;
 
@@ -883,18 +882,15 @@ function WebGLRenderer(parameters) {
 
       }
 
-    }
-    else if (object.isPoints) {
+    } else if (object.isPoints) {
       renderer.setMode(_gl.POINTS);
-    }
-    else if (object.isSprite) {
+    } else if (object.isSprite) {
       renderer.setMode(_gl.TRIANGLES);
     }
 
     if (object.isInstancedMesh) {
       renderer.renderInstances(geometry, drawStart, drawCount, object.count);
-    }
-    else if (geometry.isInstancedBufferGeometry) {
+    } else if (geometry.isInstancedBufferGeometry) {
       renderer.renderInstances(geometry, drawStart, drawCount, geometry.maxInstancedCount);
     } else {
       renderer.render(drawStart, drawCount);
@@ -1086,8 +1082,7 @@ function WebGLRenderer(parameters) {
 
           }
 
-        }
-        else if (object.material.uuid in compiled === false) {
+        } else if (object.material.uuid in compiled === false) {
           initMaterial(object.material, scene, object);
           compiled[object.material.uuid] = true;
         }
@@ -1227,8 +1222,7 @@ function WebGLRenderer(parameters) {
 
       if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera, overrideMaterial);
       if (transparentObjects.length) renderObjects(transparentObjects, scene, camera, overrideMaterial);
-    }
-    else {
+    } else {
       // opaque pass (front-to-back order)
       if (opaqueObjects.length) renderObjects(opaqueObjects, scene, camera);
       // transparent pass (back-to-front order)
@@ -1459,22 +1453,18 @@ function WebGLRenderer(parameters) {
     if (program === undefined) {
       // new material
       material.addEventListener('dispose', onMaterialDispose);
-    }
-    else if (program.cacheKey !== programCacheKey) {
+    } else if (program.cacheKey !== programCacheKey) {
 
       // changed glsl or parameters
       releaseMaterialProgramReference(material);
 
-    }
-    else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
+    } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
       materialProperties.lightsStateVersion = lightsStateVersion;
       programChange = false;
-    }
-    else if (parameters.shaderID !== undefined) {
+    } else if (parameters.shaderID !== undefined) {
       // same glsl and uniform list
       return;
-    }
-    else {
+    } else {
       // only rebuild uniform list
       programChange = false;
     }
@@ -1612,36 +1602,30 @@ function WebGLRenderer(parameters) {
 
         initMaterial(material, scene, object);
 
-      }
-      else if (material.fog && materialProperties.fog !== fog) {
+      } else if (material.fog && materialProperties.fog !== fog) {
 
         initMaterial(material, scene, object);
 
-      }
-      else if (materialProperties.environment !== environment) {
+      } else if (materialProperties.environment !== environment) {
 
         initMaterial(material, scene, object);
 
-      }
-      else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
+      } else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
 
         initMaterial(material, scene, object);
 
-      }
-      else if (materialProperties.numClippingPlanes !== undefined &&
+      } else if (materialProperties.numClippingPlanes !== undefined &&
         (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
           materialProperties.numIntersection !== _clipping.numIntersection)) {
 
         initMaterial(material, scene, object);
 
-      }
-      else if (materialProperties.outputEncoding !== _this.outputEncoding) {
+      } else if (materialProperties.outputEncoding !== _this.outputEncoding) {
 
         initMaterial(material, scene, object);
 
       }
-    }
-    else {
+    } else {
       initMaterial(material, scene, object);
       materialProperties.__version = material.version;
     }
@@ -1820,24 +1804,20 @@ function WebGLRenderer(parameters) {
       // 获取材质中的属性值到m_uniforms中
       if (material.isMeshBasicMaterial) {
         refreshUniformsCommon(m_uniforms, material);
-      }
-      else if (material.isMeshLambertMaterial) {
+      } else if (material.isMeshLambertMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsLambert(m_uniforms, material);
 
-      }
-      else if (material.isMeshToonMaterial) {
+      } else if (material.isMeshToonMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsToon(m_uniforms, material);
 
-      }
-      else if (material.isMeshPhongMaterial) {
+      } else if (material.isMeshPhongMaterial) {
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsPhong(m_uniforms, material);
-      }
-      else if (material.isMeshStandardMaterial) {
+      } else if (material.isMeshStandardMaterial) {
 
         refreshUniformsCommon(m_uniforms, material, environment);
 
@@ -1851,33 +1831,28 @@ function WebGLRenderer(parameters) {
 
         }
 
-      }
-      else if (material.isMeshMatcapMaterial) {
+      } else if (material.isMeshMatcapMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
 
         refreshUniformsMatcap(m_uniforms, material);
 
-      }
-      else if (material.isMeshDepthMaterial) {
+      } else if (material.isMeshDepthMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsDepth(m_uniforms, material);
 
-      }
-      else if (material.isMeshDistanceMaterial) {
+      } else if (material.isMeshDistanceMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsDistance(m_uniforms, material);
 
-      }
-      else if (material.isMeshNormalMaterial) {
+      } else if (material.isMeshNormalMaterial) {
 
         refreshUniformsCommon(m_uniforms, material);
         refreshUniformsNormal(m_uniforms, material);
 
-      }
-      else if (material.isLineBasicMaterial) {
+      } else if (material.isLineBasicMaterial) {
 
         refreshUniformsLine(m_uniforms, material);
 
@@ -1887,18 +1862,15 @@ function WebGLRenderer(parameters) {
 
         }
 
-      }
-      else if (material.isPointsMaterial) {
+      } else if (material.isPointsMaterial) {
 
         refreshUniformsPoints(m_uniforms, material);
 
-      }
-      else if (material.isSpriteMaterial) {
+      } else if (material.isSpriteMaterial) {
 
         refreshUniformsSprites(m_uniforms, material);
 
-      }
-      else if (material.isShadowMaterial) {
+      } else if (material.isShadowMaterial) {
 
         m_uniforms.color.value.copy(material.color);
         m_uniforms.opacity.value = material.opacity;
@@ -2015,43 +1987,35 @@ function WebGLRenderer(parameters) {
 
       uvScaleMap = material.map;
 
-    }
-    else if (material.specularMap) {
+    } else if (material.specularMap) {
 
       uvScaleMap = material.specularMap;
 
-    }
-    else if (material.displacementMap) {
+    } else if (material.displacementMap) {
 
       uvScaleMap = material.displacementMap;
 
-    }
-    else if (material.normalMap) {
+    } else if (material.normalMap) {
 
       uvScaleMap = material.normalMap;
 
-    }
-    else if (material.bumpMap) {
+    } else if (material.bumpMap) {
 
       uvScaleMap = material.bumpMap;
 
-    }
-    else if (material.roughnessMap) {
+    } else if (material.roughnessMap) {
 
       uvScaleMap = material.roughnessMap;
 
-    }
-    else if (material.metalnessMap) {
+    } else if (material.metalnessMap) {
 
       uvScaleMap = material.metalnessMap;
 
-    }
-    else if (material.alphaMap) {
+    } else if (material.alphaMap) {
 
       uvScaleMap = material.alphaMap;
 
-    }
-    else if (material.emissiveMap) {
+    } else if (material.emissiveMap) {
 
       uvScaleMap = material.emissiveMap;
 
@@ -2086,8 +2050,7 @@ function WebGLRenderer(parameters) {
 
       uv2ScaleMap = material.aoMap;
 
-    }
-    else if (material.lightMap) {
+    } else if (material.lightMap) {
 
       uv2ScaleMap = material.lightMap;
 

@@ -16,7 +16,7 @@ import {
 	LinearFilter,
 	UVMapping
 } from '../constants.js';
-import { _Math } from '../math/Math.js';
+import { MathUtils } from '../math/MathUtils.js';
 import { Vector2 } from '../math/Vector2.js';
 import { Matrix3 } from '../math/Matrix3.js';
 import { ImageUtils } from '../extras/ImageUtils.js';
@@ -41,13 +41,14 @@ function Texture( image, mapping, wrapS, wrapT, magFilter, minFilter, format, ty
 
 	Object.defineProperty( this, 'id', { value: textureId ++ } );
 
-	this.uuid = _Math.generateUUID();
+	this.uuid = MathUtils.generateUUID();
 
 	this.name = '';
 
 	this.image = image !== undefined ? image : Texture.DEFAULT_IMAGE;
 	this.mipmaps = [];
 
+	// 纹理映射方式
 	this.mapping = mapping !== undefined ? mapping : Texture.DEFAULT_MAPPING;
 
 	// 纹理填充参数
@@ -61,8 +62,10 @@ function Texture( image, mapping, wrapS, wrapT, magFilter, minFilter, format, ty
 	// 各向异性过滤（AF）
 	this.anisotropy = anisotropy !== undefined ? anisotropy : 1;
 
+  // 纹理数据格式
 	this.format = format !== undefined ? format : RGBAFormat;
-	this.type = type !== undefined ? type : UnsignedByteType;
+	this.internalFormat = null;
+	this.type = type !== undefined ? type : UnsignedByteType; // 纹理数据的数据格式
 
 	this.offset = new Vector2( 0, 0 );
 	this.repeat = new Vector2( 1, 1 );
@@ -72,7 +75,7 @@ function Texture( image, mapping, wrapS, wrapT, magFilter, minFilter, format, ty
 	this.matrixAutoUpdate = true;
 	this.matrix = new Matrix3();
 
-	this.generateMipmaps = true;
+	this.generateMipmaps = true; // 计算mipmap
 	this.premultiplyAlpha = false; // 将图像RGB颜色值的每一个分量乘以A
 	this.flipY = true; // 图像Y轴反转
 	// 从内存中解压缩像素数据
@@ -128,6 +131,7 @@ Texture.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
 		this.anisotropy = source.anisotropy;
 
 		this.format = source.format;
+		this.internalFormat = source.internalFormat;
 		this.type = source.type;
 
 		this.offset.copy( source.offset );
@@ -201,7 +205,7 @@ Texture.prototype = Object.assign( Object.create( EventDispatcher.prototype ), {
 
 			if ( image.uuid === undefined ) {
 
-				image.uuid = _Math.generateUUID(); // UGH
+				image.uuid = MathUtils.generateUUID(); // UGH
 
 			}
 

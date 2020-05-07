@@ -4,17 +4,17 @@
 
 import {ImageLoader} from './ImageLoader.js';
 import {CubeTexture} from '../textures/CubeTexture.js';
-import {DefaultLoadingManager} from './LoadingManager.js';
+import {Loader} from './Loader.js';
 
 function CubeTextureLoader(manager) {
 
-  this.manager = (manager !== undefined) ? manager : DefaultLoadingManager;
+  Loader.call(this, manager);
 
 }
 
-Object.assign(CubeTextureLoader.prototype, {
+CubeTextureLoader.prototype = Object.assign(Object.create(Loader.prototype), {
 
-  crossOrigin: 'anonymous',
+  constructor: CubeTextureLoader,
 
   /**
    * 加载给定的img图片
@@ -24,7 +24,7 @@ Object.assign(CubeTextureLoader.prototype, {
    * @param onError
    * @return {*}
    */
-  load: function (urls, onLoad, onProgress, onError) {
+  load: function(urls, onLoad, onProgress, onError) {
 
     var texture = new CubeTexture();
 
@@ -35,50 +35,26 @@ Object.assign(CubeTextureLoader.prototype, {
     var loaded = 0;
 
     function loadTexture(i) {
-
-      loader.load(urls[i], function (image) {
+      loader.load(urls[i], function(image) {
 
         texture.images[i] = image;
 
         loaded++;
 
         if (loaded === 6) {
-
           texture.needsUpdate = true;
-
           if (onLoad) onLoad(texture);
-
         }
 
       }, undefined, onError);
-
     }
 
     for (var i = 0; i < urls.length; ++i) {
-
       loadTexture(i);
-
     }
 
     return texture;
 
-  },
-
-  setCrossOrigin: function (value) {
-
-    this.crossOrigin = value;
-    return this;
-
-  },
-
-  /**
-   * 设置基础路径
-   * @param value
-   * @return {setPath}
-   */
-  setPath: function (value) {
-    this.path = value;
-    return this;
   }
 
 });
