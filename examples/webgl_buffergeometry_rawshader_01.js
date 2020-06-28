@@ -1,8 +1,8 @@
-import {GLTFLoader} from './jsm/loaders/GLTFLoader.js';
+import {GLTFLoader} from './jsm/loaders/GLTFLoader_r115.js';
 import PGL from './jsm/PGL/PGL.js';
 import Stats from "./jsm/libs/stats.module.js";
 import {OrbitControls} from "./jsm/controls/OrbitControls.js";
-import * as THREE from "../build/three.module.js";
+import * as THREE from "../build/three_r115.module.js";
 
 function searchALLMaterial(model, callback) {
   if (model.constructor === THREE.Mesh) {
