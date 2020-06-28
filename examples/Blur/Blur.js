@@ -1,5 +1,5 @@
 import * as THREE from "../../build/three_r108.module.js";
-import {Vector2} from "../../build/three_r108.module";
+import {Vector2} from "../../build/three_r108.module.js";
 
 let Blur = function() {
 };

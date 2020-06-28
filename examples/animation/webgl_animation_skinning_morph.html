@@ -54,7 +54,7 @@
   modifications by <a href="https://donmccurdy.com/" target="_blank" rel="noopener">Don McCurdy</a>. CC0.<br/>
 </div>
 
-<script src="../../build/three_r100.js"></script>
+<script src="../../build/three_r105.js"></script>
 
 <script src="../js/loaders/GLTFLoader.js"></script>
 
@@ -63,12 +63,6 @@
 <script src="../js/libs/dat.gui.min.js"></script>
 
 <script>
-
-  if (WEBGL.isWebGLAvailable() === false) {
-
-    document.body.appendChild(WEBGL.getWebGLErrorMessage());
-
-  }
 
   var container, stats, clock, gui, mixer, actions, activeAction, previousAction;
   var camera, scene, renderer, model, face;

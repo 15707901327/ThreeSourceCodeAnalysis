@@ -51,7 +51,7 @@
   <br/><br/>Note: crossfades are possible with blend weights being set to (1,0,0), (0,1,0) or (0,0,1)
 </div>
 
-<script src="../../build/three_r99.js"></script>
+<script src="../../build/three_r105.js"></script>
 
 <script src="../js/WebGL.js"></script>
 <script src="../js/libs/stats.min.js"></script>
@@ -59,12 +59,6 @@
 <script src="../js/libs/dat.gui.min.js"></script>
 
 <script>
-
-  if (WEBGL.isWebGLAvailable() === false) {
-
-    document.body.appendChild(WEBGL.getWebGLErrorMessage());
-
-  }
 
   var scene, renderer, camera, stats;
   var model, skeleton, mixer, clock;

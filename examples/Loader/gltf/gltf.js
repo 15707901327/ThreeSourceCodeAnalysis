@@ -2,7 +2,7 @@ import { GLTFLoader } from '../../jsm/loaders/GLTFLoader.js';
 import PGL  from '../../jsm/PGL/PGL.js';
 import Stats from "../../jsm/libs/stats.module.js";
 import {OrbitControls} from "../../jsm/controls/OrbitControls.js";
-import * as THREE from "../../../build/three_r110.module.js";
+import * as THREE from "../../../build/three_r115.module.js";
 
 /**
  * 场景初始化区

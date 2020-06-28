@@ -43,7 +43,7 @@
     }
   </style>
 
-  <script src="../../build/three_r95.js"></script>
+  <script src="../../build/three_r105.js"></script>
 
   <script src="../js/WebGL.js"></script>
   <script src="../js/libs/stats.min.js"></script>
@@ -54,8 +54,8 @@
     window.onload = function (ev) {
 
       // 显示错位提示
-      if (WEBGL.isWebGLAvailable() === false) {
-        document.body.appendChild(WEBGL.getWebGLErrorMessage());
+      if (THREE.WEBGL.isWebGLAvailable() === false) {
+        document.body.appendChild(THREE.WEBGL.getWebGLErrorMessage());
       }
 
       var container = document.getElementById('container');

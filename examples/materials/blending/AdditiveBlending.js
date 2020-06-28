@@ -1,5 +1,5 @@
-import {MTLLoader} from '../../jsm/loaders/MTLLoader.js';
-import {OBJLoader} from '../../jsm/loaders/OBJLoader.js';
+import {MTLLoader} from '../../jsm/loaders/MTLLoader_r110.js';
+import {OBJLoader} from '../../jsm/loaders/OBJLoader_r110.js';
 
 /**
  * 场景初始化区

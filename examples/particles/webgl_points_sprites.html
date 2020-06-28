@@ -37,7 +37,7 @@
 			snowflakes by <a href="http://en.wikipedia.org/wiki/File:Sketch_of_snow_crystal_by_Ren%C3%A9_Descartes.jpg">Ren&eacute;  Descartes</a>
 		</div>
 
-		<script src="../../build/three_r101.js"></script>
+		<script src="../../build/three_r115.js"></script>
 
 		<script src="../js/WebGL.js"></script>
 		<script src="../js/libs/stats.min.js"></script>
@@ -45,8 +45,8 @@
 
 		<script>
 
-			if ( WEBGL.isWebGLAvailable() === false ) {
-				document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+			if ( THREE.WEBGL.isWebGLAvailable() === false ) {
+				document.body.appendChild( THREE.WEBGL.getWebGLErrorMessage() );
 			}
 
 			var camera, scene, renderer, stats, materials = [], parameters;
