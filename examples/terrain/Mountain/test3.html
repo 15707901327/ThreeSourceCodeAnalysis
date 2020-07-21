@@ -21,8 +21,8 @@
   </style>
 
   <script type="module">
-    import * as THREE from "../../build/three_r109.module.js";
-    import {OrbitControls} from "../jsm/controls/OrbitControls_slr107.js";
+    import * as THREE from "../../../build/three_r109.module.js";
+    import {OrbitControls} from "../../jsm/controls/OrbitControls_slr107.js";
 
     var heatVertex = `
 
@@ -49,17 +49,24 @@
 
     uniform sampler2D heightMap1;
     uniform sampler2D heightMap2;
+    uniform sampler2D mask;
 
     void main() {
-      vec4 diffue = vec4(0.0);
+      vec4 diffue;
+      vec4 color;
 
       if(vPosition.y > 40.0){
-        diffue = texture2D(heightMap1, vUv);
+        color = texture2D(heightMap1, vUv);
       }
       else{
         float alpha = vPosition.y/(40.0);  // 比例系数
-        diffue = mix(texture2D(heightMap2,vUv),texture2D(heightMap1, vUv),alpha);
+
+        color = vec4(texture2D(heightMap1,vUv) * (alpha + 0.2)+ texture2D(heightMap2, vUv) * (1.0 - alpha));
       }
+
+      // 积雪区域的处理（借助蒙版）
+      float alpha = texture2D(mask,vUv).r;
+      diffue = color * (1.0 - alpha) + vec4(1.0,1.0,1.0,1.0) * alpha;
 
       #ifdef USE_COLOR
         diffue = vec4(vColor,1.0);
@@ -171,13 +178,17 @@
       var heightMap1 = new THREE.TextureLoader().load('textures/heightMap1.jpg');
       heightMap1.wrapS = heightMap1.wrapT = THREE.RepeatWrapping;
 
-      var heightMap2 = new THREE.TextureLoader().load('textures/heightMap2.jpg');
+      var heightMap2 = new THREE.TextureLoader().load('textures/heightMap4.jpg');
       heightMap2.wrapS = heightMap2.wrapT = THREE.RepeatWrapping;
+
+      var mask = new THREE.TextureLoader().load('textures/heightMap3.jpg');
+      mask.wrapS = mask.wrapT = THREE.RepeatWrapping;
 
       var material = new THREE.ShaderMaterial({
         uniforms: {
           heightMap1: {value: heightMap1},
           heightMap2: {value: heightMap2},
+          mask: {value: mask},
         },
         vertexShader: heatVertex,
         fragmentShader: heatFragment,
@@ -220,7 +231,6 @@
     render();
 
     function render() {
-      console.log(camera.position);
       requestAnimationFrame(render);
       renderer.render(scene, camera);
     }

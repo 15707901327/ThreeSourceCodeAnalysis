@@ -72,6 +72,8 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       this.webGLRenderer = new THREE.WebGLRenderer({
         antialias: true
       });
+      this.webGLRenderer.shadowMap.enabled = true;
+      this.webGLRenderer.shadowMap.type = THREE.VSMShadowMap;
       this.webGLRenderer.setSize(this.getWidth(), this.getHeight());
       this.webGLRenderer.setClearColor(0x000000);
       this.container.appendChild(this.webGLRenderer.domElement);
@@ -93,19 +95,20 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
       // var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
       // this.scene.add(ambientLight);
 
-      var light = new THREE.DirectionalLight(0xffffff, 0.5);
-      light.position.set(1.5, 3.0, 4.0);
-      this.scene.add(light);
+      var light = new THREE.DirectionalLight(0xffffff, 1.0);
+      light.position.set(0, 100.0, 0);
+      light.castShadow = true;
+      // this.scene.add(light);
 
       // var helper = new THREE.DirectionalLightHelper( light, 4 );
       // this.scene.add( helper );
 
-      // var SpotLight = new THREE.SpotLight(0xffffff, .6);
-      // SpotLight.castShadow = true;
-      // SpotLight.position.set(-200, 200, -200);
-      // SpotLight.shadow.mapSize.width = 4096;
-      // SpotLight.shadow.mapSize.height = 4096;
-      // this.scene.add(SpotLight);
+      var SpotLight = new THREE.SpotLight(0xffffff, .6);
+      SpotLight.castShadow = true;
+      SpotLight.position.set(0, 10, 0);
+      SpotLight.shadow.mapSize.width = 4096;
+      SpotLight.shadow.mapSize.height = 4096;
+      this.scene.add(SpotLight);
     },
     initOrbitControls: function() {
       this.orbitControls = new THREE.OrbitControls(this.camera, this.webGLRenderer.domElement);
@@ -148,136 +151,19 @@ import {OBJLoader} from './jsm/loaders/OBJLoader.js';
     },
 
     initObject: function() {
-      var geometry = new THREE.BufferGeometry();
+      var geometry = new THREE.PlaneGeometry(50, 20, 32);
+      var material = new THREE.MeshLambertMaterial({color: 0xffff00, side: THREE.DoubleSide});
+      var plane = new THREE.Mesh(geometry, material);
+      plane.rotateX(Math.PI / 2);
+      plane.receiveShadow = true;
+      this.scene.add(plane);
 
-      var vertices = [
-        1.0, 1.0, 1.0,
-        -1.0, 1.0, 1.0,
-        -1.0, -1.0, 1.0,
-        1.0, -1.0, 1.0,
-
-        1.0, -1.0, -1.0,
-        1.0, 1.0, -1.0,
-        -1.0, 1.0, -1.0,
-        -1.0, -1.0, -1.0
-      ]; // 顶点
-      var color = [
-        // 颜色
-        1.0, 1.0, 1.0,  // v0 White
-        1.0, 0.0, 1.0,  // v1 Magenta
-        1.0, 0.0, 0.0,  // v2 Red
-        1.0, 1.0, 0.0,  // v3 Yellow
-        0.0, 1.0, 0.0,  // v4 Green
-        0.0, 1.0, 1.0,  // v5 Cyan
-        0.0, 0.0, 1.0,  // v6 Blue
-        0.0, 0.0, 0.0   // v7 Black
-      ];
-      var indices = [
-        0, 1, 2, 0, 2, 3,    // front
-        0, 3, 4, 0, 4, 5,    // right
-        0, 5, 6, 0, 6, 1,    // up
-        1, 6, 7, 1, 7, 2,    // left
-        7, 4, 3, 7, 3, 2,    // down
-        4, 7, 6, 4, 6, 5     // back
-      ]; // 顶点索引
-
-      var normals = [
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0,
-      ];
-
-      // 顶点坐标
-      var posA = new THREE.Vector3();
-      var posB = new THREE.Vector3();
-      var posC = new THREE.Vector3();
-
-      // 面上的向量
-      var nab = new THREE.Vector3();
-      var nbc = new THREE.Vector3();
-
-      var faceNormals = [];
-      var count = indices.length / 3;
-      for (var i = 0; i < count; i++) {
-        posA.set(
-          vertices[indices[i * 3] * 3],
-          vertices[indices[i * 3] * 3 + 1],
-          vertices[indices[i * 3] * 3 + 2]
-        );
-        posB.set(
-          vertices[indices[i * 3 + 1] * 3],
-          vertices[indices[i * 3 + 1] * 3 + 1],
-          vertices[indices[i * 3 + 1] * 3 + 2]
-        )
-        posC.set(
-          vertices[indices[i * 3 + 2] * 3],
-          vertices[indices[i * 3 + 2] * 3 + 1],
-          vertices[indices[i * 3 + 2] * 3 + 2]
-        )
-
-        nab.subVectors(posA, posB);
-        nbc.subVectors(posB, posC);
-
-        var faceNormal = new THREE.Vector3();
-        faceNormal.crossVectors(nab, nbc);
-        faceNormals.push(faceNormal.normalize());
-      }
-
-      var vertex_count = vertices.length / 3;
-      var vertexNormals = [];
-      for (var i = 0; i < vertex_count; i++) {
-
-        // 包含顶点的面法线
-        var vertexfaceNormals = [];
-        for (var j = 0; j < indices.length; j++) {
-          if (i === indices[j]) {
-            var faceNormal = faceNormals[Math.floor(j / 3)];
-            // 去除重复元素
-            var isVisible = false;
-            for (var k = 0; k < vertexfaceNormals.length; k++) {
-              if (vertexfaceNormals[k].x === faceNormal.x && vertexfaceNormals[k].y === faceNormal.y && vertexfaceNormals[k].z === faceNormal.z) {
-                isVisible = true;
-                break;
-              }
-            }
-
-            if (!isVisible) {
-              vertexfaceNormals.push(faceNormals[Math.floor(j / 3)]);
-            }
-          }
-        }
-
-        var vertexNormal = new THREE.Vector3();
-        for (var j = 0; j < vertexfaceNormals.length; j++) {
-          vertexNormal.add(vertexfaceNormals[j]);
-        }
-
-        vertexNormal.normalize();
-        vertexNormals.push(vertexNormal.x);
-        vertexNormals.push(vertexNormal.y);
-        vertexNormals.push(vertexNormal.z);
-      }
-
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-      geometry.setAttribute('color', new THREE.Float32BufferAttribute(color, 3));
-      geometry.setAttribute('normal', new THREE.Float32BufferAttribute(vertexNormals, 3));
-      geometry.setIndex(indices);
-
-      var material = new THREE.MeshPhongMaterial({
-        color: 0xaaaaaa,
-        specular: 0xffffff,
-        shininess: 250,
-        side: THREE.DoubleSide,
-        vertexColors: true
-      });
-      var mesh = new THREE.Mesh(geometry, material);
-      this.scene.add(mesh);
+      var geometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+      var material = new THREE.MeshLambertMaterial( {color: 0x00ff00} );
+      var cube = new THREE.Mesh( geometry, material );
+      cube.position.y += 1;
+      cube.castShadow = true;
+      this.scene.add( cube );
     },
     /**
      * 添加天空盒子
