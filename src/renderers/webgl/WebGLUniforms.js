@@ -45,10 +45,10 @@
  *
  */
 
-import {CubeTexture} from '../../textures/CubeTexture.js';
-import {Texture} from '../../textures/Texture.js';
-import {DataTexture2DArray} from '../../textures/DataTexture2DArray.js';
-import {DataTexture3D} from '../../textures/DataTexture3D.js';
+import { CubeTexture } from '../../textures/CubeTexture.js';
+import { Texture } from '../../textures/Texture.js';
+import { DataTexture2DArray } from '../../textures/DataTexture2DArray.js';
+import { DataTexture3D } from '../../textures/DataTexture3D.js';
 
 var emptyTexture = new Texture();
 var emptyTexture2dArray = new DataTexture2DArray();
@@ -72,60 +72,59 @@ var mat2array = new Float32Array(4);
 
 function flatten(array, nBlocks, blockSize) {
 
-  var firstElem = array[0];
+	var firstElem = array[0];
 
-  if (firstElem <= 0 || firstElem > 0) return array;
-  // unoptimized: ! isNaN( firstElem )
-  // see http://jacksondunstan.com/articles/983
+	if (firstElem <= 0 || firstElem > 0) return array;
+	// unoptimized: ! isNaN( firstElem )
+	// see http://jacksondunstan.com/articles/983
 
-  var n = nBlocks * blockSize,
-    r = arrayCacheF32[n];
+	var n = nBlocks * blockSize, r = arrayCacheF32[n];
 
-  if (r === undefined) {
+	if (r === undefined) {
 
-    r = new Float32Array(n);
-    arrayCacheF32[n] = r;
+		r = new Float32Array(n);
+		arrayCacheF32[n] = r;
 
-  }
+	}
 
-  if (nBlocks !== 0) {
+	if (nBlocks !== 0) {
 
-    firstElem.toArray(r, 0);
+		firstElem.toArray(r, 0);
 
-    for (var i = 1, offset = 0; i !== nBlocks; ++i) {
+		for (var i = 1, offset = 0; i !== nBlocks; ++i) {
 
-      offset += blockSize;
-      array[i].toArray(r, offset);
+			offset += blockSize;
+			array[i].toArray(r, offset);
 
-    }
+		}
 
-  }
+	}
 
-  return r;
+	return r;
 
 }
 
 function arraysEqual(a, b) {
 
-  if (a.length !== b.length) return false;
+	if (a.length !== b.length) return false;
 
-  for (var i = 0, l = a.length; i < l; i++) {
+	for (var i = 0, l = a.length; i < l; i++) {
 
-    if (a[i] !== b[i]) return false;
+		if (a[i] !== b[i]) return false;
 
-  }
+	}
 
-  return true;
+	return true;
 
 }
 
 function copyArray(a, b) {
 
-  for (var i = 0, l = b.length; i < l; i++) {
+	for (var i = 0, l = b.length; i < l; i++) {
 
-    a[i] = b[i];
+		a[i] = b[i];
 
-  }
+	}
 
 }
 
@@ -133,19 +132,18 @@ function copyArray(a, b) {
 
 function allocTexUnits(textures, n) {
 
-  var r = arrayCacheI32[n];
+	var r = arrayCacheI32[n];
 
-  if (r === undefined) {
+	if (r === undefined) {
 
-    r = new Int32Array(n);
-    arrayCacheI32[n] = r;
+		r = new Int32Array(n);
+		arrayCacheI32[n] = r;
 
-  }
+	}
 
-  for (var i = 0; i !== n; ++i)
-    r[i] = textures.allocateTextureUnit();
+	for (var i = 0; i !== n; ++i) r[i] = textures.allocateTextureUnit();
 
-  return r;
+	return r;
 
 }
 
@@ -158,13 +156,13 @@ function allocTexUnits(textures, n) {
 
 function setValueV1f(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (cache[0] === v) return;
+	if (cache[0] === v) return;
 
-  gl.uniform1f(this.addr, v);
+	gl.uniform1f(this.addr, v);
 
-  cache[0] = v;
+	cache[0] = v;
 
 }
 
@@ -172,28 +170,28 @@ function setValueV1f(gl, v) {
 
 function setValueV2f(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (v.x !== undefined) {
+	if (v.x !== undefined) {
 
-    if (cache[0] !== v.x || cache[1] !== v.y) {
+		if (cache[0] !== v.x || cache[1] !== v.y) {
 
-      gl.uniform2f(this.addr, v.x, v.y);
+			gl.uniform2f(this.addr, v.x, v.y);
 
-      cache[0] = v.x;
-      cache[1] = v.y;
+			cache[0] = v.x;
+			cache[1] = v.y;
 
-    }
+		}
 
-  } else {
+	} else {
 
-    if (arraysEqual(cache, v)) return;
+		if (arraysEqual(cache, v)) return;
 
-    gl.uniform2fv(this.addr, v);
+		gl.uniform2fv(this.addr, v);
 
-    copyArray(cache, v);
+		copyArray(cache, v);
 
-  }
+	}
 
 }
 
@@ -204,70 +202,70 @@ function setValueV2f(gl, v) {
  */
 function setValueV3f(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (v.x !== undefined) {
+	if (v.x !== undefined) {
 
-    if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
+		if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
 
-      gl.uniform3f(this.addr, v.x, v.y, v.z);
+			gl.uniform3f(this.addr, v.x, v.y, v.z);
 
-      cache[0] = v.x;
-      cache[1] = v.y;
-      cache[2] = v.z;
+			cache[0] = v.x;
+			cache[1] = v.y;
+			cache[2] = v.z;
 
-    }
+		}
 
-  } else if (v.r !== undefined) {
+	} else if (v.r !== undefined) {
 
-    if (cache[0] !== v.r || cache[1] !== v.g || cache[2] !== v.b) {
+		if (cache[0] !== v.r || cache[1] !== v.g || cache[2] !== v.b) {
 
-      gl.uniform3f(this.addr, v.r, v.g, v.b);
+			gl.uniform3f(this.addr, v.r, v.g, v.b);
 
-      cache[0] = v.r;
-      cache[1] = v.g;
-      cache[2] = v.b;
+			cache[0] = v.r;
+			cache[1] = v.g;
+			cache[2] = v.b;
 
-    }
+		}
 
-  } else {
+	} else {
 
-    if (arraysEqual(cache, v)) return;
+		if (arraysEqual(cache, v)) return;
 
-    gl.uniform3fv(this.addr, v);
+		gl.uniform3fv(this.addr, v);
 
-    copyArray(cache, v);
+		copyArray(cache, v);
 
-  }
+	}
 
 }
 
 function setValueV4f(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (v.x !== undefined) {
+	if (v.x !== undefined) {
 
-    if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
+		if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
 
-      gl.uniform4f(this.addr, v.x, v.y, v.z, v.w);
+			gl.uniform4f(this.addr, v.x, v.y, v.z, v.w);
 
-      cache[0] = v.x;
-      cache[1] = v.y;
-      cache[2] = v.z;
-      cache[3] = v.w;
+			cache[0] = v.x;
+			cache[1] = v.y;
+			cache[2] = v.z;
+			cache[3] = v.w;
 
-    }
+		}
 
-  } else {
+	} else {
 
-    if (arraysEqual(cache, v)) return;
+		if (arraysEqual(cache, v)) return;
 
-    gl.uniform4fv(this.addr, v);
+		gl.uniform4fv(this.addr, v);
 
-    copyArray(cache, v);
+		copyArray(cache, v);
 
-  }
+	}
 
 }
 
@@ -275,132 +273,136 @@ function setValueV4f(gl, v) {
 
 function setValueM2(gl, v) {
 
-  var cache = this.cache;
-  var elements = v.elements;
+	var cache = this.cache;
+	var elements = v.elements;
 
-  if (elements === undefined) {
+	if (elements === undefined) {
 
-    if (arraysEqual(cache, v)) return;
+		if (arraysEqual(cache, v)) return;
 
-    gl.uniformMatrix2fv(this.addr, false, v);
+		gl.uniformMatrix2fv(this.addr, false, v);
 
-    copyArray(cache, v);
+		copyArray(cache, v);
 
-  } else {
+	} else {
 
-    if (arraysEqual(cache, elements)) return;
+		if (arraysEqual(cache, elements)) return;
 
-    mat2array.set(elements);
+		mat2array.set(elements);
 
-    gl.uniformMatrix2fv(this.addr, false, mat2array);
+		gl.uniformMatrix2fv(this.addr, false, mat2array);
 
-    copyArray(cache, elements);
+		copyArray(cache, elements);
 
-  }
+	}
 
 }
 
 function setValueM3(gl, v) {
 
-  var cache = this.cache;
-  var elements = v.elements;
+	var cache = this.cache;
+	var elements = v.elements;
 
-  if (elements === undefined) {
+	if (elements === undefined) {
 
-    if (arraysEqual(cache, v)) return;
+		if (arraysEqual(cache, v)) return;
 
-    gl.uniformMatrix3fv(this.addr, false, v);
+		gl.uniformMatrix3fv(this.addr, false, v);
 
-    copyArray(cache, v);
+		copyArray(cache, v);
 
-  } else {
+	} else {
 
-    if (arraysEqual(cache, elements)) return;
+		if (arraysEqual(cache, elements)) return;
 
-    mat3array.set(elements);
+		mat3array.set(elements);
 
-    gl.uniformMatrix3fv(this.addr, false, mat3array);
+		gl.uniformMatrix3fv(this.addr, false, mat3array);
 
-    copyArray(cache, elements);
+		copyArray(cache, elements);
 
-  }
+	}
 
 }
 
 function setValueM4(gl, v) {
 
-  var cache = this.cache;
-  var elements = v.elements;
+	var cache = this.cache;
+	var elements = v.elements;
 
-  if (elements === undefined) {
+	if (elements === undefined) {
 
-    if (arraysEqual(cache, v)) return;
+		if (arraysEqual(cache, v)) return;
 
-    gl.uniformMatrix4fv(this.addr, false, v);
+		gl.uniformMatrix4fv(this.addr, false, v);
 
-    copyArray(cache, v);
+		copyArray(cache, v);
 
-  } else {
+	} else {
 
-    if (arraysEqual(cache, elements)) return;
+		if (arraysEqual(cache, elements)) return;
 
-    mat4array.set(elements);
+		mat4array.set(elements);
 
-    gl.uniformMatrix4fv(this.addr, false, mat4array);
+		gl.uniformMatrix4fv(this.addr, false, mat4array);
 
-    copyArray(cache, elements);
+		copyArray(cache, elements);
 
-  }
+	}
 
 }
 
-// Single texture (2D / Cube)
-
+/**
+ * Single texture (2D / Cube)
+ * @param gl 上下文
+ * @param v {Texture}
+ * @param textures {WebGLTextures}
+ */
 function setValueT1(gl, v, textures) {
 
-  var cache = this.cache;
-  var unit = textures.allocateTextureUnit();
+	var cache = this.cache;
+	var unit = textures.allocateTextureUnit();
 
-  if (cache[0] !== unit) {
+	if (cache[0] !== unit) {
 
-    gl.uniform1i(this.addr, unit);
-    cache[0] = unit;
+		gl.uniform1i(this.addr, unit);
+		cache[0] = unit;
 
-  }
+	}
 
-  textures.safeSetTexture2D(v || emptyTexture, unit);
+	textures.safeSetTexture2D(v || emptyTexture, unit);
 
 }
 
 function setValueT2DArray1(gl, v, textures) {
 
-  var cache = this.cache;
-  var unit = textures.allocateTextureUnit();
+	var cache = this.cache;
+	var unit = textures.allocateTextureUnit();
 
-  if (cache[0] !== unit) {
+	if (cache[0] !== unit) {
 
-    gl.uniform1i(this.addr, unit);
-    cache[0] = unit;
+		gl.uniform1i(this.addr, unit);
+		cache[0] = unit;
 
-  }
+	}
 
-  textures.setTexture2DArray(v || emptyTexture2dArray, unit);
+	textures.setTexture2DArray(v || emptyTexture2dArray, unit);
 
 }
 
 function setValueT3D1(gl, v, textures) {
 
-  var cache = this.cache;
-  var unit = textures.allocateTextureUnit();
+	var cache = this.cache;
+	var unit = textures.allocateTextureUnit();
 
-  if (cache[0] !== unit) {
+	if (cache[0] !== unit) {
 
-    gl.uniform1i(this.addr, unit);
-    cache[0] = unit;
+		gl.uniform1i(this.addr, unit);
+		cache[0] = unit;
 
-  }
+	}
 
-  textures.setTexture3D(v || emptyTexture3d, unit);
+	textures.setTexture3D(v || emptyTexture3d, unit);
 
 }
 
@@ -412,18 +414,18 @@ function setValueT3D1(gl, v, textures) {
  */
 function setValueT6(gl, v, textures) {
 
-  var cache = this.cache;
-  var unit = textures.allocateTextureUnit();
+	var cache = this.cache;
+	var unit = textures.allocateTextureUnit();
 
-  if (cache[0] !== unit) {
+	if (cache[0] !== unit) {
 
-    // 将纹理传递给取样器
-    gl.uniform1i(this.addr, unit);
-    cache[0] = unit;
+		// 将纹理传递给取样器
+		gl.uniform1i(this.addr, unit);
+		cache[0] = unit;
 
-  }
+	}
 
-  textures.safeSetTextureCube(v || emptyCubeTexture, unit);
+	textures.safeSetTextureCube(v || emptyCubeTexture, unit);
 
 }
 
@@ -431,49 +433,49 @@ function setValueT6(gl, v, textures) {
 
 function setValueV1i(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (cache[0] === v) return;
+	if (cache[0] === v) return;
 
-  gl.uniform1i(this.addr, v);
+	gl.uniform1i(this.addr, v);
 
-  cache[0] = v;
+	cache[0] = v;
 
 }
 
 function setValueV2i(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (arraysEqual(cache, v)) return;
+	if (arraysEqual(cache, v)) return;
 
-  gl.uniform2iv(this.addr, v);
+	gl.uniform2iv(this.addr, v);
 
-  copyArray(cache, v);
+	copyArray(cache, v);
 
 }
 
 function setValueV3i(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (arraysEqual(cache, v)) return;
+	if (arraysEqual(cache, v)) return;
 
-  gl.uniform3iv(this.addr, v);
+	gl.uniform3iv(this.addr, v);
 
-  copyArray(cache, v);
+	copyArray(cache, v);
 
 }
 
 function setValueV4i(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (arraysEqual(cache, v)) return;
+	if (arraysEqual(cache, v)) return;
 
-  gl.uniform4iv(this.addr, v);
+	gl.uniform4iv(this.addr, v);
 
-  copyArray(cache, v);
+	copyArray(cache, v);
 
 }
 
@@ -481,13 +483,13 @@ function setValueV4i(gl, v) {
 
 function setValueV1ui(gl, v) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (cache[0] === v) return;
+	if (cache[0] === v) return;
 
-  gl.uniform1ui(this.addr, v);
+	gl.uniform1ui(this.addr, v);
 
-  cache[0] = v;
+	cache[0] = v;
 
 }
 
@@ -499,97 +501,97 @@ function setValueV1ui(gl, v) {
  */
 function getSingularSetter(type) {
 
-  switch(type){
+	switch (type) {
 
-    case 0x1406:
-      return setValueV1f; // FLOAT
-    case 0x8b50:
-      return setValueV2f; // _VEC2
-    case 0x8b51:
-      return setValueV3f; // _VEC3
-    case 0x8b52:
-      return setValueV4f; // _VEC4
+		case 0x1406:
+			return setValueV1f; // FLOAT
+		case 0x8b50:
+			return setValueV2f; // _VEC2
+		case 0x8b51:
+			return setValueV3f; // _VEC3
+		case 0x8b52:
+			return setValueV4f; // _VEC4
 
-    case 0x8b5a:
-      return setValueM2; // _MAT2
-    case 0x8b5b:
-      return setValueM3; // _MAT3
-    case 0x8b5c:
-      return setValueM4; // _MAT4
+		case 0x8b5a:
+			return setValueM2; // _MAT2
+		case 0x8b5b:
+			return setValueM3; // _MAT3
+		case 0x8b5c:
+			return setValueM4; // _MAT4
 
-    case 0x1404:
-    case 0x8b56:
-      return setValueV1i; // INT, BOOL
-    case 0x8b53:
-    case 0x8b57:
-      return setValueV2i; // _VEC2
-    case 0x8b54:
-    case 0x8b58:
-      return setValueV3i; // _VEC3
-    case 0x8b55:
-    case 0x8b59:
-      return setValueV4i; // _VEC4
+		case 0x1404:
+		case 0x8b56:
+			return setValueV1i; // INT, BOOL
+		case 0x8b53:
+		case 0x8b57:
+			return setValueV2i; // _VEC2
+		case 0x8b54:
+		case 0x8b58:
+			return setValueV3i; // _VEC3
+		case 0x8b55:
+		case 0x8b59:
+			return setValueV4i; // _VEC4
 
-    case 0x1405:
-      return setValueV1ui; // UINT
+		case 0x1405:
+			return setValueV1ui; // UINT
 
-    case 0x8b5e: // SAMPLER_2D
-    case 0x8d66: // SAMPLER_EXTERNAL_OES
-    case 0x8dca: // INT_SAMPLER_2D
-    case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
-    case 0x8b62: // SAMPLER_2D_SHADOW
-      return setValueT1;
+		case 0x8b5e: // SAMPLER_2D
+		case 0x8d66: // SAMPLER_EXTERNAL_OES
+		case 0x8dca: // INT_SAMPLER_2D
+		case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
+		case 0x8b62: // SAMPLER_2D_SHADOW
+			return setValueT1;
 
-    case 0x8b5f: // SAMPLER_3D
-    case 0x8dcb: // INT_SAMPLER_3D
-    case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
-      return setValueT3D1;
+		case 0x8b5f: // SAMPLER_3D
+		case 0x8dcb: // INT_SAMPLER_3D
+		case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
+			return setValueT3D1;
 
-    case 0x8b60: // SAMPLER_CUBE
-    case 0x8dcc: // INT_SAMPLER_CUBE
-    case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
-    case 0x8dc5: // SAMPLER_CUBE_SHADOW
-      return setValueT6;
+		case 0x8b60: // SAMPLER_CUBE
+		case 0x8dcc: // INT_SAMPLER_CUBE
+		case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
+		case 0x8dc5: // SAMPLER_CUBE_SHADOW
+			return setValueT6;
 
-    case 0x8dc1: // SAMPLER_2D_ARRAY
-    case 0x8dcf: // INT_SAMPLER_2D_ARRAY
-    case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
-    case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
-      return setValueT2DArray1;
+		case 0x8dc1: // SAMPLER_2D_ARRAY
+		case 0x8dcf: // INT_SAMPLER_2D_ARRAY
+		case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
+		case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
+			return setValueT2DArray1;
 
-  }
+	}
 
 }
 
 // Array of scalars
 function setValueV1fArray(gl, v) {
 
-  gl.uniform1fv(this.addr, v);
+	gl.uniform1fv(this.addr, v);
 
 }
 
 // Integer / Boolean vectors or arrays thereof (always flat arrays)
 function setValueV1iArray(gl, v) {
 
-  gl.uniform1iv(this.addr, v);
+	gl.uniform1iv(this.addr, v);
 
 }
 
 function setValueV2iArray(gl, v) {
 
-  gl.uniform2iv(this.addr, v);
+	gl.uniform2iv(this.addr, v);
 
 }
 
 function setValueV3iArray(gl, v) {
 
-  gl.uniform3iv(this.addr, v);
+	gl.uniform3iv(this.addr, v);
 
 }
 
 function setValueV4iArray(gl, v) {
 
-  gl.uniform4iv(this.addr, v);
+	gl.uniform4iv(this.addr, v);
 
 }
 
@@ -597,25 +599,25 @@ function setValueV4iArray(gl, v) {
 
 function setValueV2fArray(gl, v) {
 
-  var data = flatten(v, this.size, 2);
+	var data = flatten(v, this.size, 2);
 
-  gl.uniform2fv(this.addr, data);
+	gl.uniform2fv(this.addr, data);
 
 }
 
 function setValueV3fArray(gl, v) {
 
-  var data = flatten(v, this.size, 3);
+	var data = flatten(v, this.size, 3);
 
-  gl.uniform3fv(this.addr, data);
+	gl.uniform3fv(this.addr, data);
 
 }
 
 function setValueV4fArray(gl, v) {
 
-  var data = flatten(v, this.size, 4);
+	var data = flatten(v, this.size, 4);
 
-  gl.uniform4fv(this.addr, data);
+	gl.uniform4fv(this.addr, data);
 
 }
 
@@ -623,25 +625,25 @@ function setValueV4fArray(gl, v) {
 
 function setValueM2Array(gl, v) {
 
-  var data = flatten(v, this.size, 4);
+	var data = flatten(v, this.size, 4);
 
-  gl.uniformMatrix2fv(this.addr, false, data);
+	gl.uniformMatrix2fv(this.addr, false, data);
 
 }
 
 function setValueM3Array(gl, v) {
 
-  var data = flatten(v, this.size, 9);
+	var data = flatten(v, this.size, 9);
 
-  gl.uniformMatrix3fv(this.addr, false, data);
+	gl.uniformMatrix3fv(this.addr, false, data);
 
 }
 
 function setValueM4Array(gl, v) {
 
-  var data = flatten(v, this.size, 16);
+	var data = flatten(v, this.size, 16);
 
-  gl.uniformMatrix4fv(this.addr, false, data);
+	gl.uniformMatrix4fv(this.addr, false, data);
 
 }
 
@@ -649,33 +651,33 @@ function setValueM4Array(gl, v) {
 
 function setValueT1Array(gl, v, textures) {
 
-  var n = v.length;
+	var n = v.length;
 
-  var units = allocTexUnits(textures, n);
+	var units = allocTexUnits(textures, n);
 
-  gl.uniform1iv(this.addr, units);
+	gl.uniform1iv(this.addr, units);
 
-  for (var i = 0; i !== n; ++i) {
+	for (var i = 0; i !== n; ++i) {
 
-    textures.safeSetTexture2D(v[i] || emptyTexture, units[i]);
+		textures.safeSetTexture2D(v[i] || emptyTexture, units[i]);
 
-  }
+	}
 
 }
 
 function setValueT6Array(gl, v, textures) {
 
-  var n = v.length;
+	var n = v.length;
 
-  var units = allocTexUnits(textures, n);
+	var units = allocTexUnits(textures, n);
 
-  gl.uniform1iv(this.addr, units);
+	gl.uniform1iv(this.addr, units);
 
-  for (var i = 0; i !== n; ++i) {
+	for (var i = 0; i !== n; ++i) {
 
-    textures.safeSetTextureCube(v[i] || emptyCubeTexture, units[i]);
+		textures.safeSetTextureCube(v[i] || emptyCubeTexture, units[i]);
 
-  }
+	}
 
 }
 
@@ -687,50 +689,50 @@ function setValueT6Array(gl, v, textures) {
  */
 function getPureArraySetter(type) {
 
-  switch(type){
+	switch (type) {
 
-    case 0x1406:
-      return setValueV1fArray; // FLOAT
-    case 0x8b50:
-      return setValueV2fArray; // _VEC2
-    case 0x8b51:
-      return setValueV3fArray; // _VEC3
-    case 0x8b52:
-      return setValueV4fArray; // _VEC4
+		case 0x1406:
+			return setValueV1fArray; // FLOAT
+		case 0x8b50:
+			return setValueV2fArray; // _VEC2
+		case 0x8b51:
+			return setValueV3fArray; // _VEC3
+		case 0x8b52:
+			return setValueV4fArray; // _VEC4
 
-    case 0x8b5a:
-      return setValueM2Array; // _MAT2
-    case 0x8b5b:
-      return setValueM3Array; // _MAT3
-    case 0x8b5c:
-      return setValueM4Array; // _MAT4
+		case 0x8b5a:
+			return setValueM2Array; // _MAT2
+		case 0x8b5b:
+			return setValueM3Array; // _MAT3
+		case 0x8b5c:
+			return setValueM4Array; // _MAT4
 
-    case 0x1404:
-    case 0x8b56:
-      return setValueV1iArray; // INT, BOOL
-    case 0x8b53:
-    case 0x8b57:
-      return setValueV2iArray; // _VEC2
-    case 0x8b54:
-    case 0x8b58:
-      return setValueV3iArray; // _VEC3
-    case 0x8b55:
-    case 0x8b59:
-      return setValueV4iArray; // _VEC4
+		case 0x1404:
+		case 0x8b56:
+			return setValueV1iArray; // INT, BOOL
+		case 0x8b53:
+		case 0x8b57:
+			return setValueV2iArray; // _VEC2
+		case 0x8b54:
+		case 0x8b58:
+			return setValueV3iArray; // _VEC3
+		case 0x8b55:
+		case 0x8b59:
+			return setValueV4iArray; // _VEC4
 
-    case 0x8b5e: // SAMPLER_2D
-    case 0x8d66: // SAMPLER_EXTERNAL_OES
-    case 0x8dca: // INT_SAMPLER_2D
-    case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
-    case 0x8b62: // SAMPLER_2D_SHADOW
-      return setValueT1Array;
+		case 0x8b5e: // SAMPLER_2D
+		case 0x8d66: // SAMPLER_EXTERNAL_OES
+		case 0x8dca: // INT_SAMPLER_2D
+		case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
+		case 0x8b62: // SAMPLER_2D_SHADOW
+			return setValueT1Array;
 
-    case 0x8b60: // SAMPLER_CUBE
-    case 0x8dcc: // INT_SAMPLER_CUBE
-    case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
-    case 0x8dc5: // SAMPLER_CUBE_SHADOW
-      return setValueT6Array;
-  }
+		case 0x8b60: // SAMPLER_CUBE
+		case 0x8dcc: // INT_SAMPLER_CUBE
+		case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
+		case 0x8dc5: // SAMPLER_CUBE_SHADOW
+			return setValueT6Array;
+	}
 }
 
 /**
@@ -742,12 +744,12 @@ function getPureArraySetter(type) {
  */
 function SingleUniform(id, activeInfo, addr) {
 
-  this.id = id;
-  this.addr = addr;
-  this.cache = [];
-  this.setValue = getSingularSetter(activeInfo.type);
+	this.id = id;
+	this.addr = addr;
+	this.cache = [];
+	this.setValue = getSingularSetter(activeInfo.type);
 
-  // this.path = activeInfo.name; // DEBUG
+	// this.path = activeInfo.name; // DEBUG
 }
 
 /**
@@ -759,25 +761,25 @@ function SingleUniform(id, activeInfo, addr) {
  */
 function PureArrayUniform(id, activeInfo, addr) {
 
-  this.id = id;
-  this.addr = addr;
-  this.cache = [];
-  this.size = activeInfo.size;
-  this.setValue = getPureArraySetter(activeInfo.type);
-  // this.path = activeInfo.name; // DEBUG
+	this.id = id;
+	this.addr = addr;
+	this.cache = [];
+	this.size = activeInfo.size;
+	this.setValue = getPureArraySetter(activeInfo.type);
+	// this.path = activeInfo.name; // DEBUG
 }
 
 PureArrayUniform.prototype.updateCache = function(data) {
 
-  var cache = this.cache;
+	var cache = this.cache;
 
-  if (data instanceof Float32Array && cache.length !== data.length) {
+	if (data instanceof Float32Array && cache.length !== data.length) {
 
-    this.cache = new Float32Array(data.length);
+		this.cache = new Float32Array(data.length);
 
-  }
+	}
 
-  copyArray(cache, data);
+	copyArray(cache, data);
 
 };
 
@@ -788,22 +790,22 @@ PureArrayUniform.prototype.updateCache = function(data) {
  */
 function StructuredUniform(id) {
 
-  this.id = id;
+	this.id = id;
 
-  this.seq = [];
-  this.map = {};
+	this.seq = [];
+	this.map = {};
 }
 
 StructuredUniform.prototype.setValue = function(gl, value, textures) {
 
-  var seq = this.seq;
+	var seq = this.seq;
 
-  for (var i = 0, n = seq.length; i !== n; ++i) {
+	for (var i = 0, n = seq.length; i !== n; ++i) {
 
-    var u = seq[i];
-    u.setValue(gl, value[u.id], textures);
+		var u = seq[i];
+		u.setValue(gl, value[u.id], textures);
 
-  }
+	}
 
 };
 
@@ -827,8 +829,8 @@ var RePathPart = /([\w\d_]+)(\])?(\[|\.)?/g;
  * @param uniformObject
  */
 function addUniform(container, uniformObject) {
-  container.seq.push(uniformObject);
-  container.map[uniformObject.id] = uniformObject;
+	container.seq.push(uniformObject);
+	container.map[uniformObject.id] = uniformObject;
 }
 
 /**
@@ -839,51 +841,45 @@ function addUniform(container, uniformObject) {
  */
 function parseUniform(activeInfo, addr, container) {
 
-  var path = activeInfo.name,
-    pathLength = path.length;
+	var path = activeInfo.name, pathLength = path.length;
 
-  // reset RegExp object, because of the early exit of a previous run
-  RePathPart.lastIndex = 0;
+	// reset RegExp object, because of the early exit of a previous run
+	RePathPart.lastIndex = 0;
 
-  while(true){
+	while (true) {
 
-    /**
-     * exec() 方法用于检索字符串中的正则表达式的匹配。
-     * 返回一个数组：
-     *  0：正则表达式匹配的文本
-     *  1：RegExpObject 的第 1 个子表达式相匹配的文本
-     *  2：RegExpObject 的第 2 个子表达式相匹配的文本（如果有的话）
-     *  index： 属性声明的是匹配文本的第一个字符的位置
-     *  input：属性则存放的是被检索的字符串 string
-     *  但是，当 RegExpObject 是一个全局正则表达式时，它会在 RegExpObject 的 lastIndex 属性指定的字符处开始检索字符串 string。
-     *  当 exec() 找到了与表达式相匹配的文本时，在匹配后，它将把 RegExpObject 的 lastIndex 属性设置为匹配文本的最后一个字符的下一个位置。
-     *  这就是说，您可以通过反复调用 exec() 方法来遍历字符串中的所有匹配文本。当 exec() 再也找不到匹配的文本时，它将返回 null，并把 lastIndex 属性重置为 0。
-     */
-    var match = RePathPart.exec(path),
-      matchEnd = RePathPart.lastIndex,
+		/**
+		 * exec() 方法用于检索字符串中的正则表达式的匹配。
+		 * 返回一个数组：
+		 *  0：正则表达式匹配的文本
+		 *  1：RegExpObject 的第 1 个子表达式相匹配的文本
+		 *  2：RegExpObject 的第 2 个子表达式相匹配的文本（如果有的话）
+		 *  index： 属性声明的是匹配文本的第一个字符的位置
+		 *  input：属性则存放的是被检索的字符串 string
+		 *  但是，当 RegExpObject 是一个全局正则表达式时，它会在 RegExpObject 的 lastIndex 属性指定的字符处开始检索字符串 string。
+		 *  当 exec() 找到了与表达式相匹配的文本时，在匹配后，它将把 RegExpObject 的 lastIndex 属性设置为匹配文本的最后一个字符的下一个位置。
+		 *  这就是说，您可以通过反复调用 exec() 方法来遍历字符串中的所有匹配文本。当 exec() 再也找不到匹配的文本时，它将返回 null，并把 lastIndex 属性重置为 0。
+		 */
+		var match = RePathPart.exec(path), matchEnd = RePathPart.lastIndex,
 
-      id = match[1],
-      idIsIndex = match[2] === ']',
-      subscript = match[3];
+			id = match[1], idIsIndex = match[2] === ']', subscript = match[3];
 
-    if (idIsIndex) id = id | 0; // convert to integer
+		if (idIsIndex) id = id | 0; // convert to integer
 
-    if (subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength) {
-      // bare name or "pure" bottom-level array "[0]" suffix
-      addUniform(container, subscript === undefined ?
-        new SingleUniform(id, activeInfo, addr) :
-        new PureArrayUniform(id, activeInfo, addr));
-      break;
-    } else {
-      // step into inner node / create it in case it doesn't exist
-      var map = container.map, next = map[id];
-      if (next === undefined) {
-        next = new StructuredUniform(id);
-        addUniform(container, next);
-      }
-      container = next;
-    }
-  }
+		if (subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength) {
+			// bare name or "pure" bottom-level array "[0]" suffix
+			addUniform(container, subscript === undefined ? new SingleUniform(id, activeInfo, addr) : new PureArrayUniform(id, activeInfo, addr));
+			break;
+		} else {
+			// step into inner node / create it in case it doesn't exist
+			var map = container.map, next = map[id];
+			if (next === undefined) {
+				next = new StructuredUniform(id);
+				addUniform(container, next);
+			}
+			container = next;
+		}
+	}
 }
 
 // Root Container
@@ -896,20 +892,19 @@ function parseUniform(activeInfo, addr, container) {
  */
 function WebGLUniforms(gl, program) {
 
-  this.seq = [];
-  this.map = {};
+	this.seq = [];
+	this.map = {};
 
-  // 获取变量Uniform的数量
-  var n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+	// 获取变量Uniform的数量
+	var n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
-  for (var i = 0; i < n; ++i) {
+	for (var i = 0; i < n; ++i) {
 
-    var info = gl.getActiveUniform(program, i),
-      addr = gl.getUniformLocation(program, info.name);
+		var info = gl.getActiveUniform(program, i), addr = gl.getUniformLocation(program, info.name);
 
-    parseUniform(info, addr, this);
+		parseUniform(info, addr, this);
 
-  }
+	}
 
 }
 
@@ -922,17 +917,17 @@ function WebGLUniforms(gl, program) {
  */
 WebGLUniforms.prototype.setValue = function(gl, name, value, textures) {
 
-  var u = this.map[name];
+	var u = this.map[name];
 
-  if (u !== undefined) u.setValue(gl, value, textures);
+	if (u !== undefined) u.setValue(gl, value, textures);
 
 };
 
 WebGLUniforms.prototype.setOptional = function(gl, object, name) {
 
-  var v = object[name];
+	var v = object[name];
 
-  if (v !== undefined) this.setValue(gl, name, v);
+	if (v !== undefined) this.setValue(gl, name, v);
 
 };
 
@@ -944,23 +939,22 @@ WebGLUniforms.prototype.setOptional = function(gl, object, name) {
  * @param gl 上下文
  * @param seq uniformsList
  * @param values{Object}
- * @param textures
+ * @param textures {WebGLTextures}
  */
 WebGLUniforms.upload = function(gl, seq, values, textures) {
 
-  for (var i = 0, n = seq.length; i !== n; ++i) {
+	for (var i = 0, n = seq.length; i !== n; ++i) {
 
-    var u = seq[i],
-      v = values[u.id];
+		var u = seq[i], v = values[u.id];
 
-    if (v.needsUpdate !== false) {
+		if (v.needsUpdate !== false) {
 
-      // note: always updating when .needsUpdate is undefined
-      u.setValue(gl, v.value, textures);
+			// note: always updating when .needsUpdate is undefined
+			u.setValue(gl, v.value, textures);
 
-    }
+		}
 
-  }
+	}
 
 };
 
@@ -972,17 +966,17 @@ WebGLUniforms.upload = function(gl, seq, values, textures) {
  */
 WebGLUniforms.seqWithValue = function(seq, values) {
 
-  var r = [];
+	var r = [];
 
-  for (var i = 0, n = seq.length; i !== n; ++i) {
+	for (var i = 0, n = seq.length; i !== n; ++i) {
 
-    var u = seq[i];
-    if (u.id in values) r.push(u);
+		var u = seq[i];
+		if (u.id in values) r.push(u);
 
-  }
+	}
 
-  return r;
+	return r;
 
 };
 
-export {WebGLUniforms};
+export { WebGLUniforms };
