@@ -1,3 +1,4 @@
+import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
 import { MTLLoader } from './jsm/loaders/MTLLoader.js';
 import { OBJLoader } from './jsm/loaders/OBJLoader.js';
 import { MathUtils } from '../examples/jsm/utils/MathUtils.js';
@@ -156,39 +157,9 @@ import { pointsData } from './gradient/v6/v6-3/data.js';
 
 			const _this = this;
 
-			const loader = new THREE.ImageLoader();
-			// loader.setCrossOrigin("anonymous");
-			loader.load('textures/sprites/ball.png', function(image) {
-				console.log(image);
-
-				const texture = new THREE.Texture(image);
-				texture.wrapS = THREE.MirroredRepeatWrapping;
-				texture.wrapT = THREE.MirroredRepeatWrapping;
-				texture.minFilter = THREE.LinearMipmapLinearFilter;
-				texture.repeat.set(4, 4);
-				texture.needsUpdate = true;
-
-				const texture2 = new THREE.Texture(image);
-				texture2.wrapS = THREE.RepeatWrapping;
-				texture2.wrapT = THREE.RepeatWrapping;
-				texture2.repeat.set(10, 10);
-				texture2.needsUpdate = true;
-
-				const geometry = new THREE.BoxGeometry(5, 5, 5);
-				const material = new THREE.MeshBasicMaterial({
-					map: texture
-				});
-				material.needsUpdate = true;
-				const cube = new THREE.Mesh(geometry, material);
-				_this.scene.add(cube);
-
-				const geometry2 = new THREE.BoxGeometry(10, 10, 10);
-				const material2 = new THREE.MeshBasicMaterial({
-					map: texture2
-				});
-				const cube2 = new THREE.Mesh(geometry2, material2);
-				cube2.position.set(0, 20, 0);
-				_this.scene.add(cube2);
+			new GLTFLoader().load('models/gltf/SOHO.glb', function (gltf) {
+				var model = gltf.scene;
+				_this.scene.add(model);
 			});
 		},
 

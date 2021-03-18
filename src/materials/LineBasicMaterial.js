@@ -11,7 +11,6 @@ import { Color } from '../math/Color.js';
  *  linejoin: "round"
  * }
  */
-
 function LineBasicMaterial( parameters ) {
 
 	Material.call( this );
@@ -50,6 +49,5 @@ LineBasicMaterial.prototype.copy = function ( source ) {
 	return this;
 
 };
-
 
 export { LineBasicMaterial };
