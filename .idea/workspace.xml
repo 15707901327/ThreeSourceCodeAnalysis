@@ -16,40 +16,49 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:origin/master" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.添加注释">
-      <change afterPath="$PROJECT_DIR$/src/materials/LineBasicMaterial.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/materials/MeshLambertMaterial.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/three.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/three.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/three.module.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three.module.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/example.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/models/obj/ceshi/111.mtl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/models/obj/ceshi/111.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/loaders/Cache.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/loaders/Cache.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/a.glsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/a1.glsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/a_frag.glsl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/common.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/common.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/defaultnormal_vertex.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/defaultnormal_vertex.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lights_lambert_vertex.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lights_lambert_vertex.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lights_pars_begin.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lights_pars_begin.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/shadowmask_pars_fragment.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/shadowmask_pars_fragment.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_frag.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_frag.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_vert.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_vert.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_frag.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_frag.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_vert.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_vert.glsl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/UniformsLib.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/UniformsLib.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/textures/Texture.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/textures/Texture.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/three_r123.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/three_r123.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/three_r123.module.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/gradient.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/gradient.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/GradientFragShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/GradientVertShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/v4-1/GradientFragShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/v4-1/GradientVertShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-1/GradientFragShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-1/data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-1/home.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-2/GradientFragShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-2/data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-3/data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-4/GradientFragShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-4/data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/GradientVertShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-1/GradientFragShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-1/data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-2/GradientFragShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-2/data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-3/GradientFragShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-3/data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/jsm/utils/GeometryUtils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/jsm/utils/MathUtils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/models/obj/ceshi/test2222.mtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/models/obj/ceshi/test2222.obj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_frag.glsl_test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_vert.glsl_test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -477,21 +486,7 @@
       <workItem from="1615772496030" duration="25094000" />
       <workItem from="1615861655467" duration="17519000" />
       <workItem from="1615944943623" duration="5033000" />
-      <workItem from="1616031963083" duration="2645000" />
-    </task>
-    <task id="LOCAL-00040" summary="1.细胞噪声 (Celluar Noise)">
-      <created>1572256733213</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1572256733213</updated>
-    </task>
-    <task id="LOCAL-00041" summary="1.山体显示">
-      <created>1572486457696</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1572486457696</updated>
+      <workItem from="1616031963083" duration="3387000" />
     </task>
     <task id="LOCAL-00042" summary="1.山体显示">
       <created>1572577599166</created>
@@ -822,7 +817,21 @@
       <option name="project" value="LOCAL" />
       <updated>1603158870811</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="1.添加注释">
+      <created>1616046269812</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1616046269813</updated>
+    </task>
+    <task id="LOCAL-00090" summary="1.添加注释">
+      <created>1616046323024</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1616046323024</updated>
+    </task>
+    <option name="localTasksCounter" value="91" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -833,7 +842,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -957,6 +978,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1259" height="265" key="GridCell.Tab.3.right/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2" timestamp="1616046273814">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1616046273814" />
     <state x="93" y="93" width="1095" height="495" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1615810274205">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
