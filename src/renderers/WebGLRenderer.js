@@ -869,7 +869,8 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else if (object.isLine) {
+    }
+		else if (object.isLine) {
 
 			let lineWidth = material.linewidth;
 
@@ -891,15 +892,18 @@ function WebGLRenderer(parameters) {
 
       }
 
-    } else if (object.isPoints) {
+    }
+		else if (object.isPoints) {
       renderer.setMode(_gl.POINTS);
-    } else if (object.isSprite) {
+    }
+		else if (object.isSprite) {
       renderer.setMode(_gl.TRIANGLES);
     }
 
     if (object.isInstancedMesh) {
       renderer.renderInstances(geometry, drawStart, drawCount, object.count);
-    } else if (geometry.isInstancedBufferGeometry) {
+    }
+		else if (geometry.isInstancedBufferGeometry) {
 
 			const instanceCount = Math.min( geometry.instanceCount, geometry._maxInstanceCount );
 
@@ -1140,14 +1144,17 @@ function WebGLRenderer(parameters) {
     if (visible) {
       if (object.isGroup) {
         groupOrder = object.renderOrder;
-      } else if (object.isLOD) {
+      } 
+			else if (object.isLOD) {
         if (object.autoUpdate === true) object.update(camera);
-      } else if (object.isLight) {
+      } 
+			else if (object.isLight) {
         currentRenderState.pushLight(object);
         if (object.castShadow) {
           currentRenderState.pushShadow(object);
         }
-      } else if (object.isSprite) {
+      } 
+			else if (object.isSprite) {
         if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
           if (sortObjects) {
             _vector3.setFromMatrixPosition(object.matrixWorld)
@@ -1162,13 +1169,15 @@ function WebGLRenderer(parameters) {
             currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
           }
         }
-      } else if (object.isImmediateRenderObject) {
+      } 
+			else if (object.isImmediateRenderObject) {
         if (sortObjects) {
           _vector3.setFromMatrixPosition(object.matrixWorld)
           .applyMatrix4(_projScreenMatrix);
         }
         currentRenderList.push(object, null, object.material, groupOrder, _vector3.z, null);
-      } else if (object.isMesh || object.isLine || object.isPoints) {
+      } 
+			else if (object.isMesh || object.isLine || object.isPoints) {
         if (object.isSkinnedMesh) {
           // update skeleton only once in a frame
           if (object.skeleton.frame !== info.render.frame) {
@@ -1538,9 +1547,17 @@ function WebGLRenderer(parameters) {
     // 设置相机的投影矩阵、视图矩阵
     if (refreshProgram || _currentCamera !== camera) {
       p_uniforms.setValue(_gl, 'projectionMatrix', camera.projectionMatrix);
+
+			/*
+			 * 打开logarithmicDepthBuffer，那么要将相机的far值设置为大于等于3，
+			 * 如果far小于3，那么logDepthBufFC的值将大于1，导致最终渲染不出来。
+			 * 如果是自己写的着色器则不受影响，
+			 * three内置的材质会受到影响，因为内置的材质对logDepthBufFC做了相应的响应。
+			 */
       if (capabilities.logarithmicDepthBuffer) {
         p_uniforms.setValue(_gl, 'logDepthBufFC', 2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
       }
+
       if (_currentCamera !== camera) {
         _currentCamera = camera;
 

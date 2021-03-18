@@ -1,50 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>three.js webgl - animation - keyframes - json</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-        }
-        html,body{
-            width: 100%;
-            height: 100%;
-        }
-        #container{
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        #group{
-            background: aquamarine;
-            border: 1px solid #0e0e0e;
-            position: absolute;
-            top: 0;
-            right: 0;
-            text-align: center;
-            width: 100px;
-            line-height: 30px;
-            cursor: pointer;
-        }
-    </style>
-    <script src="js/libs/JQuery/jquery-3.4.1.min.js"></script>
+  <title>three.js webgl - animation - keyframes - json</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
 
-    <script src="../build/three.js"></script>
-    <script src="js/controls/OrbitControls.js"></script>
-    <script src="js/libs/stats.min.js"></script>
-    <script src="js/PGL/PGL.js"></script>
-    <script src="home.js" type="module"></script>
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    #container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #group {
+      background: aquamarine;
+      border: 1px solid #0e0e0e;
+      position: absolute;
+      top: 0;
+      right: 0;
+      text-align: center;
+      width: 100px;
+      line-height: 30px;
+      cursor: pointer;
+    }
+  </style>
+  <script src="js/libs/JQuery/jquery-3.4.1.min.js"></script>
+  <script src="../build/three.js"></script>
+  <script src="js/controls/OrbitControls.js"></script>
+  <script src="js/libs/stats.min.js"></script>
+  <script src="js/PGL/PGL.js"></script>
+  <script src="home.js" type="module"></script>
 </head>
-
 <body>
 <div id="container"></div>
-<div id="group">
-    <div id="item1">放大</div>
-    <div id="item2">缩小</div>
-</div>
 </body>
-
 </html>

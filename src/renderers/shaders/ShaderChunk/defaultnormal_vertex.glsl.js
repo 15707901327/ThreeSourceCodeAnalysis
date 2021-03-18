@@ -1,6 +1,7 @@
 export default /* glsl */`
 vec3 transformedNormal = objectNormal;
 
+// 使用instance
 #ifdef USE_INSTANCING
 
 	transformedNormal = mat3( instanceMatrix ) * transformedNormal;
@@ -9,12 +10,14 @@ vec3 transformedNormal = objectNormal;
 
 transformedNormal = normalMatrix * transformedNormal;
 
+// 翻面
 #ifdef FLIP_SIDED
 
 	transformedNormal = - transformedNormal;
 
 #endif
 
+// 切线
 #ifdef USE_TANGENT
 
 	vec3 transformedTangent = normalMatrix * objectTangent;

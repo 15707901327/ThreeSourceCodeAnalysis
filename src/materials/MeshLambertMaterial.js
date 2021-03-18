@@ -6,6 +6,7 @@ import { Color } from '../math/Color.js';
  * parameters = {
  *  color: <hex>,
  *  opacity: <float>,
+ *
  *  map: new THREE.Texture( <Image> ),
  *
  *  lightMap: new THREE.Texture( <Image> ),
@@ -13,6 +14,10 @@ import { Color } from '../math/Color.js';
  *
  *  aoMap: new THREE.Texture( <Image> ),
  *  aoMapIntensity: <float>
+ *
+ *  emissive: <hex>,
+ *  emissiveIntensity: <float>
+ *  emissiveMap: new THREE.Texture( <Image> ),
  *
  *  specularMap: new THREE.Texture( <Image> ),
  *
@@ -23,24 +28,22 @@ import { Color } from '../math/Color.js';
  *  reflectivity: <float>,
  *  refractionRatio: <float>,
  *
- *  depthTest: <bool>,
- *  depthWrite: <bool>,
- *
  *  wireframe: <boolean>,
  *  wireframeLinewidth: <float>,
  *
  *  skinning: <bool>,
- *  morphTargets: <bool>
+ *  morphTargets: <bool>,
+ *  morphNormals: <bool>
  * }
  */
 
-function MeshBasicMaterial( parameters ) {
+function MeshLambertMaterial( parameters ) {
 
 	Material.call( this );
 
-	this.type = 'MeshBasicMaterial';
+	this.type = 'MeshLambertMaterial';
 
-	this.color = new Color( 0xffffff ); // emissive
+	this.color = new Color( 0xffffff ); // diffuse
 
 	this.map = null;
 
@@ -49,6 +52,10 @@ function MeshBasicMaterial( parameters ) {
 
 	this.aoMap = null;
 	this.aoMapIntensity = 1.0;
+
+	this.emissive = new Color( 0x000000 );
+	this.emissiveIntensity = 1.0;
+	this.emissiveMap = null;
 
 	this.specularMap = null;
 
@@ -66,17 +73,18 @@ function MeshBasicMaterial( parameters ) {
 
 	this.skinning = false;
 	this.morphTargets = false;
+	this.morphNormals = false;
 
 	this.setValues( parameters );
 
 }
 
-MeshBasicMaterial.prototype = Object.create( Material.prototype );
-MeshBasicMaterial.prototype.constructor = MeshBasicMaterial;
+MeshLambertMaterial.prototype = Object.create( Material.prototype );
+MeshLambertMaterial.prototype.constructor = MeshLambertMaterial;
 
-MeshBasicMaterial.prototype.isMeshBasicMaterial = true;
+MeshLambertMaterial.prototype.isMeshLambertMaterial = true;
 
-MeshBasicMaterial.prototype.copy = function ( source ) {
+MeshLambertMaterial.prototype.copy = function ( source ) {
 
 	Material.prototype.copy.call( this, source );
 
@@ -89,6 +97,10 @@ MeshBasicMaterial.prototype.copy = function ( source ) {
 
 	this.aoMap = source.aoMap;
 	this.aoMapIntensity = source.aoMapIntensity;
+
+	this.emissive.copy( source.emissive );
+	this.emissiveMap = source.emissiveMap;
+	this.emissiveIntensity = source.emissiveIntensity;
 
 	this.specularMap = source.specularMap;
 
@@ -106,10 +118,11 @@ MeshBasicMaterial.prototype.copy = function ( source ) {
 
 	this.skinning = source.skinning;
 	this.morphTargets = source.morphTargets;
+	this.morphNormals = source.morphNormals;
 
 	return this;
 
 };
 
 
-export { MeshBasicMaterial };
+export { MeshLambertMaterial };

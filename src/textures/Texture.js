@@ -25,7 +25,7 @@ var textureId = 0;
 
 /**
  * 图片相关参数
- * @param image
+ * @param image {}
  * @param mapping
  * @param wrapS  纹理水平填充参数
  * @param wrapT 纹理垂直填充参数

@@ -20,11 +20,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.添加注释">
-      <change afterPath="$PROJECT_DIR$/src/math/MathUtils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/materials/LineBasicMaterial.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/materials/MeshLambertMaterial.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLTextures.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLTextures.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLUniforms.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLUniforms.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three.module.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/three.module.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/Loader/obj/obj_mtl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/example.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/example.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/models/obj/ceshi/111.mtl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/models/obj/ceshi/111.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/loaders/Cache.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/loaders/Cache.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/a.glsl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/a1.glsl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/a_frag.glsl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/common.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/common.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/defaultnormal_vertex.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/defaultnormal_vertex.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lights_lambert_vertex.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lights_lambert_vertex.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lights_pars_begin.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lights_pars_begin.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/shadowmask_pars_fragment.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/shadowmask_pars_fragment.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_frag.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_frag.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_vert.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_vert.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_frag.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_frag.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_vert.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_vert.glsl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/UniformsLib.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/UniformsLib.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/textures/Texture.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/textures/Texture.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,12 +66,16 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
     <exe-path />
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="sortByName" value="true" />
   </component>
   <component name="ProjectId" id="1hdGY6K3llREu92WKrwyMSP0I9l" />
   <component name="ProjectViewState">
@@ -58,7 +87,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BASIS_WEBGL" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -68,24 +97,34 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="ts.external.directory.path" value="D:\soft\WebStorm 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r118.js-master/src/renderers/WebGLRenderer.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r125.js-master/src/materials/MeshBasicMaterial.js" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\terrain\noise" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\terrain" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\buffergeometry\MeshPhongMaterial" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\buffergeometry" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\workhome\ThreeSourceCodeAnalysis\src\math" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\controls" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\jsm\math" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\examples\terrain" />
-      <recent name="D:\workHome\ThreeSourceCodeAnalysis\src" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\build" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\src\renderers\shaders\ShaderLib" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\src\materials" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\examples\gradient" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\examples\v5" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\examples\gradient" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\examples\v6" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\examples\v5" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\examples\v4\v4-1" />
+      <recent name="C:\workhome\ThreeSourceCodeAnalysis\examples\v5\v5-2" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="test.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/test.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.test.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -373,14 +412,72 @@
       <workItem from="1603072368626" duration="4357000" />
       <workItem from="1603077519442" duration="10382000" />
       <workItem from="1603096250656" duration="2115000" />
-      <workItem from="1603157494826" duration="1334000" />
-    </task>
-    <task id="LOCAL-00039" summary="1.噪声湍流">
-      <created>1572245482639</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1572245482639</updated>
+      <workItem from="1603157494826" duration="1871000" />
+      <workItem from="1603950624231" duration="198000" />
+      <workItem from="1604714711957" duration="932000" />
+      <workItem from="1604891772518" duration="2225000" />
+      <workItem from="1605513399687" duration="2733000" />
+      <workItem from="1605519599172" duration="1056000" />
+      <workItem from="1605522489271" duration="971000" />
+      <workItem from="1605592310618" duration="33000" />
+      <workItem from="1605593474189" duration="1214000" />
+      <workItem from="1605611743965" duration="1072000" />
+      <workItem from="1606966459907" duration="1192000" />
+      <workItem from="1607312948117" duration="4401000" />
+      <workItem from="1607582964156" duration="343000" />
+      <workItem from="1607650402165" duration="976000" />
+      <workItem from="1608020825001" duration="935000" />
+      <workItem from="1608184691185" duration="18149000" />
+      <workItem from="1608255802939" duration="9106000" />
+      <workItem from="1608271669596" duration="19383000" />
+      <workItem from="1608514458523" duration="33136000" />
+      <workItem from="1608600785460" duration="25045000" />
+      <workItem from="1608687572041" duration="32989000" />
+      <workItem from="1608773490716" duration="25905000" />
+      <workItem from="1608859806100" duration="16661000" />
+      <workItem from="1608881556593" duration="13329000" />
+      <workItem from="1608956343513" duration="21292000" />
+      <workItem from="1608985811125" duration="3068000" />
+      <workItem from="1609048925920" duration="11065000" />
+      <workItem from="1609120072793" duration="14215000" />
+      <workItem from="1609138375003" duration="13409000" />
+      <workItem from="1609205679267" duration="5955000" />
+      <workItem from="1609220266874" duration="15999000" />
+      <workItem from="1609292349350" duration="24374000" />
+      <workItem from="1609324714666" duration="819000" />
+      <workItem from="1609325897511" duration="300000" />
+      <workItem from="1609378461790" duration="1653000" />
+      <workItem from="1609381569887" duration="895000" />
+      <workItem from="1609387778918" duration="9269000" />
+      <workItem from="1609402644221" duration="640000" />
+      <workItem from="1609404095339" duration="3854000" />
+      <workItem from="1609724255359" duration="13089000" />
+      <workItem from="1609743981789" duration="9410000" />
+      <workItem from="1609758069129" duration="9000" />
+      <workItem from="1609810704191" duration="388000" />
+      <workItem from="1609831840710" duration="842000" />
+      <workItem from="1609832699619" duration="61000" />
+      <workItem from="1609919106562" duration="49000" />
+      <workItem from="1609926094956" duration="118000" />
+      <workItem from="1609926239645" duration="1826000" />
+      <workItem from="1609928707006" duration="3503000" />
+      <workItem from="1609983430622" duration="1634000" />
+      <workItem from="1610013750249" duration="499000" />
+      <workItem from="1611057524336" duration="2796000" />
+      <workItem from="1611106546790" duration="1467000" />
+      <workItem from="1611286841197" duration="4917000" />
+      <workItem from="1611298227797" duration="2049000" />
+      <workItem from="1612158453843" duration="2200000" />
+      <workItem from="1612498478265" duration="251000" />
+      <workItem from="1614237623346" duration="10000" />
+      <workItem from="1615024336768" duration="120000" />
+      <workItem from="1615456263314" duration="618000" />
+      <workItem from="1615516609330" duration="5615000" />
+      <workItem from="1615605542881" duration="13864000" />
+      <workItem from="1615772496030" duration="25094000" />
+      <workItem from="1615861655467" duration="17519000" />
+      <workItem from="1615944943623" duration="5033000" />
+      <workItem from="1616031963083" duration="2645000" />
     </task>
     <task id="LOCAL-00040" summary="1.细胞噪声 (Celluar Noise)">
       <created>1572256733213</created>
@@ -718,7 +815,14 @@
       <option name="project" value="LOCAL" />
       <updated>1593317000459</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="1.添加注释">
+      <created>1603158870811</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1603158870811</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -781,18 +885,90 @@
     <option name="LAST_COMMIT_MESSAGE" value="1.添加注释" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1603087741691">
+    <state x="93" y="93" width="1095" height="495" maximized="true" key="DiffContextDialog" timestamp="1615946677748">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1603087741691" />
-    <state x="142" y="0" key="SettingsEditor" timestamp="1603158829627">
+    <state x="93" y="93" width="1095" height="495" maximized="true" key="DiffContextDialog/0.0.1280.680@0.0.1280.680" timestamp="1615946677748" />
+    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1616038894059">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1603158829627" />
-    <state x="428" y="235" key="git4idea.ui.GitResetDialog" timestamp="1603086710997">
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1616038894059" />
+    <state width="1259" height="2" key="GridCell.Tab.0.bottom" timestamp="1608270180496">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="428" y="235" key="git4idea.ui.GitResetDialog/0.0.1280.680@0.0.1280.680" timestamp="1603086710997" />
+    <state width="1259" height="2" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1608270180496" />
+    <state width="1259" height="2" key="GridCell.Tab.0.center" timestamp="1608270180496">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="2" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1608270180496" />
+    <state width="1259" height="2" key="GridCell.Tab.0.left" timestamp="1608270180496">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="2" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1608270180496" />
+    <state width="1259" height="2" key="GridCell.Tab.0.right" timestamp="1608270180496">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="2" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1608270180496" />
+    <state width="1259" height="265" key="GridCell.Tab.1.bottom" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.1.center" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.1.left" timestamp="1608203310420">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1608203310420" />
+    <state width="1259" height="265" key="GridCell.Tab.1.right" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.2.bottom" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.2.bottom/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.2.center" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.2.center/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.2.left" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.2.left/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.2.right" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.2.right/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.3.bottom" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.3.bottom/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.3.center" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.3.center/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.3.left" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.3.left/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state width="1259" height="265" key="GridCell.Tab.3.right" timestamp="1608203310421">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1259" height="265" key="GridCell.Tab.3.right/0.0.1280.680@0.0.1280.680" timestamp="1608203310421" />
+    <state x="93" y="93" width="1095" height="495" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1615810274205">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="93" y="93" width="1095" height="495" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1280.680@0.0.1280.680" timestamp="1615810274205" />
+    <state x="297" y="151" key="run.anything.popup" timestamp="1615618823051">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="297" y="151" key="run.anything.popup/0.0.1280.680@0.0.1280.680" timestamp="1615618823051" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1609138926122">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1609138926122" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -801,6 +977,41 @@
           <url>file://$PROJECT_DIR$/build/three_r108.module.js</url>
           <line>14128</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/skinning_vertex.glsl.js</url>
+          <line>1</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/build/three_r115.module.js</url>
+          <line>14804</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/build/three_r115.module.js</url>
+          <line>14944</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/build/three_r123.module.js</url>
+          <line>12991</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/build/three_r123.module.js</url>
+          <line>13053</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/build/three_r123.module.js</url>
+          <line>13055</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/build/three_r123.module.js</url>
+          <line>13071</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

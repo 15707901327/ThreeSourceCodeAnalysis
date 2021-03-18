@@ -157,12 +157,12 @@ import {OrbitControls} from "../../jsm/controls/OrbitControls.js";
       let _this = this;
       new MTLLoader()
       .setPath('../../models/obj/ceshi/')
-      .load('xiaoqiu.mtl', function(materials) {
+      .load('test2222.mtl', function(materials) {
         // materials.preload();
         new OBJLoader()
         .setMaterials(materials)
         .setPath('../../models/obj/ceshi/')
-        .load('xiaoqiu.obj', function(object) {
+        .load('test2222.obj', function(object) {
           // console.log(object);
           // object.children[1].material.color.set(0xffffff);
           _this.scene.add(object);
@@ -221,4 +221,5 @@ $(function() {
     enabledSkyBox: false
   });
   scene3D.init();
+  window.scene3D = scene3D;
 });

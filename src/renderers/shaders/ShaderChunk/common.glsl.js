@@ -5,18 +5,24 @@ export default /* glsl */`
 #define RECIPROCAL_PI 0.31830988618
 #define RECIPROCAL_PI2 0.15915494
 #define LOG2 1.442695
-#define EPSILON 1e-6
+#define EPSILON 1e-6  // 1x10的-6次方 相当于接近0的小数
 
+// 定义数值范围[0,1]
 #ifndef saturate
 // <tonemapping_pars_fragment> may have defined saturate() already
 #define saturate(a) clamp( a, 0.0, 1.0 )
 #endif
 #define whiteComplement(a) ( 1.0 - saturate( a ) )
 
+// 计算x的n次方
 float pow2( const in float x ) { return x*x; }
 float pow3( const in float x ) { return x*x*x; }
 float pow4( const in float x ) { float x2 = x*x; return x2*x2; }
+
+// 三向量x,y,z三个数平均数
 float average( const in vec3 color ) { return dot( color, vec3( 0.3333 ) ); }
+
+// 随机数
 // expects values in the range of [0,1]x[0,1], returns values in the [0,1] range.
 // do not collapse into a single function per: http://byteblacksmith.com/improvements-to-the-canonical-one-liner-glsl-rand-for-opengl-es-2-0/
 highp float rand( const in vec2 uv ) {
@@ -35,12 +41,14 @@ highp float rand( const in vec2 uv ) {
 	}
 #endif
 
+// 入射光
 struct IncidentLight {
 	vec3 color;
 	vec3 direction;
 	bool visible;
 };
 
+// 反射光
 struct ReflectedLight {
 	vec3 directDiffuse;
 	vec3 directSpecular;
@@ -48,6 +56,7 @@ struct ReflectedLight {
 	vec3 indirectSpecular;
 };
 
+// 几何体信息
 struct GeometricContext {
 	vec3 position;
 	vec3 normal;
@@ -57,12 +66,14 @@ struct GeometricContext {
 #endif
 };
 
+// 变换方向
 vec3 transformDirection( in vec3 dir, in mat4 matrix ) {
 
 	return normalize( ( matrix * vec4( dir, 0.0 ) ).xyz );
 
 }
 
+// 逆向变换方向(一般知道worldmatrix 和 local下的normal求worldnormal可以用次方法)
 // http://en.wikibooks.org/wiki/GLSL_Programming/Applying_Matrix_Transformations
 vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
 
@@ -73,6 +84,7 @@ vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
 
 }
 
+// 点相对平面做投影
 vec3 projectOnPlane(in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {
 
 	float distance = dot( planeNormal, point - pointOnPlane );
@@ -81,18 +93,21 @@ vec3 projectOnPlane(in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {
 
 }
 
+// 判断点在平面哪一边
 float sideOfPlane( in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {
 
 	return sign( dot( point - pointOnPlane, planeNormal ) );
 
 }
 
+// 线个平面相交点
 vec3 linePlaneIntersect( in vec3 pointOnLine, in vec3 lineDirection, in vec3 pointOnPlane, in vec3 planeNormal ) {
 
 	return lineDirection * ( dot( planeNormal, pointOnPlane - pointOnLine ) / dot( planeNormal, lineDirection ) ) + pointOnLine;
 
 }
 
+// 矩阵求转置
 mat3 transposeMat3( const in mat3 m ) {
 
 	mat3 tmp;
@@ -105,6 +120,7 @@ mat3 transposeMat3( const in mat3 m ) {
 
 }
 
+// 线性rgb颜色值求相对亮度
 // https://en.wikipedia.org/wiki/Relative_luminance
 float linearToRelativeLuminance( const in vec3 color ) {
 
