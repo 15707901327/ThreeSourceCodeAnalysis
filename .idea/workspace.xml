@@ -26,40 +26,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.添加注释">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/three_r123.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/three_r123.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/three_r123.module.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/gradient.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/gradient.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/GradientFragShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/GradientVertShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/v4-1/GradientFragShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v4/v4-1/GradientVertShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-1/GradientFragShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-1/data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-1/home.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-2/GradientFragShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-2/data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-3/data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-4/GradientFragShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v5/v5-4/data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/GradientVertShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-1/GradientFragShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-1/data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-2/GradientFragShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-2/data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-3/GradientFragShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/gradient/v6/v6-3/data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/jsm/utils/GeometryUtils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/jsm/utils/MathUtils.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/models/obj/ceshi/test2222.mtl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/models/obj/ceshi/test2222.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_frag.glsl_test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_vert.glsl_test.js" afterDir="false" />
-    </list>
+    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.添加注释" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -878,7 +845,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1.状态管理" />
     <MESSAGE value="1.裁剪管理" />
     <MESSAGE value="1.添加r111" />
     <MESSAGE value="1.修改源码注释" />
@@ -903,7 +869,8 @@
     <MESSAGE value="1.添加r118" />
     <MESSAGE value="1.修改实例依赖" />
     <MESSAGE value="1.添加注释" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.添加注释" />
+    <MESSAGE value="1.修改版本号" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.修改版本号" />
   </component>
   <component name="WindowStateProjectService">
     <state x="93" y="93" width="1095" height="495" maximized="true" key="DiffContextDialog" timestamp="1615946677748">
