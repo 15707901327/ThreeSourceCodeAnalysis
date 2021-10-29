@@ -1,4 +1,4 @@
-import { Pass } from '../postprocessing/Pass.js';
+import { Pass } from './Pass.js';
 
 /**
  * 掩码通道

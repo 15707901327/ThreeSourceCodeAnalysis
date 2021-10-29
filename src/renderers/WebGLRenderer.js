@@ -7,12 +7,12 @@
  */
 
 import {
-  RGBAFormat,
-  HalfFloatType,
-  FloatType,
-  UnsignedByteType,
-  LinearEncoding,
-	NoToneMapping
+    RGBAFormat,
+    HalfFloatType,
+    FloatType,
+    UnsignedByteType,
+    LinearEncoding,
+    NoToneMapping
 } from '../constants.js';
 import {MathUtils} from '../math/MathUtils.js';
 import {DataTexture} from '../textures/DataTexture.js';
@@ -25,7 +25,7 @@ import {Vector4} from '../math/Vector4.js';
 import {WebGLAnimation} from './webgl/WebGLAnimation.js';
 import {WebGLAttributes} from './webgl/WebGLAttributes.js';
 import {WebGLBackground} from './webgl/WebGLBackground.js';
-import { WebGLBindingStates } from './webgl/WebGLBindingStates.js';
+import {WebGLBindingStates} from './webgl/WebGLBindingStates.js';
 import {WebGLBufferRenderer} from './webgl/WebGLBufferRenderer.js';
 import {WebGLCapabilities} from './webgl/WebGLCapabilities.js';
 import {WebGLClipping} from './webgl/WebGLClipping.js';
@@ -45,1978 +45,1969 @@ import {WebGLTextures} from './webgl/WebGLTextures.js';
 import {WebGLUniforms} from './webgl/WebGLUniforms.js';
 import {WebGLUtils} from './webgl/WebGLUtils.js';
 import {WebXRManager} from './webxr/WebXRManager.js';
-import { WebGLMaterials } from "./webgl/WebGLMaterials.js";
+import {WebGLMaterials} from "./webgl/WebGLMaterials.js";
 
 function WebGLRenderer(parameters) {
 
-  parameters = parameters || {};
+    parameters = parameters || {};
 
-	const _canvas = parameters.canvas !== undefined ? parameters.canvas : document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' ),
-    _context = parameters.context !== undefined ? parameters.context : null,
+    const _canvas = parameters.canvas !== undefined ? parameters.canvas : document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas'),
+        _context = parameters.context !== undefined ? parameters.context : null,
 
-    _alpha = parameters.alpha !== undefined ? parameters.alpha : false,
-    _depth = parameters.depth !== undefined ? parameters.depth : true,
-    _stencil = parameters.stencil !== undefined ? parameters.stencil : true,
-    _antialias = parameters.antialias !== undefined ? parameters.antialias : false,
-    _premultipliedAlpha = parameters.premultipliedAlpha !== undefined ? parameters.premultipliedAlpha : true,
-    _preserveDrawingBuffer = parameters.preserveDrawingBuffer !== undefined ? parameters.preserveDrawingBuffer : false,
-    _powerPreference = parameters.powerPreference !== undefined ? parameters.powerPreference : 'default',
-    _failIfMajorPerformanceCaveat = parameters.failIfMajorPerformanceCaveat !== undefined ? parameters.failIfMajorPerformanceCaveat : false;
+        _alpha = parameters.alpha !== undefined ? parameters.alpha : false,
+        _depth = parameters.depth !== undefined ? parameters.depth : true,
+        _stencil = parameters.stencil !== undefined ? parameters.stencil : true,
+        _antialias = parameters.antialias !== undefined ? parameters.antialias : false,
+        _premultipliedAlpha = parameters.premultipliedAlpha !== undefined ? parameters.premultipliedAlpha : true,
+        _preserveDrawingBuffer = parameters.preserveDrawingBuffer !== undefined ? parameters.preserveDrawingBuffer : false,
+        _powerPreference = parameters.powerPreference !== undefined ? parameters.powerPreference : 'default',
+        _failIfMajorPerformanceCaveat = parameters.failIfMajorPerformanceCaveat !== undefined ? parameters.failIfMajorPerformanceCaveat : false;
 
-	let currentRenderList = null; // 当前渲染列表
-	let currentRenderState = null; // 当前渲染状态
+    let currentRenderList = null; // 当前渲染列表
+    let currentRenderState = null; // 当前渲染状态
 
-  // public properties
+    // public properties
 
-  this.domElement = _canvas;
+    this.domElement = _canvas;
 
-  // Debug configuration container
-  this.debug = {
+    // Debug configuration container
+    this.debug = {
 
-    /**
-     * Enables error checking and reporting when shader programs are being compiled
-     * @type {boolean}
-     */
-    checkShaderErrors: true
-  };
+        /**
+         * Enables error checking and reporting when shader programs are being compiled
+         * @type {boolean}
+         */
+        checkShaderErrors: true
+    };
 
-  // clearing
+    // clearing
 
-  this.autoClear = true; // 自动清空缓存区
-  this.autoClearColor = true;
-  this.autoClearDepth = true;
-  this.autoClearStencil = true;
+    this.autoClear = true;       // 自动清空缓存区
+    this.autoClearColor = true;
+    this.autoClearDepth = true;
+    this.autoClearStencil = true;
 
-  // scene graph
-  this.sortObjects = true; // 标记排序渲染物体
+    // scene graph
+    this.sortObjects = true; // 标记排序渲染物体
 
-  // 用户定义裁剪
-  this.clippingPlanes = [];
-  this.localClippingEnabled = false; // 定义渲染器是否遵守对象级裁剪平面。 默认为false。
+    // 用户定义裁剪
+    this.clippingPlanes = [];
+    this.localClippingEnabled = false; // 定义渲染器是否遵守对象级裁剪平面。 默认为false。
 
-  // physically based shading
+    // physically based shading
 
-  this.gammaFactor = 2.0;	// for backwards compatibility
-  this.outputEncoding = LinearEncoding;
+    this.gammaFactor = 2.0;	// for backwards compatibility
+    this.outputEncoding = LinearEncoding;
 
-  // physical lights
+    // physical lights
 
-  this.physicallyCorrectLights = false;
+    this.physicallyCorrectLights = false;
 
-  // tone mapping
+    // tone mapping
 
-	this.toneMapping = NoToneMapping;
-  this.toneMappingExposure = 1.0;
+    this.toneMapping = NoToneMapping;
+    this.toneMappingExposure = 1.0;
 
-  // morphs
+    // morphs
 
-  this.maxMorphTargets = 8;
-  this.maxMorphNormals = 4;
+    this.maxMorphTargets = 8;
+    this.maxMorphNormals = 4;
 
-  // internal properties
+    // internal properties
 
-	const _this = this;
+    const _this = this;
 
     // 标记丢失上下文
-	let _isContextLost = false;
+    let _isContextLost = false;
 
     // internal state cache
 
-	let _framebuffer = null;
+    let _framebuffer = null;
 
-	let _currentActiveCubeFace = 0;
-	let _currentActiveMipmapLevel = 0;
-	let _currentRenderTarget = null; // 当前渲染目标
-	let _currentFramebuffer = null;
-	let _currentMaterialId = - 1;
+    let _currentActiveCubeFace = 0;
+    let _currentActiveMipmapLevel = 0;
+    let _currentRenderTarget = null; // 当前渲染目标
+    let _currentFramebuffer = null;
+    let _currentMaterialId = -1;
 
-	let _currentCamera = null;
-	let _currentArrayCamera = null;
+    let _currentCamera = null;
+    let _currentArrayCamera = null;
 
-	const _currentViewport = new Vector4(); // 当前渲染相机
-	const _currentScissor = new Vector4();
+    const _currentViewport = new Vector4(); // 当前渲染相机
+    const _currentScissor = new Vector4();
 
-	let _currentScissorTest = null; // 当前绘图区域
+    let _currentScissorTest = null; // 当前绘图区域
 
     //
 
-	let _width = _canvas.width;
-	let _height = _canvas.height;
+    let _width = _canvas.width;
+    let _height = _canvas.height;
 
-	let _pixelRatio = 1;
-	let _opaqueSort = null;
-	let _transparentSort = null;
+    let _pixelRatio = 1;
+    let _opaqueSort = null;
+    let _transparentSort = null;
 
-	const _viewport = new Vector4( 0, 0, _width, _height ); // 设置绘图区域
-	const _scissor = new Vector4( 0, 0, _width, _height ); // 设置裁剪区域
-	let _scissorTest = false; // 是否启用裁剪
+    const _viewport = new Vector4(0, 0, _width, _height); // 设置绘图区域
+    const _scissor = new Vector4(0, 0, _width, _height); // 设置裁剪区域
+    let _scissorTest = false; // 是否启用裁剪
 
     // frustum
 
-	const _frustum = new Frustum();
+    const _frustum = new Frustum();
 
     // clipping
 
-	const _clipping = new WebGLClipping();
-	let _clippingEnabled = false; // 启动裁剪
-	let _localClippingEnabled = false; // 对象级裁剪
+    const _clipping = new WebGLClipping();
+    let _clippingEnabled = false; // 启动裁剪
+    let _localClippingEnabled = false; // 对象级裁剪
 
     // camera matrices cache 投影矩阵 * 视图矩阵
-	const _projScreenMatrix = new Matrix4();
+    const _projScreenMatrix = new Matrix4();
 
-	const _vector3 = new Vector3(); // 模型坐标点
+    const _vector3 = new Vector3(); // 模型坐标点
 
-	const _emptyScene = { background: null, fog: null, environment: null, overrideMaterial: null, isScene: true };
+    const _emptyScene = {background: null, fog: null, environment: null, overrideMaterial: null, isScene: true};
 
-  function getTargetPixelRatio() {
+    function getTargetPixelRatio() {
 
-    return _currentRenderTarget === null ? _pixelRatio : 1;
-
-  }
-
-  // initialize
-
-  let _gl = _context;
-
-	function getContext( contextNames, contextAttributes ) {
-
-		for ( let i = 0; i < contextNames.length; i ++ ) {
-
-			const contextName = contextNames[ i ];
-			const context = _canvas.getContext( contextName, contextAttributes );
-			if ( context !== null ) return context;
-
-		}
-
-		return null;
-
-	}
-
-  try{
-
-		const contextAttributes = {
-      alpha: _alpha,
-      depth: _depth,
-      stencil: _stencil,
-      antialias: _antialias,
-      premultipliedAlpha: _premultipliedAlpha,
-      preserveDrawingBuffer: _preserveDrawingBuffer,
-      powerPreference: _powerPreference,
-			failIfMajorPerformanceCaveat: _failIfMajorPerformanceCaveat
-    };
-
-    // event listeners must be registered before WebGL context is created, see #12753
-
-    _canvas.addEventListener('webglcontextlost', onContextLost, false);
-    _canvas.addEventListener('webglcontextrestored', onContextRestore, false);
-
-		if ( _gl === null ) {
-
-			const contextNames = [ 'webgl2', 'webgl', 'experimental-webgl' ];
-
-			if ( _this.isWebGL1Renderer === true ) {
-
-				contextNames.shift();
-
-			}
-
-			_gl = getContext( contextNames, contextAttributes );
-
-    if (_gl === null) {
-
-				if ( getContext( contextNames ) ) {
-
-        throw new Error('Error creating WebGL context with your selected attributes.');
-
-      } else {
-
-        throw new Error('Error creating WebGL context.');
-
-      }
+        return _currentRenderTarget === null ? _pixelRatio : 1;
 
     }
 
-		}
+    // initialize
 
-    // Some experimental-webgl implementations do not have getShaderPrecisionFormat
+    let _gl = _context;
 
-    if (_gl.getShaderPrecisionFormat === undefined) {
+    function getContext(contextNames, contextAttributes) {
 
-      _gl.getShaderPrecisionFormat = function() {
+        for (let i = 0; i < contextNames.length; i++) {
 
-        return {'rangeMin': 1, 'rangeMax': 1, 'precision': 1};
+            const contextName = contextNames[i];
+            const context = _canvas.getContext(contextName, contextAttributes);
+            if (context !== null) return context;
 
-      };
+        }
 
-    }
-
-  }catch(error){
-
-    console.error('THREE.WebGLRenderer: ' + error.message);
-    throw error;
-
-  }
-
-	let extensions, capabilities, state, info;
-	let properties, textures, attributes, geometries, objects;
-	let programCache, materials, renderLists, renderStates;
-
-	let background, morphtargets, bufferRenderer, indexedBufferRenderer;
-
-	let utils, bindingStates;
-
-  /**
-   * 初始化WebGL的一些方法
-   */
-  function initGLContext() {
-
-    // 保存当前WebGL开启的扩展功能
-    extensions = new WebGLExtensions(_gl);
-
-    // 获取当前webgl的基础属性
-    capabilities = new WebGLCapabilities(_gl, extensions, parameters);
-
-    if (capabilities.isWebGL2 === false) {
-
-      extensions.get('WEBGL_depth_texture');
-      extensions.get('OES_texture_float');
-      extensions.get('OES_texture_half_float');
-      extensions.get('OES_texture_half_float_linear');
-      extensions.get('OES_standard_derivatives');
-      extensions.get('OES_element_index_uint');
-			extensions.get( 'OES_vertex_array_object' );
-      extensions.get('ANGLE_instanced_arrays');
+        return null;
 
     }
 
-    extensions.get('OES_texture_float_linear');
+    try {
 
-    // three常量与webgl常量转换
-    utils = new WebGLUtils(_gl, extensions, capabilities);
+        const contextAttributes = {
+            alpha: _alpha,
+            depth: _depth,
+            stencil: _stencil,
+            antialias: _antialias,
+            premultipliedAlpha: _premultipliedAlpha,
+            preserveDrawingBuffer: _preserveDrawingBuffer,
+            powerPreference: _powerPreference,
+            failIfMajorPerformanceCaveat: _failIfMajorPerformanceCaveat
+        };
 
-    state = new WebGLState(_gl, extensions, capabilities);
-    state.scissor(_currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor());
-    state.viewport(_currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor());
+        // event listeners must be registered before WebGL context is created, see #12753
 
-    // 渲染信息管理
-    info = new WebGLInfo(_gl);
-    // 管理渲染物体属性
-    properties = new WebGLProperties();
-    textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
-    attributes = new WebGLAttributes(_gl, capabilities);
-		bindingStates = new WebGLBindingStates( _gl, extensions, attributes, capabilities );
-		geometries = new WebGLGeometries( _gl, attributes, info, bindingStates );
-    // 对象管理
-    objects = new WebGLObjects(_gl, geometries, attributes, info);
-    morphtargets = new WebGLMorphtargets(_gl);
-    // 着色器程序管理
-		programCache = new WebGLPrograms( _this, extensions, capabilities, bindingStates );
-		materials = new WebGLMaterials( properties );
-    renderLists = new WebGLRenderLists(); // 渲染列表
-    renderStates = new WebGLRenderStates(); // 渲染状态
+        _canvas.addEventListener('webglcontextlost', onContextLost, false);
+        _canvas.addEventListener('webglcontextrestored', onContextRestore, false);
 
-    // 渲染背景
-    background = new WebGLBackground(_this, state, objects, _premultipliedAlpha);
+        if (_gl === null) {
 
-    bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
-    indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info, capabilities);
+            const contextNames = ['webgl2', 'webgl', 'experimental-webgl'];
 
-    info.programs = programCache.programs;
+            if (_this.isWebGL1Renderer === true) {
 
-    _this.capabilities = capabilities;
-    _this.extensions = extensions;
-    _this.properties = properties;
-    _this.renderLists = renderLists;
-    _this.state = state;
-    _this.info = info;
+                contextNames.shift();
 
-  }
+            }
 
-  initGLContext();
+            _gl = getContext(contextNames, contextAttributes);
 
-  // xr
+            if (_gl === null) {
 
-	const xr = new WebXRManager( _this, _gl );
+                if (getContext(contextNames)) {
 
-  this.xr = xr;
+                    throw new Error('Error creating WebGL context with your selected attributes.');
 
-  // shadow map
+                } else {
 
-	const shadowMap = new WebGLShadowMap( _this, objects, capabilities.maxTextureSize );
+                    throw new Error('Error creating WebGL context.');
 
-  this.shadowMap = shadowMap;
+                }
 
-  // API
+            }
 
-  this.getContext = function() {
+        }
 
-    return _gl;
+        // Some experimental-webgl implementations do not have getShaderPrecisionFormat
 
-  };
+        if (_gl.getShaderPrecisionFormat === undefined) {
 
-  this.getContextAttributes = function() {
+            _gl.getShaderPrecisionFormat = function () {
 
-    return _gl.getContextAttributes();
+                return {'rangeMin': 1, 'rangeMax': 1, 'precision': 1};
 
-  };
+            };
 
-  this.forceContextLoss = function() {
+        }
 
-		const extension = extensions.get( 'WEBGL_lose_context' );
-    if (extension) extension.loseContext();
+    } catch (error) {
 
-  };
-
-  this.forceContextRestore = function() {
-
-		const extension = extensions.get( 'WEBGL_lose_context' );
-    if (extension) extension.restoreContext();
-
-  };
-
-  this.getPixelRatio = function() {
-
-    return _pixelRatio;
-
-  };
-
-  /**
-   * 更新场景的尺寸及视点
-   * @param value
-   */
-  this.setPixelRatio = function(value) {
-
-    if (value === undefined) return;
-
-    _pixelRatio = value;
-
-    this.setSize(_width, _height, false);
-
-  };
-
-  this.getSize = function(target) {
-
-    if (target === undefined) {
-
-      console.warn('WebGLRenderer: .getsize() now requires a Vector2 as an argument');
-
-      target = new Vector2();
+        console.error('THREE.WebGLRenderer: ' + error.message);
+        throw error;
 
     }
 
-    return target.set(_width, _height);
+    let extensions, capabilities, state, info;
+    let properties, textures, attributes, geometries, objects;
+    let programCache, materials, renderLists, renderStates;
 
-  };
+    let background, morphtargets, bufferRenderer, indexedBufferRenderer;
 
-  /**
-   * 更新场景的尺寸_width、_height，以及视点
-   * @param width
-   * @param height
-   * @param updateStyle
-   */
-  this.setSize = function(width, height, updateStyle) {
+    let utils, bindingStates;
 
-    if (xr.isPresenting) {
+    /**
+     * 初始化WebGL的一些方法
+     */
+    function initGLContext() {
 
-      console.warn('THREE.WebGLRenderer: Can\'t change size while VR device is presenting.');
-      return;
+        // 保存当前WebGL开启的扩展功能
+        extensions = new WebGLExtensions(_gl);
 
-    }
+        // 获取当前webgl的基础属性
+        capabilities = new WebGLCapabilities(_gl, extensions, parameters);
 
-    _width = width;
-    _height = height;
+        if (capabilities.isWebGL2 === false) {
 
-    _canvas.width = Math.floor(width * _pixelRatio);
-    _canvas.height = Math.floor(height * _pixelRatio);
+            extensions.get('WEBGL_depth_texture');
+            extensions.get('OES_texture_float');
+            extensions.get('OES_texture_half_float');
+            extensions.get('OES_texture_half_float_linear');
+            extensions.get('OES_standard_derivatives');
+            extensions.get('OES_element_index_uint');
+            extensions.get('OES_vertex_array_object');
+            extensions.get('ANGLE_instanced_arrays');
 
-    if (updateStyle !== false) {
+        }
 
-      _canvas.style.width = width + 'px';
-      _canvas.style.height = height + 'px';
+        extensions.get('OES_texture_float_linear');
 
-    }
+        // three常量与webgl常量转换
+        utils = new WebGLUtils(_gl, extensions, capabilities);
 
-    this.setViewport(0, 0, width, height);
+        state = new WebGLState(_gl, extensions, capabilities);
+        state.scissor(_currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor());
+        state.viewport(_currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor());
 
-  };
+        // 渲染信息管理
+        info = new WebGLInfo(_gl);
+        // 管理渲染物体属性
+        properties = new WebGLProperties();
+        textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
+        attributes = new WebGLAttributes(_gl, capabilities);
+        bindingStates = new WebGLBindingStates(_gl, extensions, attributes, capabilities);
+        geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
+        // 对象管理
+        objects = new WebGLObjects(_gl, geometries, attributes, info);
+        morphtargets = new WebGLMorphtargets(_gl);
+        // 着色器程序管理
+        programCache = new WebGLPrograms(_this, extensions, capabilities, bindingStates);
+        materials = new WebGLMaterials(properties);
+        renderLists = new WebGLRenderLists(); // 渲染列表
+        renderStates = new WebGLRenderStates(); // 渲染状态
 
-  /**
-   * 回去绘图缓存区大小
-   * @return {{width: number, height: number}}
-   */
-  this.getDrawingBufferSize = function(target) {
+        // 渲染背景
+        background = new WebGLBackground(_this, state, objects, _premultipliedAlpha);
 
-    if (target === undefined) {
+        bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
+        indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info, capabilities);
 
-      console.warn('WebGLRenderer: .getdrawingBufferSize() now requires a Vector2 as an argument');
+        info.programs = programCache.programs;
 
-      target = new Vector2();
-
-    }
-
-    return target.set(_width * _pixelRatio, _height * _pixelRatio).floor();
-
-  };
-
-  this.setDrawingBufferSize = function(width, height, pixelRatio) {
-
-    _width = width;
-    _height = height;
-
-    _pixelRatio = pixelRatio;
-
-    _canvas.width = Math.floor(width * pixelRatio);
-    _canvas.height = Math.floor(height * pixelRatio);
-
-    this.setViewport(0, 0, width, height);
-
-  };
-
-  /**
-   * 获取当前视口
-   * @param target
-   * @returns {never}
-   */
-  this.getCurrentViewport = function(target) {
-    if (target === undefined) {
-
-      console.warn('WebGLRenderer: .getCurrentViewport() now requires a Vector4 as an argument');
-
-      target = new Vector4();
+        _this.capabilities = capabilities;
+        _this.extensions = extensions;
+        _this.properties = properties;
+        _this.renderLists = renderLists;
+        _this.state = state;
+        _this.info = info;
 
     }
-    return target.copy(_currentViewport);
-  };
-
-  this.getViewport = function(target) {
-
-    return target.copy(_viewport);
-
-  };
-
-  /**
-   * 更新视点
-   * @param x
-   * @param y
-   * @param width
-   * @param height
-   */
-  this.setViewport = function(x, y, width, height) {
-
-    if (x.isVector4) {
-
-      _viewport.set(x.x, x.y, x.z, x.w);
-
-    } else {
-
-      _viewport.set(x, y, width, height);
-
-    }
-
-    state.viewport(_currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor());
-
-  };
-
-  this.getScissor = function(target) {
-
-    return target.copy(_scissor);
-
-  };
-
-  this.setScissor = function(x, y, width, height) {
-
-    if (x.isVector4) {
-
-      _scissor.set(x.x, x.y, x.z, x.w);
-
-    } else {
-
-      _scissor.set(x, y, width, height);
-
-    }
-
-    state.scissor(_currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor());
-
-  };
-
-  this.getScissorTest = function() {
-
-    return _scissorTest;
-
-  };
-
-  this.setScissorTest = function(boolean) {
-
-    state.setScissorTest(_scissorTest = boolean);
-
-  };
-
-  this.setOpaqueSort = function(method) {
-
-    _opaqueSort = method;
-
-  };
-
-  this.setTransparentSort = function(method) {
-
-    _transparentSort = method;
-
-  };
-
-  // Clearing
-
-  this.getClearColor = function() {
-
-    return background.getClearColor();
-
-  };
-
-  // 设置背景颜色
-  this.setClearColor = function() {
-
-    background.setClearColor.apply(background, arguments);
-
-  };
-
-  this.getClearAlpha = function() {
-
-    return background.getClearAlpha();
-
-  };
-
-  this.setClearAlpha = function() {
-
-    background.setClearAlpha.apply(background, arguments);
-
-  };
-
-  /**
-   * 根据参数清空颜色缓存区、深度缓存区、模版缓存区
-   * @param color
-   * @param depth
-   * @param stencil
-   */
-  this.clear = function(color, depth, stencil) {
-
-		let bits = 0;
-
-    if (color === undefined || color) bits |= _gl.COLOR_BUFFER_BIT;
-    if (depth === undefined || depth) bits |= _gl.DEPTH_BUFFER_BIT;
-    if (stencil === undefined || stencil) bits |= _gl.STENCIL_BUFFER_BIT;
-
-    _gl.clear(bits);
-
-  };
-
-  this.clearColor = function() {
-
-    this.clear(true, false, false);
-
-  };
-
-  this.clearDepth = function() {
-
-    this.clear(false, true, false);
-
-  };
-
-  this.clearStencil = function() {
-
-    this.clear(false, false, true);
-
-  };
-
-  //
-
-  this.dispose = function() {
-
-    _canvas.removeEventListener('webglcontextlost', onContextLost, false);
-    _canvas.removeEventListener('webglcontextrestored', onContextRestore, false);
-
-    renderLists.dispose();
-    renderStates.dispose();
-    properties.dispose();
-    objects.dispose();
-		bindingStates.dispose();
-
-    xr.dispose();
-
-    animation.stop();
-
-  };
-
-  // Events
-
-  function onContextLost(event) {
-
-    event.preventDefault();
-
-    console.log('THREE.WebGLRenderer: Context Lost.');
-
-    _isContextLost = true;
-
-  }
-
-  function onContextRestore(/* event */) {
-
-    console.log('THREE.WebGLRenderer: Context Restored.');
-
-    _isContextLost = false;
 
     initGLContext();
 
-  }
+    // xr
 
-  function onMaterialDispose(event) {
+    const xr = new WebXRManager(_this, _gl);
 
-		const material = event.target;
+    this.xr = xr;
 
-    material.removeEventListener('dispose', onMaterialDispose);
+    // shadow map
 
-    deallocateMaterial(material);
+    const shadowMap = new WebGLShadowMap(_this, objects, capabilities.maxTextureSize);
 
-  }
+    this.shadowMap = shadowMap;
 
-  // Buffer deallocation
+    // API
 
-  function deallocateMaterial(material) {
+    this.getContext = function () {
 
-    releaseMaterialProgramReference(material);
+        return _gl;
 
-    properties.remove(material);
+    };
 
-  }
+    this.getContextAttributes = function () {
 
+        return _gl.getContextAttributes();
 
-  function releaseMaterialProgramReference(material) {
+    };
 
-		const programInfo = properties.get( material ).program;
+    this.forceContextLoss = function () {
 
-    material.program = undefined;
+        const extension = extensions.get('WEBGL_lose_context');
+        if (extension) extension.loseContext();
 
-    if (programInfo !== undefined) {
+    };
 
-      programCache.releaseProgram(programInfo);
+    this.forceContextRestore = function () {
+
+        const extension = extensions.get('WEBGL_lose_context');
+        if (extension) extension.restoreContext();
+
+    };
+
+    this.getPixelRatio = function () {
+
+        return _pixelRatio;
+
+    };
+
+    /**
+     * 更新场景的尺寸及视点
+     * @param value
+     */
+    this.setPixelRatio = function (value) {
+
+        if (value === undefined) return;
+
+        _pixelRatio = value;
+
+        this.setSize(_width, _height, false);
+
+    };
+
+    this.getSize = function (target) {
+
+        if (target === undefined) {
+
+            console.warn('WebGLRenderer: .getsize() now requires a Vector2 as an argument');
+
+            target = new Vector2();
+
+        }
+
+        return target.set(_width, _height);
+
+    };
+
+    /**
+     * 更新场景的尺寸_width、_height，以及视点
+     * @param width
+     * @param height
+     * @param updateStyle
+     */
+    this.setSize = function (width, height, updateStyle) {
+
+        if (xr.isPresenting) {
+
+            console.warn('THREE.WebGLRenderer: Can\'t change size while VR device is presenting.');
+            return;
+
+        }
+
+        _width = width;
+        _height = height;
+
+        _canvas.width = Math.floor(width * _pixelRatio);
+        _canvas.height = Math.floor(height * _pixelRatio);
+
+        if (updateStyle !== false) {
+
+            _canvas.style.width = width + 'px';
+            _canvas.style.height = height + 'px';
+
+        }
+
+        this.setViewport(0, 0, width, height);
+
+    };
+
+    /**
+     * 回去绘图缓存区大小
+     * @return {{width: number, height: number}}
+     */
+    this.getDrawingBufferSize = function (target) {
+
+        if (target === undefined) {
+
+            console.warn('WebGLRenderer: .getdrawingBufferSize() now requires a Vector2 as an argument');
+
+            target = new Vector2();
+
+        }
+
+        return target.set(_width * _pixelRatio, _height * _pixelRatio).floor();
+
+    };
+
+    this.setDrawingBufferSize = function (width, height, pixelRatio) {
+
+        _width = width;
+        _height = height;
+
+        _pixelRatio = pixelRatio;
+
+        _canvas.width = Math.floor(width * pixelRatio);
+        _canvas.height = Math.floor(height * pixelRatio);
+
+        this.setViewport(0, 0, width, height);
+
+    };
+
+    /**
+     * 获取当前视口
+     * @param target
+     * @returns {never}
+     */
+    this.getCurrentViewport = function (target) {
+        if (target === undefined) {
+
+            console.warn('WebGLRenderer: .getCurrentViewport() now requires a Vector4 as an argument');
+
+            target = new Vector4();
+
+        }
+        return target.copy(_currentViewport);
+    };
+
+    this.getViewport = function (target) {
+
+        return target.copy(_viewport);
+
+    };
+
+    /**
+     * 更新视点
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
+    this.setViewport = function (x, y, width, height) {
+
+        if (x.isVector4) {
+
+            _viewport.set(x.x, x.y, x.z, x.w);
+
+        } else {
+
+            _viewport.set(x, y, width, height);
+
+        }
+
+        state.viewport(_currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor());
+
+    };
+
+    this.getScissor = function (target) {
+
+        return target.copy(_scissor);
+
+    };
+
+    this.setScissor = function (x, y, width, height) {
+
+        if (x.isVector4) {
+
+            _scissor.set(x.x, x.y, x.z, x.w);
+
+        } else {
+
+            _scissor.set(x, y, width, height);
+
+        }
+
+        state.scissor(_currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor());
+
+    };
+
+    this.getScissorTest = function () {
+
+        return _scissorTest;
+
+    };
+
+    this.setScissorTest = function (boolean) {
+
+        state.setScissorTest(_scissorTest = boolean);
+
+    };
+
+    this.setOpaqueSort = function (method) {
+
+        _opaqueSort = method;
+
+    };
+
+    this.setTransparentSort = function (method) {
+
+        _transparentSort = method;
+
+    };
+
+    // Clearing
+
+    this.getClearColor = function () {
+
+        return background.getClearColor();
+
+    };
+
+    // 设置背景颜色
+    this.setClearColor = function () {
+
+        background.setClearColor.apply(background, arguments);
+
+    };
+
+    this.getClearAlpha = function () {
+
+        return background.getClearAlpha();
+
+    };
+
+    this.setClearAlpha = function () {
+
+        background.setClearAlpha.apply(background, arguments);
+
+    };
+
+    /**
+     * 根据参数清空颜色缓存区、深度缓存区、模版缓存区
+     * @param color
+     * @param depth
+     * @param stencil
+     */
+    this.clear = function (color, depth, stencil) {
+
+        let bits = 0;
+
+        if (color === undefined || color) bits |= _gl.COLOR_BUFFER_BIT;
+        if (depth === undefined || depth) bits |= _gl.DEPTH_BUFFER_BIT;
+        if (stencil === undefined || stencil) bits |= _gl.STENCIL_BUFFER_BIT;
+
+        _gl.clear(bits);
+
+    };
+
+    this.clearColor = function () {
+
+        this.clear(true, false, false);
+
+    };
+
+    this.clearDepth = function () {
+
+        this.clear(false, true, false);
+
+    };
+
+    this.clearStencil = function () {
+
+        this.clear(false, false, true);
+
+    };
+
+    //
+
+    this.dispose = function () {
+
+        _canvas.removeEventListener('webglcontextlost', onContextLost, false);
+        _canvas.removeEventListener('webglcontextrestored', onContextRestore, false);
+
+        renderLists.dispose();
+        renderStates.dispose();
+        properties.dispose();
+        objects.dispose();
+        bindingStates.dispose();
+
+        xr.dispose();
+
+        animation.stop();
+
+    };
+
+    // Events
+
+    function onContextLost(event) {
+
+        event.preventDefault();
+
+        console.log('THREE.WebGLRenderer: Context Lost.');
+
+        _isContextLost = true;
 
     }
 
-  }
+    function onContextRestore(/* event */) {
 
-  // Buffer rendering
+        console.log('THREE.WebGLRenderer: Context Restored.');
 
-  function renderObjectImmediate(object, program) {
+        _isContextLost = false;
 
-    object.render(function(object) {
-
-      _this.renderBufferImmediate(object, program);
-
-    });
-
-  }
-
-  this.renderBufferImmediate = function(object, program) {
-
-		bindingStates.initAttributes();
-
-		const buffers = properties.get( object );
-
-    if (object.hasPositions && !buffers.position) buffers.position = _gl.createBuffer();
-    if (object.hasNormals && !buffers.normal) buffers.normal = _gl.createBuffer();
-    if (object.hasUvs && !buffers.uv) buffers.uv = _gl.createBuffer();
-    if (object.hasColors && !buffers.color) buffers.color = _gl.createBuffer();
-
-		const programAttributes = program.getAttributes();
-
-    if (object.hasPositions) {
-
-      _gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.position);
-      _gl.bufferData(_gl.ARRAY_BUFFER, object.positionArray, _gl.DYNAMIC_DRAW);
-
-			bindingStates.enableAttribute( programAttributes.position );
-      _gl.vertexAttribPointer(programAttributes.position, 3, _gl.FLOAT, false, 0, 0);
+        initGLContext();
 
     }
 
-    if (object.hasNormals) {
+    function onMaterialDispose(event) {
 
-      _gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.normal);
-      _gl.bufferData(_gl.ARRAY_BUFFER, object.normalArray, _gl.DYNAMIC_DRAW);
+        const material = event.target;
 
-			bindingStates.enableAttribute( programAttributes.normal );
-      _gl.vertexAttribPointer(programAttributes.normal, 3, _gl.FLOAT, false, 0, 0);
+        material.removeEventListener('dispose', onMaterialDispose);
 
-    }
-
-    if (object.hasUvs) {
-
-      _gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.uv);
-      _gl.bufferData(_gl.ARRAY_BUFFER, object.uvArray, _gl.DYNAMIC_DRAW);
-
-			bindingStates.enableAttribute( programAttributes.uv );
-      _gl.vertexAttribPointer(programAttributes.uv, 2, _gl.FLOAT, false, 0, 0);
+        deallocateMaterial(material);
 
     }
 
-    if (object.hasColors) {
+    // Buffer deallocation
 
-      _gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.color);
-      _gl.bufferData(_gl.ARRAY_BUFFER, object.colorArray, _gl.DYNAMIC_DRAW);
+    function deallocateMaterial(material) {
 
-			bindingStates.enableAttribute( programAttributes.color );
-      _gl.vertexAttribPointer(programAttributes.color, 3, _gl.FLOAT, false, 0, 0);
+        releaseMaterialProgramReference(material);
 
-    }
-
-		bindingStates.disableUnusedAttributes();
-
-    _gl.drawArrays(_gl.TRIANGLES, 0, object.count);
-
-    object.count = 0;
-
-  };
-
-  /**
-   * 渲染物体
-   * @param camera 相机
-   * @param fog{THREE.scene.fog}
-   * @param geometry 几何体
-   * @param material 材质
-   * @param object 渲染网格
-   * @param group
-   */
-  this.renderBufferDirect = function(camera, scene, geometry, material, object, group) {
-
-		if ( scene === null ) scene = _emptyScene; // renderBufferDirect second parameter used to be fog (could be null)
-
-    // 计算顺时针缠绕，还是逆时针缠绕
-		const frontFaceCW = ( object.isMesh && object.matrixWorld.determinant() < 0 );
-
-    // 设置着色器中的uniform
-		const program = setProgram( camera, scene, material, object );
-
-    // 根据材质设置绘制图形的方式（剔除、缠绕方向、混合、偏移）
-    state.setMaterial(material, frontFaceCW);
-
-		//
-
-		let index = geometry.index;
-		const position = geometry.attributes.position;
-
-		//
-
-    if (index === null) {
-      if (position === undefined || position.count === 0) return;
-    } else if (index.count === 0) {
-      return;
-    }
-
-		//
-
-		let rangeFactor = 1;
-
-    if (material.wireframe === true) {
-      index = geometries.getWireframeAttribute(geometry);
-      rangeFactor = 2;
-
-		}
-
-		if ( material.morphTargets || material.morphNormals ) {
-
-			morphtargets.update( object, geometry, material, program );
+        properties.remove(material);
 
     }
 
-		bindingStates.setup( object, material, program, geometry, index );
 
-		let attribute;
-		let renderer = bufferRenderer;
+    function releaseMaterialProgramReference(material) {
 
-    if (index !== null) {
-      attribute = attributes.get(index);
+        const programInfo = properties.get(material).program;
 
-      renderer = indexedBufferRenderer;
-      renderer.setIndex(attribute);
+        material.program = undefined;
+
+        if (programInfo !== undefined) {
+
+            programCache.releaseProgram(programInfo);
+
+        }
+
+    }
+
+    // Buffer rendering
+
+    function renderObjectImmediate(object, program) {
+
+        object.render(function (object) {
+
+            _this.renderBufferImmediate(object, program);
+
+        });
+
+    }
+
+    this.renderBufferImmediate = function (object, program) {
+
+        bindingStates.initAttributes();
+
+        const buffers = properties.get(object);
+
+        if (object.hasPositions && !buffers.position) buffers.position = _gl.createBuffer();
+        if (object.hasNormals && !buffers.normal) buffers.normal = _gl.createBuffer();
+        if (object.hasUvs && !buffers.uv) buffers.uv = _gl.createBuffer();
+        if (object.hasColors && !buffers.color) buffers.color = _gl.createBuffer();
+
+        const programAttributes = program.getAttributes();
+
+        if (object.hasPositions) {
+
+            _gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.position);
+            _gl.bufferData(_gl.ARRAY_BUFFER, object.positionArray, _gl.DYNAMIC_DRAW);
+
+            bindingStates.enableAttribute(programAttributes.position);
+            _gl.vertexAttribPointer(programAttributes.position, 3, _gl.FLOAT, false, 0, 0);
+
+        }
+
+        if (object.hasNormals) {
+
+            _gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.normal);
+            _gl.bufferData(_gl.ARRAY_BUFFER, object.normalArray, _gl.DYNAMIC_DRAW);
+
+            bindingStates.enableAttribute(programAttributes.normal);
+            _gl.vertexAttribPointer(programAttributes.normal, 3, _gl.FLOAT, false, 0, 0);
+
+        }
+
+        if (object.hasUvs) {
+
+            _gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.uv);
+            _gl.bufferData(_gl.ARRAY_BUFFER, object.uvArray, _gl.DYNAMIC_DRAW);
+
+            bindingStates.enableAttribute(programAttributes.uv);
+            _gl.vertexAttribPointer(programAttributes.uv, 2, _gl.FLOAT, false, 0, 0);
+
+        }
+
+        if (object.hasColors) {
+
+            _gl.bindBuffer(_gl.ARRAY_BUFFER, buffers.color);
+            _gl.bufferData(_gl.ARRAY_BUFFER, object.colorArray, _gl.DYNAMIC_DRAW);
+
+            bindingStates.enableAttribute(programAttributes.color);
+            _gl.vertexAttribPointer(programAttributes.color, 3, _gl.FLOAT, false, 0, 0);
+
+        }
+
+        bindingStates.disableUnusedAttributes();
+
+        _gl.drawArrays(_gl.TRIANGLES, 0, object.count);
+
+        object.count = 0;
+
+    };
+
+    /**
+     * 渲染物体
+     * @param camera 相机
+     * @param fog{THREE.scene.fog}
+     * @param geometry 几何体
+     * @param material 材质
+     * @param object 渲染网格
+     * @param group
+     */
+    this.renderBufferDirect = function (camera, scene, geometry, material, object, group) {
+
+        if (scene === null) scene = _emptyScene; // renderBufferDirect second parameter used to be fog (could be null)
+
+        // 计算顺时针缠绕，还是逆时针缠绕
+        const frontFaceCW = (object.isMesh && object.matrixWorld.determinant() < 0);
+
+        // 设置着色器中的uniform
+        const program = setProgram(camera, scene, material, object);
+
+        // 根据材质设置绘制图形的方式（剔除、缠绕方向、混合、偏移）
+        state.setMaterial(material, frontFaceCW);
+
+        //
+
+        let index = geometry.index;
+        const position = geometry.attributes.position;
+
+        //
+
+        if (index === null) {
+            if (position === undefined || position.count === 0) return;
+        } else if (index.count === 0) {
+            return;
+        }
+
+        //
+
+        let rangeFactor = 1;
+
+        if (material.wireframe === true) {
+            index = geometries.getWireframeAttribute(geometry);
+            rangeFactor = 2;
+
+        }
+
+        if (material.morphTargets || material.morphNormals) {
+
+            morphtargets.update(object, geometry, material, program);
+
+        }
+
+        bindingStates.setup(object, material, program, geometry, index);
+
+        let attribute;
+        let renderer = bufferRenderer;
+
+        if (index !== null) {
+            attribute = attributes.get(index);
+
+            renderer = indexedBufferRenderer;
+            renderer.setIndex(attribute);
+
+        }
+
+        //
+
+        const dataCount = (index !== null) ? index.count : position.count;
+
+        const rangeStart = geometry.drawRange.start * rangeFactor;
+        const rangeCount = geometry.drawRange.count * rangeFactor;
+
+        const groupStart = group !== null ? group.start * rangeFactor : 0;
+        const groupCount = group !== null ? group.count * rangeFactor : Infinity;
+
+        const drawStart = Math.max(rangeStart, groupStart);
+        const drawEnd = Math.min(dataCount, rangeStart + rangeCount, groupStart + groupCount) - 1;
+
+        const drawCount = Math.max(0, drawEnd - drawStart + 1);
+
+        if (drawCount === 0) return;
+
+        // 设置绘制的方式
+        if (object.isMesh) {
+            if (material.wireframe === true) {
+
+                state.setLineWidth(material.wireframeLinewidth * getTargetPixelRatio());
+                renderer.setMode(_gl.LINES);
+
+            } else {
+
+                renderer.setMode(_gl.TRIANGLES);
+
+            }
+
+        } else if (object.isLine) {
+
+            let lineWidth = material.linewidth;
+
+            if (lineWidth === undefined) lineWidth = 1; // Not using Line*Material
+
+            state.setLineWidth(lineWidth * getTargetPixelRatio());
+
+            if (object.isLineSegments) {
+
+                renderer.setMode(_gl.LINES);
+
+            } else if (object.isLineLoop) {
+
+                renderer.setMode(_gl.LINE_LOOP);
+
+            } else {
+
+                renderer.setMode(_gl.LINE_STRIP);
+
+            }
+
+        } else if (object.isPoints) {
+            renderer.setMode(_gl.POINTS);
+        } else if (object.isSprite) {
+            renderer.setMode(_gl.TRIANGLES);
+        }
+
+        if (object.isInstancedMesh) {
+            renderer.renderInstances(geometry, drawStart, drawCount, object.count);
+        } else if (geometry.isInstancedBufferGeometry) {
+
+            const instanceCount = Math.min(geometry.instanceCount, geometry._maxInstanceCount);
+
+            renderer.renderInstances(geometry, drawStart, drawCount, instanceCount);
+
+        } else {
+            renderer.render(drawStart, drawCount);
+
+        }
+
+    };
+
+    // Compile
+
+    this.compile = function (scene, camera) {
+
+        currentRenderState = renderStates.get(scene, camera);
+        currentRenderState.init();
+
+        scene.traverse(function (object) {
+            if (object.isLight) {
+                currentRenderState.pushLight(object);
+                if (object.castShadow) {
+                    currentRenderState.pushShadow(object);
+                }
+            }
+        });
+
+        currentRenderState.setupLights(camera);
+
+        const compiled = new WeakMap();
+
+        scene.traverse(function (object) {
+
+            let material = object.material;
+
+            if (material) {
+
+                if (Array.isArray(material)) {
+
+                    for (let i = 0; i < material.length; i++) {
+
+                        let material2 = material[i];
+
+                        if (compiled.has(material2) === false) {
+
+                            initMaterial(material2, scene, object);
+                            compiled.set(material2);
+
+                        }
+
+                    }
+
+                } else if (compiled.has(material) === false) {
+
+                    initMaterial(material, scene, object);
+                    compiled.set(material);
+
+                }
+            }
+        });
+    };
+
+    // Animation Loop
+
+    let onAnimationFrameCallback = null;
+
+    function onAnimationFrame(time) {
+
+        if (xr.isPresenting) return;
+        if (onAnimationFrameCallback) onAnimationFrameCallback(time);
+
+    }
+
+    const animation = new WebGLAnimation();
+    animation.setAnimationLoop(onAnimationFrame);
+
+    if (typeof window !== 'undefined') animation.setContext(window);
+
+    this.setAnimationLoop = function (callback) {
+
+        onAnimationFrameCallback = callback;
+        xr.setAnimationLoop(callback);
+
+        (callback === null) ? animation.stop() : animation.start();
+
+    };
+
+    /**
+     * 渲染物体
+     * @param scene 场景
+     * @param camera 相机
+     */
+    this.render = function (scene, camera) {
+
+        let renderTarget, forceClear;
+
+        if (arguments[2] !== undefined) {
+            console.warn('THREE.WebGLRenderer.render(): the renderTarget argument has been removed. Use .setRenderTarget() instead.');
+            renderTarget = arguments[2];
+        }
+
+        // 判断是否强制刷新缓冲区
+        if (arguments[3] !== undefined) {
+            console.warn('THREE.WebGLRenderer.render(): the forceClear argument has been removed. Use .clear() instead.');
+            forceClear = arguments[3];
+        }
+
+        // 检查相机
+        if (camera !== undefined && camera.isCamera !== true) {
+
+            console.error('THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.');
+            return;
+        }
+
+        // 检查是否丢失上下文
+        if (_isContextLost === true) return;
+
+        // reset caching for this frame
+
+        bindingStates.resetDefaultState();
+        _currentMaterialId = -1;
+        _currentCamera = null;
+
+        // update scene graph 更新对象的位置矩阵
+        if (scene.autoUpdate === true) scene.updateMatrixWorld();
+
+        // 更新相机矩阵和视锥
+        if (camera.parent === null) camera.updateMatrixWorld();
+
+        if (xr.enabled === true && xr.isPresenting === true) {
+
+            camera = xr.getCamera(camera);
+
+        }
+
+        //
+        if (scene.isScene === true) scene.onBeforeRender(_this, scene, camera, renderTarget || _currentRenderTarget);
+
+        // 获取当前渲染状态
+        currentRenderState = renderStates.get(scene, camera);
+        currentRenderState.init();
+
+        // 投影矩阵 * 视图矩阵
+        _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+        _frustum.setFromProjectionMatrix(_projScreenMatrix);
+
+        // 裁剪
+        _localClippingEnabled = this.localClippingEnabled;
+        // 获取是否启动裁剪
+        _clippingEnabled = _clipping.init(this.clippingPlanes, _localClippingEnabled, camera);
+
+        // 初始化渲染列表
+        currentRenderList = renderLists.get(scene, camera);
+        currentRenderList.init();
+
+        // 对象添加到渲染列表
+        projectObject(scene, camera, 0, _this.sortObjects);
+
+        currentRenderList.finish();
+
+        if (_this.sortObjects === true) {
+            currentRenderList.sort(_opaqueSort, _transparentSort);
+        }
+
+        // 阴影
+        if (_clippingEnabled === true) _clipping.beginShadows();
+
+        const shadowsArray = currentRenderState.state.shadowsArray;
+
+        shadowMap.render(shadowsArray, scene, camera);
+
+        // 设置灯光
+        currentRenderState.setupLights(camera);
+
+        if (_clippingEnabled === true) _clipping.endShadows();
+
+        // 重新设置渲染信息
+        if (this.info.autoReset === true) this.info.reset();
+
+        // 设置渲染目标
+        if (renderTarget !== undefined) {
+            this.setRenderTarget(renderTarget);
+        }
+
+        // 背景对象添加到渲染列表
+        background.render(currentRenderList, scene, camera, forceClear);
+
+        // render scene
+
+        const opaqueObjects = currentRenderList.opaque;
+        const transparentObjects = currentRenderList.transparent;
+
+        if (opaqueObjects.length > 0) renderObjects(opaqueObjects, scene, camera);
+        if (transparentObjects.length > 0) renderObjects(transparentObjects, scene, camera);
+
+        //
+
+        if (scene.isScene === true) scene.onAfterRender(_this, scene, camera);
+
+        //
+
+        if (_currentRenderTarget !== null) {
+            // Generate mipmap if we're using any kind of mipmap filtering
+            textures.updateRenderTargetMipmap(_currentRenderTarget);
+            // resolve multisample renderbuffers to a single-sample texture if necessary
+            textures.updateMultisampleRenderTarget(_currentRenderTarget);
+        }
+
+        // Ensure depth buffer writing is enabled so it can be cleared on next render
+
+        state.buffers.depth.setTest(true);
+        state.buffers.depth.setMask(true);
+        state.buffers.color.setMask(true);
+
+        state.setPolygonOffset(false);
+
+        // _gl.finish();
+        currentRenderList = null;
+        currentRenderState = null;
+    };
+
+    /**
+     * 拆分渲染对象，解析几何体、以及几何体中的attribute变量
+     * 过滤渲染物体，计算渲染深度z
+     * @param object 对象
+     * @param camera 相机
+     * @param groupOrder 渲染级别
+     * @param sortObjects 排序
+     */
+    function projectObject(object, camera, groupOrder, sortObjects) {
+
+        if (object.visible === false) return;
+
+        // 检测当前物体是否在当前渲染通道
+        const visible = object.layers.test(camera.layers);
+
+        if (visible) {
+            if (object.isGroup) {
+                groupOrder = object.renderOrder;
+            } else if (object.isLOD) {
+                if (object.autoUpdate === true) object.update(camera);
+            } else if (object.isLight) {
+                currentRenderState.pushLight(object);
+                if (object.castShadow) {
+                    currentRenderState.pushShadow(object);
+                }
+            } else if (object.isSprite) {
+                if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
+                    if (sortObjects) {
+                        _vector3.setFromMatrixPosition(object.matrixWorld)
+                            .applyMatrix4(_projScreenMatrix);
+                    }
+
+                    // 解析几何体，几何体属性分配缓冲区对象
+                    const geometry = objects.update(object);
+                    const material = object.material;
+
+                    if (material.visible) {
+                        currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
+                    }
+                }
+            } else if (object.isImmediateRenderObject) {
+                if (sortObjects) {
+                    _vector3.setFromMatrixPosition(object.matrixWorld)
+                        .applyMatrix4(_projScreenMatrix);
+                }
+                currentRenderList.push(object, null, object.material, groupOrder, _vector3.z, null);
+            } else if (object.isMesh || object.isLine || object.isPoints) {
+                if (object.isSkinnedMesh) {
+                    // update skeleton only once in a frame
+                    if (object.skeleton.frame !== info.render.frame) {
+                        object.skeleton.update();
+                        object.skeleton.frame = info.render.frame;
+                    }
+                }
+
+                // 检查物体是否在平截头体内
+                if (!object.frustumCulled || _frustum.intersectsObject(object)) {
+                    // 计算模型投影到屏幕上的坐标
+                    if (sortObjects) {
+                        _vector3.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix);
+                    }
+
+                    // 解析几何体，几何体属性分配缓冲区对象
+                    const geometry = objects.update(object);
+                    const material = object.material;
+
+                    if (Array.isArray(material)) {
+
+                        const groups = geometry.groups;
+
+                        for (let i = 0, l = groups.length; i < l; i++) {
+
+                            const group = groups[i];
+                            const groupMaterial = material[group.materialIndex];
+
+                            if (groupMaterial && groupMaterial.visible) {
+                                currentRenderList.push(object, geometry, groupMaterial, groupOrder, _vector3.z, group);
+                            }
+                        }
+                    } else if (material.visible) {
+                        currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
+                    }
+                }
+            }
+        }
+
+        const children = object.children;
+
+        for (let i = 0, l = children.length; i < l; i++) {
+
+            projectObject(children[i], camera, groupOrder, sortObjects);
+        }
+
+    }
+
+    /**
+     * 渲染物体列表中的物体
+     * @param renderList 渲染列表
+     * @param scene 场景
+     * @param camera 相机
+     * @param overrideMaterial
+     */
+    function renderObjects(renderList, scene, camera) {
+
+        const overrideMaterial = scene.isScene === true ? scene.overrideMaterial : null;
+
+        for (let i = 0, l = renderList.length; i < l; i++) {
+
+            const renderItem = renderList[i];
+
+            const object = renderItem.object;
+            const geometry = renderItem.geometry;
+            const material = overrideMaterial === null ? renderItem.material : overrideMaterial;
+            const group = renderItem.group;
+
+            if (camera.isArrayCamera) {
+                _currentArrayCamera = camera;
+
+                const cameras = camera.cameras;
+
+                for (let j = 0, jl = cameras.length; j < jl; j++) {
+
+                    const camera2 = cameras[j];
+
+                    if (object.layers.test(camera2.layers)) {
+                        state.viewport(_currentViewport.copy(camera2.viewport));
+                        currentRenderState.setupLights(camera2);
+                        renderObject(object, scene, camera2, geometry, material, group);
+                    }
+
+                }
+
+            } else {
+                _currentArrayCamera = null;
+                renderObject(object, scene, camera, geometry, material, group);
+            }
+        }
+    }
+
+    /**
+     * 渲染物体
+     * @param object 渲染对象（mesh）
+     * @param scene 场景
+     * @param camera 相机
+     * @param geometry 几何体
+     * @param material 材质
+     * @param group
+     */
+    function renderObject(object, scene, camera, geometry, material, group) {
+
+        // 渲染之前调用方法
+        object.onBeforeRender(_this, scene, camera, geometry, material, group);
+
+        // 获取渲染状态
+        currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
+
+        // 计算对象的模型视图矩阵
+        object.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, object.matrixWorld);
+        // 获取对象的法线矩阵
+        object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
+
+        if (object.isImmediateRenderObject) {
+
+            const program = setProgram(camera, scene, material, object);
+
+            state.setMaterial(material);
+
+            bindingStates.reset();
+
+            renderObjectImmediate(object, program);
+
+        } else {
+            _this.renderBufferDirect(camera, scene, geometry, material, object, group);
+        }
+
+        // 渲染之后调用方法
+        object.onAfterRender(_this, scene, camera, geometry, material, group);
+        currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
+    }
+
+    /**
+     * 创建着色器，并创建unform变量连接
+     * @param material
+     * @param scene
+     * @param object
+     */
+    function initMaterial(material, scene, object) {
+
+        if (scene.isScene !== true) scene = _emptyScene; // scene could be a Mesh, Line, Points, ...
+
+        // 获取材质渲染属性
+        const materialProperties = properties.get(material);
+
+        // 获取管理灯光对象
+        const lights = currentRenderState.state.lights;
+        const shadowsArray = currentRenderState.state.shadowsArray;
+
+        const lightsStateVersion = lights.state.version;
+
+        // 获取材质参数
+        const parameters = programCache.getParameters(material, lights.state, shadowsArray, scene, _clipping.numPlanes, _clipping.numIntersection, object);
+        const programCacheKey = programCache.getProgramCacheKey(parameters);
+
+        let program = materialProperties.program;
+        let programChange = true;
+
+        if (program === undefined) {
+            // new material
+            material.addEventListener('dispose', onMaterialDispose);
+        } else if (program.cacheKey !== programCacheKey) {
+
+            // changed glsl or parameters
+            releaseMaterialProgramReference(material);
+
+        } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
+            materialProperties.lightsStateVersion = lightsStateVersion;
+            programChange = false;
+        } else if (parameters.shaderID !== undefined) {
+            // same glsl and uniform list
+            return;
+        } else {
+            // only rebuild uniform list
+            programChange = false;
+        }
+
+        // 获取shader变量、顶点着色器、片元着色器，创建着色器程序
+        if (programChange) {
+
+            program = programCache.acquireProgram(parameters, programCacheKey);
+
+            materialProperties.program = program;
+            materialProperties.uniforms = parameters.uniforms;
+            materialProperties.outputEncoding = parameters.outputEncoding;
+            material.program = program;
+
+        }
+
+        // 获着色器中的变量
+        const programAttributes = program.getAttributes();
+
+        if (material.morphTargets) {
+
+            material.numSupportedMorphTargets = 0;
+
+            for (let i = 0; i < _this.maxMorphTargets; i++) {
+
+                if (programAttributes['morphTarget' + i] >= 0) {
+
+                    material.numSupportedMorphTargets++;
+
+                }
+
+            }
+
+        }
+
+        if (material.morphNormals) {
+
+            material.numSupportedMorphNormals = 0;
+
+            for (let i = 0; i < _this.maxMorphNormals; i++) {
+
+                if (programAttributes['morphNormal' + i] >= 0) {
+
+                    material.numSupportedMorphNormals++;
+
+                }
+
+            }
+
+        }
+
+        // 获取材质统一变量
+        const uniforms = materialProperties.uniforms;
+
+        // 刨切参数
+        if (!material.isShaderMaterial && !material.isRawShaderMaterial || material.clipping === true) {
+            materialProperties.numClippingPlanes = _clipping.numPlanes;
+            materialProperties.numIntersection = _clipping.numIntersection;
+            // 设置刨切面的参数
+            uniforms.clippingPlanes = _clipping.uniform;
+        }
+
+        materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
+        materialProperties.fog = scene.fog;
+
+        // store the light setup it was created for
+        materialProperties.needsLights = materialNeedsLights(material);
+        materialProperties.lightsStateVersion = lightsStateVersion;
+
+        // 添加灯光属性
+        if (materialProperties.needsLights) {
+            // wire up the material to this renderer's lighting state
+
+            uniforms.ambientLightColor.value = lights.state.ambient;
+            uniforms.lightProbe.value = lights.state.probe;
+            uniforms.directionalLights.value = lights.state.directional;
+            uniforms.directionalLightShadows.value = lights.state.directionalShadow;
+            uniforms.spotLights.value = lights.state.spot;
+            uniforms.spotLightShadows.value = lights.state.spotShadow;
+            uniforms.rectAreaLights.value = lights.state.rectArea;
+            uniforms.pointLights.value = lights.state.point;
+            uniforms.pointLightShadows.value = lights.state.pointShadow;
+            uniforms.hemisphereLights.value = lights.state.hemi;
+
+            uniforms.directionalShadowMap.value = lights.state.directionalShadowMap;
+            uniforms.directionalShadowMatrix.value = lights.state.directionalShadowMatrix;
+            uniforms.spotShadowMap.value = lights.state.spotShadowMap;
+            uniforms.spotShadowMatrix.value = lights.state.spotShadowMatrix;
+            uniforms.pointShadowMap.value = lights.state.pointShadowMap;
+            uniforms.pointShadowMatrix.value = lights.state.pointShadowMatrix;
+            // TODO (abelnation): add area lights shadow info to uniforms
+        }
+
+        // 获取着色器程序中的uniform变量
+        const progUniforms = materialProperties.program.getUniforms(),
+            uniformsList = WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
+        materialProperties.uniformsList = uniformsList;
+    }
+
+    /**
+     * 创建着色器，并设置unform变量
+     * @param camera
+     * @param scene
+     * @param material
+     * @param object
+     * @returns {*}
+     */
+    function setProgram(camera, scene, material, object) {
+
+        if (scene.isScene !== true) scene = _emptyScene; // scene could be a Mesh, Line, Points, ...
+
+        textures.resetTextureUnits();
+
+        const fog = scene.fog;
+        const environment = material.isMeshStandardMaterial ? scene.environment : null;
+        const encoding = (_currentRenderTarget === null) ? _this.outputEncoding : _currentRenderTarget.texture.encoding;
+
+        // 材质对象属性
+        const materialProperties = properties.get(material);
+        const lights = currentRenderState.state.lights; // 获取灯光数据
+
+        if (_clippingEnabled === true) {
+
+            if (_localClippingEnabled === true || camera !== _currentCamera) {
+
+                const useCache =
+                    camera === _currentCamera &&
+                    material.id === _currentMaterialId;
+
+                // we might want to call this function with some ClippingGroup
+                // object instead of the material, once it becomes feasible
+                // (#8465, #8379)
+                _clipping.setState(material.clippingPlanes, material.clipIntersection, material.clipShadows, camera, materialProperties, useCache);
+            }
+        }
+
+        if (material.version === materialProperties.__version) {
+
+            if (materialProperties.program === undefined) {
+
+                initMaterial(material, scene, object);
+
+            } else if (material.fog && materialProperties.fog !== fog) {
+
+                initMaterial(material, scene, object);
+
+            } else if (materialProperties.environment !== environment) {
+
+                initMaterial(material, scene, object);
+
+            } else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
+
+                initMaterial(material, scene, object);
+
+            } else if (materialProperties.numClippingPlanes !== undefined &&
+                (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
+                    materialProperties.numIntersection !== _clipping.numIntersection)) {
+
+                initMaterial(material, scene, object);
+
+            } else if (materialProperties.outputEncoding !== encoding) {
+
+                initMaterial(material, scene, object);
+
+            }
+        } else {
+            initMaterial(material, scene, object);
+            materialProperties.__version = material.version;
+        }
+
+        let refreshProgram = false;
+        let refreshMaterial = false;
+        let refreshLights = false;
+
+        const program = materialProperties.program,
+            p_uniforms = program.getUniforms(),
+            m_uniforms = materialProperties.uniforms;
+
+        if (state.useProgram(program.program)) {
+            refreshProgram = true;
+            refreshMaterial = true;
+            refreshLights = true;
+        }
+
+        if (material.id !== _currentMaterialId) {
+
+            _currentMaterialId = material.id;
+
+            refreshMaterial = true;
+
+        }
+
+        // 设置相机的投影矩阵、视图矩阵
+        if (refreshProgram || _currentCamera !== camera) {
+            p_uniforms.setValue(_gl, 'projectionMatrix', camera.projectionMatrix);
+
+            /*
+             * 打开logarithmicDepthBuffer，那么要将相机的far值设置为大于等于3，
+             * 如果far小于3，那么logDepthBufFC的值将大于1，导致最终渲染不出来。
+             * 如果是自己写的着色器则不受影响，
+             * three内置的材质会受到影响，因为内置的材质对logDepthBufFC做了相应的响应。
+             */
+            if (capabilities.logarithmicDepthBuffer) {
+                p_uniforms.setValue(_gl, 'logDepthBufFC', 2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
+            }
+
+            if (_currentCamera !== camera) {
+                _currentCamera = camera;
+
+                // lighting uniforms depend on the camera so enforce an update
+                // now, in case this material supports lights - or later, when
+                // the next material that does gets activated:
+
+                refreshMaterial = true;		// set to true on material change
+                refreshLights = true;		// remains set until update done
+
+            }
+
+            // load material specific uniforms
+            // (shader material also gets them for the sake of genericity)
+
+            if (material.isShaderMaterial ||
+                material.isMeshPhongMaterial ||
+                material.isMeshToonMaterial ||
+                material.isMeshStandardMaterial ||
+                material.envMap) {
+
+                const uCamPos = p_uniforms.map.cameraPosition;
+
+                if (uCamPos !== undefined) {
+                    uCamPos.setValue(_gl, _vector3.setFromMatrixPosition(camera.matrixWorld));
+                }
+            }
+
+            if (material.isMeshPhongMaterial ||
+                material.isMeshToonMaterial ||
+                material.isMeshLambertMaterial ||
+                material.isMeshBasicMaterial ||
+                material.isMeshStandardMaterial ||
+                material.isShaderMaterial) {
+
+                p_uniforms.setValue(_gl, 'isOrthographic', camera.isOrthographicCamera === true);
+
+            }
+
+            if (material.isMeshPhongMaterial ||
+                material.isMeshToonMaterial ||
+                material.isMeshLambertMaterial ||
+                material.isMeshBasicMaterial ||
+                material.isMeshStandardMaterial ||
+                material.isShaderMaterial ||
+                material.isShadowMaterial ||
+                material.skinning) {
+
+                p_uniforms.setValue(_gl, 'viewMatrix', camera.matrixWorldInverse);
+
+            }
+
+        }
+
+        // skinning uniforms must be set even if material didn't change
+        // auto-setting of texture unit for bone texture must go before other textures
+        // otherwise textures used for skinning can take over texture units reserved for other material textures
+
+        if (material.skinning) {
+
+            p_uniforms.setOptional(_gl, object, 'bindMatrix');
+            p_uniforms.setOptional(_gl, object, 'bindMatrixInverse');
+
+            const skeleton = object.skeleton;
+
+            if (skeleton) {
+
+                const bones = skeleton.bones;
+
+                if (capabilities.floatVertexTextures) {
+
+                    if (skeleton.boneTexture === undefined) {
+
+                        // layout (1 matrix = 4 pixels)
+                        //      RGBA RGBA RGBA RGBA (=> column1, column2, column3, column4)
+                        //  with  8x8  pixel texture max   16 bones * 4 pixels =  (8 * 8)
+                        //       16x16 pixel texture max   64 bones * 4 pixels = (16 * 16)
+                        //       32x32 pixel texture max  256 bones * 4 pixels = (32 * 32)
+                        //       64x64 pixel texture max 1024 bones * 4 pixels = (64 * 64)
+
+
+                        let size = Math.sqrt(bones.length * 4); // 4 pixels needed for 1 matrix
+                        size = MathUtils.ceilPowerOfTwo(size);
+                        size = Math.max(size, 4);
+
+                        const boneMatrices = new Float32Array(size * size * 4); // 4 floats per RGBA pixel
+                        boneMatrices.set(skeleton.boneMatrices); // copy current values
+
+                        const boneTexture = new DataTexture(boneMatrices, size, size, RGBAFormat, FloatType);
+
+                        skeleton.boneMatrices = boneMatrices;
+                        skeleton.boneTexture = boneTexture;
+                        skeleton.boneTextureSize = size;
+
+                    }
+
+                    p_uniforms.setValue(_gl, 'boneTexture', skeleton.boneTexture, textures);
+                    p_uniforms.setValue(_gl, 'boneTextureSize', skeleton.boneTextureSize);
+
+                } else {
+
+                    p_uniforms.setOptional(_gl, skeleton, 'boneMatrices');
+
+                }
+
+            }
+
+        }
+
+        if (refreshMaterial || materialProperties.receiveShadow !== object.receiveShadow) {
+
+            materialProperties.receiveShadow = object.receiveShadow;
+            p_uniforms.setValue(_gl, 'receiveShadow', object.receiveShadow);
+
+        }
+
+        // 刷新材质属性
+        if (refreshMaterial) {
+
+            p_uniforms.setValue(_gl, 'toneMappingExposure', _this.toneMappingExposure);
+
+            if (materialProperties.needsLights) {
+
+                // the current material requires lighting info
+
+                // note: all lighting uniforms are always set correctly
+                // they simply reference the renderer's state for their
+                // values
+                //
+                // use the current material's .needsUpdate flags to set
+                // the GL state when required
+
+                markUniformsLightsNeedsUpdate(m_uniforms, refreshLights);
+
+            }
+
+            // refresh uniforms common to several materials
+
+            if (fog && material.fog) {
+
+                materials.refreshFogUniforms(m_uniforms, fog);
+
+            }
+
+            materials.refreshMaterialUniforms(m_uniforms, material, environment, _pixelRatio, _height);
+
+            // RectAreaLight Texture
+            // TODO (mrdoob): Find a nicer implementation
+            if (m_uniforms.ltc_1 !== undefined) m_uniforms.ltc_1.value = UniformsLib.LTC_1;
+            if (m_uniforms.ltc_2 !== undefined) m_uniforms.ltc_2.value = UniformsLib.LTC_2;
+
+            WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
+
+        }
+
+        if (material.isShaderMaterial && material.uniformsNeedUpdate === true) {
+
+            WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
+            material.uniformsNeedUpdate = false;
+
+        }
+
+        if (material.isSpriteMaterial) {
+
+            p_uniforms.setValue(_gl, 'center', object.center);
+
+        }
+
+        // common matrices
+
+        p_uniforms.setValue(_gl, 'modelViewMatrix', object.modelViewMatrix);
+        p_uniforms.setValue(_gl, 'normalMatrix', object.normalMatrix);
+        p_uniforms.setValue(_gl, 'modelMatrix', object.matrixWorld);
+
+        return program;
+
+    }
+
+    // If uniforms are marked as clean, they don't need to be loaded to the GPU.
+
+    function markUniformsLightsNeedsUpdate(uniforms, value) {
+
+        uniforms.ambientLightColor.needsUpdate = value;
+        uniforms.lightProbe.needsUpdate = value;
+
+        uniforms.directionalLights.needsUpdate = value;
+        uniforms.directionalLightShadows.needsUpdate = value;
+        uniforms.pointLights.needsUpdate = value;
+        uniforms.pointLightShadows.needsUpdate = value;
+        uniforms.spotLights.needsUpdate = value;
+        uniforms.spotLightShadows.needsUpdate = value;
+        uniforms.rectAreaLights.needsUpdate = value;
+        uniforms.hemisphereLights.needsUpdate = value;
+
+    }
+
+    /**
+     *
+     * @param material
+     * @returns {*|boolean}
+     */
+    function materialNeedsLights(material) {
+
+        return material.isMeshLambertMaterial || material.isMeshToonMaterial || material.isMeshPhongMaterial ||
+            material.isMeshStandardMaterial || material.isShadowMaterial ||
+            (material.isShaderMaterial && material.lights === true);
 
     }
 
     //
+    this.setFramebuffer = function (value) {
 
-		const dataCount = ( index !== null ) ? index.count : position.count;
+        if (_framebuffer !== value && _currentRenderTarget === null) _gl.bindFramebuffer(_gl.FRAMEBUFFER, value);
 
-		const rangeStart = geometry.drawRange.start * rangeFactor;
-		const rangeCount = geometry.drawRange.count * rangeFactor;
+        _framebuffer = value;
 
-		const groupStart = group !== null ? group.start * rangeFactor : 0;
-		const groupCount = group !== null ? group.count * rangeFactor : Infinity;
+    };
 
-		const drawStart = Math.max( rangeStart, groupStart );
-		const drawEnd = Math.min( dataCount, rangeStart + rangeCount, groupStart + groupCount ) - 1;
+    this.getActiveCubeFace = function () {
 
-		const drawCount = Math.max( 0, drawEnd - drawStart + 1 );
+        return _currentActiveCubeFace;
 
-    if (drawCount === 0) return;
+    };
 
-    // 设置绘制的方式
-    if (object.isMesh) {
-      if (material.wireframe === true) {
+    this.getActiveMipmapLevel = function () {
 
-        state.setLineWidth(material.wireframeLinewidth * getTargetPixelRatio());
-        renderer.setMode(_gl.LINES);
+        return _currentActiveMipmapLevel;
 
-      } else {
+    };
 
-        renderer.setMode(_gl.TRIANGLES);
+    /**
+     * 获取当前渲染目标
+     * @returns {*}
+     */
+    this.getRenderTarget = function () {
+        return _currentRenderTarget;
+    };
 
-      }
+    /**
+     * 设置渲染目标
+     * @param renderTarget 渲染目标
+     * @param activeCubeFace
+     * @param activeMipMapLevel
+     */
+    this.setRenderTarget = function (renderTarget, activeCubeFace, activeMipmapLevel) {
 
-    }
-		else if (object.isLine) {
+        // 设置当前渲染目标类
+        _currentRenderTarget = renderTarget;
+        _currentActiveCubeFace = activeCubeFace;
+        _currentActiveMipmapLevel = activeMipmapLevel;
 
-			let lineWidth = material.linewidth;
-
-      if (lineWidth === undefined) lineWidth = 1; // Not using Line*Material
-
-      state.setLineWidth(lineWidth * getTargetPixelRatio());
-
-      if (object.isLineSegments) {
-
-        renderer.setMode(_gl.LINES);
-
-      } else if (object.isLineLoop) {
-
-        renderer.setMode(_gl.LINE_LOOP);
-
-      } else {
-
-        renderer.setMode(_gl.LINE_STRIP);
-
-      }
-
-    }
-		else if (object.isPoints) {
-      renderer.setMode(_gl.POINTS);
-    }
-		else if (object.isSprite) {
-      renderer.setMode(_gl.TRIANGLES);
-    }
-
-    if (object.isInstancedMesh) {
-      renderer.renderInstances(geometry, drawStart, drawCount, object.count);
-    }
-		else if (geometry.isInstancedBufferGeometry) {
-
-			const instanceCount = Math.min( geometry.instanceCount, geometry._maxInstanceCount );
-
-			renderer.renderInstances( geometry, drawStart, drawCount, instanceCount );
-
-    } else {
-      renderer.render(drawStart, drawCount);
-
-    }
-
-	};
-
-	// Compile
-
-  this.compile = function(scene, camera) {
-
-    currentRenderState = renderStates.get(scene, camera);
-    currentRenderState.init();
-
-    scene.traverse(function(object) {
-      if (object.isLight) {
-        currentRenderState.pushLight(object);
-        if (object.castShadow) {
-          currentRenderState.pushShadow(object);
+        // 设置颜色纹理、深度纹理、模板关联
+        if (renderTarget && properties.get(renderTarget).__webglFramebuffer === undefined) {
+            textures.setupRenderTarget(renderTarget);
         }
-      }
-    });
 
-    currentRenderState.setupLights(camera);
+        let framebuffer = _framebuffer;
+        let isCube = false;
 
-		const compiled = new WeakMap();
+        // 设置绘图区域
+        if (renderTarget) {
 
-    scene.traverse(function(object) {
+            const __webglFramebuffer = properties.get(renderTarget).__webglFramebuffer;
 
-			let material = object.material;
+            if (renderTarget.isWebGLCubeRenderTarget) {
 
-			if ( material ) {
+                framebuffer = __webglFramebuffer[activeCubeFace || 0];
+                isCube = true;
+            } else if (renderTarget.isWebGLMultisampleRenderTarget) {
+                framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
+            } else {
+                framebuffer = __webglFramebuffer;
+            }
 
-				if ( Array.isArray( material ) ) {
+            // 设置绘图区域
+            _currentViewport.copy(renderTarget.viewport);
+            // 设置裁剪区域
+            _currentScissor.copy(renderTarget.scissor);
+            // 设置是否启用裁剪区域
+            _currentScissorTest = renderTarget.scissorTest;
+        } else {
+            _currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor();
+            _currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor();
+            _currentScissorTest = _scissorTest;
+        }
 
-					for ( let i = 0; i < material.length; i ++ ) {
+        if (_currentFramebuffer !== framebuffer) {
+            _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
+            _currentFramebuffer = framebuffer;
+        }
 
-						let material2 = material[ i ];
+        state.viewport(_currentViewport);
+        state.scissor(_currentScissor);
+        state.setScissorTest(_currentScissorTest);
 
-						if ( compiled.has( material2 ) === false ) {
+        if (isCube) {
 
-							initMaterial( material2, scene, object );
-							compiled.set( material2 );
+            const textureProperties = properties.get(renderTarget.texture);
+            _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + (activeCubeFace || 0), textureProperties.__webglTexture, activeMipmapLevel || 0);
+        }
+    };
+
+    this.readRenderTargetPixels = function (renderTarget, x, y, width, height, buffer, activeCubeFaceIndex) {
+
+        if (!(renderTarget && renderTarget.isWebGLRenderTarget)) {
+
+            console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget.');
+            return;
+
+        }
+
+        let framebuffer = properties.get(renderTarget).__webglFramebuffer;
+
+        if (renderTarget.isWebGLCubeRenderTarget && activeCubeFaceIndex !== undefined) {
+
+            framebuffer = framebuffer[activeCubeFaceIndex];
+
+        }
+
+        if (framebuffer) {
+
+            let restore = false;
+
+            if (framebuffer !== _currentFramebuffer) {
+
+                _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
+
+                restore = true;
 
             }
 
-          }
+            try {
 
-				} else if ( compiled.has( material ) === false ) {
+                const texture = renderTarget.texture;
+                const textureFormat = texture.format;
+                const textureType = texture.type;
 
-					initMaterial( material, scene, object );
-					compiled.set( material );
+                if (textureFormat !== RGBAFormat && utils.convert(textureFormat) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_FORMAT)) {
 
-        }
-      }
-    });
-  };
+                    console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.');
+                    return;
 
-  // Animation Loop
+                }
 
-	let onAnimationFrameCallback = null;
+                if (textureType !== UnsignedByteType && utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // IE11, Edge and Chrome Mac < 52 (#9513)
+                    !(textureType === FloatType && (capabilities.isWebGL2 || extensions.get('OES_texture_float') || extensions.get('WEBGL_color_buffer_float'))) && // Chrome Mac >= 52 and Firefox
+                    !(textureType === HalfFloatType && (capabilities.isWebGL2 ? extensions.get('EXT_color_buffer_float') : extensions.get('EXT_color_buffer_half_float')))) {
 
-  function onAnimationFrame(time) {
+                    console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.');
+                    return;
 
-    if (xr.isPresenting) return;
-    if (onAnimationFrameCallback) onAnimationFrameCallback(time);
+                }
 
-  }
+                if (_gl.checkFramebufferStatus(_gl.FRAMEBUFFER) === _gl.FRAMEBUFFER_COMPLETE) {
 
-	const animation = new WebGLAnimation();
-  animation.setAnimationLoop(onAnimationFrame);
+                    // the following if statement ensures valid read requests (no out-of-bounds pixels, see #8604)
 
-  if (typeof window !== 'undefined') animation.setContext(window);
+                    if ((x >= 0 && x <= (renderTarget.width - width)) && (y >= 0 && y <= (renderTarget.height - height))) {
 
-  this.setAnimationLoop = function(callback) {
+                        _gl.readPixels(x, y, width, height, utils.convert(textureFormat), utils.convert(textureType), buffer);
 
-    onAnimationFrameCallback = callback;
-    xr.setAnimationLoop(callback);
+                    }
 
-		( callback === null ) ? animation.stop() : animation.start();
+                } else {
 
-  };
+                    console.error('THREE.WebGLRenderer.readRenderTargetPixels: readPixels from renderTarget failed. Framebuffer not complete.');
 
-  /**
-   * 渲染物体
-   * @param scene 场景
-   * @param camera 相机
-   */
-  this.render = function(scene, camera) {
+                }
 
-		let renderTarget, forceClear;
+            } finally {
 
-    if (arguments[2] !== undefined) {
-      console.warn('THREE.WebGLRenderer.render(): the renderTarget argument has been removed. Use .setRenderTarget() instead.');
-      renderTarget = arguments[2];
-    }
+                if (restore) {
 
-    // 判断是否强制刷新缓冲区
-    if (arguments[3] !== undefined) {
-      console.warn('THREE.WebGLRenderer.render(): the forceClear argument has been removed. Use .clear() instead.');
-      forceClear = arguments[3];
-    }
+                    _gl.bindFramebuffer(_gl.FRAMEBUFFER, _currentFramebuffer);
 
-    // 检查相机
-		if ( camera !== undefined && camera.isCamera !== true ) {
+                }
 
-      console.error('THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera.');
-      return;
-    }
-
-    // 检查是否丢失上下文
-		if ( _isContextLost === true ) return;
-
-    // reset caching for this frame
-
-		bindingStates.resetDefaultState();
-    _currentMaterialId = -1;
-    _currentCamera = null;
-
-    // update scene graph 更新对象的位置矩阵
-    if (scene.autoUpdate === true) scene.updateMatrixWorld();
-
-    // 更新相机矩阵和视锥
-    if (camera.parent === null) camera.updateMatrixWorld();
-
-		if ( xr.enabled === true && xr.isPresenting === true ) {
-
-      camera = xr.getCamera(camera);
-
-    }
-
-		//
-		if ( scene.isScene === true ) scene.onBeforeRender( _this, scene, camera, renderTarget || _currentRenderTarget );
-
-    // 获取当前渲染状态
-    currentRenderState = renderStates.get(scene, camera);
-    currentRenderState.init();
-
-    // 投影矩阵 * 视图矩阵
-    _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-    _frustum.setFromProjectionMatrix(_projScreenMatrix);
-
-    // 裁剪
-    _localClippingEnabled = this.localClippingEnabled;
-    // 获取是否启动裁剪
-    _clippingEnabled = _clipping.init(this.clippingPlanes, _localClippingEnabled, camera);
-
-    // 初始化渲染列表
-    currentRenderList = renderLists.get(scene, camera);
-    currentRenderList.init();
-
-    // 对象添加到渲染列表
-    projectObject(scene, camera, 0, _this.sortObjects);
-
-    currentRenderList.finish();
-
-    if (_this.sortObjects === true) {
-      currentRenderList.sort(_opaqueSort, _transparentSort);
-    }
-
-    // 阴影
-		if ( _clippingEnabled === true ) _clipping.beginShadows();
-
-		const shadowsArray = currentRenderState.state.shadowsArray;
-
-    shadowMap.render(shadowsArray, scene, camera);
-
-    // 设置灯光
-    currentRenderState.setupLights(camera);
-
-		if ( _clippingEnabled === true ) _clipping.endShadows();
-
-    // 重新设置渲染信息
-		if ( this.info.autoReset === true ) this.info.reset();
-
-    // 设置渲染目标
-    if (renderTarget !== undefined) {
-      this.setRenderTarget(renderTarget);
-    }
-
-    // 背景对象添加到渲染列表
-    background.render(currentRenderList, scene, camera, forceClear);
-
-    // render scene
-
-		const opaqueObjects = currentRenderList.opaque;
-		const transparentObjects = currentRenderList.transparent;
-
-		if ( opaqueObjects.length > 0 ) renderObjects( opaqueObjects, scene, camera );
-		if ( transparentObjects.length > 0 ) renderObjects( transparentObjects, scene, camera );
-
-		//
-
-		if ( scene.isScene === true ) scene.onAfterRender( _this, scene, camera );
-
-		//
-
-    if (_currentRenderTarget !== null) {
-      // Generate mipmap if we're using any kind of mipmap filtering
-      textures.updateRenderTargetMipmap(_currentRenderTarget);
-      // resolve multisample renderbuffers to a single-sample texture if necessary
-      textures.updateMultisampleRenderTarget(_currentRenderTarget);
-    }
-
-    // Ensure depth buffer writing is enabled so it can be cleared on next render
-
-    state.buffers.depth.setTest(true);
-    state.buffers.depth.setMask(true);
-    state.buffers.color.setMask(true);
-
-    state.setPolygonOffset(false);
-
-    // _gl.finish();
-    currentRenderList = null;
-    currentRenderState = null;
-  };
-
-  /**
-   * 拆分渲染对象，解析几何体、以及几何体中的attribute变量
-   * 过滤渲染物体，计算渲染深度z
-   * @param object 对象
-   * @param camera 相机
-   * @param groupOrder 渲染级别
-   * @param sortObjects 排序
-   */
-  function projectObject(object, camera, groupOrder, sortObjects) {
-
-    if (object.visible === false) return;
-
-    // 检测当前物体是否在当前渲染通道
-		const visible = object.layers.test( camera.layers );
-
-    if (visible) {
-      if (object.isGroup) {
-        groupOrder = object.renderOrder;
-      } 
-			else if (object.isLOD) {
-        if (object.autoUpdate === true) object.update(camera);
-      } 
-			else if (object.isLight) {
-        currentRenderState.pushLight(object);
-        if (object.castShadow) {
-          currentRenderState.pushShadow(object);
-        }
-      } 
-			else if (object.isSprite) {
-        if (!object.frustumCulled || _frustum.intersectsSprite(object)) {
-          if (sortObjects) {
-            _vector3.setFromMatrixPosition(object.matrixWorld)
-            .applyMatrix4(_projScreenMatrix);
-          }
-
-          // 解析几何体，几何体属性分配缓冲区对象
-					const geometry = objects.update( object );
-					const material = object.material;
-
-          if (material.visible) {
-            currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
-          }
-        }
-      } 
-			else if (object.isImmediateRenderObject) {
-        if (sortObjects) {
-          _vector3.setFromMatrixPosition(object.matrixWorld)
-          .applyMatrix4(_projScreenMatrix);
-        }
-        currentRenderList.push(object, null, object.material, groupOrder, _vector3.z, null);
-      } 
-			else if (object.isMesh || object.isLine || object.isPoints) {
-        if (object.isSkinnedMesh) {
-          // update skeleton only once in a frame
-          if (object.skeleton.frame !== info.render.frame) {
-            object.skeleton.update();
-            object.skeleton.frame = info.render.frame;
-          }
-        }
-
-        // 检查物体是否在平截头体内
-        if (!object.frustumCulled || _frustum.intersectsObject(object)) {
-          // 计算模型投影到屏幕上的坐标
-          if (sortObjects) {
-            _vector3.setFromMatrixPosition(object.matrixWorld).applyMatrix4(_projScreenMatrix);
-          }
-
-          // 解析几何体，几何体属性分配缓冲区对象
-					const geometry = objects.update( object );
-					const material = object.material;
-
-          if (Array.isArray(material)) {
-
-						const groups = geometry.groups;
-
-						for ( let i = 0, l = groups.length; i < l; i ++ ) {
-
-							const group = groups[ i ];
-							const groupMaterial = material[ group.materialIndex ];
-
-              if (groupMaterial && groupMaterial.visible) {
-                currentRenderList.push(object, geometry, groupMaterial, groupOrder, _vector3.z, group);
-              }
             }
-          } else if (material.visible) {
-            currentRenderList.push(object, geometry, material, groupOrder, _vector3.z, null);
-          }
-        }
-      }
-    }
-
-		const children = object.children;
-
-		for ( let i = 0, l = children.length; i < l; i ++ ) {
-
-      projectObject(children[i], camera, groupOrder, sortObjects);
-    }
-
-  }
-
-  /**
-   * 渲染物体列表中的物体
-   * @param renderList 渲染列表
-   * @param scene 场景
-   * @param camera 相机
-   * @param overrideMaterial
-   */
-	function renderObjects( renderList, scene, camera ) {
-
-		const overrideMaterial = scene.isScene === true ? scene.overrideMaterial : null;
-
-		for ( let i = 0, l = renderList.length; i < l; i ++ ) {
-
-			const renderItem = renderList[ i ];
-
-			const object = renderItem.object;
-			const geometry = renderItem.geometry;
-			const material = overrideMaterial === null ? renderItem.material : overrideMaterial;
-			const group = renderItem.group;
-
-      if (camera.isArrayCamera) {
-        _currentArrayCamera = camera;
-
-				const cameras = camera.cameras;
-
-				for ( let j = 0, jl = cameras.length; j < jl; j ++ ) {
-
-					const camera2 = cameras[ j ];
-
-          if (object.layers.test(camera2.layers)) {
-            state.viewport(_currentViewport.copy(camera2.viewport));
-            currentRenderState.setupLights(camera2);
-            renderObject(object, scene, camera2, geometry, material, group);
-          }
 
         }
 
-      } else {
-        _currentArrayCamera = null;
-        renderObject(object, scene, camera, geometry, material, group);
-      }
-    }
-  }
+    };
 
-  /**
-   * 渲染物体
-   * @param object 渲染对象（mesh）
-   * @param scene 场景
-   * @param camera 相机
-   * @param geometry 几何体
-   * @param material 材质
-   * @param group
-   */
-  function renderObject(object, scene, camera, geometry, material, group) {
+    /**
+     * 拷贝帧缓冲到贴图
+     * @param position 复制开始位置
+     * @param texture 复制目标纹理
+     * @param level 水平
+     */
+    this.copyFramebufferToTexture = function (position, texture, level) {
 
-    // 渲染之前调用方法
-    object.onBeforeRender(_this, scene, camera, geometry, material, group);
+        if (level === undefined) level = 0;
 
-    // 获取渲染状态
-    currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
+        const levelScale = Math.pow(2, -level);
+        const width = Math.floor(texture.image.width * levelScale);
+        const height = Math.floor(texture.image.height * levelScale);
+        const glFormat = utils.convert(texture.format);
 
-    // 计算对象的模型视图矩阵
-    object.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, object.matrixWorld);
-    // 获取对象的法线矩阵
-    object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
+        textures.setTexture2D(texture, 0);
+        _gl.copyTexImage2D(_gl.TEXTURE_2D, level, glFormat, position.x, position.y, width, height, 0);
 
-    if (object.isImmediateRenderObject) {
+        state.unbindTexture();
+    };
 
-			const program = setProgram( camera, scene, material, object );
+    this.copyTextureToTexture = function (position, srcTexture, dstTexture, level) {
 
-      state.setMaterial(material);
+        if (level === undefined) level = 0;
 
-			bindingStates.reset();
+        const width = srcTexture.image.width;
+        const height = srcTexture.image.height;
+        const glFormat = utils.convert(dstTexture.format);
+        const glType = utils.convert(dstTexture.type);
 
-      renderObjectImmediate(object, program);
+        textures.setTexture2D(dstTexture, 0);
 
-    } else {
-      _this.renderBufferDirect(camera, scene, geometry, material, object, group);
-    }
+        // As another texture upload may have changed pixelStorei
+        // parameters, make sure they are correct for the dstTexture
+        _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, dstTexture.flipY);
+        _gl.pixelStorei(_gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, dstTexture.premultiplyAlpha);
+        _gl.pixelStorei(_gl.UNPACK_ALIGNMENT, dstTexture.unpackAlignment);
 
-    // 渲染之后调用方法
-    object.onAfterRender(_this, scene, camera, geometry, material, group);
-    currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
-  }
+        if (srcTexture.isDataTexture) {
 
-  /**
-   * 创建着色器，并创建unform变量连接
-   * @param material
-   * @param scene
-   * @param object
-   */
-  function initMaterial(material, scene, object) {
-
-		if ( scene.isScene !== true ) scene = _emptyScene; // scene could be a Mesh, Line, Points, ...
-
-    // 获取材质渲染属性
-		const materialProperties = properties.get( material );
-
-    // 获取管理灯光对象
-		const lights = currentRenderState.state.lights;
-		const shadowsArray = currentRenderState.state.shadowsArray;
-
-		const lightsStateVersion = lights.state.version;
-
-    // 获取材质参数
-		const parameters = programCache.getParameters( material, lights.state, shadowsArray, scene, _clipping.numPlanes, _clipping.numIntersection, object );
-		const programCacheKey = programCache.getProgramCacheKey( parameters );
-
-		let program = materialProperties.program;
-		let programChange = true;
-
-    if (program === undefined) {
-      // new material
-      material.addEventListener('dispose', onMaterialDispose);
-    } else if (program.cacheKey !== programCacheKey) {
-
-      // changed glsl or parameters
-      releaseMaterialProgramReference(material);
-
-    } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
-      materialProperties.lightsStateVersion = lightsStateVersion;
-      programChange = false;
-    } else if (parameters.shaderID !== undefined) {
-      // same glsl and uniform list
-      return;
-    } else {
-      // only rebuild uniform list
-      programChange = false;
-    }
-
-    // 获取shader变量、顶点着色器、片元着色器，创建着色器程序
-    if (programChange) {
-
-      program = programCache.acquireProgram(parameters, programCacheKey);
-
-      materialProperties.program = program;
-      materialProperties.uniforms = parameters.uniforms;
-			materialProperties.outputEncoding = parameters.outputEncoding;
-      material.program = program;
-
-    }
-
-    // 获着色器中的变量
-		const programAttributes = program.getAttributes();
-
-    if (material.morphTargets) {
-
-      material.numSupportedMorphTargets = 0;
-
-			for ( let i = 0; i < _this.maxMorphTargets; i ++ ) {
-
-        if (programAttributes['morphTarget' + i] >= 0) {
-
-          material.numSupportedMorphTargets++;
-
-        }
-
-      }
-
-    }
-
-    if (material.morphNormals) {
-
-      material.numSupportedMorphNormals = 0;
-
-			for ( let i = 0; i < _this.maxMorphNormals; i ++ ) {
-
-        if (programAttributes['morphNormal' + i] >= 0) {
-
-          material.numSupportedMorphNormals++;
-
-        }
-
-      }
-
-    }
-
-    // 获取材质统一变量
-		const uniforms = materialProperties.uniforms;
-
-    // 刨切参数
-    if (!material.isShaderMaterial && !material.isRawShaderMaterial || material.clipping === true) {
-      materialProperties.numClippingPlanes = _clipping.numPlanes;
-      materialProperties.numIntersection = _clipping.numIntersection;
-      // 设置刨切面的参数
-      uniforms.clippingPlanes = _clipping.uniform;
-    }
-
-		materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
-    materialProperties.fog = scene.fog;
-
-    // store the light setup it was created for
-    materialProperties.needsLights = materialNeedsLights(material);
-    materialProperties.lightsStateVersion = lightsStateVersion;
-
-    // 添加灯光属性
-    if (materialProperties.needsLights) {
-      // wire up the material to this renderer's lighting state
-
-      uniforms.ambientLightColor.value = lights.state.ambient;
-      uniforms.lightProbe.value = lights.state.probe;
-      uniforms.directionalLights.value = lights.state.directional;
-      uniforms.directionalLightShadows.value = lights.state.directionalShadow;
-      uniforms.spotLights.value = lights.state.spot;
-      uniforms.spotLightShadows.value = lights.state.spotShadow;
-      uniforms.rectAreaLights.value = lights.state.rectArea;
-      uniforms.pointLights.value = lights.state.point;
-      uniforms.pointLightShadows.value = lights.state.pointShadow;
-      uniforms.hemisphereLights.value = lights.state.hemi;
-
-      uniforms.directionalShadowMap.value = lights.state.directionalShadowMap;
-      uniforms.directionalShadowMatrix.value = lights.state.directionalShadowMatrix;
-      uniforms.spotShadowMap.value = lights.state.spotShadowMap;
-      uniforms.spotShadowMatrix.value = lights.state.spotShadowMatrix;
-      uniforms.pointShadowMap.value = lights.state.pointShadowMap;
-      uniforms.pointShadowMatrix.value = lights.state.pointShadowMatrix;
-      // TODO (abelnation): add area lights shadow info to uniforms
-    }
-
-    // 获取着色器程序中的uniform变量
-		const progUniforms = materialProperties.program.getUniforms(),
-      uniformsList = WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
-    materialProperties.uniformsList = uniformsList;
-  }
-
-  /**
-   * 创建着色器，并设置unform变量
-   * @param camera
-   * @param scene
-   * @param material
-   * @param object
-   * @returns {*}
-   */
-  function setProgram(camera, scene, material, object) {
-
-		if ( scene.isScene !== true ) scene = _emptyScene; // scene could be a Mesh, Line, Points, ...
-
-    textures.resetTextureUnits();
-
-		const fog = scene.fog;
-		const environment = material.isMeshStandardMaterial ? scene.environment : null;
-		const encoding = ( _currentRenderTarget === null ) ? _this.outputEncoding : _currentRenderTarget.texture.encoding;
-
-    // 材质对象属性
-		const materialProperties = properties.get( material );
-		const lights = currentRenderState.state.lights; // 获取灯光数据
-
-		if ( _clippingEnabled === true ) {
-
-			if ( _localClippingEnabled === true || camera !== _currentCamera ) {
-
-				const useCache =
-					camera === _currentCamera &&
-					material.id === _currentMaterialId;
-
-        // we might want to call this function with some ClippingGroup
-        // object instead of the material, once it becomes feasible
-        // (#8465, #8379)
-        _clipping.setState(material.clippingPlanes, material.clipIntersection, material.clipShadows, camera, materialProperties, useCache);
-      }
-    }
-
-    if (material.version === materialProperties.__version) {
-
-      if (materialProperties.program === undefined) {
-
-        initMaterial(material, scene, object);
-
-      } else if (material.fog && materialProperties.fog !== fog) {
-
-        initMaterial(material, scene, object);
-
-      } else if (materialProperties.environment !== environment) {
-
-        initMaterial(material, scene, object);
-
-      } else if (materialProperties.needsLights && (materialProperties.lightsStateVersion !== lights.state.version)) {
-
-        initMaterial(material, scene, object);
-
-      } else if (materialProperties.numClippingPlanes !== undefined &&
-        (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
-          materialProperties.numIntersection !== _clipping.numIntersection)) {
-
-        initMaterial(material, scene, object);
-
-			} else if ( materialProperties.outputEncoding !== encoding ) {
-
-        initMaterial(material, scene, object);
-
-      }
-    } else {
-      initMaterial(material, scene, object);
-      materialProperties.__version = material.version;
-    }
-
-		let refreshProgram = false;
-		let refreshMaterial = false;
-		let refreshLights = false;
-
-		const program = materialProperties.program,
-      p_uniforms = program.getUniforms(),
-      m_uniforms = materialProperties.uniforms;
-
-    if (state.useProgram(program.program)) {
-      refreshProgram = true;
-      refreshMaterial = true;
-      refreshLights = true;
-    }
-
-    if (material.id !== _currentMaterialId) {
-
-      _currentMaterialId = material.id;
-
-      refreshMaterial = true;
-
-    }
-
-    // 设置相机的投影矩阵、视图矩阵
-    if (refreshProgram || _currentCamera !== camera) {
-      p_uniforms.setValue(_gl, 'projectionMatrix', camera.projectionMatrix);
-
-			/*
-			 * 打开logarithmicDepthBuffer，那么要将相机的far值设置为大于等于3，
-			 * 如果far小于3，那么logDepthBufFC的值将大于1，导致最终渲染不出来。
-			 * 如果是自己写的着色器则不受影响，
-			 * three内置的材质会受到影响，因为内置的材质对logDepthBufFC做了相应的响应。
-			 */
-      if (capabilities.logarithmicDepthBuffer) {
-        p_uniforms.setValue(_gl, 'logDepthBufFC', 2.0 / (Math.log(camera.far + 1.0) / Math.LN2));
-      }
-
-      if (_currentCamera !== camera) {
-        _currentCamera = camera;
-
-        // lighting uniforms depend on the camera so enforce an update
-        // now, in case this material supports lights - or later, when
-        // the next material that does gets activated:
-
-        refreshMaterial = true;		// set to true on material change
-        refreshLights = true;		// remains set until update done
-
-      }
-
-      // load material specific uniforms
-      // (shader material also gets them for the sake of genericity)
-
-      if (material.isShaderMaterial ||
-        material.isMeshPhongMaterial ||
-        material.isMeshToonMaterial ||
-        material.isMeshStandardMaterial ||
-        material.envMap) {
-
-				const uCamPos = p_uniforms.map.cameraPosition;
-
-        if (uCamPos !== undefined) {
-          uCamPos.setValue(_gl, _vector3.setFromMatrixPosition(camera.matrixWorld));
-        }
-      }
-
-      if (material.isMeshPhongMaterial ||
-        material.isMeshToonMaterial ||
-        material.isMeshLambertMaterial ||
-        material.isMeshBasicMaterial ||
-        material.isMeshStandardMaterial ||
-        material.isShaderMaterial) {
-
-        p_uniforms.setValue(_gl, 'isOrthographic', camera.isOrthographicCamera === true);
-
-      }
-
-      if (material.isMeshPhongMaterial ||
-        material.isMeshToonMaterial ||
-        material.isMeshLambertMaterial ||
-        material.isMeshBasicMaterial ||
-        material.isMeshStandardMaterial ||
-        material.isShaderMaterial ||
-				material.isShadowMaterial ||
-        material.skinning) {
-
-        p_uniforms.setValue(_gl, 'viewMatrix', camera.matrixWorldInverse);
-
-      }
-
-    }
-
-    // skinning uniforms must be set even if material didn't change
-    // auto-setting of texture unit for bone texture must go before other textures
-    // otherwise textures used for skinning can take over texture units reserved for other material textures
-
-    if (material.skinning) {
-
-      p_uniforms.setOptional(_gl, object, 'bindMatrix');
-      p_uniforms.setOptional(_gl, object, 'bindMatrixInverse');
-
-			const skeleton = object.skeleton;
-
-      if (skeleton) {
-
-				const bones = skeleton.bones;
-
-        if (capabilities.floatVertexTextures) {
-
-          if (skeleton.boneTexture === undefined) {
-
-            // layout (1 matrix = 4 pixels)
-            //      RGBA RGBA RGBA RGBA (=> column1, column2, column3, column4)
-            //  with  8x8  pixel texture max   16 bones * 4 pixels =  (8 * 8)
-            //       16x16 pixel texture max   64 bones * 4 pixels = (16 * 16)
-            //       32x32 pixel texture max  256 bones * 4 pixels = (32 * 32)
-            //       64x64 pixel texture max 1024 bones * 4 pixels = (64 * 64)
-
-
-						let size = Math.sqrt( bones.length * 4 ); // 4 pixels needed for 1 matrix
-            size = MathUtils.ceilPowerOfTwo(size);
-            size = Math.max(size, 4);
-
-						const boneMatrices = new Float32Array( size * size * 4 ); // 4 floats per RGBA pixel
-            boneMatrices.set(skeleton.boneMatrices); // copy current values
-
-						const boneTexture = new DataTexture( boneMatrices, size, size, RGBAFormat, FloatType );
-
-            skeleton.boneMatrices = boneMatrices;
-            skeleton.boneTexture = boneTexture;
-            skeleton.boneTextureSize = size;
-
-          }
-
-          p_uniforms.setValue(_gl, 'boneTexture', skeleton.boneTexture, textures);
-          p_uniforms.setValue(_gl, 'boneTextureSize', skeleton.boneTextureSize);
+            _gl.texSubImage2D(_gl.TEXTURE_2D, level, position.x, position.y, width, height, glFormat, glType, srcTexture.image.data);
 
         } else {
 
-          p_uniforms.setOptional(_gl, skeleton, 'boneMatrices');
+            if (srcTexture.isCompressedTexture) {
+
+                _gl.compressedTexSubImage2D(_gl.TEXTURE_2D, level, position.x, position.y, srcTexture.mipmaps[0].width, srcTexture.mipmaps[0].height, glFormat, srcTexture.mipmaps[0].data);
+
+            } else {
+
+                _gl.texSubImage2D(_gl.TEXTURE_2D, level, position.x, position.y, glFormat, glType, srcTexture.image);
+
+            }
 
         }
 
-      }
+        // Generate mipmaps only when copying level 0
+        if (level === 0 && dstTexture.generateMipmaps) _gl.generateMipmap(_gl.TEXTURE_2D);
+
+        state.unbindTexture();
+
+    };
+
+    this.initTexture = function (texture) {
+
+        textures.setTexture2D(texture, 0);
+
+        state.unbindTexture();
+
+    };
+
+    if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
+
+        __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', {detail: this})); // eslint-disable-line no-undef
 
     }
-
-    if (refreshMaterial || materialProperties.receiveShadow !== object.receiveShadow) {
-
-      materialProperties.receiveShadow = object.receiveShadow;
-      p_uniforms.setValue(_gl, 'receiveShadow', object.receiveShadow);
-
-    }
-
-    // 刷新材质属性
-    if (refreshMaterial) {
-
-      p_uniforms.setValue(_gl, 'toneMappingExposure', _this.toneMappingExposure);
-
-      if (materialProperties.needsLights) {
-
-        // the current material requires lighting info
-
-        // note: all lighting uniforms are always set correctly
-        // they simply reference the renderer's state for their
-        // values
-        //
-        // use the current material's .needsUpdate flags to set
-        // the GL state when required
-
-        markUniformsLightsNeedsUpdate(m_uniforms, refreshLights);
-
-      }
-
-      // refresh uniforms common to several materials
-
-      if (fog && material.fog) {
-
-				materials.refreshFogUniforms( m_uniforms, fog );
-
-        }
-
-			materials.refreshMaterialUniforms( m_uniforms, material, environment, _pixelRatio, _height );
-
-      // RectAreaLight Texture
-      // TODO (mrdoob): Find a nicer implementation
-      if (m_uniforms.ltc_1 !== undefined) m_uniforms.ltc_1.value = UniformsLib.LTC_1;
-      if (m_uniforms.ltc_2 !== undefined) m_uniforms.ltc_2.value = UniformsLib.LTC_2;
-
-      WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
-
-    }
-
-    if (material.isShaderMaterial && material.uniformsNeedUpdate === true) {
-
-      WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
-      material.uniformsNeedUpdate = false;
-
-    }
-
-    if (material.isSpriteMaterial) {
-
-      p_uniforms.setValue(_gl, 'center', object.center);
-
-    }
-
-    // common matrices
-
-    p_uniforms.setValue(_gl, 'modelViewMatrix', object.modelViewMatrix);
-    p_uniforms.setValue(_gl, 'normalMatrix', object.normalMatrix);
-    p_uniforms.setValue(_gl, 'modelMatrix', object.matrixWorld);
-
-    return program;
-
-  }
-
-  // If uniforms are marked as clean, they don't need to be loaded to the GPU.
-
-  function markUniformsLightsNeedsUpdate(uniforms, value) {
-
-    uniforms.ambientLightColor.needsUpdate = value;
-    uniforms.lightProbe.needsUpdate = value;
-
-    uniforms.directionalLights.needsUpdate = value;
-    uniforms.directionalLightShadows.needsUpdate = value;
-    uniforms.pointLights.needsUpdate = value;
-    uniforms.pointLightShadows.needsUpdate = value;
-    uniforms.spotLights.needsUpdate = value;
-    uniforms.spotLightShadows.needsUpdate = value;
-    uniforms.rectAreaLights.needsUpdate = value;
-    uniforms.hemisphereLights.needsUpdate = value;
-
-  }
-
-  /**
-   *
-   * @param material
-   * @returns {*|boolean}
-   */
-  function materialNeedsLights(material) {
-
-    return material.isMeshLambertMaterial || material.isMeshToonMaterial || material.isMeshPhongMaterial ||
-      material.isMeshStandardMaterial || material.isShadowMaterial ||
-      (material.isShaderMaterial && material.lights === true);
-
-  }
-
-  //
-  this.setFramebuffer = function(value) {
-
-    if (_framebuffer !== value && _currentRenderTarget === null) _gl.bindFramebuffer(_gl.FRAMEBUFFER, value);
-
-    _framebuffer = value;
-
-  };
-
-  this.getActiveCubeFace = function() {
-
-    return _currentActiveCubeFace;
-
-  };
-
-  this.getActiveMipmapLevel = function() {
-
-    return _currentActiveMipmapLevel;
-
-  };
-
-  /**
-   * 获取当前渲染目标
-   * @returns {*}
-   */
-  this.getRenderTarget = function() {
-    return _currentRenderTarget;
-  };
-
-  /**
-   * 设置渲染目标
-   * @param renderTarget 渲染目标
-   * @param activeCubeFace
-   * @param activeMipMapLevel
-   */
-  this.setRenderTarget = function(renderTarget, activeCubeFace, activeMipmapLevel) {
-
-    // 设置当前渲染目标类
-    _currentRenderTarget = renderTarget;
-    _currentActiveCubeFace = activeCubeFace;
-    _currentActiveMipmapLevel = activeMipmapLevel;
-
-    // 设置颜色纹理、深度纹理、模板关联
-    if (renderTarget && properties.get(renderTarget).__webglFramebuffer === undefined) {
-      textures.setupRenderTarget(renderTarget);
-    }
-
-		let framebuffer = _framebuffer;
-		let isCube = false;
-
-    // 设置绘图区域
-    if (renderTarget) {
-
-			const __webglFramebuffer = properties.get( renderTarget ).__webglFramebuffer;
-
-      if (renderTarget.isWebGLCubeRenderTarget) {
-
-        framebuffer = __webglFramebuffer[activeCubeFace || 0];
-        isCube = true;
-      } else if (renderTarget.isWebGLMultisampleRenderTarget) {
-        framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
-      } else {
-        framebuffer = __webglFramebuffer;
-      }
-
-      // 设置绘图区域
-      _currentViewport.copy(renderTarget.viewport);
-      // 设置裁剪区域
-      _currentScissor.copy(renderTarget.scissor);
-      // 设置是否启用裁剪区域
-      _currentScissorTest = renderTarget.scissorTest;
-    } else {
-      _currentViewport.copy(_viewport).multiplyScalar(_pixelRatio).floor();
-      _currentScissor.copy(_scissor).multiplyScalar(_pixelRatio).floor();
-      _currentScissorTest = _scissorTest;
-    }
-
-    if (_currentFramebuffer !== framebuffer) {
-      _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
-      _currentFramebuffer = framebuffer;
-    }
-
-    state.viewport(_currentViewport);
-    state.scissor(_currentScissor);
-    state.setScissorTest(_currentScissorTest);
-
-    if (isCube) {
-
-			const textureProperties = properties.get( renderTarget.texture );
-      _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + (activeCubeFace || 0), textureProperties.__webglTexture, activeMipmapLevel || 0);
-    }
-  };
-
-  this.readRenderTargetPixels = function(renderTarget, x, y, width, height, buffer, activeCubeFaceIndex) {
-
-    if (!(renderTarget && renderTarget.isWebGLRenderTarget)) {
-
-      console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget.');
-      return;
-
-    }
-
-		let framebuffer = properties.get( renderTarget ).__webglFramebuffer;
-
-    if (renderTarget.isWebGLCubeRenderTarget && activeCubeFaceIndex !== undefined) {
-
-      framebuffer = framebuffer[activeCubeFaceIndex];
-
-    }
-
-    if (framebuffer) {
-
-			let restore = false;
-
-      if (framebuffer !== _currentFramebuffer) {
-
-        _gl.bindFramebuffer(_gl.FRAMEBUFFER, framebuffer);
-
-        restore = true;
-
-      }
-
-      try{
-
-				const texture = renderTarget.texture;
-				const textureFormat = texture.format;
-				const textureType = texture.type;
-
-        if (textureFormat !== RGBAFormat && utils.convert(textureFormat) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_FORMAT)) {
-
-          console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format.');
-          return;
-
-        }
-
-        if (textureType !== UnsignedByteType && utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // IE11, Edge and Chrome Mac < 52 (#9513)
-          !(textureType === FloatType && (capabilities.isWebGL2 || extensions.get('OES_texture_float') || extensions.get('WEBGL_color_buffer_float'))) && // Chrome Mac >= 52 and Firefox
-          !(textureType === HalfFloatType && (capabilities.isWebGL2 ? extensions.get('EXT_color_buffer_float') : extensions.get('EXT_color_buffer_half_float')))) {
-
-          console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.');
-          return;
-
-        }
-
-        if (_gl.checkFramebufferStatus(_gl.FRAMEBUFFER) === _gl.FRAMEBUFFER_COMPLETE) {
-
-          // the following if statement ensures valid read requests (no out-of-bounds pixels, see #8604)
-
-          if ((x >= 0 && x <= (renderTarget.width - width)) && (y >= 0 && y <= (renderTarget.height - height))) {
-
-            _gl.readPixels(x, y, width, height, utils.convert(textureFormat), utils.convert(textureType), buffer);
-
-          }
-
-        } else {
-
-          console.error('THREE.WebGLRenderer.readRenderTargetPixels: readPixels from renderTarget failed. Framebuffer not complete.');
-
-        }
-
-      }finally{
-
-        if (restore) {
-
-          _gl.bindFramebuffer(_gl.FRAMEBUFFER, _currentFramebuffer);
-
-        }
-
-      }
-
-    }
-
-  };
-
-  /**
-   * 拷贝帧缓冲到贴图
-   * @param position 复制开始位置
-   * @param texture 复制目标纹理
-   * @param level 水平
-   */
-  this.copyFramebufferToTexture = function(position, texture, level) {
-
-    if (level === undefined) level = 0;
-
-		const levelScale = Math.pow( 2, - level );
-		const width = Math.floor( texture.image.width * levelScale );
-		const height = Math.floor( texture.image.height * levelScale );
-		const glFormat = utils.convert( texture.format );
-
-    textures.setTexture2D(texture, 0);
-    _gl.copyTexImage2D(_gl.TEXTURE_2D, level, glFormat, position.x, position.y, width, height, 0);
-
-    state.unbindTexture();
-  };
-
-  this.copyTextureToTexture = function(position, srcTexture, dstTexture, level) {
-
-		if ( level === undefined ) level = 0;
-
-		const width = srcTexture.image.width;
-		const height = srcTexture.image.height;
-		const glFormat = utils.convert( dstTexture.format );
-		const glType = utils.convert( dstTexture.type );
-
-    textures.setTexture2D(dstTexture, 0);
-
-		// As another texture upload may have changed pixelStorei
-		// parameters, make sure they are correct for the dstTexture
-		_gl.pixelStorei( _gl.UNPACK_FLIP_Y_WEBGL, dstTexture.flipY );
-		_gl.pixelStorei( _gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, dstTexture.premultiplyAlpha );
-		_gl.pixelStorei( _gl.UNPACK_ALIGNMENT, dstTexture.unpackAlignment );
-
-    if (srcTexture.isDataTexture) {
-
-			_gl.texSubImage2D( _gl.TEXTURE_2D, level, position.x, position.y, width, height, glFormat, glType, srcTexture.image.data );
-
-    } else {
-
-			if ( srcTexture.isCompressedTexture ) {
-
-				_gl.compressedTexSubImage2D( _gl.TEXTURE_2D, level, position.x, position.y, srcTexture.mipmaps[ 0 ].width, srcTexture.mipmaps[ 0 ].height, glFormat, srcTexture.mipmaps[ 0 ].data );
-
-			} else {
-
-				_gl.texSubImage2D( _gl.TEXTURE_2D, level, position.x, position.y, glFormat, glType, srcTexture.image );
-
-			}
-
-    }
-
-		// Generate mipmaps only when copying level 0
-		if ( level === 0 && dstTexture.generateMipmaps ) _gl.generateMipmap( _gl.TEXTURE_2D );
-
-    state.unbindTexture();
-
-  };
-
-  this.initTexture = function(texture) {
-
-    textures.setTexture2D(texture, 0);
-
-    state.unbindTexture();
-
-  };
-
-  if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
-
-    __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', {detail: this})); // eslint-disable-line no-undef
-
-  }
 
 }
 

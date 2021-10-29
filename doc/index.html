@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>文档说明</title>
+	<link rel="stylesheet" href="../css/base.css">
+</head>
+<body>
+<div class="header">
+	<ul class="ul_1">
+		<li class="li_1"><a href="../index.html">首页</a></li>
+		<li class="li_1 li_heightLight">
+			<a href="#">文档说明</a>
+			<ul class="ul_2">
+				<li><a href="./postprocessing/index.html">后期处理</a></li>
+			</ul>
+		</li>
+		<li class="li_1"><a href="../examples/index.html">实例</a></li>
+		<li class="li_1"><a href="../doc/dat.GUI/gui.html">dat.GUI</a></li>
+	</ul>
+</div>
+<div class="content">
+	<div class="l-r-wrapper">
+		<div class="left">
+			<h4><a href="#CoordinateSystemConversion">坐标系转换</a></h4>
+			<h4><a href="#base">动画</a></h4>
+			<ul class="ul-1-num">
+				<li><a href="#KeyframeTrack">KeyframeTrack</a></li>
+			</ul>
+			<h4><a href="#performanceOptimization">性能优化</a></h4>
+			<h4><a href="../examples/index.html" target="_blank">实例</a></h4>
+			<h4><a href="./postprocessing/index.html">后期处理</a></h4>
+			<h4><a href="#Blur">模糊算法</a></h4>
+			<ul class="ul-1">
+				<li><a href="#GaussianBlur">GaussianBlur</a></li>
+				<li><a href="#MotionBlur">MotionBlur</a></li>
+				<li><a href="#GeneralBlur">GeneralBlur</a></li>
+				<li><a href="#RadialBlur">RadialBlur</a></li>
+			</ul>
+			<h4><a href="#GLTFformat">GLTF格式说明</a></h4>
+			<h4>连接</h4>
+			<ul class="ul-1">
+				<li><a href="../tween_doc/tween.html">tween.js基本用法</a></li>
+			</ul>
+		</div>
+		<div class="right">
+			<section id="CoordinateSystemConversion" class="section1">
+				<h4 class="title">坐标系转换</h4>
+				<section>
+					<h4>转换方法</h4>
+					<div class="content">
+						<ul class="ul-1-num">
+							<li>在外面套上一个盒子，旋转盒子</li>
+							<li>使用矩阵来变换，可以直接乘到mesh上</li>
+						</ul>
+					</div>
+				</section>
+			</section>
+			<section id="base" class="section1">
+				<h4 class="title">Animation system</h4>
+				<section>
+					<h4>基本概念</h4>
+					<div class="content">
+						<strong>Animation Clips(动画片段):</strong>
+						<p>每一个AnimationClip通常保存对象的某个活动的数据。</p>
+						<strong>Keyframe Tracks(关键帧轨道):</strong>
+						<p>在这样的Animation Clips中，每个动画属性的数据存储在单独的Keyframe Track中。</p>
+						<strong>Animation Mixer(动画混音器):</strong>
+						<p>存储的数据仅构成动画的基础 - 实际播放由AnimationMixer控制。</p>
+						<strong>Animation Actions(动画动作):</strong>
+						<p>AnimationMixer本身只有很少（通用）属性和方法，因为它可以由AnimationActions控制。
+							通过配置AnimationAction，您可以确定某个AnimationClip何时在其中一个混音器上播放，暂停或停止，
+							是否必须重复剪辑，是否应该使用淡入淡出或时间缩放，以及 其他的东西，比如交叉渐变或同步。</p>
+					</div>
+				</section>
+				<section id="KeyframeTrack">
+					<h4>KeyframeTrack</h4>
+					<p>关键帧轨道是定时的关键帧序列，由时间列表和相关值组成，用于对对象特定属性进行动画处理。</p>
+					<p>与JSON模型格式的动画层次结构相反，关键帧轨道不会把单个关键帧作为对象存储到“key”数组中（将每个关键帧的时间与值放在一个位置）。</p>
+					<p>取而代之的是，关键帧轨道总是有两个数组：times组按顺序存储此轨道上所有的关键帧的时间值、values数组对应的存储动画的相关值。</p>
+					<p>属于某个时间点的相关值不仅可以是简单的数值，也可以是矢量活四元数，因此相关值数组可能是时间数组长度的三或四倍。</p>
+					<p>对应于各种可能的动画值类型，KeyframeTrack有几个子类，它们继承了最多的属性和方法：</p>
+					<p>可以在AnimationClipCreator文件中找到有关如何使用各种KeyframeTrack手动创建AnimationClip的一些示例。</p>
+					<p>由于仅为存储在times数组中的离散时间点指定显式值，因此必须插值之间的所有值。</p>
+					<p>轨道的名称对于此轨道与动画节点的特定属性（由PropertyBinding完成）的连接很重要。</p>
+				</section>
+			</section>
+			<section id="performanceOptimization" class="section1">
+				<div class="title">性能优化</div>
+				<section>
+					<h4>能用BufferGeometry代替Geometry的尽量用BufferGeometry</h4>
+					<div class="content">
+						<p>BufferGeometry 会缓存网格模型，性能要高效点。</p>
+						<strong>网格模型生成原理</strong>
+						<ul class="ul-1-num">
+							<li>Geometry 生成的模型是这样的 （代码）-> (CUP 进行数据处理，转化成虚拟3D数据) -> (GPU 进行数据组装，转化成像素点，准备渲染) -> 显示器<br>第二次操作时重复走这些流程。
+							</li>
+							<li>BufferGeometry 生成模型流程 (代码) -> (CUP 进行数据处理，转化成虚拟3D数据) -> (GPU 进行数据组装，转化成像素点，准备渲染) ->
+								(丢入缓存区) -> 显示器<br>
+								第二次修改时，通过API直接修改缓存区数据，<br>
+								(代码) -> (CUP 进行数据处理，转化成虚拟3D数据) -> (修改缓存区数据) -> 显示器<br>
+								节约了GPU性能的运算性能。同时由于渲染时不用生成BufferGeometry，减少了内存的占用。
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section>
+					<h4>少在requestAnimationFrame()动画下面执行操作</h4>
+					<p>因为requestAnimationFrame（）每秒执行60次，你要是在里面加个for循环，你的代码就炸了。还要减少浮点计算，系统对浮点计算开支比较大，尽量写成小数乘法。</p>
+				</section>
+				<section>
+					<h4>使用clone()方法</h4>
+					<p>clone()返回一个新的几何体对象，返回新的几何体对象包含原来的几何体顶点数据、顶点索引数据、UV坐标数据。</p>
+					<div class="content">
+						<p>var box=new THREE.BoxGeometry(10,10,10);//创建一个立方体几何对象</p>
+						<p>var box2 = box.clone();//克隆几何体</p>
+						<p>box2.scale.set(2,2,2);//通过缩放调整大小</p>
+						<p>box2.scale.set(2,2,2);//通过缩放调整大小</p>
+					</div>
+				</section>
+				<section>
+					<h4>纹理图片尺寸一定得是2的幂次方，并尽可能的小</h4>
+					<p>使用 new THREE.TextureLoader().load( “water.jpg”
+						)加载纹理贴图时，如果不是2的幂次方，那么three.js就会自动转为最合适的2的幂次方尺寸，并在控制台打印出黄色警告。这个不是three.js设置的，是webgl限制的，是为了适合Mipmap（为了加快渲染速度和减少图像锯齿，贴图被处理成由一系列被预先计算和优化过的图片组成的文件）设置。
+						图片尽可能的小，合并，图片越大不代表越清晰，也会和纹理过滤等各属性有关。降低图片大小，减少内存占用。</p>
+				</section>
+				<section>
+					<h4>跳帧设置</h4>
+					<p>这样每到skip的时候跳过一次渲染执行，以减少渲染次数，在保证不影响用户体验的情况下，尽可能的多跳帧。</p>
+				</section>
+				<section>
+					<h4>对粒子群进行转换，而不是每个粒子</h4>
+					<p>
+						使用THREE.Sprite时，可以更好地控制单个粒子，但是当使用大量的粒子的时候，这个方法的性能会降低，并且会更复杂。此时可以使用THREE.SpriteCloud，可以轻松地管理大量的粒子，进行整体操作，此时对单个粒子的控制能力会减弱。</p>
+				</section>
+				<section>
+					<h4>模型的面越少越好，模型过于细致会增加渲染开销</h4>
+					<p>three场景导入模型时，可以在保证最低清晰度的时候，降低模型的复杂度，面越多，模型越大，加载所需开销就越大</p>
+				</section>
+			</section>
+			<section id="Blur" class="section1">
+				<div class="title">Blur</div>
+				<section id="GaussianBlur">
+					<h4>GaussianBlur</h4>
+					<p>高斯模糊是取加权平均值.</p>
+					<p>高斯模糊的算法实际上来说就是对图像进行卷积计算。在计算每一个片元的颜色时，将其左边四个点和右边四个点
+						的颜色进行一定比例的加和（横向高斯模糊），再对其上面四个点和下面四个点的颜色按照一定比例进行加和（纵向
+						高斯模糊）最终得到模糊的画面，这里值得注意的是我们在进行高斯模糊时最后所乘的系数和一定要控制在1，不然
+						就会出现图片过亮的状态.</p>
+					<div class="content">
+						<strong><a href="../examples/Blur/GaussianBlur.html"
+								   target="_blank">实例-GaussianBlur</a></strong>
+					</div>
+				</section>
+				<section id="MotionBlur">
+					<h4>MotionBlur</h4>
+					<p>动感模糊就是将一条直线的附近颜色取平均值</p>
+					<div class="content">
+						<strong><a href="../examples/Blur/MotionBlur.html" target="_blank">实例-MotionBlur</a></strong>
+					</div>
+				</section>
+				<section id="GeneralBlur">
+					<h4>GeneralBlur</h4>
+					<p>普通模糊就是取附近一定范围的颜色平均值</p>
+					<div class="content">
+						<strong><a href="../examples/Blur/GeneralBlur.html" target="_blank">实例-GeneralBlur</a></strong>
+					</div>
+				</section>
+				<section id="RadialBlur">
+					<h4>RadialBlur</h4>
+					<p>模糊沿着中心点向外一条直线上的点，采样值可以自己确定</p>
+					<div class="content">
+						<strong><a href="../examples/Blur/RadialBlur.html" target="_blank">实例-RadialBlur</a></strong>
+					</div>
+				</section>
+			</section>
+			<section id="GLTFformat" class="section1">
+				<div class="title">GLTF格式说明</div>
+				<section>
+					<strong>结构说明地址</strong>
+					<p><a href="https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#scenes"
+						  target="_blank">地址</a>
+					</p>
+				</section>
+			</section>
+		</div>
+	</div>
+</div>
+</body>
+</html>

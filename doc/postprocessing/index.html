@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>后期处理</title>
+	<link rel="stylesheet" href="../../css/base.css">
+</head>
+<body>
+<div class="header">
+	<ul class="ul_1">
+		<li class="li_1"><a href="../index.html">首页</a></li>
+		<li class="li_1">
+			<a href="../index.html">文档说明</a>
+			<ul class="ul_2">
+				<li class="li_heightLight"><a href="#">后期处理</a></li>
+			</ul>
+		</li>
+		<li class="li_1"><a href="../../examples/index.html">实例</a></li>
+		<li class="li_1"><a href="../../doc/dat.GUI/gui.html">dat.GUI</a></li>
+	</ul>
+</div>
+<div class="content">
+	<div class="l-r-wrapper">
+		<div class="left">
+			<h4><a href="#postprocessing">后期处理</a></h4>
+		</div>
+		<div class="right">
+			<section id="postprocessing" class="section1">
+				<div class="title">postprocessing</div>
+				<section>
+					<h4>渲染流程：</h4>
+					<ul class="ul-2-num">
+						<li>创建渲染合成器：
+							<p>composer = new EffectComposer(renderer);</p>
+							<p>顺序调用渲染通道处理。</p>
+						</li>
+						<li>创建renderPass渲染通道，添加到合成器中：
+							<p>var renderPass = new RenderPass(scene, camera);</p>
+							<p>composer.addPass(renderPass);</p>
+							<p>渲染场景到渲染目标以供后面通道使用，或者渲染到屏幕（与render一致）。</p>
+						</li>
+						<li>创建具体后期处理渲染通道添加到合成器中，例如：泛光渲染通道
+							<p>var bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth,
+								window.innerHeight), 1.5, 0.4,
+								0.85);</p>
+							<p>composer.addPass(bloomPass)</p>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+	</div>
+</div>
+</body>
+</html>

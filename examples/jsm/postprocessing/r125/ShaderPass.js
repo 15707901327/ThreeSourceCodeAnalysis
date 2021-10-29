@@ -1,8 +1,8 @@
 import {
 	ShaderMaterial,
 	UniformsUtils
-} from "../../../build/three.module.js";
-import { Pass } from "../postprocessing/Pass.js";
+} from "../../../../build/three_r125.module.js";
+import { Pass } from "./Pass.js";
 
 /**
  * shader材质通道

@@ -1,6 +1,6 @@
 import {
 	Color
-} from "../../../build/three.module.js";
+} from "../../../../build/three_r125.module.js";
 
 /**
  * Luminosity
