@@ -23,6 +23,10 @@
 	<div class="l-r-wrapper">
 		<div class="left">
 			<h4><a href="#postprocessing">后期处理</a></h4>
+			<h4><a href="#pass">渲染通道</a></h4>
+			<ul class="ul-1-num">
+				<li><a href="#UnrealBloomPass">UnrealBloomPass</a></li>
+			</ul>
 		</div>
 		<div class="right">
 			<section id="postprocessing" class="section1">
@@ -44,6 +48,27 @@
 								window.innerHeight), 1.5, 0.4,
 								0.85);</p>
 							<p>composer.addPass(bloomPass)</p>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section id="pass" class="section1">
+				<div class="title">渲染通道</div>
+				<section id="UnrealBloomPass">
+					<h4>泛光渲染通道:</h4>
+					<ul class="ul-2-num">
+						<strong>实现流程:</strong>
+						<li>提取亮区：
+							<p>使用LuminosityHighPassShader着色器提取亮区,存放到缓冲区以供使用。</p>
+						</li>
+						<li>高斯模糊，对亮度纹理的根据不同分辨率和高斯核进行模糊处理，得到多个模糊纹理：
+							<p>处理流程:</p>
+							<p>1)设置高斯核半径KERNEL_RADIUS;</p>
+							<p>2)降低目标纹理分辨率（用纹理缩放倍数表示）</p>
+							<p>3)对亮度纹理进行纵向、横向两次高斯模糊处理</p>
+							<p>注：<a href="http://15707901327.github.io/BASIS_WEBGL/doc/shader/basicAlgorithm.html#GaussianBlur" target="_blank">高斯模糊</a></p>
+						</li>
+						<li>合并纹理，将模糊纹理按照不同权重叠加到原始场景</p>
 						</li>
 					</ul>
 				</section>

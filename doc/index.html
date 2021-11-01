@@ -28,15 +28,6 @@
 				<li><a href="#KeyframeTrack">KeyframeTrack</a></li>
 			</ul>
 			<h4><a href="#performanceOptimization">性能优化</a></h4>
-			<h4><a href="../examples/index.html" target="_blank">实例</a></h4>
-			<h4><a href="./postprocessing/index.html">后期处理</a></h4>
-			<h4><a href="#Blur">模糊算法</a></h4>
-			<ul class="ul-1">
-				<li><a href="#GaussianBlur">GaussianBlur</a></li>
-				<li><a href="#MotionBlur">MotionBlur</a></li>
-				<li><a href="#GeneralBlur">GeneralBlur</a></li>
-				<li><a href="#RadialBlur">RadialBlur</a></li>
-			</ul>
 			<h4><a href="#GLTFformat">GLTF格式说明</a></h4>
 			<h4>连接</h4>
 			<ul class="ul-1">
@@ -138,42 +129,7 @@
 					<p>three场景导入模型时，可以在保证最低清晰度的时候，降低模型的复杂度，面越多，模型越大，加载所需开销就越大</p>
 				</section>
 			</section>
-			<section id="Blur" class="section1">
-				<div class="title">Blur</div>
-				<section id="GaussianBlur">
-					<h4>GaussianBlur</h4>
-					<p>高斯模糊是取加权平均值.</p>
-					<p>高斯模糊的算法实际上来说就是对图像进行卷积计算。在计算每一个片元的颜色时，将其左边四个点和右边四个点
-						的颜色进行一定比例的加和（横向高斯模糊），再对其上面四个点和下面四个点的颜色按照一定比例进行加和（纵向
-						高斯模糊）最终得到模糊的画面，这里值得注意的是我们在进行高斯模糊时最后所乘的系数和一定要控制在1，不然
-						就会出现图片过亮的状态.</p>
-					<div class="content">
-						<strong><a href="../examples/Blur/GaussianBlur.html"
-								   target="_blank">实例-GaussianBlur</a></strong>
-					</div>
-				</section>
-				<section id="MotionBlur">
-					<h4>MotionBlur</h4>
-					<p>动感模糊就是将一条直线的附近颜色取平均值</p>
-					<div class="content">
-						<strong><a href="../examples/Blur/MotionBlur.html" target="_blank">实例-MotionBlur</a></strong>
-					</div>
-				</section>
-				<section id="GeneralBlur">
-					<h4>GeneralBlur</h4>
-					<p>普通模糊就是取附近一定范围的颜色平均值</p>
-					<div class="content">
-						<strong><a href="../examples/Blur/GeneralBlur.html" target="_blank">实例-GeneralBlur</a></strong>
-					</div>
-				</section>
-				<section id="RadialBlur">
-					<h4>RadialBlur</h4>
-					<p>模糊沿着中心点向外一条直线上的点，采样值可以自己确定</p>
-					<div class="content">
-						<strong><a href="../examples/Blur/RadialBlur.html" target="_blank">实例-RadialBlur</a></strong>
-					</div>
-				</section>
-			</section>
+
 			<section id="GLTFformat" class="section1">
 				<div class="title">GLTF格式说明</div>
 				<section>

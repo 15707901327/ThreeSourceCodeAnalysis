@@ -47,6 +47,7 @@ var UnrealBloomPass = function (resolution, strength, radius, threshold) {
     var resx = Math.round(this.resolution.x / 2); // 渲染目标的宽度
     var resy = Math.round(this.resolution.y / 2); // 渲染目标的长度
 
+    // 提取亮区存放
     this.renderTargetBright = new WebGLRenderTarget(resx, resy, pars);
     this.renderTargetBright.texture.name = 'UnrealBloomPass.bright';
     this.renderTargetBright.texture.generateMipmaps = false;
@@ -69,14 +70,12 @@ var UnrealBloomPass = function (resolution, strength, radius, threshold) {
         resy = Math.round(resy / 2);
     }
 
-    // luminosity high pass material
-    if (LuminosityHighPassShader === undefined){
+    // luminosity high pass material 高亮通道材质
+    if (LuminosityHighPassShader === undefined) {
         console.error('THREE.UnrealBloomPass relies on LuminosityHighPassShader');
     }
-
     var highPassShader = LuminosityHighPassShader;
     this.highPassUniforms = UniformsUtils.clone(highPassShader.uniforms);
-
     this.highPassUniforms['luminosityThreshold'].value = threshold;
     this.highPassUniforms['smoothWidth'].value = 0.01;// 渐变的宽度
 
@@ -87,7 +86,7 @@ var UnrealBloomPass = function (resolution, strength, radius, threshold) {
         defines: {}
     });
 
-    // Gaussian Blur Materials
+    // Gaussian Blur Materials 高斯模糊材质集合
     this.separableBlurMaterials = [];
     var kernelSizeArray = [3, 5, 7, 9, 11];
     var resx = Math.round(this.resolution.x / 2);
@@ -148,7 +147,7 @@ var UnrealBloomPass = function (resolution, strength, radius, threshold) {
     this.oldClearAlpha = 1;
 
     // 使用正射相机显示场景
-    this.basic = new MeshBasicMaterial(); // 平面材质
+    this.basic = new MeshBasicMaterial();        // 平面材质
     this.fsQuad = new Pass.FullScreenQuad(null);
 };
 
@@ -209,8 +208,10 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
      */
     render: function (renderer, writeBuffer, readBuffer, deltaTime, maskActive) {
 
+        // 记录清空颜色透明度
         renderer.getClearColor(this._oldClearColor);
         this.oldClearAlpha = renderer.getClearAlpha();
+
         var oldAutoClear = renderer.autoClear;
         renderer.autoClear = false;
 
@@ -229,8 +230,7 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
             this.fsQuad.render(renderer);
         }
 
-        // 1. Extract Bright Areas
-
+        // 1. Extract Bright Areas 提取亮区
         this.highPassUniforms['tDiffuse'].value = readBuffer.texture;
         this.highPassUniforms['luminosityThreshold'].value = this.threshold;
         this.fsQuad.material = this.materialHighPassFilter;
@@ -239,7 +239,13 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
         renderer.clear();
         this.fsQuad.render(renderer);
 
-        // 2. Blur All the mips progressively
+        /**
+         * Blur All the mips progressively 高斯模糊
+         * 处理流程：
+         * 1. 设置高斯核半径KERNEL_RADIUS;
+         * 2. 降低目标纹理分辨率（用纹理缩放倍数表示）
+         * 3. 对亮度纹理进行纵向、横向两次高斯模糊处理
+         */
         var inputRenderTarget = this.renderTargetBright;
         for (var i = 0; i < this.nMips; i++) {
 
@@ -270,7 +276,7 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
         renderer.clear();
         this.fsQuad.render(renderer);
 
-        // Blend it additively over the input texture
+        // Blend it additively over the input texture 合并纹理
         this.fsQuad.material = this.materialCopy;
         this.copyUniforms['tDiffuse'].value = this.renderTargetsHorizontal[0].texture;
 
@@ -291,14 +297,14 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
     },
 
     /**
-     * 获取可分离的模糊材料
-     * @param kernelRadius
+     * 获取可分离的模糊材质
+     * @param kernelRadius {number} 内核半径
      * @returns {ShaderMaterial}
      */
     getSeperableBlurMaterial: function (kernelRadius) {
         return new ShaderMaterial({
             defines: {
-                'KERNEL_RADIUS': kernelRadius,// 半径
+                'KERNEL_RADIUS': kernelRadius, // 半径
                 'SIGMA': kernelRadius
             },
 
@@ -310,36 +316,40 @@ UnrealBloomPass.prototype = Object.assign(Object.create(Pass.prototype), {
 
             vertexShader:
                 'varying vec2 vUv;\n\
-        void main() {\n\
-          vUv = uv;\n\
-          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\
+                void main() {\n\
+                    vUv = uv;\n\
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\
                 }',
 
             fragmentShader:
                 '#include <common>\
-        varying vec2 vUv;\n\
-        uniform sampler2D colorTexture;\n\
-        uniform vec2 texSize;\
-        uniform vec2 direction;\
-        \
-        float gaussianPdf(in float x, in float sigma) {\
-          return 0.39894 * exp( -0.5 * x * x/( sigma * sigma))/sigma;\
-        }\
-        void main() {\n\
-          vec2 invSize = 1.0 / texSize;\
-          float fSigma = float(SIGMA);\
-          float weightSum = gaussianPdf(0.0, fSigma);\
-          vec3 diffuseSum = texture2D( colorTexture, vUv).rgb * weightSum;\
-          for( int i = 1; i < KERNEL_RADIUS; i ++ ) {\
-            float x = float(i);\
-            float w = gaussianPdf(x, fSigma);\
-            vec2 uvOffset = direction * invSize * x;\
-            vec3 sample1 = texture2D( colorTexture, vUv + uvOffset).rgb;\
-            vec3 sample2 = texture2D( colorTexture, vUv - uvOffset).rgb;\
-            diffuseSum += (sample1 + sample2) * w;\
-            weightSum += 2.0 * w;\
-          }\
-          gl_FragColor = vec4(diffuseSum/weightSum, 1.0);\n\
+                \
+                varying vec2 vUv;\n\
+                uniform sampler2D colorTexture;\n\
+                uniform vec2 texSize;\
+                uniform vec2 direction;\
+                \
+                float gaussianPdf(in float x, in float sigma) {\
+                    return 0.39894 * exp( -0.5 * x * x/( sigma * sigma))/sigma;\
+                }\
+                \
+                void main() {\n\
+                    vec2 invSize = 1.0 / texSize;\
+                    float fSigma = float(SIGMA);\
+                    float weightSum = gaussianPdf(0.0, fSigma);\
+                    vec3 diffuseSum = texture2D( colorTexture, vUv).rgb * weightSum;\
+                    \
+                    for( int i = 1; i < KERNEL_RADIUS; i ++ ) {\
+                        float x = float(i);\
+                        float w = gaussianPdf(x, fSigma);\
+                        vec2 uvOffset = direction * invSize * x;\
+                        vec3 sample1 = texture2D( colorTexture, vUv + uvOffset).rgb;\
+                        vec3 sample2 = texture2D( colorTexture, vUv - uvOffset).rgb;\
+                        diffuseSum += (sample1 + sample2) * w;\
+                        weightSum += 2.0 * w;\
+                    }\
+                    \
+                    gl_FragColor = vec4(diffuseSum/weightSum, 1.0);\n\
                 }'
         });
     },

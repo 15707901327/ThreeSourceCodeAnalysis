@@ -1,11 +1,3 @@
-/**
- * @author supereggbert / http://www.paulbrunt.co.uk/
- * @author mrdoob / http://mrdoob.com/
- * @author alteredq / http://alteredqualia.com/
- * @author szimek / https://github.com/szimek/
- * @author tschw
- */
-
 import {
     RGBAFormat,
     HalfFloatType,
@@ -18,10 +10,10 @@ import {MathUtils} from '../math/MathUtils.js';
 import {DataTexture} from '../textures/DataTexture.js';
 import {Frustum} from '../math/Frustum.js';
 import {Matrix4} from '../math/Matrix4.js';
-import {UniformsLib} from './shaders/UniformsLib.js';
 import {Vector2} from '../math/Vector2.js';
 import {Vector3} from '../math/Vector3.js';
 import {Vector4} from '../math/Vector4.js';
+import { Color } from '../math/Color.js';
 import {WebGLAnimation} from './webgl/WebGLAnimation.js';
 import {WebGLAttributes} from './webgl/WebGLAttributes.js';
 import {WebGLBackground} from './webgl/WebGLBackground.js';
@@ -29,6 +21,7 @@ import {WebGLBindingStates} from './webgl/WebGLBindingStates.js';
 import {WebGLBufferRenderer} from './webgl/WebGLBufferRenderer.js';
 import {WebGLCapabilities} from './webgl/WebGLCapabilities.js';
 import {WebGLClipping} from './webgl/WebGLClipping.js';
+import { WebGLCubeMaps } from './webgl/WebGLCubeMaps.js';
 import {WebGLExtensions} from './webgl/WebGLExtensions.js';
 import {WebGLGeometries} from './webgl/WebGLGeometries.js';
 import {WebGLIndexedBufferRenderer} from './webgl/WebGLIndexedBufferRenderer.js';
@@ -45,13 +38,21 @@ import {WebGLTextures} from './webgl/WebGLTextures.js';
 import {WebGLUniforms} from './webgl/WebGLUniforms.js';
 import {WebGLUtils} from './webgl/WebGLUtils.js';
 import {WebXRManager} from './webxr/WebXRManager.js';
-import {WebGLMaterials} from "./webgl/WebGLMaterials.js";
+import { WebGLMaterials } from './webgl/WebGLMaterials.js';
+
+function createCanvasElement() {
+
+	const canvas = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' );
+	canvas.style.display = 'block';
+	return canvas;
+
+}
 
 function WebGLRenderer(parameters) {
 
     parameters = parameters || {};
 
-    const _canvas = parameters.canvas !== undefined ? parameters.canvas : document.createElementNS('http://www.w3.org/1999/xhtml', 'canvas'),
+	const _canvas = parameters.canvas !== undefined ? parameters.canvas : createCanvasElement(),
         _context = parameters.context !== undefined ? parameters.context : null,
 
         _alpha = parameters.alpha !== undefined ? parameters.alpha : false,
@@ -65,6 +66,11 @@ function WebGLRenderer(parameters) {
 
     let currentRenderList = null; // 当前渲染列表
     let currentRenderState = null; // 当前渲染状态
+
+    // render() can be called from within a callback triggered by another render.
+    // We track this so that the nested render call gets its state isolated from the parent render call.
+
+    const renderStateStack = [];
 
     // public properties
 
@@ -131,7 +137,6 @@ function WebGLRenderer(parameters) {
     let _currentMaterialId = -1;
 
     let _currentCamera = null;
-    let _currentArrayCamera = null;
 
     const _currentViewport = new Vector4(); // 当前渲染相机
     const _currentScissor = new Vector4();
@@ -157,7 +162,6 @@ function WebGLRenderer(parameters) {
 
     // clipping
 
-    const _clipping = new WebGLClipping();
     let _clippingEnabled = false; // 启动裁剪
     let _localClippingEnabled = false; // 对象级裁剪
 
@@ -258,8 +262,8 @@ function WebGLRenderer(parameters) {
     }
 
     let extensions, capabilities, state, info;
-    let properties, textures, attributes, geometries, objects;
-    let programCache, materials, renderLists, renderStates;
+	let properties, textures, cubemaps, attributes, geometries, objects;
+	let programCache, materials, renderLists, renderStates, clipping;
 
     let background, morphtargets, bufferRenderer, indexedBufferRenderer;
 
@@ -276,22 +280,8 @@ function WebGLRenderer(parameters) {
         // 获取当前webgl的基础属性
         capabilities = new WebGLCapabilities(_gl, extensions, parameters);
 
-        if (capabilities.isWebGL2 === false) {
+		extensions.init( capabilities );
 
-            extensions.get('WEBGL_depth_texture');
-            extensions.get('OES_texture_float');
-            extensions.get('OES_texture_half_float');
-            extensions.get('OES_texture_half_float_linear');
-            extensions.get('OES_standard_derivatives');
-            extensions.get('OES_element_index_uint');
-            extensions.get('OES_vertex_array_object');
-            extensions.get('ANGLE_instanced_arrays');
-
-        }
-
-        extensions.get('OES_texture_float_linear');
-
-        // three常量与webgl常量转换
         utils = new WebGLUtils(_gl, extensions, capabilities);
 
         state = new WebGLState(_gl, extensions, capabilities);
@@ -303,20 +293,21 @@ function WebGLRenderer(parameters) {
         // 管理渲染物体属性
         properties = new WebGLProperties();
         textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
+		cubemaps = new WebGLCubeMaps( _this );
         attributes = new WebGLAttributes(_gl, capabilities);
         bindingStates = new WebGLBindingStates(_gl, extensions, attributes, capabilities);
         geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
         // 对象管理
         objects = new WebGLObjects(_gl, geometries, attributes, info);
         morphtargets = new WebGLMorphtargets(_gl);
+		clipping = new WebGLClipping( properties );
         // 着色器程序管理
-        programCache = new WebGLPrograms(_this, extensions, capabilities, bindingStates);
+		programCache = new WebGLPrograms( _this, cubemaps, extensions, capabilities, bindingStates, clipping );
         materials = new WebGLMaterials(properties);
-        renderLists = new WebGLRenderLists(); // 渲染列表
-        renderStates = new WebGLRenderStates(); // 渲染状态
-
+		renderLists = new WebGLRenderLists( properties ); // 渲染列表
+		renderStates = new WebGLRenderStates( extensions, capabilities );// 渲染状态
         // 渲染背景
-        background = new WebGLBackground(_this, state, objects, _premultipliedAlpha);
+		background = new WebGLBackground( _this, cubemaps, state, objects, _premultipliedAlpha );
 
         bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
         indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info, capabilities);
@@ -565,9 +556,17 @@ function WebGLRenderer(parameters) {
 
     // Clearing
 
-    this.getClearColor = function () {
+	this.getClearColor = function ( target ) {
 
-        return background.getClearColor();
+		if ( target === undefined ) {
+
+			console.warn( 'WebGLRenderer: .getClearColor() now requires a Color as an argument' );
+
+			target = new Color();
+
+		}
+
+		return target.copy( background.getClearColor() );
 
     };
 
@@ -636,6 +635,7 @@ function WebGLRenderer(parameters) {
         renderLists.dispose();
         renderStates.dispose();
         properties.dispose();
+		cubemaps.dispose();
         objects.dispose();
         bindingStates.dispose();
 
@@ -691,8 +691,6 @@ function WebGLRenderer(parameters) {
     function releaseMaterialProgramReference(material) {
 
         const programInfo = properties.get(material).program;
-
-        material.program = undefined;
 
         if (programInfo !== undefined) {
 
@@ -898,12 +896,14 @@ function WebGLRenderer(parameters) {
         }
 
         if (object.isInstancedMesh) {
-            renderer.renderInstances(geometry, drawStart, drawCount, object.count);
+
+			renderer.renderInstances( drawStart, drawCount, object.count );
+
         } else if (geometry.isInstancedBufferGeometry) {
 
             const instanceCount = Math.min(geometry.instanceCount, geometry._maxInstanceCount);
 
-            renderer.renderInstances(geometry, drawStart, drawCount, instanceCount);
+			renderer.renderInstances( drawStart, drawCount, instanceCount );
 
         } else {
             renderer.render(drawStart, drawCount);
@@ -916,11 +916,13 @@ function WebGLRenderer(parameters) {
 
     this.compile = function (scene, camera) {
 
-        currentRenderState = renderStates.get(scene, camera);
+		currentRenderState = renderStates.get( scene );
         currentRenderState.init();
 
-        scene.traverse(function (object) {
-            if (object.isLight) {
+		scene.traverseVisible( function ( object ) {
+
+			if ( object.isLight && object.layers.test( camera.layers ) ) {
+
                 currentRenderState.pushLight(object);
                 if (object.castShadow) {
                     currentRenderState.pushShadow(object);
@@ -928,13 +930,13 @@ function WebGLRenderer(parameters) {
             }
         });
 
-        currentRenderState.setupLights(camera);
+		currentRenderState.setupLights();
 
         const compiled = new WeakMap();
 
         scene.traverse(function (object) {
 
-            let material = object.material;
+			const material = object.material;
 
             if (material) {
 
@@ -942,7 +944,7 @@ function WebGLRenderer(parameters) {
 
                     for (let i = 0; i < material.length; i++) {
 
-                        let material2 = material[i];
+						const material2 = material[ i ];
 
                         if (compiled.has(material2) === false) {
 
@@ -1040,8 +1042,10 @@ function WebGLRenderer(parameters) {
         if (scene.isScene === true) scene.onBeforeRender(_this, scene, camera, renderTarget || _currentRenderTarget);
 
         // 获取当前渲染状态
-        currentRenderState = renderStates.get(scene, camera);
+		currentRenderState = renderStates.get( scene, renderStateStack.length );
         currentRenderState.init();
+
+		renderStateStack.push( currentRenderState );
 
         // 投影矩阵 * 视图矩阵
         _projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
@@ -1050,7 +1054,7 @@ function WebGLRenderer(parameters) {
         // 裁剪
         _localClippingEnabled = this.localClippingEnabled;
         // 获取是否启动裁剪
-        _clippingEnabled = _clipping.init(this.clippingPlanes, _localClippingEnabled, camera);
+		_clippingEnabled = clipping.init( this.clippingPlanes, _localClippingEnabled, camera );
 
         // 初始化渲染列表
         currentRenderList = renderLists.get(scene, camera);
@@ -1066,16 +1070,17 @@ function WebGLRenderer(parameters) {
         }
 
         // 阴影
-        if (_clippingEnabled === true) _clipping.beginShadows();
+		if ( _clippingEnabled === true ) clipping.beginShadows();
 
         const shadowsArray = currentRenderState.state.shadowsArray;
 
         shadowMap.render(shadowsArray, scene, camera);
 
         // 设置灯光
-        currentRenderState.setupLights(camera);
+		currentRenderState.setupLights();
+		currentRenderState.setupLightsView( camera );
 
-        if (_clippingEnabled === true) _clipping.endShadows();
+		if ( _clippingEnabled === true ) clipping.endShadows();
 
         // 重新设置渲染信息
         if (this.info.autoReset === true) this.info.reset();
@@ -1118,8 +1123,20 @@ function WebGLRenderer(parameters) {
         state.setPolygonOffset(false);
 
         // _gl.finish();
-        currentRenderList = null;
+
+		renderStateStack.pop();
+		if ( renderStateStack.length > 0 ) {
+
+			currentRenderState = renderStateStack[ renderStateStack.length - 1 ];
+
+		} else {
+
         currentRenderState = null;
+
+		}
+
+		currentRenderList = null;
+
     };
 
     /**
@@ -1238,7 +1255,6 @@ function WebGLRenderer(parameters) {
             const group = renderItem.group;
 
             if (camera.isArrayCamera) {
-                _currentArrayCamera = camera;
 
                 const cameras = camera.cameras;
 
@@ -1248,14 +1264,16 @@ function WebGLRenderer(parameters) {
 
                     if (object.layers.test(camera2.layers)) {
                         state.viewport(_currentViewport.copy(camera2.viewport));
-                        currentRenderState.setupLights(camera2);
+
+						currentRenderState.setupLightsView( camera2 );
+
                         renderObject(object, scene, camera2, geometry, material, group);
                     }
 
                 }
 
             } else {
-                _currentArrayCamera = null;
+
                 renderObject(object, scene, camera, geometry, material, group);
             }
         }
@@ -1276,11 +1294,8 @@ function WebGLRenderer(parameters) {
         object.onBeforeRender(_this, scene, camera, geometry, material, group);
 
         // 获取渲染状态
-        currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
-
-        // 计算对象的模型视图矩阵
         object.modelViewMatrix.multiplyMatrices(camera.matrixWorldInverse, object.matrixWorld);
-        // 获取对象的法线矩阵
+		// 计算对象的模型视图矩阵
         object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
 
         if (object.isImmediateRenderObject) {
@@ -1299,7 +1314,7 @@ function WebGLRenderer(parameters) {
 
         // 渲染之后调用方法
         object.onAfterRender(_this, scene, camera, geometry, material, group);
-        currentRenderState = renderStates.get(scene, _currentArrayCamera || camera);
+
     }
 
     /**
@@ -1321,12 +1336,17 @@ function WebGLRenderer(parameters) {
 
         const lightsStateVersion = lights.state.version;
 
-        // 获取材质参数
-        const parameters = programCache.getParameters(material, lights.state, shadowsArray, scene, _clipping.numPlanes, _clipping.numIntersection, object);
+		const parameters = programCache.getParameters( material, lights.state, shadowsArray, scene, object );
         const programCacheKey = programCache.getProgramCacheKey(parameters);
 
         let program = materialProperties.program;
         let programChange = true;
+
+		// always update environment and fog - changing these trigger an initMaterial call, but it's possible that the program doesn't change
+
+		materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
+		materialProperties.fog = scene.fog;
+		materialProperties.envMap = cubemaps.get( material.envMap || materialProperties.environment );
 
         if (program === undefined) {
             // new material
@@ -1337,7 +1357,7 @@ function WebGLRenderer(parameters) {
             releaseMaterialProgramReference(material);
 
         } else if (materialProperties.lightsStateVersion !== lightsStateVersion) {
-            materialProperties.lightsStateVersion = lightsStateVersion;
+
             programChange = false;
         } else if (parameters.shaderID !== undefined) {
             // same glsl and uniform list
@@ -1350,63 +1370,29 @@ function WebGLRenderer(parameters) {
         // 获取shader变量、顶点着色器、片元着色器，创建着色器程序
         if (programChange) {
 
+			parameters.uniforms = programCache.getUniforms( material );
+
+			material.onBeforeCompile( parameters, _this );
+
             program = programCache.acquireProgram(parameters, programCacheKey);
 
             materialProperties.program = program;
             materialProperties.uniforms = parameters.uniforms;
             materialProperties.outputEncoding = parameters.outputEncoding;
-            material.program = program;
-
-        }
-
-        // 获着色器中的变量
-        const programAttributes = program.getAttributes();
-
-        if (material.morphTargets) {
-
-            material.numSupportedMorphTargets = 0;
-
-            for (let i = 0; i < _this.maxMorphTargets; i++) {
-
-                if (programAttributes['morphTarget' + i] >= 0) {
-
-                    material.numSupportedMorphTargets++;
-
-                }
 
             }
 
-        }
-
-        if (material.morphNormals) {
-
-            material.numSupportedMorphNormals = 0;
-
-            for (let i = 0; i < _this.maxMorphNormals; i++) {
-
-                if (programAttributes['morphNormal' + i] >= 0) {
-
-                    material.numSupportedMorphNormals++;
-
-                }
-
-            }
-
-        }
-
-        // 获取材质统一变量
         const uniforms = materialProperties.uniforms;
 
-        // 刨切参数
-        if (!material.isShaderMaterial && !material.isRawShaderMaterial || material.clipping === true) {
-            materialProperties.numClippingPlanes = _clipping.numPlanes;
-            materialProperties.numIntersection = _clipping.numIntersection;
-            // 设置刨切面的参数
-            uniforms.clippingPlanes = _clipping.uniform;
-        }
+		if ( ! material.isShaderMaterial &&
+			! material.isRawShaderMaterial ||
+			material.clipping === true ) {
 
-        materialProperties.environment = material.isMeshStandardMaterial ? scene.environment : null;
-        materialProperties.fog = scene.fog;
+			materialProperties.numClippingPlanes = clipping.numPlanes;
+			materialProperties.numIntersection = clipping.numIntersection;
+			uniforms.clippingPlanes = clipping.uniform;
+
+        }
 
         // store the light setup it was created for
         materialProperties.needsLights = materialNeedsLights(material);
@@ -1423,6 +1409,8 @@ function WebGLRenderer(parameters) {
             uniforms.spotLights.value = lights.state.spot;
             uniforms.spotLightShadows.value = lights.state.spotShadow;
             uniforms.rectAreaLights.value = lights.state.rectArea;
+			uniforms.ltc_1.value = lights.state.rectAreaLTC1;
+			uniforms.ltc_2.value = lights.state.rectAreaLTC2;
             uniforms.pointLights.value = lights.state.point;
             uniforms.pointLightShadows.value = lights.state.pointShadow;
             uniforms.hemisphereLights.value = lights.state.hemi;
@@ -1437,8 +1425,9 @@ function WebGLRenderer(parameters) {
         }
 
         // 获取着色器程序中的uniform变量
-        const progUniforms = materialProperties.program.getUniforms(),
-            uniformsList = WebGLUniforms.seqWithValue(progUniforms.seq, uniforms);
+		const progUniforms = materialProperties.program.getUniforms();
+		const uniformsList = WebGLUniforms.seqWithValue( progUniforms.seq, uniforms );
+
         materialProperties.uniformsList = uniformsList;
     }
 
@@ -1459,6 +1448,7 @@ function WebGLRenderer(parameters) {
         const fog = scene.fog;
         const environment = material.isMeshStandardMaterial ? scene.environment : null;
         const encoding = (_currentRenderTarget === null) ? _this.outputEncoding : _currentRenderTarget.texture.encoding;
+		const envMap = cubemaps.get( material.envMap || environment );
 
         // 材质对象属性
         const materialProperties = properties.get(material);
@@ -1475,17 +1465,14 @@ function WebGLRenderer(parameters) {
                 // we might want to call this function with some ClippingGroup
                 // object instead of the material, once it becomes feasible
                 // (#8465, #8379)
-                _clipping.setState(material.clippingPlanes, material.clipIntersection, material.clipShadows, camera, materialProperties, useCache);
+				clipping.setState( material, camera, useCache );
+
             }
         }
 
         if (material.version === materialProperties.__version) {
 
-            if (materialProperties.program === undefined) {
-
-                initMaterial(material, scene, object);
-
-            } else if (material.fog && materialProperties.fog !== fog) {
+			if ( material.fog && materialProperties.fog !== fog ) {
 
                 initMaterial(material, scene, object);
 
@@ -1498,12 +1485,16 @@ function WebGLRenderer(parameters) {
                 initMaterial(material, scene, object);
 
             } else if (materialProperties.numClippingPlanes !== undefined &&
-                (materialProperties.numClippingPlanes !== _clipping.numPlanes ||
-                    materialProperties.numIntersection !== _clipping.numIntersection)) {
+				( materialProperties.numClippingPlanes !== clipping.numPlanes ||
+				materialProperties.numIntersection !== clipping.numIntersection ) ) {
 
                 initMaterial(material, scene, object);
 
             } else if (materialProperties.outputEncoding !== encoding) {
+
+				initMaterial( material, scene, object );
+
+			} else if ( materialProperties.envMap !== envMap ) {
 
                 initMaterial(material, scene, object);
 
@@ -1620,7 +1611,7 @@ function WebGLRenderer(parameters) {
 
                 if (capabilities.floatVertexTextures) {
 
-                    if (skeleton.boneTexture === undefined) {
+					if ( skeleton.boneTexture === null ) {
 
                         // layout (1 matrix = 4 pixels)
                         //      RGBA RGBA RGBA RGBA (=> column1, column2, column3, column4)
@@ -1693,12 +1684,7 @@ function WebGLRenderer(parameters) {
 
             }
 
-            materials.refreshMaterialUniforms(m_uniforms, material, environment, _pixelRatio, _height);
-
-            // RectAreaLight Texture
-            // TODO (mrdoob): Find a nicer implementation
-            if (m_uniforms.ltc_1 !== undefined) m_uniforms.ltc_1.value = UniformsLib.LTC_1;
-            if (m_uniforms.ltc_2 !== undefined) m_uniforms.ltc_2.value = UniformsLib.LTC_2;
+			materials.refreshMaterialUniforms( m_uniforms, material, _pixelRatio, _height );
 
             WebGLUniforms.upload(_gl, materialProperties.uniformsList, m_uniforms, textures);
 
@@ -1779,21 +1765,23 @@ function WebGLRenderer(parameters) {
 
     };
 
-    /**
-     * 获取当前渲染目标
-     * @returns {*}
-     */
+	this.getRenderList = function () {
+
+		return currentRenderList;
+
+	};
+
+	this.setRenderList = function ( renderList ) {
+
+		currentRenderList = renderList;
+
+	};
+
     this.getRenderTarget = function () {
         return _currentRenderTarget;
     };
 
-    /**
-     * 设置渲染目标
-     * @param renderTarget 渲染目标
-     * @param activeCubeFace
-     * @param activeMipMapLevel
-     */
-    this.setRenderTarget = function (renderTarget, activeCubeFace, activeMipmapLevel) {
+	this.setRenderTarget = function ( renderTarget, activeCubeFace = 0, activeMipmapLevel = 0 ) {
 
         // 设置当前渲染目标类
         _currentRenderTarget = renderTarget;
@@ -1815,7 +1803,7 @@ function WebGLRenderer(parameters) {
 
             if (renderTarget.isWebGLCubeRenderTarget) {
 
-                framebuffer = __webglFramebuffer[activeCubeFace || 0];
+				framebuffer = __webglFramebuffer[ activeCubeFace ];
                 isCube = true;
             } else if (renderTarget.isWebGLMultisampleRenderTarget) {
                 framebuffer = properties.get(renderTarget).__webglMultisampledFramebuffer;
@@ -1847,7 +1835,8 @@ function WebGLRenderer(parameters) {
         if (isCube) {
 
             const textureProperties = properties.get(renderTarget.texture);
-            _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + (activeCubeFace || 0), textureProperties.__webglTexture, activeMipmapLevel || 0);
+			_gl.framebufferTexture2D( _gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_CUBE_MAP_POSITIVE_X + activeCubeFace, textureProperties.__webglTexture, activeMipmapLevel );
+
         }
     };
 
@@ -1893,9 +1882,11 @@ function WebGLRenderer(parameters) {
 
                 }
 
+				const halfFloatSupportedByExt = ( textureType === HalfFloatType ) && ( extensions.has( 'EXT_color_buffer_half_float' ) || ( capabilities.isWebGL2 && extensions.has( 'EXT_color_buffer_float' ) ) );
+
                 if (textureType !== UnsignedByteType && utils.convert(textureType) !== _gl.getParameter(_gl.IMPLEMENTATION_COLOR_READ_TYPE) && // IE11, Edge and Chrome Mac < 52 (#9513)
-                    !(textureType === FloatType && (capabilities.isWebGL2 || extensions.get('OES_texture_float') || extensions.get('WEBGL_color_buffer_float'))) && // Chrome Mac >= 52 and Firefox
-                    !(textureType === HalfFloatType && (capabilities.isWebGL2 ? extensions.get('EXT_color_buffer_float') : extensions.get('EXT_color_buffer_half_float')))) {
+					! ( textureType === FloatType && ( capabilities.isWebGL2 || extensions.has( 'OES_texture_float' ) || extensions.has( 'WEBGL_color_buffer_float' ) ) ) && // Chrome Mac >= 52 and Firefox
+					! halfFloatSupportedByExt ) {
 
                     console.error('THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type.');
                     return;
@@ -1932,15 +1923,7 @@ function WebGLRenderer(parameters) {
 
     };
 
-    /**
-     * 拷贝帧缓冲到贴图
-     * @param position 复制开始位置
-     * @param texture 复制目标纹理
-     * @param level 水平
-     */
-    this.copyFramebufferToTexture = function (position, texture, level) {
-
-        if (level === undefined) level = 0;
+	this.copyFramebufferToTexture = function ( position, texture, level = 0 ) {
 
         const levelScale = Math.pow(2, -level);
         const width = Math.floor(texture.image.width * levelScale);
@@ -1951,11 +1934,10 @@ function WebGLRenderer(parameters) {
         _gl.copyTexImage2D(_gl.TEXTURE_2D, level, glFormat, position.x, position.y, width, height, 0);
 
         state.unbindTexture();
-    };
 
-    this.copyTextureToTexture = function (position, srcTexture, dstTexture, level) {
+	};
 
-        if (level === undefined) level = 0;
+	this.copyTextureToTexture = function ( position, srcTexture, dstTexture, level = 0 ) {
 
         const width = srcTexture.image.width;
         const height = srcTexture.image.height;
@@ -2002,6 +1984,13 @@ function WebGLRenderer(parameters) {
         state.unbindTexture();
 
     };
+
+	this.resetState = function () {
+
+		state.reset();
+		bindingStates.reset();
+
+	};
 
     if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
 

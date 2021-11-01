@@ -48,7 +48,7 @@
 	const params = {
 		exposure: 1,
 		bloomStrength: 1.5,
-		bloomThreshold: 0,
+		bloomThreshold: 0.3,
 		bloomRadius: 0
 	};
 
@@ -97,7 +97,7 @@
 		// 效果合成器
 		composer = new EffectComposer(renderer);
 		composer.addPass(renderScene);
-		// composer.addPass(bloomPass);
+		composer.addPass(bloomPass);
 
 		new GLTFLoader().load('../../models/gltf/PrimaryIonDrive.glb', function (gltf) {
 
