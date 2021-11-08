@@ -28,13 +28,11 @@
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.添加注释">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/doc/postprocessing/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/postprocessing/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/postprocessing/r125/UnrealBloomPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/postprocessing/r125/UnrealBloomPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/shaders/r125/LuminosityHighPassShader.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/shaders/r125/LuminosityHighPassShader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/postprocessing/r125/webgl_postprocessing_unreal_bloom.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/postprocessing/r125/webgl_postprocessing_unreal_bloom.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/left.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_unreal_bloom_selective.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_frag.glsl.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshbasic_frag.glsl.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,10 +78,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../FengMap_JSSDK_v30" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../three.js-r125/src/renderers/shaders/ShaderChunk/logdepthbuf_vertex.glsl.js" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -93,16 +92,16 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="ts.external.directory.path" value="D:\soft\WebStorm 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three.js-r125/src/renderers/WebGLRenderer.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three.js-r125/src/renderers/shaders/ShaderChunk/logdepthbuf_vertex.glsl.js" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\postprocessing\r125" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\doc\postprocessing" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\doc" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\controls\r125" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\shaders\r125" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\postprocessing\r125" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\css" />
@@ -481,14 +480,12 @@
       <workItem from="1635495094475" duration="1785000" />
       <workItem from="1635496922835" duration="1748000" />
       <workItem from="1635498901632" duration="11000" />
-      <workItem from="1635737317913" duration="12783000" />
-    </task>
-    <task id="LOCAL-00044" summary="1.火焰">
-      <created>1572688621137</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1572688621137</updated>
+      <workItem from="1635737317913" duration="14415000" />
+      <workItem from="1635760179806" duration="1300000" />
+      <workItem from="1635817365943" duration="3288000" />
+      <workItem from="1636353604219" duration="1183000" />
+      <workItem from="1636355126672" duration="1548000" />
+      <workItem from="1636356936780" duration="1064000" />
     </task>
     <task id="LOCAL-00045" summary="1.火焰">
       <created>1572753422487</created>
@@ -826,7 +823,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635488499410</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL-00093" summary="1. 添加注释">
+      <created>1635758597241</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1635758597241</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -871,7 +875,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1.修改源码注释" />
     <MESSAGE value="1.刨切实例" />
     <MESSAGE value="1.模板缓冲" />
     <MESSAGE value="1.dat.gui方法说明" />
@@ -896,7 +899,8 @@
     <MESSAGE value="1.修改版本号" />
     <MESSAGE value="1.添加实例" />
     <MESSAGE value="1. 修改结构" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. 修改结构" />
+    <MESSAGE value="1. 添加注释" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. 添加注释" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

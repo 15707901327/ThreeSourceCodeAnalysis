@@ -9,6 +9,7 @@ uniform float opacity;
 #endif
 
 #include <common>                 // 包含着色器公共模块(包含常用的数学工具函数以及一些常量定义等)
+#include <dithering_pars_fragment>
 #include <color_pars_fragment>    // 包含顶点颜色所需要的定义
 #include <uv_pars_fragment>       // 包含处理uv所需要的一些定义
 #include <uv2_pars_fragment>      // 包含处理uv2所需要的一些定义
@@ -18,6 +19,7 @@ uniform float opacity;
 #include <lightmap_pars_fragment> // 灯光图。 默认为空。 lightMap需要第二组UV。
 #include <envmap_common_pars_fragment>  // 包含环境贴图定义
 #include <envmap_pars_fragment>         // 包含环境贴图处理
+#include <cube_uv_reflection_fragment>
 #include <fog_pars_fragment>            // 包含雾化效果所需要的定义
 #include <specularmap_pars_fragment>    // Specular map
 #include <logdepthbuf_pars_fragment>    // 包含对数深度缓存定义
@@ -41,7 +43,8 @@ void main() {
 	// accumulation (baked indirect lighting only)
 	#ifdef USE_LIGHTMAP
 
-		reflectedLight.indirectDiffuse += texture2D( lightMap, vUv2 ).xyz * lightMapIntensity;
+		vec4 lightMapTexel= texture2D( lightMap, vUv2 );
+		reflectedLight.indirectDiffuse += lightMapTexelToLinear( lightMapTexel ).rgb * lightMapIntensity;
 
 	#else
 
@@ -60,10 +63,11 @@ void main() {
 
 	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
 
-	#include <premultiplied_alpha_fragment> // 是否预乘alpha（透明度）值
 	#include <tonemapping_fragment>         // 映射
 	#include <encodings_fragment>           // 颜色赋值
 	#include <fog_fragment>                 // 雾化效果处理
+	#include <premultiplied_alpha_fragment> // 是否预乘alpha（透明度）值
+	#include <dithering_fragment>
 
 }
 `;
