@@ -101,8 +101,8 @@ import { pointsData } from './gradient/v6/v6-3/data.js';
 			this.camera.lookAt(-30, 20, 0);
 		},
 		initLight: function() {
-			var ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-			this.scene.add(ambientLight);
+			// var ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+			// this.scene.add(ambientLight);
 
 			// var light = new THREE.DirectionalLight(0xffffff, 1.0);
 			// light.position.set(0, 100.0, 0);
@@ -112,12 +112,12 @@ import { pointsData } from './gradient/v6/v6-3/data.js';
 			// var helper = new THREE.DirectionalLightHelper( light, 4 );
 			// this.scene.add( helper );
 
-			var SpotLight = new THREE.SpotLight(0xffffff, .6);
-			SpotLight.castShadow = true;
-			SpotLight.position.set(0, 10, 0);
-			SpotLight.shadow.mapSize.width = 4096;
-			SpotLight.shadow.mapSize.height = 4096;
-			this.scene.add(SpotLight);
+			// var SpotLight = new THREE.SpotLight(0xffffff, .6);
+			// SpotLight.castShadow = true;
+			// SpotLight.position.set(0, 10, 0);
+			// SpotLight.shadow.mapSize.width = 4096;
+			// SpotLight.shadow.mapSize.height = 4096;
+			// this.scene.add(SpotLight);
 		},
 		initOrbitControls: function() {
 			this.orbitControls = new THREE.OrbitControls(this.camera, this.webGLRenderer.domElement);
@@ -157,7 +157,7 @@ import { pointsData } from './gradient/v6/v6-3/data.js';
 
 			const _this = this;
 
-			new GLTFLoader().load('models/gltf/SOHO.glb', function (gltf) {
+			new GLTFLoader().load('models/gltf/cube-material-color.glb', function (gltf) {
 				var model = gltf.scene;
 				_this.scene.add(model);
 			});

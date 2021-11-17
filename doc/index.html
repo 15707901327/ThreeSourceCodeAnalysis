@@ -29,6 +29,10 @@
 			</ul>
 			<h4><a href="#performanceOptimization">性能优化</a></h4>
 			<h4><a href="#GLTFformat">GLTF格式说明</a></h4>
+			<h4><a href="#effect">效果</a></h4>
+			<ul class="ul-1">
+				<li><a href="#effect_water">水波纹效果</a></li>
+			</ul>
 			<h4>连接</h4>
 			<ul class="ul-1">
 				<li><a href="../tween_doc/tween.html">tween.js基本用法</a></li>
@@ -129,7 +133,32 @@
 					<p>three场景导入模型时，可以在保证最低清晰度的时候，降低模型的复杂度，面越多，模型越大，加载所需开销就越大</p>
 				</section>
 			</section>
-
+			<section id="effect" class="section1">
+				<div class="title">效果</div>
+				<section id="effect_water">
+					<h4>水波纹效果</h4>
+					<div class="content">
+						<strong>水面镜实现原理：</strong>
+						<p>
+							倒影是在自然界中非常常见的一种现象，例如水面倒影、镜子。我们都知道，眼睛之所以能够看到某个物体，
+							是因为物体本身能够发光或者物体能够反射其它的物体所发的光，这些光进入到我们的眼里就形成了该物体影像。
+							倒影形成也是一种光学的现象，其原理是物体发射或者反射的光经过倒影平面的反射后进入到我们的眼里，
+							我们所看到的在倒影平面形成的虚像就是该物体的倒影。</p>
+						<strong>实例思想：</strong>
+						<p>构建一个虚拟的相机对需要倒影的物体进行渲染，然后将渲染的结果当作纹理映射到倒影平面上，这样就可以实现倒影的效果了</p>
+						<strong>实例实现：</strong>
+						<p>从镜面上看到反射的物像是因为物体表面的光线经镜面反射到达了人眼（camera）。这可以想象为镜面的另一端也有一个相机，称为mirror
+							camera，这两个camera的连线垂直于反射面（平行于法向量）。要得到反射面上的倒影，就是要找到这个mirror
+							camera的位置，然后从它的视角渲染一幅图，将这个图作为texture贴到反射面上即可。</p>
+						<ul class="ul-1-num">
+							<li>第一步：构建虚拟的相机</li>
+							<li>第二步：将虚拟相机的渲染结果映射到投影面上</li>
+						</ul>
+						<p><a href="../examples/water/r125/webgl_shaders_ocean.html"
+							  target="_blank">webgl_shaders_ocean</a></p>
+					</div>
+				</section>
+			</section>
 			<section id="GLTFformat" class="section1">
 				<div class="title">GLTF格式说明</div>
 				<section>
