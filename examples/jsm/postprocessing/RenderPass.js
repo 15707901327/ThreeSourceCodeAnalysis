@@ -3,7 +3,7 @@
  */
 
 
-import {Pass} from "../postprocessing/Pass.js";
+import {Pass} from "./Pass.js";
 
 /**
  * 渲染通道：它只会渲染场景，但不会把结果输出到场景上

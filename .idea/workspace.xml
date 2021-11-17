@@ -27,18 +27,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.添加注释">
-      <change afterPath="$PROJECT_DIR$/examples/jsm/controls/r115/OrbitControls.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/jsm/objects/r115/Sky.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/jsm/objects/r115/Water.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/jsm/objects/r125/Sky.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/jsm/objects/r125/Water.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/water/r115/webgl_shaders_ocean.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/water/r125/webgl_shaders_ocean.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/postprocessing/r125/webgl_postprocessing_unreal_bloom_selective.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/dat.gui.module.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/gunzip.module.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/inflate.module.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/stats.module.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/tween.module.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/EffectComposer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/MaskPass.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/Pass.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/RenderPass.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/ShaderPass.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/UnrealBloomPass.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/shaders/CopyShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/shaders/LuminosityHighPassShader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/main.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/PrimaryIonDrive.glb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/postprocessing/webgl_postprocessing_unreal_bloom.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/water/webgl_shaders_ocean.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/water/webgl_shaders_ocean.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/objects/Mesh.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects/r125/Mesh.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r115.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/build/three.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r115.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/build/three.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/three_r115.module.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/build/three.module.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/jsm/controls/r115/OrbitControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/examples/jsm/controls/OrbitControls.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/jsm/loaders/GLTFLoader_r115.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/examples/jsm/loaders/GLTFLoader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +100,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/examples/models/gltf" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/r115/examples/models/gltf" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -98,23 +110,23 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="ts.external.directory.path" value="D:\soft\WebStorm 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three.js-r125/examples/webgl_shaders_ocean.html" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three.js_r115/examples/webgl_postprocessing_unreal_bloom.html" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\models\gltf" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\objects\r115" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\controls\r115" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\water\r115" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\src\objects\r125" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\models\gltf" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\r115\shaders" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\r115\postprocessing" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\r115\loaders" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\jsm" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\postprocessing" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\build" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\objects\r125" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\water\r125" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\css" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\doc" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis" />
     </key>
   </component>
   <component name="RunManager">
@@ -505,13 +517,8 @@
       <workItem from="1637055640654" duration="1132000" />
       <workItem from="1637056799720" duration="113000" />
       <workItem from="1637057584571" duration="341000" />
-    </task>
-    <task id="LOCAL-00046" summary="1.火焰粒子">
-      <created>1572850352238</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1572850352238</updated>
+      <workItem from="1637113313400" duration="191000" />
+      <workItem from="1637113512042" duration="2862000" />
     </task>
     <task id="LOCAL-00047" summary="1.r110">
       <created>1572855746989</created>
@@ -849,7 +856,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636358303746</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="1. 水波纹">
+      <created>1637113465445</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1637113465445</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -894,7 +908,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1.模板缓冲" />
     <MESSAGE value="1.dat.gui方法说明" />
     <MESSAGE value="1.材质实例汽车" />
     <MESSAGE value="1.实例结构" />
@@ -919,7 +932,8 @@
     <MESSAGE value="1. 修改结构" />
     <MESSAGE value="1. 添加注释" />
     <MESSAGE value="1. 修改meshbasic" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. 修改meshbasic" />
+    <MESSAGE value="1. 水波纹" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. 水波纹" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -935,12 +949,12 @@
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/build/three_r115.module.js</url>
+          <url>file://$PROJECT_DIR$/r115/build/three.module.js</url>
           <line>14804</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/build/three_r115.module.js</url>
+          <url>file://$PROJECT_DIR$/r115/build/three.module.js</url>
           <line>14944</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
