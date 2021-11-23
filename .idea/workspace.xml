@@ -27,30 +27,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.添加注释">
-      <change afterPath="$PROJECT_DIR$/examples/postprocessing/r125/webgl_postprocessing_unreal_bloom_selective.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/dat.gui.module.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/gunzip.module.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/inflate.module.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/stats.module.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/libs/tween.module.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/EffectComposer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/MaskPass.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/Pass.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/RenderPass.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/ShaderPass.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/postprocessing/UnrealBloomPass.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/models/gltf/ce_night(1).glb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/models/gltf/cube-material-color.glb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/loaders/RGBELoader.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/r115/examples/jsm/shaders/CopyShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/shaders/LuminosityHighPassShader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/main.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/PrimaryIonDrive.glb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r115/examples/postprocessing/webgl_postprocessing_unreal_bloom.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/jsm/utils/RoughnessMipmapper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/loader/test_loader_gltf.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/loader/webgl_loader_gltf.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/DamagedHelmet/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/DamagedHelmet/glTF/Default_AO.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/DamagedHelmet/glTF/Default_albedo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/DamagedHelmet/glTF/Default_emissive.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/DamagedHelmet/glTF/Default_metalRoughness.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/models/gltf/DamagedHelmet/glTF/Default_normal.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/r115/examples/textures/equirectangular/royal_esplanade_1k.hdr" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/three_r115.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/build/three.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/three_r115.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/build/three.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/three_r115.module.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/build/three.module.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/controls/r115/OrbitControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/examples/jsm/controls/OrbitControls.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/loaders/GLTFLoader_r115.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/examples/jsm/loaders/GLTFLoader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/jsm/postprocessing/RenderPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/js/libs/JQuery/jquery-1.7.1.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/JQuery/jquery-1.7.1.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/js/libs/JQuery/jquery-3.4.1.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/JQuery/jquery-3.4.1.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/js/libs/JQuery/jquery-3.4.1.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/libs/JQuery/jquery-3.4.1.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/tonemapping/webgl_tonemapping.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/tonemapping/webgl_tonemapping.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +97,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/r115/examples/models/gltf" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../FengMap_JSSDK_v30" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -110,16 +107,16 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="ts.external.directory.path" value="D:\soft\WebStorm 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three.js_r115/examples/webgl_postprocessing_unreal_bloom.html" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three.js_r115/examples/jsm/loaders/RGBELoader.js" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\models\gltf" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\r115\shaders" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\r115\postprocessing" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\r115\loaders" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\loader" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\textures\equirectangular" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\jsm\utils" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\jsm\loaders" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\jsm" />
@@ -518,14 +515,23 @@
       <workItem from="1637056799720" duration="113000" />
       <workItem from="1637057584571" duration="341000" />
       <workItem from="1637113313400" duration="191000" />
-      <workItem from="1637113512042" duration="2862000" />
-    </task>
-    <task id="LOCAL-00047" summary="1.r110">
-      <created>1572855746989</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1572855746989</updated>
+      <workItem from="1637113512042" duration="4628000" />
+      <workItem from="1637118898489" duration="3798000" />
+      <workItem from="1637130851165" duration="28000" />
+      <workItem from="1637131865359" duration="29000" />
+      <workItem from="1637204753884" duration="256000" />
+      <workItem from="1637216528473" duration="111000" />
+      <workItem from="1637220290218" duration="208000" />
+      <workItem from="1637222225872" duration="596000" />
+      <workItem from="1637223514627" duration="1702000" />
+      <workItem from="1637225321128" duration="323000" />
+      <workItem from="1637288628565" duration="247000" />
+      <workItem from="1637289040591" duration="205000" />
+      <workItem from="1637559721839" duration="1489000" />
+      <workItem from="1637570157832" duration="2937000" />
+      <workItem from="1637573234932" duration="1827000" />
+      <workItem from="1637575159262" duration="595000" />
+      <workItem from="1637631223576" duration="411000" />
     </task>
     <task id="LOCAL-00048" summary="1.修改测试obj模型显示">
       <created>1572918643830</created>
@@ -863,7 +869,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637113465445</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="1. 高亮">
+      <created>1637116565897</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1637116565897</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -908,7 +921,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1.dat.gui方法说明" />
     <MESSAGE value="1.材质实例汽车" />
     <MESSAGE value="1.实例结构" />
     <MESSAGE value="1.材质实例" />
@@ -933,7 +945,8 @@
     <MESSAGE value="1. 添加注释" />
     <MESSAGE value="1. 修改meshbasic" />
     <MESSAGE value="1. 水波纹" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. 水波纹" />
+    <MESSAGE value="1. 高亮" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. 高亮" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
