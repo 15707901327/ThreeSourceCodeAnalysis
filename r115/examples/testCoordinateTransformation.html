@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>three.js webgl - glTF loader</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link type="text/css" rel="stylesheet" href="main.css">
+</head>
+
+<body>
+<div id="info">
+	<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - GLTFLoader<br/>
+	Battle Damaged Sci-fi Helmet by
+	<a href="https://sketchfab.com/theblueturtle_" target="_blank" rel="noopener">theblueturtle_</a><br/>
+	<a href="https://hdrihaven.com/hdri/?h=royal_esplanade" target="_blank" rel="noopener">Royal Esplanade</a> by <a
+		href="https://hdrihaven.com/" target="_blank" rel="noopener">HDRI Haven</a>
+</div>
+
+<script type="module">
+
+	import * as THREE from '../build/three.module.js';
+
+	import {OrbitControls} from './jsm/controls/OrbitControls.js';
+	import {GLTFLoader} from './jsm/loaders/GLTFLoader.js';
+	import {RGBELoader} from './jsm/loaders/RGBELoader.js';
+	import {RoughnessMipmapper} from './jsm/utils/RoughnessMipmapper.js';
+
+	var container, controls;
+	var camera, scene, renderer;
+
+	init();
+	render();
+
+	function init() {
+
+		container = document.createElement('div');
+		document.body.appendChild(container);
+
+		camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000);
+		camera.position.set(-1, 289.0106707653799, 413.97331818689344);
+
+		scene = new THREE.Scene();
+
+		const axesHelper = new THREE.AxesHelper(1000);
+		scene.add(axesHelper);
+
+		new RGBELoader()
+				.setDataType(THREE.UnsignedByteType)
+				.setPath('textures/equirectangular/')
+				.load('royal_esplanade_1k.hdr', function (texture) {
+
+					var envMap = pmremGenerator.fromEquirectangular(texture).texture;
+
+					// scene.background = envMap;
+					scene.environment = envMap;
+
+					texture.dispose();
+					pmremGenerator.dispose();
+
+					render();
+
+					// model
+
+					// use of RoughnessMipmapper is optional
+					var roughnessMipmapper = new RoughnessMipmapper(renderer);
+
+					var loader = new GLTFLoader().setPath('models/gltf/DamagedHelmet/glTF/');
+					loader.load('DamagedHelmet.gltf', function (gltf) {
+
+						gltf.scene.traverse(function (child) {
+
+							if (child.isMesh) {
+								roughnessMipmapper.generateMipmaps(child.material);
+							}
+
+						});
+
+						scene.add(gltf.scene);
+
+						roughnessMipmapper.dispose();
+
+						render();
+
+					});
+
+				});
+
+		renderer = new THREE.WebGLRenderer({antialias: true});
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.toneMapping = THREE.ACESFilmicToneMapping;
+		renderer.toneMappingExposure = 0.8;
+		renderer.outputEncoding = THREE.sRGBEncoding;
+		container.appendChild(renderer.domElement);
+
+		var pmremGenerator = new THREE.PMREMGenerator(renderer);
+		pmremGenerator.compileEquirectangularShader();
+
+		controls = new OrbitControls(camera, renderer.domElement);
+		controls.addEventListener('change', render); // use if there is no animation loop
+		controls.minPolarAngle = 0;
+		controls.maxPolarAngle = Math.PI;
+		controls.minDistance = 0.411;
+		controls.maxDistance = 909411;
+		controls.maxZoom = 1889.76;
+		controls.minZoom = 0.0016;
+		controls.target.set(0, 50, 0);
+		controls.update();
+
+		window.addEventListener('resize', onWindowResize, false);
+
+	}
+
+	function onWindowResize() {
+
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize(window.innerWidth, window.innerHeight);
+
+		render();
+
+	}
+
+	//
+
+	function render() {
+
+		renderer.render(scene, camera);
+
+	}
+
+	function transformationCoordinate(x, y, z) {
+
+		let width = window.innerWidth;
+		let height = window.innerHeight;
+
+		let vec3 = new THREE.Vector3(x, y, z);
+		vec3.project(camera);
+
+		console.log(vec3);
+		console.log(width / 2 * vec3.x + width / 2, -height / 2 * vec3.y + height / 2)
+	}
+
+	window.transformationCoordinate = transformationCoordinate;
+
+
+</script>
+
+</body>
+</html>
