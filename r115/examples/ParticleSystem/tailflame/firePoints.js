@@ -51,14 +51,14 @@ function FirePoints(options) {
 
     options = options || {};
 
-    this.size = options.size !== undefined ? options.size : 3; // 粒子大小
+    this.size = options.size !== undefined ? options.size : 1.9; // 粒子大小
     this.direction = options.direction !== undefined ? options.direction : new THREE.Vector3(0, -0.2, -1); // 方向
     this.acceleration = options.acceleration !== undefined ? options.acceleration : 0.1;                           // 方向加速度
     this.particlePosition = new THREE.Vector3(0, 0, 0); // 初始化位置
     this.diffusionSpeed = options.diffusionSpeed !== undefined ? options.diffusionSpeed : 0.08; // 扩散速度
 
     this.activeNum = 40; // 每次释放的粒子数量
-    this.length = 5;     // 火焰长度
+    this.length = 2;     // 火焰长度
     this.movers_num = this.activeNum * this.length * 5; // 粒子数量
 
     this.movers = [];                                             // 单个粒子管理
@@ -93,7 +93,7 @@ Object.assign(FirePoints.prototype, {
             this.movers.push(mover);
 
             // 设置几何体的位置
-            this.geometry.vertices.push(mover.particlePosition);
+            this.geometry.vertices.push(this.particlePosition);
         }
 
         this.renderNode = new THREE.Points(this.geometry, this.material);
