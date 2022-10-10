@@ -30,58 +30,72 @@ var OrbitControls = function ( object, domElement ) {
 	if ( domElement === document ) console.error( 'THREE.OrbitControls: "document" should not be used as the target "domElement". Please use "renderer.domElement" instead.' );
 
 	this.object = object;
+	// 事件默认添加到整个文档对象
 	this.domElement = domElement;
 
 	// Set to false to disable this control
+    // 设置控制器是否启用
 	this.enabled = true;
 
 	// "target" sets the location of focus, where the object orbits around
+	// 设置轨道环绕的焦点
 	this.target = new Vector3();
 
 	// How far you can dolly in and out ( PerspectiveCamera only )
+    // 可以移动的远近距离
 	this.minDistance = 0;
 	this.maxDistance = Infinity;
 
 	// How far you can zoom in and out ( OrthographicCamera only )
+    // 可以放大缩小的范围
 	this.minZoom = 0;
 	this.maxZoom = Infinity;
 
 	// How far you can orbit vertically, upper and lower limits.
+    // 可以垂直绕行多远,上限和下限
 	// Range is 0 to Math.PI radians.
 	this.minPolarAngle = 0; // radians
 	this.maxPolarAngle = Math.PI; // radians
 
 	// How far you can orbit horizontally, upper and lower limits.
+    // 可以水平绕行多远,上限和下限
 	// If set, must be a sub-interval of the interval [ - Math.PI, Math.PI ].
 	this.minAzimuthAngle = - Infinity; // radians
 	this.maxAzimuthAngle = Infinity; // radians
 
 	// Set to true to enable damping (inertia)
+    // 设置为true以启动阻尼（惯性）
 	// If damping is enabled, you must call controls.update() in your animation loop
+    // 如果启用阻尼，则必须在动画循环中调用controls.update（）
 	this.enableDamping = false;
 	this.dampingFactor = 0.05;
 
 	// This option actually enables dollying in and out; left as "zoom" for backwards compatibility.
+    // 这个选项实际上可以使进出进入; 为了向后兼容，保留为“缩放”。
 	// Set to false to disable zooming
+    // 设置为false以禁用缩放
 	this.enableZoom = true;
 	this.zoomSpeed = 1.0;
 
 	// Set to false to disable rotating
+    // 设置为false以禁用旋转
 	this.enableRotate = true;
 	this.rotateSpeed = 1.0;
 
-	// Set to false to disable panning
+    // 设置为 false 以禁用平移
 	this.enablePan = true;
 	this.panSpeed = 1.0;
-	this.screenSpacePanning = false; // if true, pan in screen-space
-	this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
+	this.screenSpacePanning = false; // 如果为true，则在屏幕空间中平移
+	this.keyPanSpeed = 7.0;	// 每个箭头按键移动的像素
 
 	// Set to true to automatically rotate around the target
 	// If auto-rotate is enabled, you must call controls.update() in your animation loop
+    // 设置为true以自动绕目标旋转
 	this.autoRotate = false;
 	this.autoRotateSpeed = 2.0; // 30 seconds per round when fps is 60
 
 	// Set to false to disable use of the keys
+    // 设置为false禁用键值
 	this.enableKeys = true;
 
 	// The four arrow keys
@@ -151,16 +165,20 @@ var OrbitControls = function ( object, domElement ) {
 
 		return function update() {
 
+      // 相机的位置
 			var position = scope.object.position;
-
+      // 相机位置与焦点的偏移
 			offset.copy( position ).sub( scope.target );
 
 			// rotate offset to "y-axis-is-up" space
+      // 将偏移旋转到“y轴向上”空间
 			offset.applyQuaternion( quat );
 
 			// angle from z-axis around y-axis
+      // z轴绕y轴的角度
 			spherical.setFromVector3( offset );
 
+      // 设置自动旋转角度
 			if ( scope.autoRotate && state === STATE.NONE ) {
 
 				rotateLeft( getAutoRotationAngle() );
@@ -173,7 +191,7 @@ var OrbitControls = function ( object, domElement ) {
 				spherical.phi += sphericalDelta.phi * scope.dampingFactor;
 
 			} else {
-
+// 设置添加方位角、极角
 				spherical.theta += sphericalDelta.theta;
 				spherical.phi += sphericalDelta.phi;
 
@@ -185,6 +203,7 @@ var OrbitControls = function ( object, domElement ) {
 			// restrict phi to be between desired limits
 			spherical.phi = Math.max( scope.minPolarAngle, Math.min( scope.maxPolarAngle, spherical.phi ) );
 
+      // 限制phi
 			spherical.makeSafe();
 
 
@@ -214,6 +233,7 @@ var OrbitControls = function ( object, domElement ) {
 
 			scope.object.lookAt( scope.target );
 
+      // 计算阻尼
 			if ( scope.enableDamping === true ) {
 
 				sphericalDelta.theta *= ( 1 - scope.dampingFactor );
@@ -284,11 +304,12 @@ var OrbitControls = function ( object, domElement ) {
 	var startEvent = { type: 'start' };
 	var endEvent = { type: 'end' };
 
+  // 状态
 	var STATE = {
-		NONE: - 1,
+    NONE: -1, // 无操作
 		ROTATE: 0,
 		DOLLY: 1,
-		PAN: 2,
+		PAN: 2,// 平移
 		TOUCH_ROTATE: 3,
 		TOUCH_PAN: 4,
 		TOUCH_DOLLY_PAN: 5,
@@ -304,39 +325,58 @@ var OrbitControls = function ( object, domElement ) {
 	var sphericalDelta = new Spherical();
 
 	var scale = 1;
-	var panOffset = new Vector3();
+	var panOffset = new Vector3();// 平移距离
 	var zoomChanged = false;
 
-	var rotateStart = new Vector2();
-	var rotateEnd = new Vector2();
-	var rotateDelta = new Vector2();
+	// 旋转变量
+	var rotateStart = new Vector2();// 开始坐标
+	var rotateEnd = new Vector2();// 开始坐标
+	var rotateDelta = new Vector2();// 旋转单位数度
 
-	var panStart = new Vector2();
+	// 平移变量
+	var panStart = new Vector2();// 开始平移的坐标
 	var panEnd = new Vector2();
-	var panDelta = new Vector2();
+	var panDelta = new Vector2();// 平移距离
 
-	var dollyStart = new Vector2();
+	// 缩放变量
+	var dollyStart = new Vector2();// 开始坐标
 	var dollyEnd = new Vector2();
 	var dollyDelta = new Vector2();
 
+  /**
+   * 获取自动旋转角度
+   * @returns {number}
+   */
 	function getAutoRotationAngle() {
 
 		return 2 * Math.PI / 60 / 60 * scope.autoRotateSpeed;
 
 	}
 
+  /**
+   * 获取缩放大小
+   * @returns {number}
+   */
 	function getZoomScale() {
 
 		return Math.pow( 0.95, scope.zoomSpeed );
 
 	}
 
+  /**
+   * 设置球形方位角
+   * @param angle
+   */
 	function rotateLeft( angle ) {
 
 		sphericalDelta.theta -= angle;
 
 	}
 
+  /**
+   * 设置球形的极角
+   * @param angle
+   */
 	function rotateUp( angle ) {
 
 		sphericalDelta.phi -= angle;
@@ -347,8 +387,14 @@ var OrbitControls = function ( object, domElement ) {
 
 		var v = new Vector3();
 
+    /**
+     * 计算平移距离x
+     * @param distance 平移距离
+     * @param objectMatrix
+     */
 		return function panLeft( distance, objectMatrix ) {
 
+      // 获取相机的x轴，单位向量
 			v.setFromMatrixColumn( objectMatrix, 0 ); // get X column of objectMatrix
 			v.multiplyScalar( - distance );
 
@@ -388,6 +434,11 @@ var OrbitControls = function ( object, domElement ) {
 
 		var offset = new Vector3();
 
+		/**
+		 * @param deltaX x 移动偏移
+		 * @param deltaY 移动偏移
+		 * @type {pan}
+		 */
 		return function pan( deltaX, deltaY ) {
 
 			var element = scope.domElement;
@@ -400,9 +451,11 @@ var OrbitControls = function ( object, domElement ) {
 				var targetDistance = offset.length();
 
 				// half of the fov is center to top of screen
+        // 获取物体所在面高度的一半
 				targetDistance *= Math.tan( ( scope.object.fov / 2 ) * Math.PI / 180.0 );
 
 				// we use only clientHeight here so aspect ratio does not distort speed
+        // 2 * deltaX * targetDistance / element.clientHeight 计算物体移动距离
 				panLeft( 2 * deltaX * targetDistance / element.clientHeight, scope.object.matrix );
 				panUp( 2 * deltaY * targetDistance / element.clientHeight, scope.object.matrix );
 
@@ -424,6 +477,10 @@ var OrbitControls = function ( object, domElement ) {
 
 	}();
 
+	/**
+	 * 设置缩放
+	 * @param dollyScale
+	 */
 	function dollyOut( dollyScale ) {
 
 		if ( scope.object.isPerspectiveCamera ) {
@@ -469,25 +526,37 @@ var OrbitControls = function ( object, domElement ) {
 	//
 	// event callbacks - update the object state
 	//
-
+  // 设置开始旋转的坐标
 	function handleMouseDownRotate( event ) {
-
+    //console.log( 'handleMouseDownRotate' );
 		rotateStart.set( event.clientX, event.clientY );
 
 	}
 
+  /**
+   * 设置缩放开始坐标
+   * @param event
+   */
 	function handleMouseDownDolly( event ) {
 
 		dollyStart.set( event.clientX, event.clientY );
 
 	}
 
+  /**
+   * 设置开始平移的位置
+   * @param event
+   */
 	function handleMouseDownPan( event ) {
 
 		panStart.set( event.clientX, event.clientY );
 
 	}
 
+  /**
+   * 旋转
+   * @param event
+   */
 	function handleMouseMoveRotate( event ) {
 
 		rotateEnd.set( event.clientX, event.clientY );
@@ -495,7 +564,7 @@ var OrbitControls = function ( object, domElement ) {
 		rotateDelta.subVectors( rotateEnd, rotateStart ).multiplyScalar( scope.rotateSpeed );
 
 		var element = scope.domElement;
-
+// 整个绘图区域的旋转角度设置为360°，根据移动的距离计算旋转的角度
 		rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientHeight ); // yes, height
 
 		rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight );
@@ -506,7 +575,13 @@ var OrbitControls = function ( object, domElement ) {
 
 	}
 
+  /**
+   * 缩放
+   * @param event
+   */
 	function handleMouseMoveDolly( event ) {
+
+    //console.log( 'handleMouseMoveDolly' );
 
 		dollyEnd.set( event.clientX, event.clientY );
 
@@ -528,6 +603,10 @@ var OrbitControls = function ( object, domElement ) {
 
 	}
 
+  /**
+   * 移动
+   * @param event
+   */
 	function handleMouseMovePan( event ) {
 
 		panEnd.set( event.clientX, event.clientY );
@@ -544,12 +623,13 @@ var OrbitControls = function ( object, domElement ) {
 
 	function handleMouseUp( /*event*/ ) {
 
-		// no-op
+    // console.log( 'handleMouseUp' );
 
 	}
 
 	function handleMouseWheel( event ) {
 
+    // console.log( 'handleMouseWheel' );
 		if ( event.deltaY < 0 ) {
 
 			dollyIn( getZoomScale() );
@@ -565,6 +645,8 @@ var OrbitControls = function ( object, domElement ) {
 	}
 
 	function handleKeyDown( event ) {
+
+    //console.log( 'handleKeyDown' );
 
 		var needsUpdate = false;
 
@@ -758,6 +840,10 @@ var OrbitControls = function ( object, domElement ) {
 	// event handlers - FSM: listen for events and reset state
 	//
 
+  /**
+   * 鼠标按下事件
+   * @param event
+   */
 	function onMouseDown( event ) {
 
 		if ( scope.enabled === false ) return;
@@ -868,6 +954,10 @@ var OrbitControls = function ( object, domElement ) {
 
 	}
 
+  /**
+   * 鼠标移动事件
+   * @param event
+   */
 	function onMouseMove( event ) {
 
 		if ( scope.enabled === false ) return;
@@ -904,6 +994,10 @@ var OrbitControls = function ( object, domElement ) {
 
 	}
 
+  /**
+   * 鼠标释放事件
+   * @param event
+   */
 	function onMouseUp( event ) {
 
 		if ( scope.enabled === false ) return;
@@ -1097,6 +1191,10 @@ var OrbitControls = function ( object, domElement ) {
 
 	}
 
+  /**
+   * 当启用控制器功能时，禁用右键菜单功能
+   * @param event
+   */
 	function onContextMenu( event ) {
 
 		if ( scope.enabled === false ) return;
@@ -1105,8 +1203,7 @@ var OrbitControls = function ( object, domElement ) {
 
 	}
 
-	//
-
+  /************* 注册事件 ***************************/
 	scope.domElement.addEventListener( 'contextmenu', onContextMenu, false );
 
 	scope.domElement.addEventListener( 'mousedown', onMouseDown, false );

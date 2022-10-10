@@ -284,7 +284,7 @@ THREE.OrbitControls = function(object, domElement) {
 
   // 旋转变量
   var rotateStart = new THREE.Vector2(); // 开始坐标
-  var rotateEnd = new THREE.Vector2(); // 结束坐标
+  var rotateEnd = new THREE.Vector2(); // 开始坐标
   var rotateDelta = new THREE.Vector2(); // 旋转单位数度
 
   // 平移变量

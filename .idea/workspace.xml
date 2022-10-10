@@ -26,28 +26,10 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.添加注释">
-      <change afterPath="$PROJECT_DIR$/r134/build/three.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/build/three.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/build/three.module.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/jsm/controls/OrbitControls.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/jsm/loaders/GLTFLoader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/jsm/loaders/RGBELoader.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/jsm/utils/RoughnessMipmapper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/loader/test_loader_gltf.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/loader/webgl_loader_gltf.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/main.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/DamagedHelmet/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/DamagedHelmet/glTF/Default_AO.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/DamagedHelmet/glTF/Default_albedo.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/DamagedHelmet/glTF/Default_emissive.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/DamagedHelmet/glTF/Default_metalRoughness.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/DamagedHelmet/glTF/Default_normal.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/models/gltf/PrimaryIonDrive.glb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r134/examples/textures/equirectangular/royal_esplanade_1k.hdr" afterDir="false" />
+    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.demo修改">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/js/controls/OrbitControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/js/controls/OrbitControls.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r115/examples/jsm/controls/OrbitControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/examples/jsm/controls/OrbitControls.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +79,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/r134/examples/loader" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/examples/js/controls/OrbitControls.js" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -107,23 +89,23 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="ts.external.directory.path" value="D:\soft\WebStorm 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three_r134.js-master/examples/jsm/utils/RoughnessMipmapper.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/examples/js/controls/OrbitControls.js" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r134\examples\loader" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r134\examples" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r134\examples\jsm\utils" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r134\examples\jsm\loaders" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r134\examples\jsm\controls" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\ParticleSystem\tailflame" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\core" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\fire" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\renderers" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\models\gltf" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\ParticleSystem\tailflame" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\jsm" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\postprocessing" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\build" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\jsm\objects\r125" />
     </key>
   </component>
   <component name="RunManager">
@@ -531,35 +513,40 @@
       <workItem from="1637570157832" duration="2937000" />
       <workItem from="1637573234932" duration="1827000" />
       <workItem from="1637575159262" duration="595000" />
-      <workItem from="1637631223576" duration="3830000" />
-    </task>
-    <task id="LOCAL-00049" summary="1.修改测试obj模型显示">
-      <created>1572918715350</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1572918715350</updated>
-    </task>
-    <task id="LOCAL-00050" summary="1.gltf研究">
-      <created>1573122206984</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1573122206985</updated>
-    </task>
-    <task id="LOCAL-00051" summary="1.gltf 动画研究">
-      <created>1573206609653</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1573206609654</updated>
-    </task>
-    <task id="LOCAL-00052" summary="1.gltf 动画研究">
-      <created>1573460108288</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1573460108289</updated>
+      <workItem from="1637631223576" duration="3932000" />
+      <workItem from="1638945783228" duration="1300000" />
+      <workItem from="1639106808531" duration="706000" />
+      <workItem from="1639548514892" duration="1854000" />
+      <workItem from="1639550399839" duration="1740000" />
+      <workItem from="1639552211170" duration="594000" />
+      <workItem from="1639725093579" duration="627000" />
+      <workItem from="1640079255563" duration="41000" />
+      <workItem from="1641802733524" duration="1851000" />
+      <workItem from="1644371689127" duration="4501000" />
+      <workItem from="1644377108822" duration="178000" />
+      <workItem from="1644395733222" duration="298000" />
+      <workItem from="1644396299840" duration="384000" />
+      <workItem from="1644566755795" duration="798000" />
+      <workItem from="1644568602608" duration="512000" />
+      <workItem from="1644977856337" duration="18139000" />
+      <workItem from="1645061903487" duration="98000" />
+      <workItem from="1645078054700" duration="115000" />
+      <workItem from="1645509391625" duration="37000" />
+      <workItem from="1650508846039" duration="17679000" />
+      <workItem from="1650531594634" duration="1783000" />
+      <workItem from="1650533402460" duration="1783000" />
+      <workItem from="1650535216662" duration="1639000" />
+      <workItem from="1650537024553" duration="143000" />
+      <workItem from="1657190533966" duration="12000" />
+      <workItem from="1657190546540" duration="604000" />
+      <workItem from="1657503076863" duration="595000" />
+      <workItem from="1657506669843" duration="24000" />
+      <workItem from="1657681991507" duration="47000" />
+      <workItem from="1664248204807" duration="135000" />
+      <workItem from="1664248915909" duration="136000" />
+      <workItem from="1664249131650" duration="81000" />
+      <workItem from="1665382160931" duration="1998000" />
+      <workItem from="1665384191252" duration="387000" />
     </task>
     <task id="LOCAL-00053" summary="1.gltf 动画研究">
       <created>1573800340692</created>
@@ -876,7 +863,35 @@
       <option name="project" value="LOCAL" />
       <updated>1637631815896</updated>
     </task>
-    <option name="localTasksCounter" value="98" />
+    <task id="LOCAL-00098" summary="1. 添加134实例">
+      <created>1637635110296</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1637635110296</updated>
+    </task>
+    <task id="LOCAL-00099" summary="1.demo修改">
+      <created>1650510307312</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1650510307312</updated>
+    </task>
+    <task id="LOCAL-00100" summary="1. 修改火焰demo">
+      <created>1650534871477</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1650534871478</updated>
+    </task>
+    <task id="LOCAL-00101" summary="1. 修改火焰">
+      <created>1650537160289</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1650537160289</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -921,10 +936,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1.实例结构" />
-    <MESSAGE value="1.材质实例" />
-    <MESSAGE value="1.离屏渲染实例-镜面光晕" />
-    <MESSAGE value="1.文档" />
     <MESSAGE value="1.修改文档" />
     <MESSAGE value="1.水晶效果" />
     <MESSAGE value="1.buffergeometry和meshPhoneMaterial公用" />
@@ -946,7 +957,11 @@
     <MESSAGE value="1. 水波纹" />
     <MESSAGE value="1. 高亮" />
     <MESSAGE value="1. 添加实例" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. 添加实例" />
+    <MESSAGE value="1. 添加134实例" />
+    <MESSAGE value="1.demo修改" />
+    <MESSAGE value="1. 修改火焰demo" />
+    <MESSAGE value="1. 修改火焰" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. 修改火焰" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
