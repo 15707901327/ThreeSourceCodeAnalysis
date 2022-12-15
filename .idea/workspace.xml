@@ -27,14 +27,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.demo修改">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/js/controls/OrbitControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/examples/js/controls/OrbitControls.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r115/examples/jsm/controls/OrbitControls.js" beforeDir="false" afterPath="$PROJECT_DIR$/r115/examples/jsm/controls/OrbitControls.js" afterDir="false" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/objects/r125/Mesh.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/r115/src/renderers/WebGLRenderer.js" afterPath="$PROJECT_DIR$/r115/src/renderers/WebGLRenderer.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/BufferGeometry.js" afterPath="$PROJECT_DIR$/src/core/BufferGeometry.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/Object3D.js" afterPath="$PROJECT_DIR$/src/core/Object3D.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" afterPath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/math/Color.js" afterPath="$PROJECT_DIR$/src/math/Color.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
     </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/build/" />
+    <ignored path="$PROJECT_DIR$/dat_gui_doc/" />
+    <ignored path="$PROJECT_DIR$/docs/" />
+    <ignored path="$PROJECT_DIR$/examples/" />
+    <ignored path="$PROJECT_DIR$/src/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <ignored path="$PROJECT_DIR$/tween_doc/" />
+    <ignored path="$PROJECT_DIR$/.idea/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="BufferGeometry.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/core/BufferGeometry.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="359">
+              <caret line="78" column="16" lean-forward="true" selection-start-line="78" selection-start-column="16" selection-end-line="78" selection-end-column="16" />
+              <folding>
+                <element signature="n#!!block;n#constructor#0;n#BufferGeometry#0" expanded="false" />
+                <element signature="n#!!doc;n#setIndex#0;n#BufferGeometry#0" expanded="false" />
+                <element signature="n#!!doc;n#setAttribute#0;n#BufferGeometry#0" expanded="false" />
+                <element signature="n#!!doc;n#deleteAttribute#0;n#BufferGeometry#0" expanded="false" />
+                <element signature="e#2737#2818#0" expanded="false" />
+                <element signature="e#2892#3046#0" expanded="false" />
+                <element signature="e#3123#3208#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -43,6 +82,43 @@
         <option value="JavaScript File" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>uniforms: {		time: { value: 1.0 }	},	vertexShader: document.getElementById( 'vertexShader' ).textContent,	fragmentShader: document.getElementById( 'fragmentShader' ).textContent,</find>
+      <find>WebGLProgram</find>
+      <find>initMaterial</find>
+      <find>renderBufferDirect</find>
+      <find>materialProperties.program</find>
+      <find>setProgram</find>
+      <find>diffuse</find>
+      <find>enableAttributeAndDivisor</find>
+      <find>WebGLGeometries</find>
+      <find>uniformsList</find>
+      <find>indexedBufferRenderer</find>
+      <find>SingleUniform</find>
+      <find>materialProperties.uniformsList</find>
+      <find>acquireProgram</find>
+      <find>Hex</find>
+      <find>getContext</find>
+      <find>initWebGLRenderer</find>
+      <find>set</find>
+      <find>_width</find>
+      <find>_viewport</find>
+      <find>_currentViewport</find>
+      <find>initGLContext</find>
+      <find>renderer</find>
+      <find>render</find>
+      <find>drawElements</find>
+      <find>drawCount</find>
+      <find>setViewport</find>
+      <find>computeBoundingBox</find>
+      <find>computeFaceNormals</find>
+      <find>computeTangents</find>
+    </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/src</dir>
+    </dirStrings>
   </component>
   <component name="Git.Merge.Settings">
     <option name="BRANCH" value="origin/master" />
@@ -59,16 +135,83 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/r115/src/renderers/WebGLRenderer.js" />
+        <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
+        <option value="$PROJECT_DIR$/src/objects/r125/Mesh.js" />
+        <option value="$PROJECT_DIR$/src/math/Color.js" />
+        <option value="$PROJECT_DIR$/src/objects/Mesh.js" />
+        <option value="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" />
+        <option value="$PROJECT_DIR$/src/core/BufferGeometry.js" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
     <exe-path />
+    <annotation-enable>false</annotation-enable>
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProblemsViewState">
     <option name="sortByName" value="true" />
   </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="83" />
+    <option name="y" value="23" />
+    <option name="width" value="1191" />
+    <option name="height" value="713" />
+  </component>
   <component name="ProjectId" id="1hdGY6K3llREu92WKrwyMSP0I9l" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -79,7 +222,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/examples/js/controls/OrbitControls.js" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -87,19 +230,13 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="ts.external.directory.path" value="D:\soft\WebStorm 2019.1.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/examples/js/controls/OrbitControls.js" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three.js-r147/src/core/BufferGeometry.js" />
     <property name="vue.rearranger.settings.migration" value="true" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\ParticleSystem\tailflame" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\core" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\fire" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\renderers" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\models\gltf" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\ParticleSystem\tailflame" />
@@ -107,16 +244,31 @@
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\postprocessing" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/objects" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\ParticleSystem\tailflame" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\core" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\fire" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\renderers" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager">
-    <configuration name="test.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/test.js" working-dir="$PROJECT_DIR$">
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Node.js.test.js" />
-      </list>
-    </recent_temporary>
+    <configuration name="test.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" nameIsGenerated="true" path-to-node="project" path-to-js-file="$PROJECT_DIR$/test.js" working-dir="$PROJECT_DIR$" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -547,6 +699,10 @@
       <workItem from="1664249131650" duration="81000" />
       <workItem from="1665382160931" duration="1998000" />
       <workItem from="1665384191252" duration="387000" />
+      <workItem from="1670380451544" duration="1170000" />
+      <workItem from="1670513355182" duration="1415000" />
+      <workItem from="1670569957957" duration="3007000" />
+      <workItem from="1670839424272" duration="25264000" />
     </task>
     <task id="LOCAL-00053" summary="1.gltf 动画研究">
       <created>1573800340692</created>
@@ -894,8 +1050,35 @@
     <option name="localTasksCounter" value="102" />
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="30856000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="83" y="23" width="1191" height="713" extended-state="0" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22735043" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ID_ORDER">
@@ -912,26 +1095,21 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list />
-          </value>
-        </entry>
-        <entry key="User">
-          <value>
-            <list />
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
@@ -1006,8 +1184,1373 @@
           <line>13071</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/math/Color.js</url>
+          <line>445</line>
+          <properties />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
       </breakpoints>
+      <option name="time" value="8" />
     </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/r134/examples/loader/test_loader_gltf.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="960">
+          <caret line="49" column="31" lean-forward="false" selection-start-line="49" selection-start-column="31" selection-end-line="49" selection-end-column="31" />
+          <folding>
+            <element signature="e#1383#1430#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#createCanvasElement#0" expanded="false" />
+            <element signature="e#3244#3321#0" expanded="false" />
+            <element signature="e#3560#3708#0" expanded="false" />
+            <element signature="e#3567#3679#0" expanded="false" />
+            <element signature="n#!!block;n#getTargetPixelRatio#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#getContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#5817#5982#0" expanded="false" />
+            <element signature="e#6014#7360#0" expanded="false" />
+            <element signature="e#6047#6331#0" expanded="false" />
+            <element signature="e#6593#7079#0" expanded="false" />
+            <element signature="e#6710#6752#0" expanded="false" />
+            <element signature="e#6836#7071#0" expanded="false" />
+            <element signature="e#6877#6981#0" expanded="false" />
+            <element signature="e#6987#7061#0" expanded="false" />
+            <element signature="e#7218#7354#0" expanded="false" />
+            <element signature="e#7270#7345#0" expanded="false" />
+            <element signature="e#7375#7458#0" expanded="false" />
+            <element signature="n#!!doc;n#initGLContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#initGLContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#9182#9189#0" expanded="false" />
+            <element signature="e#9971#9995#0" expanded="false" />
+            <element signature="e#10040#10087#0" expanded="false" />
+            <element signature="e#10128#10238#0" expanded="false" />
+            <element signature="e#10282#10395#0" expanded="false" />
+            <element signature="e#10433#10465#0" expanded="false" />
+            <element signature="e#10470#10510#0" expanded="false" />
+            <element signature="e#10550#10664#0" expanded="false" />
+            <element signature="e#10702#10910#0" expanded="false" />
+            <element signature="e#10735#10863#0" expanded="false" />
+            <element signature="e#10915#11012#0" expanded="false" />
+            <element signature="e#11095#11210#0" expanded="false" />
+            <element signature="e#11539#11607#0" expanded="false" />
+            <element signature="e#11655#11912#0" expanded="false" />
+            <element signature="e#11688#11829#0" expanded="false" />
+            <element signature="e#12215#12273#0" expanded="false" />
+            <element signature="e#12319#12531#0" expanded="false" />
+            <element signature="e#12349#12488#0" expanded="false" />
+            <element signature="e#12573#12616#0" expanded="false" />
+            <element signature="e#12621#12699#0" expanded="false" />
+            <element signature="e#12832#12884#0" expanded="false" />
+            <element signature="e#13022#13064#0" expanded="false" />
+            <element signature="e#13118#13343#0" expanded="false" />
+            <element signature="e#13142#13192#0" expanded="false" />
+            <element signature="e#13198#13249#0" expanded="false" />
+            <element signature="e#13382#13415#0" expanded="false" />
+            <element signature="e#13461#13519#0" expanded="false" />
+            <element signature="e#13563#13597#0" expanded="false" />
+            <element signature="e#13646#13685#0" expanded="false" />
+            <element signature="e#13744#13966#0" expanded="false" />
+            <element signature="e#13777#13907#0" expanded="false" />
+            <element signature="e#14015#14082#0" expanded="false" />
+            <element signature="e#14120#14167#0" expanded="false" />
+            <element signature="e#14205#14272#0" expanded="false" />
+            <element signature="e#14277#14366#0" expanded="false" />
+            <element signature="e#14414#14669#0" expanded="false" />
+            <element signature="e#14704#14748#0" expanded="false" />
+            <element signature="e#14783#14827#0" expanded="false" />
+            <element signature="e#14864#14908#0" expanded="false" />
+            <element signature="e#14946#15299#0" expanded="false" />
+            <element signature="n#!!block;n#onContextLost#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#15497#15508#0" expanded="false" />
+            <element signature="n#!!block;n#onContextRestore#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#onMaterialDispose#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#deallocateMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#releaseMaterialProgramReference#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#16120#16178#0" expanded="false" />
+            <element signature="n#!!block;n#renderObjectImmediate#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#16428#18258#0" expanded="false" />
+            <element signature="e#16916#17210#0" expanded="false" />
+            <element signature="e#17239#17525#0" expanded="false" />
+            <element signature="e#17550#17820#0" expanded="false" />
+            <element signature="e#17848#18130#0" expanded="false" />
+            <element signature="e#18263#18420#0" expanded="false" />
+            <element signature="e#19205#19289#0" expanded="false" />
+            <element signature="e#19347#19421#0" expanded="false" />
+            <element signature="e#21028#21066#0" expanded="false" />
+            <element signature="e#21093#21134#0" expanded="false" />
+            <element signature="e#21584#22567#0" expanded="false" />
+            <element signature="e#21711#21913#0" expanded="false" />
+            <element signature="e#21777#21909#0" expanded="false" />
+            <element signature="e#21853#21904#0" expanded="false" />
+            <element signature="e#22030#22562#0" expanded="false" />
+            <element signature="e#22094#22558#0" expanded="false" />
+            <element signature="e#22134#22417#0" expanded="false" />
+            <element signature="e#22189#22405#0" expanded="false" />
+            <element signature="e#22287#22391#0" expanded="false" />
+            <element signature="e#22461#22553#0" expanded="false" />
+            <element signature="n#!!block;n#onAnimationFrame#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#22976#23123#0" expanded="false" />
+            <element signature="e#23128#23186#0" expanded="false" />
+            <element signature="e#23227#27030#0" expanded="false" />
+            <element signature="e#23301#23464#0" expanded="false" />
+            <element signature="e#23519#23668#0" expanded="false" />
+            <element signature="e#23738#23850#0" expanded="false" />
+            <element signature="e#24268#24315#0" expanded="false" />
+            <element signature="e#25174#25237#0" expanded="false" />
+            <element signature="e#25699#25743#0" expanded="false" />
+            <element signature="e#26264#26540#0" expanded="false" />
+            <element signature="e#26860#26944#0" expanded="false" />
+            <element signature="e#26950#26993#0" expanded="false" />
+            <element signature="n#!!doc;n#projectObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#projectObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#27424#27467#0" expanded="false" />
+            <element signature="e#27491#27556#0" expanded="false" />
+            <element signature="e#27582#27709#0" expanded="false" />
+            <element signature="e#27653#27704#0" expanded="false" />
+            <element signature="e#27736#28195#0" expanded="false" />
+            <element signature="e#27806#28190#0" expanded="false" />
+            <element signature="e#27830#27936#0" expanded="false" />
+            <element signature="e#28088#28184#0" expanded="false" />
+            <element signature="e#28237#28457#0" expanded="false" />
+            <element signature="e#28260#28363#0" expanded="false" />
+            <element signature="e#28550#28746#0" expanded="false" />
+            <element signature="e#28651#28740#0" expanded="false" />
+            <element signature="e#28886#28984#0" expanded="false" />
+            <element signature="e#29250#29525#0" expanded="false" />
+            <element signature="e#29411#29517#0" expanded="false" />
+            <element signature="e#29765#29838#0" expanded="false" />
+            <element signature="n#!!doc;n#renderObjects#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#renderObjects#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#30444#30867#0" expanded="false" />
+            <element signature="e#30546#30857#0" expanded="false" />
+            <element signature="e#30638#30845#0" expanded="false" />
+            <element signature="e#30873#30952#0" expanded="false" />
+            <element signature="n#!!doc;n#renderObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#renderObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#31507#31697#0" expanded="false" />
+            <element signature="n#!!doc;n#initMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#initMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#33031#33115#0" expanded="false" />
+            <element signature="e#33163#33255#0" expanded="false" />
+            <element signature="e#33327#33362#0" expanded="false" />
+            <element signature="e#33407#33456#0" expanded="false" />
+            <element signature="e#33462#33525#0" expanded="false" />
+            <element signature="e#33586#33952#0" expanded="false" />
+            <element signature="e#34110#34298#0" expanded="false" />
+            <element signature="e#34529#35789#0" expanded="false" />
+            <element signature="n#!!doc;n#setProgram#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#setProgram#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#36784#37183#0" expanded="false" />
+            <element signature="e#36858#37179#0" expanded="false" />
+            <element signature="e#36970#37032#0" expanded="false" />
+            <element signature="e#37305#37364#0" expanded="false" />
+            <element signature="e#37422#37481#0" expanded="false" />
+            <element signature="e#37591#37650#0" expanded="false" />
+            <element signature="e#37855#37914#0" expanded="false" />
+            <element signature="e#37972#38031#0" expanded="false" />
+            <element signature="e#38079#38138#0" expanded="false" />
+            <element signature="e#38148#38247#0" expanded="false" />
+            <element signature="e#38647#38728#0" expanded="false" />
+            <element signature="e#38803#40779#0" expanded="false" />
+            <element signature="e#38886#39070#0" expanded="false" />
+            <element signature="e#39115#39215#0" expanded="false" />
+            <element signature="e#39254#39612#0" expanded="false" />
+            <element signature="e#39294#39356#0" expanded="false" />
+            <element signature="e#39620#39654#0" expanded="false" />
+            <element signature="e#39892#40078#0" expanded="false" />
+            <element signature="e#39986#40073#0" expanded="false" />
+            <element signature="e#40301#40403#0" expanded="false" />
+            <element signature="e#40684#40771#0" expanded="false" />
+            <element signature="e#40785#40848#0" expanded="false" />
+            <element signature="e#41065#42650#0" expanded="false" />
+            <element signature="e#41248#42642#0" expanded="false" />
+            <element signature="e#41336#42547#0" expanded="false" />
+            <element signature="e#41384#42375#0" expanded="false" />
+            <element signature="e#41399#41430#0" expanded="false" />
+            <element signature="e#42553#42632#0" expanded="false" />
+            <element signature="e#42738#42879#0" expanded="false" />
+            <element signature="e#43046#43420#0" expanded="false" />
+            <element signature="e#43113#43168#0" expanded="false" />
+            <element signature="e#43508#43575#0" expanded="false" />
+            <element signature="e#43835#43973#0" expanded="false" />
+            <element signature="e#44010#44077#0" expanded="false" />
+            <element signature="n#!!block;n#markUniformsLightsNeedsUpdate#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!doc;n#materialNeedsLights#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#materialNeedsLights#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#45356#45501#0" expanded="false" />
+            <element signature="e#45543#45586#0" expanded="false" />
+            <element signature="e#45631#45677#0" expanded="false" />
+            <element signature="e#45715#45753#0" expanded="false" />
+            <element signature="e#45800#45844#0" expanded="false" />
+            <element signature="e#45884#45919#0" expanded="false" />
+            <element signature="e#46014#47755#0" expanded="false" />
+            <element signature="e#46275#46325#0" expanded="false" />
+            <element signature="e#46420#47026#0" expanded="false" />
+            <element signature="e#46554#46638#0" expanded="false" />
+            <element signature="e#46693#46778#0" expanded="false" />
+            <element signature="e#46784#46828#0" expanded="false" />
+            <element signature="e#47032#47220#0" expanded="false" />
+            <element signature="e#47267#47364#0" expanded="false" />
+            <element signature="e#47500#47752#0" expanded="false" />
+            <element signature="e#47864#50441#0" expanded="false" />
+            <element signature="e#47928#48062#0" expanded="false" />
+            <element signature="e#48219#48283#0" expanded="false" />
+            <element signature="e#48306#50435#0" expanded="false" />
+            <element signature="e#48384#48480#0" expanded="false" />
+            <element signature="e#48492#50301#0" expanded="false" />
+            <element signature="e#48755#48916#0" expanded="false" />
+            <element signature="e#49513#49684#0" expanded="false" />
+            <element signature="e#49772#50136#0" expanded="false" />
+            <element signature="e#49993#50124#0" expanded="false" />
+            <element signature="e#50142#50291#0" expanded="false" />
+            <element signature="e#50310#50427#0" expanded="false" />
+            <element signature="e#50334#50417#0" expanded="false" />
+            <element signature="e#50518#50911#0" expanded="false" />
+            <element signature="e#50999#52295#0" expanded="false" />
+            <element signature="e#51236#51293#0" expanded="false" />
+            <element signature="e#51607#51745#0" expanded="false" />
+            <element signature="e#51751#52125#0" expanded="false" />
+            <element signature="e#51796#51989#0" expanded="false" />
+            <element signature="e#51995#52117#0" expanded="false" />
+            <element signature="e#52338#52413#0" expanded="false" />
+            <element signature="e#52448#52500#0" expanded="false" />
+            <element signature="e#52552#52674#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/Box3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/Box3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-557">
+          <caret line="224" column="0" lean-forward="false" selection-start-line="224" selection-start-column="0" selection-end-line="224" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLBufferRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="23" column="17" lean-forward="false" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderLib/background_frag.glsl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderChunk/lightmap_pars_fragment.glsl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_frag.glsl_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-17426">
+          <caret line="1" column="20" lean-forward="false" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_vert.glsl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-389">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_vert.glsl_test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/shaders/ShaderLib/meshlambert_frag.glsl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding>
+            <marker date="1670380412304" expanded="true" signature="263:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="336:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="395:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="449:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="499:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="555:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="611:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="671:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="713:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="761:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="832:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="878:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="924:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="984:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1017:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1084:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1140:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1203:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1253:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1305:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1362:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1421:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1485:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1719:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1756:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1801:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1847:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1898:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1948:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="1998:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="2246:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="2643:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="2794:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="2895:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="2933:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="2969:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="3029:3116" ph="..." />
+            <marker date="1670380412304" expanded="true" signature="3080:3116" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLSpriteRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="36" column="22" lean-forward="false" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/r134/examples/loader/test_loader_gltf.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="32" column="52" lean-forward="true" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
+          <folding>
+            <element signature="e#1383#1430#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/example.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="4" column="24" lean-forward="true" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/webgl2_materials_texture3d.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="3" column="58" lean-forward="true" selection-start-line="3" selection-start-column="58" selection-end-line="3" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="6" column="29" lean-forward="true" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scenes/Scene.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="151">
+          <caret line="11" column="7" lean-forward="false" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="38" column="0" lean-forward="true" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLObjects.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="36" column="23" lean-forward="false" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/materials/LineBasicMaterial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="13" column="26" lean-forward="false" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/materials/Material.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-830">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#59#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/materials/RawShaderMaterial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-77">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/materials/ShaderMaterial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="183" column="3" lean-forward="false" selection-start-line="183" selection-start-column="3" selection-end-line="183" selection-end-column="3" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#3174#4348#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/BufferAttribute.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1290">
+          <caret line="29" column="26" lean-forward="false" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#43#0" expanded="false" />
+            <element signature="n#!!block;n#Int16BufferAttribute#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLAttributes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="99" column="33" lean-forward="false" selection-start-line="99" selection-start-column="24" selection-end-line="99" selection-end-column="33" />
+          <folding>
+            <element signature="n#!!doc;n#createBuffer#0;n#!!block;n#WebGLAttributes#0" expanded="false" />
+            <element signature="n#!!block;n#createBuffer#0;n#!!block;n#WebGLAttributes#0" expanded="false" />
+            <element signature="n#!!block;n#updateBuffer#0;n#!!block;n#WebGLAttributes#0" expanded="false" />
+            <element signature="n#!!block;n#remove#0;n#!!block;n#WebGLAttributes#0" expanded="false" />
+            <element signature="n#!!doc;n#update#0;n#!!block;n#WebGLAttributes#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLGeometries.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="93" column="30" lean-forward="false" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+          <folding>
+            <element signature="n#!!block;n#onGeometryDispose#0;n#!!block;n#WebGLGeometries#0" expanded="false" />
+            <element signature="n#!!doc;n#get#0;n#!!block;n#WebGLGeometries#0" expanded="false" />
+            <element signature="n#!!block;n#get#0;n#!!block;n#WebGLGeometries#0" expanded="false" />
+            <element signature="n#!!block;n#update#0;n#!!block;n#WebGLGeometries#0" expanded="false" />
+            <element signature="n#!!block;n#updateWireframeAttribute#0;n#!!block;n#WebGLGeometries#0" expanded="false" />
+            <element signature="n#!!block;n#getWireframeAttribute#0;n#!!block;n#WebGLGeometries#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/r134/build/three.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="13833" column="7" lean-forward="true" selection-start-line="13833" selection-start-column="7" selection-end-line="13833" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLUniforms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="769" column="1" lean-forward="true" selection-start-line="769" selection-start-column="1" selection-end-line="769" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLPrograms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="378" column="21" lean-forward="false" selection-start-line="378" selection-start-column="7" selection-end-line="378" selection-end-column="21" />
+          <folding>
+            <element signature="e#955#1463#0" expanded="false" />
+            <element signature="e#1499#2713#0" expanded="false" />
+            <element signature="n#!!doc;n#getShaderObject#0;n#!!block;n#WebGLPrograms#0" expanded="false" />
+            <element signature="n#!!block;n#getShaderObject#0;n#!!block;n#WebGLPrograms#0" expanded="false" />
+            <element signature="n#!!block;n#allocateBones#0;n#!!block;n#WebGLPrograms#0" expanded="false" />
+            <element signature="n#!!doc;n#getTextureEncodingFromMap#0;n#!!block;n#WebGLPrograms#0" expanded="false" />
+            <element signature="n#!!block;n#getTextureEncodingFromMap#0;n#!!block;n#WebGLPrograms#0" expanded="false" />
+            <element signature="e#14122#14226#0" expanded="false" />
+            <element signature="e#14405#14603#0" expanded="false" />
+            <element signature="e#14810#15067#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLProgram.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1560">
+          <caret line="436" column="21" lean-forward="false" selection-start-line="436" selection-start-column="9" selection-end-line="436" selection-end-column="21" />
+          <folding>
+            <element signature="n#!!block;n#addLineNumbers#0" expanded="false" />
+            <element signature="n#!!block;n#getEncodingComponents#0" expanded="false" />
+            <element signature="n#!!block;n#getShaderErrors#0" expanded="false" />
+            <element signature="n#!!block;n#getTexelDecodingFunction#0" expanded="false" />
+            <element signature="n#!!block;n#getTexelEncodingFunction#0" expanded="false" />
+            <element signature="n#!!block;n#getToneMappingFunction#0" expanded="false" />
+            <element signature="n#!!block;n#generateExtensions#0" expanded="false" />
+            <element signature="n#!!block;n#generateDefines#0" expanded="false" />
+            <element signature="n#!!doc;n#fetchAttributeLocations#0" expanded="false" />
+            <element signature="n#!!block;n#fetchAttributeLocations#0" expanded="false" />
+            <element signature="n#!!block;n#filterEmptyLine#0" expanded="false" />
+            <element signature="n#!!doc;n#replaceLightNums#0" expanded="false" />
+            <element signature="n#!!block;n#replaceLightNums#0" expanded="false" />
+            <element signature="n#!!doc;n#replaceClippingPlaneNums#0" expanded="false" />
+            <element signature="n#!!block;n#replaceClippingPlaneNums#0" expanded="false" />
+            <element signature="n#!!doc;n#resolveIncludes#0" expanded="false" />
+            <element signature="n#!!block;n#resolveIncludes#0" expanded="false" />
+            <element signature="n#!!block;n#includeReplacer#0" expanded="false" />
+            <element signature="e#6399#6471#0" expanded="false" />
+            <element signature="n#!!doc;n#unrollLoops#0" expanded="false" />
+            <element signature="n#!!block;n#unrollLoops#0" expanded="false" />
+            <element signature="n#!!block;n#deprecatedLoopReplacer#0" expanded="false" />
+            <element signature="n#!!block;n#loopReplacer#0" expanded="false" />
+            <element signature="n#!!doc;n#generatePrecision#0" expanded="false" />
+            <element signature="n#!!block;n#generatePrecision#0" expanded="false" />
+            <element signature="n#!!block;n#generateShadowMapTypeDefine#0" expanded="false" />
+            <element signature="n#!!block;n#generateEnvMapTypeDefine#0" expanded="false" />
+            <element signature="n#!!block;n#generateEnvMapModeDefine#0" expanded="false" />
+            <element signature="n#!!block;n#generateEnvMapBlendingDefine#0" expanded="false" />
+            <element signature="e#9785#10126#0" expanded="false" />
+            <element signature="n#!!doc;n#WebGLProgram#0" expanded="false" />
+            <element signature="e#11121#11473#0" expanded="false" />
+            <element signature="e#11502#15742#0" expanded="false" />
+            <element signature="e#15800#20504#0" expanded="false" />
+            <element signature="e#21113#22448#0" expanded="false" />
+            <element signature="e#22995#23073#0" expanded="false" />
+            <element signature="e#23119#23248#0" expanded="false" />
+            <element signature="e#23345#24606#0" expanded="false" />
+            <element signature="e#24857#24903#0" expanded="false" />
+            <element signature="e#24936#25074#0" expanded="false" />
+            <element signature="e#25149#25197#0" expanded="false" />
+            <element signature="e#25232#25377#0" expanded="false" />
+            <element signature="e#25428#25496#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/Color.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="444" column="0" lean-forward="true" selection-start-line="444" selection-start-column="0" selection-end-line="444" selection-end-column="0" />
+          <folding>
+            <element signature="e#4350#4579#0" expanded="false" />
+            <element signature="e#4525#4559#0" expanded="false" />
+            <element signature="e#4614#4693#0" expanded="false" />
+            <element signature="e#4722#4879#0" expanded="false" />
+            <element signature="e#10081#10911#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Object3D.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="96" column="0" lean-forward="true" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+          <folding>
+            <element signature="e#1907#2426#0" expanded="false" />
+            <element signature="e#2018#2097#0" expanded="false" />
+            <element signature="e#3012#16955#0" expanded="false" />
+            <element signature="e#5399#5472#0" expanded="false" />
+            <element signature="e#5477#5538#0" expanded="false" />
+            <element signature="e#5567#6253#0" expanded="false" />
+            <element signature="e#5919#5975#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/buffergeometry/MeshPhongMaterial/demo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-787">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/buffergeometry/MeshPhongMaterial/demo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="74" column="6" lean-forward="false" selection-start-line="74" selection-start-column="6" selection-end-line="74" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/buffergeometry/MeshPhongMaterial/webgl_buffergeometry.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3264">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/WebGL.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="2721" column="0" lean-forward="false" selection-start-line="2721" selection-start-column="0" selection-end-line="2721" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLRenderStates.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1128">
+          <caret line="47" column="0" lean-forward="true" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLState.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="971" column="11" lean-forward="false" selection-start-line="971" selection-start-column="11" selection-end-line="971" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="34" column="17" lean-forward="false" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/r115/src/renderers/WebGLRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="1144" column="2" lean-forward="false" selection-start-line="1144" selection-start-column="2" selection-end-line="1144" selection-end-column="2" />
+          <folding>
+            <element signature="e#3317#3465#0" expanded="false" />
+            <element signature="e#3324#3436#0" expanded="false" />
+            <element signature="e#4539#4601#0" expanded="false" />
+            <element signature="n#!!block;n#getTargetPixelRatio#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#5552#6802#0" expanded="false" />
+            <element signature="e#5583#5890#0" expanded="false" />
+            <element signature="e#6286#6521#0" expanded="false" />
+            <element signature="e#6337#6437#0" expanded="false" />
+            <element signature="e#6443#6513#0" expanded="false" />
+            <element signature="e#6660#6796#0" expanded="false" />
+            <element signature="e#6712#6787#0" expanded="false" />
+            <element signature="e#6817#6900#0" expanded="false" />
+            <element signature="n#!!doc;n#initGLContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#7397#7726#0" expanded="false" />
+            <element signature="e#9446#9470#0" expanded="false" />
+            <element signature="e#9515#9562#0" expanded="false" />
+            <element signature="e#9603#9711#0" expanded="false" />
+            <element signature="e#9755#9866#0" expanded="false" />
+            <element signature="e#9904#9936#0" expanded="false" />
+            <element signature="e#9941#9981#0" expanded="false" />
+            <element signature="e#10021#10135#0" expanded="false" />
+            <element signature="e#10173#10381#0" expanded="false" />
+            <element signature="e#10206#10334#0" expanded="false" />
+            <element signature="e#10386#10483#0" expanded="false" />
+            <element signature="e#10538#11005#0" expanded="false" />
+            <element signature="e#10566#10681#0" expanded="false" />
+            <element signature="e#10862#10955#0" expanded="false" />
+            <element signature="e#11010#11078#0" expanded="false" />
+            <element signature="e#11126#11383#0" expanded="false" />
+            <element signature="e#11159#11300#0" expanded="false" />
+            <element signature="e#11453#11681#0" expanded="false" />
+            <element signature="e#11686#11744#0" expanded="false" />
+            <element signature="e#11790#12002#0" expanded="false" />
+            <element signature="e#11820#11959#0" expanded="false" />
+            <element signature="e#12044#12087#0" expanded="false" />
+            <element signature="e#12092#12170#0" expanded="false" />
+            <element signature="e#12222#12452#0" expanded="false" />
+            <element signature="e#12246#12297#0" expanded="false" />
+            <element signature="e#12303#12355#0" expanded="false" />
+            <element signature="e#12493#12535#0" expanded="false" />
+            <element signature="e#12589#12814#0" expanded="false" />
+            <element signature="e#12613#12663#0" expanded="false" />
+            <element signature="e#12669#12720#0" expanded="false" />
+            <element signature="e#12853#12886#0" expanded="false" />
+            <element signature="e#12932#12990#0" expanded="false" />
+            <element signature="e#13034#13068#0" expanded="false" />
+            <element signature="e#13117#13156#0" expanded="false" />
+            <element signature="e#13209#13256#0" expanded="false" />
+            <element signature="e#13305#13372#0" expanded="false" />
+            <element signature="e#13410#13457#0" expanded="false" />
+            <element signature="e#13495#13562#0" expanded="false" />
+            <element signature="e#13567#13656#0" expanded="false" />
+            <element signature="e#13704#13959#0" expanded="false" />
+            <element signature="e#13994#14038#0" expanded="false" />
+            <element signature="e#14073#14117#0" expanded="false" />
+            <element signature="e#14154#14198#0" expanded="false" />
+            <element signature="e#14236#14570#0" expanded="false" />
+            <element signature="n#!!block;n#onContextLost#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#14768#14779#0" expanded="false" />
+            <element signature="n#!!block;n#onContextRestore#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#onMaterialDispose#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#deallocateMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#releaseMaterialProgramReference#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#15422#15480#0" expanded="false" />
+            <element signature="n#!!block;n#renderObjectImmediate#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#15600#15662#0" expanded="false" />
+            <element signature="e#15730#17508#0" expanded="false" />
+            <element signature="e#16206#16492#0" expanded="false" />
+            <element signature="e#16521#16799#0" expanded="false" />
+            <element signature="e#16824#17086#0" expanded="false" />
+            <element signature="e#17114#17388#0" expanded="false" />
+            <element signature="e#17545#17702#0" expanded="false" />
+            <element signature="e#18394#18600#0" expanded="false" />
+            <element signature="e#18658#18761#0" expanded="false" />
+            <element signature="e#18883#18951#0" expanded="false" />
+            <element signature="e#18980#18996#0" expanded="false" />
+            <element signature="e#19069#19153#0" expanded="false" />
+            <element signature="e#19232#19353#0" expanded="false" />
+            <element signature="e#19378#19562#0" expanded="false" />
+            <element signature="e#19474#19554#0" expanded="false" />
+            <element signature="e#20184#20415#0" expanded="false" />
+            <element signature="e#20222#20348#0" expanded="false" />
+            <element signature="e#20354#20407#0" expanded="false" />
+            <element signature="e#20440#20858#0" expanded="false" />
+            <element signature="e#20659#20708#0" expanded="false" />
+            <element signature="e#20737#20790#0" expanded="false" />
+            <element signature="e#20796#20850#0" expanded="false" />
+            <element signature="e#20885#20923#0" expanded="false" />
+            <element signature="e#20950#20991#0" expanded="false" />
+            <element signature="n#!!block;n#setupVertexAttributes#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#21509#21588#0" expanded="false" />
+            <element signature="e#21839#25396#0" expanded="false" />
+            <element signature="e#21930#25388#0" expanded="false" />
+            <element signature="e#22037#23860#0" expanded="false" />
+            <element signature="e#22513#23242#0" expanded="false" />
+            <element signature="e#22700#22969#0" expanded="false" />
+            <element signature="e#22852#22953#0" expanded="false" />
+            <element signature="e#22975#23048#0" expanded="false" />
+            <element signature="e#23248#23848#0" expanded="false" />
+            <element signature="e#23313#23621#0" expanded="false" />
+            <element signature="e#23478#23605#0" expanded="false" />
+            <element signature="e#23627#23700#0" expanded="false" />
+            <element signature="e#23897#24789#0" expanded="false" />
+            <element signature="e#24845#25378#0" expanded="false" />
+            <element signature="e#24944#25366#0" expanded="false" />
+            <element signature="e#24959#25352#0" expanded="false" />
+            <element signature="e#25498#26444#0" expanded="false" />
+            <element signature="e#25626#25791#0" expanded="false" />
+            <element signature="e#25655#25787#0" expanded="false" />
+            <element signature="e#25731#25782#0" expanded="false" />
+            <element signature="e#25901#26439#0" expanded="false" />
+            <element signature="e#25931#26435#0" expanded="false" />
+            <element signature="e#25978#26262#0" expanded="false" />
+            <element signature="e#26040#26250#0" expanded="false" />
+            <element signature="e#26106#26236#0" expanded="false" />
+            <element signature="e#26316#26430#0" expanded="false" />
+            <element signature="n#!!block;n#onAnimationFrame#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#26851#26957#0" expanded="false" />
+            <element signature="e#26962#27020#0" expanded="false" />
+            <element signature="e#27135#27298#0" expanded="false" />
+            <element signature="e#27353#27502#0" expanded="false" />
+            <element signature="e#27554#27666#0" expanded="false" />
+            <element signature="e#28150#28197#0" expanded="false" />
+            <element signature="e#28967#29030#0" expanded="false" />
+            <element signature="e#29425#29469#0" expanded="false" />
+            <element signature="e#29720#29981#0" expanded="false" />
+            <element signature="e#29987#30255#0" expanded="false" />
+            <element signature="e#30360#30636#0" expanded="false" />
+            <element signature="n#!!doc;n#projectObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#31324#33582#0" expanded="false" />
+            <element signature="e#31349#31392#0" expanded="false" />
+            <element signature="e#31416#31481#0" expanded="false" />
+            <element signature="e#31507#31634#0" expanded="false" />
+            <element signature="e#31578#31629#0" expanded="false" />
+            <element signature="e#31661#32116#0" expanded="false" />
+            <element signature="e#31731#32111#0" expanded="false" />
+            <element signature="e#31755#31861#0" expanded="false" />
+            <element signature="e#32009#32105#0" expanded="false" />
+            <element signature="e#32158#32378#0" expanded="false" />
+            <element signature="e#32181#32284#0" expanded="false" />
+            <element signature="e#32439#33578#0" expanded="false" />
+            <element signature="e#32471#32667#0" expanded="false" />
+            <element signature="e#32572#32661#0" expanded="false" />
+            <element signature="e#32761#33573#0" expanded="false" />
+            <element signature="e#32807#32905#0" expanded="false" />
+            <element signature="e#33060#33443#0" expanded="false" />
+            <element signature="e#33165#33436#0" expanded="false" />
+            <element signature="e#33322#33428#0" expanded="false" />
+            <element signature="e#33471#33567#0" expanded="false" />
+            <element signature="e#33674#33751#0" expanded="false" />
+            <element signature="n#!!doc;n#renderObjects#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#renderObjects#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#34008#34864#0" expanded="false" />
+            <element signature="e#34284#34738#0" expanded="false" />
+            <element signature="e#34423#34728#0" expanded="false" />
+            <element signature="e#34513#34716#0" expanded="false" />
+            <element signature="e#34744#34860#0" expanded="false" />
+            <element signature="n#!!doc;n#renderObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#renderObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#35494#35789#0" expanded="false" />
+            <element signature="e#35795#35879#0" expanded="false" />
+            <element signature="n#!!doc;n#initMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#initMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#36770#36854#0" expanded="false" />
+            <element signature="e#36902#36994#0" expanded="false" />
+            <element signature="e#37066#37168#0" expanded="false" />
+            <element signature="e#37213#37262#0" expanded="false" />
+            <element signature="e#37268#37331#0" expanded="false" />
+            <element signature="e#37392#37763#0" expanded="false" />
+            <element signature="e#37850#38090#0" expanded="false" />
+            <element signature="e#37953#38082#0" expanded="false" />
+            <element signature="e#38011#38072#0" expanded="false" />
+            <element signature="e#38123#38363#0" expanded="false" />
+            <element signature="e#38226#38355#0" expanded="false" />
+            <element signature="e#38284#38345#0" expanded="false" />
+            <element signature="e#38519#38710#0" expanded="false" />
+            <element signature="e#38982#40136#0" expanded="false" />
+            <element signature="n#!!doc;n#setProgram#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#setProgram#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#40834#41318#0" expanded="false" />
+            <element signature="e#40899#41314#0" expanded="false" />
+            <element signature="e#41009#41071#0" expanded="false" />
+            <element signature="e#41379#42295#0" expanded="false" />
+            <element signature="e#41434#41493#0" expanded="false" />
+            <element signature="e#41551#41610#0" expanded="false" />
+            <element signature="e#41668#41727#0" expanded="false" />
+            <element signature="e#41837#41896#0" expanded="false" />
+            <element signature="e#42103#42162#0" expanded="false" />
+            <element signature="e#42232#42291#0" expanded="false" />
+            <element signature="e#42301#42400#0" expanded="false" />
+            <element signature="e#42669#42752#0" expanded="false" />
+            <element signature="e#42798#42879#0" expanded="false" />
+            <element signature="e#42954#44895#0" expanded="false" />
+            <element signature="e#43037#43221#0" expanded="false" />
+            <element signature="e#43266#43366#0" expanded="false" />
+            <element signature="e#43405#43763#0" expanded="false" />
+            <element signature="e#43445#43507#0" expanded="false" />
+            <element signature="e#43771#43805#0" expanded="false" />
+            <element signature="e#44043#44227#0" expanded="false" />
+            <element signature="e#44135#44222#0" expanded="false" />
+            <element signature="e#44450#44552#0" expanded="false" />
+            <element signature="e#44800#44887#0" expanded="false" />
+            <element signature="e#44901#44964#0" expanded="false" />
+            <element signature="e#45181#46763#0" expanded="false" />
+            <element signature="e#45362#46755#0" expanded="false" />
+            <element signature="e#45448#46660#0" expanded="false" />
+            <element signature="e#45501#46488#0" expanded="false" />
+            <element signature="e#45516#45547#0" expanded="false" />
+            <element signature="e#46666#46745#0" expanded="false" />
+            <element signature="e#46851#46992#0" expanded="false" />
+            <element signature="e#47031#50318#0" expanded="false" />
+            <element signature="e#47242#47616#0" expanded="false" />
+            <element signature="e#47309#47364#0" expanded="false" />
+            <element signature="e#47704#47761#0" expanded="false" />
+            <element signature="e#47803#47868#0" expanded="false" />
+            <element signature="e#47910#48025#0" expanded="false" />
+            <element signature="e#48064#48176#0" expanded="false" />
+            <element signature="e#48216#48329#0" expanded="false" />
+            <element signature="e#48372#48671#0" expanded="false" />
+            <element signature="e#48487#48571#0" expanded="false" />
+            <element signature="e#48577#48661#0" expanded="false" />
+            <element signature="e#48712#48826#0" expanded="false" />
+            <element signature="e#48866#48979#0" expanded="false" />
+            <element signature="e#49022#49138#0" expanded="false" />
+            <element signature="e#49179#49293#0" expanded="false" />
+            <element signature="e#49333#49508#0" expanded="false" />
+            <element signature="e#49431#49498#0" expanded="false" />
+            <element signature="e#49545#49610#0" expanded="false" />
+            <element signature="e#49647#49713#0" expanded="false" />
+            <element signature="e#49750#49864#0" expanded="false" />
+            <element signature="e#49872#49896#0" expanded="false" />
+            <element signature="e#50243#50310#0" expanded="false" />
+            <element signature="e#50395#50533#0" expanded="false" />
+            <element signature="e#50570#50637#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsCommon#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#51075#51136#0" expanded="false" />
+            <element signature="e#51165#51273#0" expanded="false" />
+            <element signature="e#51297#51348#0" expanded="false" />
+            <element signature="e#51377#51438#0" expanded="false" />
+            <element signature="e#51470#51537#0" expanded="false" />
+            <element signature="e#51605#51915#0" expanded="false" />
+            <element signature="e#51944#52071#0" expanded="false" />
+            <element signature="e#52097#52212#0" expanded="false" />
+            <element signature="e#52218#52260#0" expanded="false" />
+            <element signature="e#52419#52462#0" expanded="false" />
+            <element signature="e#52494#52545#0" expanded="false" />
+            <element signature="e#52581#52636#0" expanded="false" />
+            <element signature="e#52666#52715#0" expanded="false" />
+            <element signature="e#52743#52790#0" expanded="false" />
+            <element signature="e#52823#52875#0" expanded="false" />
+            <element signature="e#52908#52960#0" expanded="false" />
+            <element signature="e#52989#53037#0" expanded="false" />
+            <element signature="e#53069#53120#0" expanded="false" />
+            <element signature="e#53156#53448#0" expanded="false" />
+            <element signature="e#53231#53284#0" expanded="false" />
+            <element signature="e#53334#53381#0" expanded="false" />
+            <element signature="e#53454#53504#0" expanded="false" />
+            <element signature="e#53585#53631#0" expanded="false" />
+            <element signature="e#53660#53709#0" expanded="false" />
+            <element signature="e#53746#54045#0" expanded="false" />
+            <element signature="e#53822#53877#0" expanded="false" />
+            <element signature="e#53928#53976#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsLine#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsDash#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsPoints#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#54692#54743#0" expanded="false" />
+            <element signature="e#54772#54833#0" expanded="false" />
+            <element signature="e#54839#54881#0" expanded="false" />
+            <element signature="e#54962#55005#0" expanded="false" />
+            <element signature="e#55034#55082#0" expanded="false" />
+            <element signature="e#55118#55283#0" expanded="false" />
+            <element signature="e#55169#55216#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsSprites#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#55512#55563#0" expanded="false" />
+            <element signature="e#55592#55653#0" expanded="false" />
+            <element signature="e#55659#55701#0" expanded="false" />
+            <element signature="e#55782#55825#0" expanded="false" />
+            <element signature="e#55854#55902#0" expanded="false" />
+            <element signature="e#55938#56103#0" expanded="false" />
+            <element signature="e#55989#56036#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsFog#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#56224#56311#0" expanded="false" />
+            <element signature="e#56336#56393#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsLambert#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#56488#56555#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsPhong#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#56797#56864#0" expanded="false" />
+            <element signature="e#56892#57068#0" expanded="false" />
+            <element signature="e#57098#57291#0" expanded="false" />
+            <element signature="e#57327#57532#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsToon#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#57773#57840#0" expanded="false" />
+            <element signature="e#57872#57939#0" expanded="false" />
+            <element signature="e#57967#58143#0" expanded="false" />
+            <element signature="e#58173#58366#0" expanded="false" />
+            <element signature="e#58402#58607#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsStandard#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#58818#58887#0" expanded="false" />
+            <element signature="e#58920#58989#0" expanded="false" />
+            <element signature="e#59021#59088#0" expanded="false" />
+            <element signature="e#59116#59292#0" expanded="false" />
+            <element signature="e#59322#59515#0" expanded="false" />
+            <element signature="e#59551#59756#0" expanded="false" />
+            <element signature="e#59798#59946#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsPhysical#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#60393#60462#0" expanded="false" />
+            <element signature="e#60504#60591#0" expanded="false" />
+            <element signature="e#60630#60893#0" expanded="false" />
+            <element signature="e#60819#60885#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsMatcap#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#61040#61097#0" expanded="false" />
+            <element signature="e#61125#61301#0" expanded="false" />
+            <element signature="e#61331#61524#0" expanded="false" />
+            <element signature="e#61560#61765#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsDepth#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#61862#62067#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsDistance#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#62167#62372#0" expanded="false" />
+            <element signature="n#!!block;n#refreshUniformsNormal#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#62642#62818#0" expanded="false" />
+            <element signature="e#62848#63041#0" expanded="false" />
+            <element signature="e#63077#63282#0" expanded="false" />
+            <element signature="n#!!block;n#markUniformsLightsNeedsUpdate#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!doc;n#materialNeedsLights#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#materialNeedsLights#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#64314#64459#0" expanded="false" />
+            <element signature="e#64501#64544#0" expanded="false" />
+            <element signature="e#64589#64635#0" expanded="false" />
+            <element signature="e#64675#64710#0" expanded="false" />
+            <element signature="e#64797#66553#0" expanded="false" />
+            <element signature="e#65058#65108#0" expanded="false" />
+            <element signature="e#65203#65812#0" expanded="false" />
+            <element signature="e#65335#65424#0" expanded="false" />
+            <element signature="e#65479#65564#0" expanded="false" />
+            <element signature="e#65570#65614#0" expanded="false" />
+            <element signature="e#65818#66006#0" expanded="false" />
+            <element signature="e#66053#66150#0" expanded="false" />
+            <element signature="e#66286#66550#0" expanded="false" />
+            <element signature="e#66662#69161#0" expanded="false" />
+            <element signature="e#66726#66860#0" expanded="false" />
+            <element signature="e#67017#67081#0" expanded="false" />
+            <element signature="e#67104#69155#0" expanded="false" />
+            <element signature="e#67182#67278#0" expanded="false" />
+            <element signature="e#67290#69021#0" expanded="false" />
+            <element signature="e#67547#67708#0" expanded="false" />
+            <element signature="e#68233#68404#0" expanded="false" />
+            <element signature="e#68492#68856#0" expanded="false" />
+            <element signature="e#68713#68844#0" expanded="false" />
+            <element signature="e#68862#69011#0" expanded="false" />
+            <element signature="e#69030#69147#0" expanded="false" />
+            <element signature="e#69054#69137#0" expanded="false" />
+            <element signature="e#69234#69660#0" expanded="false" />
+            <element signature="e#69744#70309#0" expanded="false" />
+            <element signature="e#70003#70146#0" expanded="false" />
+            <element signature="e#70152#70275#0" expanded="false" />
+            <element signature="e#70352#70427#0" expanded="false" />
+            <element signature="e#70479#70601#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/objects/Line.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="21" column="4" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="23" selection-end-column="23" />
+          <folding>
+            <element signature="n#!!block;n#copy#0;n#Line#0" expanded="false" />
+            <element signature="n#!!block;n#computeLineDistances#0;n#Line#0" expanded="false" />
+            <element signature="n#!!block;n#raycast#0;n#Line#0" expanded="false" />
+            <element signature="n#!!block;n#updateMorphTargets#0;n#Line#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/objects/r125/Mesh.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-273">
+          <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/objects/Mesh.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="40" column="4" lean-forward="true" selection-start-line="40" selection-start-column="4" selection-end-line="42" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/r115/build/three.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1420">
+          <caret line="15703" column="4" lean-forward="false" selection-start-line="15703" selection-start-column="4" selection-end-line="15703" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="487" column="2" lean-forward="false" selection-start-line="487" selection-start-column="2" selection-end-line="508" selection-end-column="4" />
+          <folding>
+            <element signature="n#!!block;n#createCanvasElement#0" expanded="false" />
+            <element signature="e#3244#3321#0" expanded="false" />
+            <element signature="e#3560#3708#0" expanded="false" />
+            <element signature="e#3567#3679#0" expanded="false" />
+            <element signature="n#!!block;n#getTargetPixelRatio#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#getContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#5817#5982#0" expanded="false" />
+            <element signature="e#6014#7360#0" expanded="false" />
+            <element signature="e#6047#6331#0" expanded="false" />
+            <element signature="e#6593#7079#0" expanded="false" />
+            <element signature="e#6710#6752#0" expanded="false" />
+            <element signature="e#6836#7071#0" expanded="false" />
+            <element signature="e#6877#6981#0" expanded="false" />
+            <element signature="e#6987#7061#0" expanded="false" />
+            <element signature="e#7218#7354#0" expanded="false" />
+            <element signature="e#7270#7345#0" expanded="false" />
+            <element signature="e#7375#7458#0" expanded="false" />
+            <element signature="n#!!doc;n#initGLContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#initGLContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#9182#9189#0" expanded="false" />
+            <element signature="e#9971#9995#0" expanded="false" />
+            <element signature="e#10040#10087#0" expanded="false" />
+            <element signature="e#10128#10238#0" expanded="false" />
+            <element signature="e#10282#10395#0" expanded="false" />
+            <element signature="e#10433#10465#0" expanded="false" />
+            <element signature="e#10470#10510#0" expanded="false" />
+            <element signature="e#10550#10664#0" expanded="false" />
+            <element signature="e#10702#10910#0" expanded="false" />
+            <element signature="e#10735#10863#0" expanded="false" />
+            <element signature="e#10915#11012#0" expanded="false" />
+            <element signature="e#11095#11210#0" expanded="false" />
+            <element signature="e#11539#11607#0" expanded="false" />
+            <element signature="e#11655#11912#0" expanded="false" />
+            <element signature="e#11688#11829#0" expanded="false" />
+            <element signature="e#12215#12273#0" expanded="false" />
+            <element signature="e#12319#12531#0" expanded="false" />
+            <element signature="e#12349#12488#0" expanded="false" />
+            <element signature="e#12573#12616#0" expanded="false" />
+            <element signature="e#12621#12699#0" expanded="false" />
+            <element signature="e#12832#12884#0" expanded="false" />
+            <element signature="e#13022#13064#0" expanded="false" />
+            <element signature="e#13118#13343#0" expanded="false" />
+            <element signature="e#13142#13192#0" expanded="false" />
+            <element signature="e#13198#13249#0" expanded="false" />
+            <element signature="e#13382#13415#0" expanded="false" />
+            <element signature="e#13461#13519#0" expanded="false" />
+            <element signature="e#13563#13597#0" expanded="false" />
+            <element signature="e#13646#13685#0" expanded="false" />
+            <element signature="e#13744#13966#0" expanded="false" />
+            <element signature="e#13777#13907#0" expanded="false" />
+            <element signature="e#14015#14082#0" expanded="false" />
+            <element signature="e#14120#14167#0" expanded="false" />
+            <element signature="e#14205#14272#0" expanded="false" />
+            <element signature="e#14277#14366#0" expanded="false" />
+            <element signature="e#14414#14669#0" expanded="false" />
+            <element signature="e#14704#14748#0" expanded="false" />
+            <element signature="e#14783#14827#0" expanded="false" />
+            <element signature="e#14864#14908#0" expanded="false" />
+            <element signature="e#14946#15299#0" expanded="false" />
+            <element signature="n#!!block;n#onContextLost#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#15497#15508#0" expanded="false" />
+            <element signature="n#!!block;n#onContextRestore#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#onMaterialDispose#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#deallocateMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#releaseMaterialProgramReference#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#16120#16178#0" expanded="false" />
+            <element signature="n#!!block;n#renderObjectImmediate#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#16428#18258#0" expanded="false" />
+            <element signature="e#16916#17210#0" expanded="false" />
+            <element signature="e#17239#17525#0" expanded="false" />
+            <element signature="e#17550#17820#0" expanded="false" />
+            <element signature="e#17848#18130#0" expanded="false" />
+            <element signature="e#18263#18420#0" expanded="false" />
+            <element signature="e#19205#19289#0" expanded="false" />
+            <element signature="e#19347#19421#0" expanded="false" />
+            <element signature="e#21028#21066#0" expanded="false" />
+            <element signature="e#21093#21134#0" expanded="false" />
+            <element signature="e#21584#22567#0" expanded="false" />
+            <element signature="e#21711#21913#0" expanded="false" />
+            <element signature="e#21777#21909#0" expanded="false" />
+            <element signature="e#21853#21904#0" expanded="false" />
+            <element signature="e#22030#22562#0" expanded="false" />
+            <element signature="e#22094#22558#0" expanded="false" />
+            <element signature="e#22134#22417#0" expanded="false" />
+            <element signature="e#22189#22405#0" expanded="false" />
+            <element signature="e#22287#22391#0" expanded="false" />
+            <element signature="e#22461#22553#0" expanded="false" />
+            <element signature="n#!!block;n#onAnimationFrame#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#22976#23123#0" expanded="false" />
+            <element signature="e#23128#23186#0" expanded="false" />
+            <element signature="e#23227#27030#0" expanded="false" />
+            <element signature="e#23301#23464#0" expanded="false" />
+            <element signature="e#23519#23668#0" expanded="false" />
+            <element signature="e#23738#23850#0" expanded="false" />
+            <element signature="e#24268#24315#0" expanded="false" />
+            <element signature="e#25174#25237#0" expanded="false" />
+            <element signature="e#25699#25743#0" expanded="false" />
+            <element signature="e#26264#26540#0" expanded="false" />
+            <element signature="e#26860#26944#0" expanded="false" />
+            <element signature="e#26950#26993#0" expanded="false" />
+            <element signature="n#!!doc;n#projectObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#projectObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#27424#27467#0" expanded="false" />
+            <element signature="e#27491#27556#0" expanded="false" />
+            <element signature="e#27582#27709#0" expanded="false" />
+            <element signature="e#27653#27704#0" expanded="false" />
+            <element signature="e#27736#28195#0" expanded="false" />
+            <element signature="e#27806#28190#0" expanded="false" />
+            <element signature="e#27830#27936#0" expanded="false" />
+            <element signature="e#28088#28184#0" expanded="false" />
+            <element signature="e#28237#28457#0" expanded="false" />
+            <element signature="e#28260#28363#0" expanded="false" />
+            <element signature="e#28550#28746#0" expanded="false" />
+            <element signature="e#28651#28740#0" expanded="false" />
+            <element signature="e#28886#28984#0" expanded="false" />
+            <element signature="e#29250#29525#0" expanded="false" />
+            <element signature="e#29411#29517#0" expanded="false" />
+            <element signature="e#29765#29838#0" expanded="false" />
+            <element signature="n#!!doc;n#renderObjects#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#renderObjects#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#30444#30867#0" expanded="false" />
+            <element signature="e#30546#30857#0" expanded="false" />
+            <element signature="e#30638#30845#0" expanded="false" />
+            <element signature="e#30873#30952#0" expanded="false" />
+            <element signature="n#!!doc;n#renderObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#renderObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#31507#31697#0" expanded="false" />
+            <element signature="n#!!doc;n#initMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#initMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#33031#33115#0" expanded="false" />
+            <element signature="e#33163#33255#0" expanded="false" />
+            <element signature="e#33327#33362#0" expanded="false" />
+            <element signature="e#33407#33456#0" expanded="false" />
+            <element signature="e#33462#33525#0" expanded="false" />
+            <element signature="e#33586#33952#0" expanded="false" />
+            <element signature="e#34110#34298#0" expanded="false" />
+            <element signature="e#34529#35789#0" expanded="false" />
+            <element signature="n#!!doc;n#setProgram#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#setProgram#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#36784#37183#0" expanded="false" />
+            <element signature="e#36858#37179#0" expanded="false" />
+            <element signature="e#36970#37032#0" expanded="false" />
+            <element signature="e#37305#37364#0" expanded="false" />
+            <element signature="e#37422#37481#0" expanded="false" />
+            <element signature="e#37591#37650#0" expanded="false" />
+            <element signature="e#37855#37914#0" expanded="false" />
+            <element signature="e#37972#38031#0" expanded="false" />
+            <element signature="e#38079#38138#0" expanded="false" />
+            <element signature="e#38148#38247#0" expanded="false" />
+            <element signature="e#38647#38728#0" expanded="false" />
+            <element signature="e#38803#40779#0" expanded="false" />
+            <element signature="e#38886#39070#0" expanded="false" />
+            <element signature="e#39115#39215#0" expanded="false" />
+            <element signature="e#39254#39612#0" expanded="false" />
+            <element signature="e#39294#39356#0" expanded="false" />
+            <element signature="e#39620#39654#0" expanded="false" />
+            <element signature="e#39892#40078#0" expanded="false" />
+            <element signature="e#39986#40073#0" expanded="false" />
+            <element signature="e#40301#40403#0" expanded="false" />
+            <element signature="e#40684#40771#0" expanded="false" />
+            <element signature="e#40785#40848#0" expanded="false" />
+            <element signature="e#41065#42650#0" expanded="false" />
+            <element signature="e#41248#42642#0" expanded="false" />
+            <element signature="e#41336#42547#0" expanded="false" />
+            <element signature="e#41384#42375#0" expanded="false" />
+            <element signature="e#41399#41430#0" expanded="false" />
+            <element signature="e#42553#42632#0" expanded="false" />
+            <element signature="e#42738#42879#0" expanded="false" />
+            <element signature="e#43046#43420#0" expanded="false" />
+            <element signature="e#43113#43168#0" expanded="false" />
+            <element signature="e#43508#43575#0" expanded="false" />
+            <element signature="e#43835#43973#0" expanded="false" />
+            <element signature="e#44010#44077#0" expanded="false" />
+            <element signature="n#!!block;n#markUniformsLightsNeedsUpdate#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!doc;n#materialNeedsLights#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="n#!!block;n#materialNeedsLights#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
+            <element signature="e#45356#45501#0" expanded="false" />
+            <element signature="e#45543#45586#0" expanded="false" />
+            <element signature="e#45631#45677#0" expanded="false" />
+            <element signature="e#45715#45753#0" expanded="false" />
+            <element signature="e#45800#45844#0" expanded="false" />
+            <element signature="e#45884#45919#0" expanded="false" />
+            <element signature="e#46014#47755#0" expanded="false" />
+            <element signature="e#46275#46325#0" expanded="false" />
+            <element signature="e#46420#47026#0" expanded="false" />
+            <element signature="e#46554#46638#0" expanded="false" />
+            <element signature="e#46693#46778#0" expanded="false" />
+            <element signature="e#46784#46828#0" expanded="false" />
+            <element signature="e#47032#47220#0" expanded="false" />
+            <element signature="e#47267#47364#0" expanded="false" />
+            <element signature="e#47500#47752#0" expanded="false" />
+            <element signature="e#47864#50441#0" expanded="false" />
+            <element signature="e#47928#48062#0" expanded="false" />
+            <element signature="e#48219#48283#0" expanded="false" />
+            <element signature="e#48306#50435#0" expanded="false" />
+            <element signature="e#48384#48480#0" expanded="false" />
+            <element signature="e#48492#50301#0" expanded="false" />
+            <element signature="e#48755#48916#0" expanded="false" />
+            <element signature="e#49513#49684#0" expanded="false" />
+            <element signature="e#49772#50136#0" expanded="false" />
+            <element signature="e#49993#50124#0" expanded="false" />
+            <element signature="e#50142#50291#0" expanded="false" />
+            <element signature="e#50310#50427#0" expanded="false" />
+            <element signature="e#50334#50417#0" expanded="false" />
+            <element signature="e#50518#50911#0" expanded="false" />
+            <element signature="e#50999#52295#0" expanded="false" />
+            <element signature="e#51236#51293#0" expanded="false" />
+            <element signature="e#51607#51745#0" expanded="false" />
+            <element signature="e#51751#52125#0" expanded="false" />
+            <element signature="e#51796#51989#0" expanded="false" />
+            <element signature="e#51995#52117#0" expanded="false" />
+            <element signature="e#52338#52413#0" expanded="false" />
+            <element signature="e#52448#52500#0" expanded="false" />
+            <element signature="e#52552#52674#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/materials/MeshDepthMaterial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-374">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#41#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/materials/MeshBasicMaterial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="42" column="4" lean-forward="true" selection-start-line="42" selection-start-column="4" selection-end-line="44" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/geometries/BoxGeometry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/geometries/PlaneGeometry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/geometries/SphereGeometry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/BufferGeometry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="78" column="16" lean-forward="true" selection-start-line="78" selection-start-column="16" selection-end-line="78" selection-end-column="16" />
+          <folding>
+            <element signature="n#!!block;n#constructor#0;n#BufferGeometry#0" expanded="false" />
+            <element signature="n#!!doc;n#setIndex#0;n#BufferGeometry#0" expanded="false" />
+            <element signature="n#!!doc;n#setAttribute#0;n#BufferGeometry#0" expanded="false" />
+            <element signature="n#!!doc;n#deleteAttribute#0;n#BufferGeometry#0" expanded="false" />
+            <element signature="e#2737#2818#0" expanded="false" />
+            <element signature="e#2892#3046#0" expanded="false" />
+            <element signature="e#3123#3208#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
   <component name="masterDetails">
     <states>

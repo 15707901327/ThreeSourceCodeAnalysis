@@ -34,9 +34,13 @@ import { Color } from '../math/Color.js';
  * }
  */
 
-function MeshBasicMaterial( parameters ) {
+class MeshBasicMaterial extends Material {
 
-	Material.call( this );
+	constructor( parameters ) {
+
+		super();
+
+		this.isMeshBasicMaterial = true;
 
 	this.type = 'MeshBasicMaterial';
 
@@ -64,21 +68,15 @@ function MeshBasicMaterial( parameters ) {
 	this.wireframeLinecap = 'round';
 	this.wireframeLinejoin = 'round';
 
-	this.skinning = false;
-	this.morphTargets = false;
+		this.fog = true;
 
 	this.setValues( parameters );
 
 }
 
-MeshBasicMaterial.prototype = Object.create( Material.prototype );
-MeshBasicMaterial.prototype.constructor = MeshBasicMaterial;
+	copy( source ) {
 
-MeshBasicMaterial.prototype.isMeshBasicMaterial = true;
-
-MeshBasicMaterial.prototype.copy = function ( source ) {
-
-	Material.prototype.copy.call( this, source );
+		super.copy( source );
 
 	this.color.copy( source.color );
 
@@ -104,12 +102,12 @@ MeshBasicMaterial.prototype.copy = function ( source ) {
 	this.wireframeLinecap = source.wireframeLinecap;
 	this.wireframeLinejoin = source.wireframeLinejoin;
 
-	this.skinning = source.skinning;
-	this.morphTargets = source.morphTargets;
+		this.fog = source.fog;
 
 	return this;
 
-};
+	}
 
+}
 
 export { MeshBasicMaterial };

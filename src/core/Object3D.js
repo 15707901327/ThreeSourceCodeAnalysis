@@ -1,29 +1,29 @@
-import {Quaternion} from '../math/Quaternion.js';
-import {Vector3} from '../math/Vector3.js';
-import {Matrix4} from '../math/Matrix4.js';
-import {EventDispatcher} from './EventDispatcher.js';
-import {Euler} from '../math/Euler.js';
-import {Layers} from './Layers.js';
-import {Matrix3} from '../math/Matrix3.js';
-import { MathUtils } from '../math/MathUtils.js';
+import { Quaternion } from '../math/Quaternion.js';
+import { Vector3 } from '../math/Vector3.js';
+import { Matrix4 } from '../math/Matrix4.js';
+import { EventDispatcher } from './EventDispatcher.js';
+import { Euler } from '../math/Euler.js';
+import { Layers } from './Layers.js';
+import { Matrix3 } from '../math/Matrix3.js';
+import * as MathUtils from '../math/MathUtils.js';
 
-var _object3DId = 0;
+let _object3DId = 0;
 
-var _v1 = new Vector3();
-var _q1 = new Quaternion();
-var _m1 = new Matrix4();
-var _target = new Vector3();
+const _v1 = /*@__PURE__*/ new Vector3();
+const _q1 = /*@__PURE__*/ new Quaternion();
+const _m1 = /*@__PURE__*/ new Matrix4();
+const _target = /*@__PURE__*/ new Vector3();
 
-var _position = new Vector3();
-var _scale = new Vector3();
-var _quaternion = new Quaternion();
+const _position = /*@__PURE__*/ new Vector3();
+const _scale = /*@__PURE__*/ new Vector3();
+const _quaternion = /*@__PURE__*/ new Quaternion();
 
-var _xAxis = new Vector3(1, 0, 0);
-var _yAxis = new Vector3(0, 1, 0);
-var _zAxis = new Vector3(0, 0, 1);
+const _xAxis = /*@__PURE__*/ new Vector3( 1, 0, 0 );
+const _yAxis = /*@__PURE__*/ new Vector3( 0, 1, 0 );
+const _zAxis = /*@__PURE__*/ new Vector3( 0, 0, 1 );
 
-var _addedEvent = {type: 'added'};
-var _removedEvent = {type: 'removed'};
+const _addedEvent = { type: 'added' };
+const _removedEvent = { type: 'removed' };
 
 /**
  * @author mrdoob / http://mrdoob.com/

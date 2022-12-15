@@ -71,7 +71,7 @@ Object.assign( Color.prototype, {
 
 	r: 1, g: 1, b: 1,
 
-	set: function ( value ) {
+	set: function ( value )  {
 
 		if ( value && value.isColor ) {
 
