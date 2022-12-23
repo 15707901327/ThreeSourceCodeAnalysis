@@ -117,7 +117,7 @@ class BufferGeometry extends EventDispatcher {
 		return this.attributes[ name ] !== undefined;
 
 	}
-
+ 
 	addGroup( start, count, materialIndex = 0 ) {
 
     this.groups.push({
@@ -280,7 +280,7 @@ class BufferGeometry extends EventDispatcher {
 
 	}
 
-	center() {
+	center(){
 
     this.computeBoundingBox();
 
