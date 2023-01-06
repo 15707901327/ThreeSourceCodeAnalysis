@@ -1,66 +1,66 @@
-/**
- * @author Mugen87 / https://github.com/Mugen87
- */
-
-import { WebGLLights } from './WebGLLights.js';
+import {WebGLLights} from './WebGLLights.js';
 
 /**
  * 渲染状态
  * @returns {{init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}}
  * @constructor
  */
-function WebGLRenderState() {
+function WebGLRenderState(extensions, capabilities) {
 
-	var lights = new WebGLLights();
+    const lights = new WebGLLights(extensions, capabilities);
 
-	var lightsArray = []; // 记录渲染的灯光
-	var shadowsArray = []; // 记录渲染阴影
+    const lightsArray = []; // 记录渲染的灯光
+    const shadowsArray = [];// 记录渲染阴影
 
-  /**
-   * 初始化
-   */
-	function init() {
-		lightsArray.length = 0;
-		shadowsArray.length = 0;
-	}
+    /**
+     * 初始化
+     */
+    function init() {
+        lightsArray.length = 0;
+        shadowsArray.length = 0;
+    }
 
-	/**
-	 * 记录渲染的灯光
-	 * @param light
-	 */
-	function pushLight( light ) {
-		lightsArray.push( light );
-	}
+    /**
+     * 记录渲染的灯光
+     * @param light
+     */
+    function pushLight(light) {
+        lightsArray.push(light);
+    }
 
-	function pushShadow( shadowLight ) {
+    function pushShadow(shadowLight) {
 
-		shadowsArray.push( shadowLight );
+        shadowsArray.push(shadowLight);
 
-	}
+    }
 
-	/**
-	 * 设置灯光
-	 * @param camera 相机
-	 */
-	function setupLights( camera ) {
-		lights.setup( lightsArray, shadowsArray, camera );
-	}
+    /**
+     * 设置灯光
+     * @param camera 相机
+     */
+    function setupLights(physicallyCorrectLights) {
 
-	var state = {
-		lightsArray: lightsArray,
-		shadowsArray: shadowsArray,
+        lights.setup(lightsArray, physicallyCorrectLights);
 
-		lights: lights
-	};
+    }
 
-	return {
-		init: init,
-		state: state,
-		setupLights: setupLights,
+    function setupLightsView(camera) {
 
-		pushLight: pushLight,
-		pushShadow: pushShadow
-	};
+        lights.setupView(lightsArray, camera);
+
+    }
+
+    const state = {
+        lightsArray: lightsArray, shadowsArray: shadowsArray,
+
+        lights: lights
+    };
+
+    return {
+        init: init, state: state, setupLights: setupLights, setupLightsView: setupLightsView,
+
+        pushLight: pushLight, pushShadow: pushShadow
+    };
 
 }
 
@@ -69,60 +69,47 @@ function WebGLRenderState() {
  * @returns {{get: (function(*, *): {init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}), dispose: dispose}}
  * @constructor
  */
-function WebGLRenderStates() {
+function WebGLRenderStates(extensions, capabilities) {
 
-	var renderStates = new WeakMap();
+    let renderStates = new WeakMap();
 
-	function onSceneDispose( event ) {
+    function get(scene, renderCallDepth = 0) {
 
-		var scene = event.target;
+        const renderStateArray = renderStates.get(scene);
+        let renderState;
 
-		scene.removeEventListener( 'dispose', onSceneDispose );
+        if (renderStateArray === undefined) {
 
-		renderStates.delete( scene );
+            renderState = new WebGLRenderState(extensions, capabilities);
+            renderStates.set(scene, [renderState]);
 
-	}
+        } else {
 
-	/**
-	 * 获取渲染状态
-	 * @param scene 场景
-	 * @param camera 相机
-	 * @returns {{init: init, pushLight: pushLight, pushShadow: pushShadow, state: {shadowsArray: Array, lightsArray: Array, lights: {setup, state}}, setupLights: setupLights}}
-	 */
-	function get( scene, camera ) {
+            if (renderCallDepth >= renderStateArray.length) {
 
-		var renderState;
+                renderState = new WebGLRenderState(extensions, capabilities);
+                renderStateArray.push(renderState);
 
-		if ( renderStates.has( scene ) === false ) {
-			renderState = new WebGLRenderState();
-			renderStates.set( scene, new WeakMap() );
-			renderStates.get( scene ).set( camera, renderState );
+            } else {
 
-			scene.addEventListener( 'dispose', onSceneDispose );
-		}
-		else {
-			if ( renderStates.get( scene ).has( camera ) === false ) {
-				renderState = new WebGLRenderState();
-				renderStates.get( scene ).set( camera, renderState );
-			} else {
-				renderState = renderStates.get( scene ).get( camera );
-			}
-		}
+                renderState = renderStateArray[renderCallDepth];
 
-		return renderState;
-	}
+            }
+        }
 
-	function dispose() {
+        return renderState;
+    }
 
-		renderStates = new WeakMap();
+    function dispose() {
 
-	}
+        renderStates = new WeakMap();
 
-	return {
-		get: get,
-		dispose: dispose
-	};
+    }
+
+    return {
+        get: get, dispose: dispose
+    };
 
 }
 
-export { WebGLRenderStates };
+export {WebGLRenderStates};

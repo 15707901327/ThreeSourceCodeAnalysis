@@ -1,73 +1,83 @@
-import { Object3D } from '../core/Object3D.js';
+import {Object3D} from '../core/Object3D.js';
 
-/**
- * @author mrdoob / http://mrdoob.com/
- */
 /**
  * 场景
  * @constructor
  */
-function Scene() {
+class Scene extends Object3D {
 
-	Object3D.call( this );
+    constructor() {
 
-	this.type = 'Scene';
+        super();
 
-	this.background = null;
-	this.environment = null; // 环境
-	this.fog = null;
-	this.overrideMaterial = null;
+        this.isScene = true;
 
-	this.autoUpdate = true; // checked by the renderer
+        this.type = 'Scene';
 
-	if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
+        this.background = null;
+        this.environment = null; // 环境
+        this.fog = null;
 
-		__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef
+        this.backgroundBlurriness = 0;
+        this.backgroundIntensity = 1;
 
-	}
+        this.overrideMaterial = null;
+
+        if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
+
+            __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', {detail: this}));
+
+        }
+
+    }
+
+    copy(source, recursive) {
+
+        super.copy(source, recursive);
+
+        if (source.background !== null) this.background = source.background.clone();
+        if (source.environment !== null) this.environment = source.environment.clone();
+        if (source.fog !== null) this.fog = source.fog.clone();
+
+        this.backgroundBlurriness = source.backgroundBlurriness;
+        this.backgroundIntensity = source.backgroundIntensity;
+
+        if (source.overrideMaterial !== null) this.overrideMaterial = source.overrideMaterial.clone();
+
+        this.matrixAutoUpdate = source.matrixAutoUpdate;
+
+        return this;
+
+    }
+
+    toJSON(meta) {
+
+        const data = super.toJSON(meta);
+
+        if (this.fog !== null) data.object.fog = this.fog.toJSON();
+        if (this.backgroundBlurriness > 0) data.backgroundBlurriness = this.backgroundBlurriness;
+        if (this.backgroundIntensity !== 1) data.backgroundIntensity = this.backgroundIntensity;
+
+        return data;
+
+    }
+
+    // @deprecated
+
+    get autoUpdate() {
+
+        console.warn('THREE.Scene: autoUpdate was renamed to matrixWorldAutoUpdate in r144.');
+        return this.matrixWorldAutoUpdate;
+
+    }
+
+    set autoUpdate(value) {
+
+        console.warn('THREE.Scene: autoUpdate was renamed to matrixWorldAutoUpdate in r144.');
+        this.matrixWorldAutoUpdate = value;
+
+    }
 
 }
 
-Scene.prototype = Object.assign( Object.create( Object3D.prototype ), {
-
-	constructor: Scene,
-
-	isScene: true,
-
-	copy: function ( source, recursive ) {
-
-		Object3D.prototype.copy.call( this, source, recursive );
-
-		if ( source.background !== null ) this.background = source.background.clone();
-		if ( source.environment !== null ) this.environment = source.environment.clone();
-		if ( source.fog !== null ) this.fog = source.fog.clone();
-		if ( source.overrideMaterial !== null ) this.overrideMaterial = source.overrideMaterial.clone();
-
-		this.autoUpdate = source.autoUpdate;
-		this.matrixAutoUpdate = source.matrixAutoUpdate;
-
-		return this;
-
-	},
-
-	toJSON: function ( meta ) {
-
-		var data = Object3D.prototype.toJSON.call( this, meta );
-
-		if ( this.background !== null ) data.object.background = this.background.toJSON( meta );
-		if ( this.environment !== null ) data.object.environment = this.environment.toJSON( meta );
-		if ( this.fog !== null ) data.object.fog = this.fog.toJSON();
-
-		return data;
-
-	},
-
-	dispose: function () {
-
-		this.dispatchEvent( { type: 'dispose' } );
-
-	}
-
-} );
-
-export { Scene };
+export {Scene};

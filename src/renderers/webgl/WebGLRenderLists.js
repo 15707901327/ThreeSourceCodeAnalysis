@@ -1,56 +1,48 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 function painterSortStable(a, b) {
 
-  if (a.groupOrder !== b.groupOrder) {
+    if (a.groupOrder !== b.groupOrder) {
 
-    return a.groupOrder - b.groupOrder;
+        return a.groupOrder - b.groupOrder;
 
-  } else if (a.renderOrder !== b.renderOrder) {
+    } else if (a.renderOrder !== b.renderOrder) {
 
-    return a.renderOrder - b.renderOrder;
+        return a.renderOrder - b.renderOrder;
 
-  } else if (a.program !== b.program) {
+    } else if (a.material.id !== b.material.id) {
 
-    return a.program.id - b.program.id;
+        return a.material.id - b.material.id;
 
-  } else if (a.material.id !== b.material.id) {
+    } else if (a.z !== b.z) {
 
-    return a.material.id - b.material.id;
+        return a.z - b.z;
 
-  } else if (a.z !== b.z) {
+    } else {
 
-    return a.z - b.z;
+        return a.id - b.id;
 
-  } else {
-
-    return a.id - b.id;
-
-  }
+    }
 
 }
 
 function reversePainterSortStable(a, b) {
 
-  if (a.groupOrder !== b.groupOrder) {
+    if (a.groupOrder !== b.groupOrder) {
 
-    return a.groupOrder - b.groupOrder;
+        return a.groupOrder - b.groupOrder;
 
-  } else if (a.renderOrder !== b.renderOrder) {
+    } else if (a.renderOrder !== b.renderOrder) {
 
-    return a.renderOrder - b.renderOrder;
+        return a.renderOrder - b.renderOrder;
 
-  } else if (a.z !== b.z) {
+    } else if (a.z !== b.z) {
 
-    return b.z - a.z;
+        return b.z - a.z;
 
-  } else {
+    } else {
 
-    return a.id - b.id;
+        return a.id - b.id;
 
-  }
+    }
 
 }
 
@@ -61,117 +53,162 @@ function reversePainterSortStable(a, b) {
  */
 function WebGLRenderList() {
 
-  // 保存对象渲染项信息
-  var renderItems = [];
-  var renderItemsIndex = 0;
+    // 保存对象渲染项信息
+    const renderItems = [];
+    let renderItemsIndex = 0;
 
-  var opaque = [];
-  var transparent = [];
+    const opaque = [];
+    const transmissive = [];
+    const transparent = [];
 
-  // 默认着色器
-  var defaultProgram = {id: -1};
+    function init() {
+        renderItemsIndex = 0;
 
-  /**
-   * 初始化
-   */
-  function init() {
-    renderItemsIndex = 0;
-
-    opaque.length = 0;
-    transparent.length = 0;
-  }
-
-  /**
-   * 信息存放至渲染列表
-   * @param object 对象
-   * @param geometry 集合体
-   * @param material 材质
-   * @param groupOrder 渲染级别
-   * @param z 深度值
-   * @param group
-   */
-  function getNextRenderItem(object, geometry, material, groupOrder, z, group) {
-
-    var renderItem = renderItems[renderItemsIndex];
-
-    if (renderItem === undefined) {
-      renderItem = {
-        id: object.id,
-        object: object,
-        geometry: geometry,
-        material: material,
-        program: material.program || defaultProgram,
-        groupOrder: groupOrder,
-        renderOrder: object.renderOrder,
-        z: z,
-        group: group
-      };
-      renderItems[renderItemsIndex] = renderItem;
-    }
-    else {
-      renderItem.id = object.id;
-      renderItem.object = object;
-      renderItem.geometry = geometry;
-      renderItem.material = material;
-      renderItem.program = material.program || defaultProgram;
-      renderItem.groupOrder = groupOrder;
-      renderItem.renderOrder = object.renderOrder;
-      renderItem.z = z;
-      renderItem.group = group;
+        opaque.length = 0;
+        transmissive.length = 0;
+        transparent.length = 0;
     }
 
-    renderItemsIndex++;
+    /**
+     * 信息存放至渲染列表
+     * @param object 对象
+     * @param geometry 集合体
+     * @param material 材质
+     * @param groupOrder 渲染级别
+     * @param z 深度值
+     * @param group
+     */
+    function getNextRenderItem(object, geometry, material, groupOrder, z, group) {
 
-    return renderItem;
+        let renderItem = renderItems[renderItemsIndex];
 
-  }
+        if (renderItem === undefined) {
+            renderItem = {
+                id: object.id,
+                object: object,
+                geometry: geometry,
+                material: material,
+                groupOrder: groupOrder,
+                renderOrder: object.renderOrder,
+                z: z,
+                group: group
+            };
+            renderItems[renderItemsIndex] = renderItem;
+        } else {
+            renderItem.id = object.id;
+            renderItem.object = object;
+            renderItem.geometry = geometry;
+            renderItem.material = material;
+            renderItem.groupOrder = groupOrder;
+            renderItem.renderOrder = object.renderOrder;
+            renderItem.z = z;
+            renderItem.group = group;
+        }
 
-  /**
-   * 信息存放至渲染列表
-   * @param object 对象
-   * @param geometry 集合体
-   * @param material 材质
-   * @param groupOrder 渲染级别
-   * @param z 深度值
-   * @param group
-   */
-  function push(object, geometry, material, groupOrder, z, group) {
-    var renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
-    (material.transparent === true ? transparent : opaque).push(renderItem);
-  }
+        renderItemsIndex++;
 
-  /**
-   *
-   * @param object 对象
-   * @param geometry 几何体
-   * @param material 材质
-   * @param groupOrder 0
-   * @param z 0
-   * @param group null
-   */
-  function unshift(object, geometry, material, groupOrder, z, group) {
-    var renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
-    (material.transparent === true ? transparent : opaque).unshift(renderItem);
-  }
+        return renderItem;
 
-  /**
-   * 对渲染物体排序
-   */
-  function sort() {
-    if (opaque.length > 1) opaque.sort(painterSortStable);
-    if (transparent.length > 1) transparent.sort(reversePainterSortStable);
-  }
+    }
 
-  return {
-    opaque: opaque,
-    transparent: transparent,
+    /**
+     * 信息存放至渲染列表
+     * @param object 对象
+     * @param geometry 集合体
+     * @param material 材质
+     * @param groupOrder 渲染级别
+     * @param z 深度值
+     * @param group
+     */
+    function push(object, geometry, material, groupOrder, z, group) {
 
-    init: init,
-    push: push,
-    unshift: unshift,
+        const renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
 
-    sort: sort
-  };
+        if (material.transmission > 0.0) {
+
+            transmissive.push(renderItem);
+
+        } else if (material.transparent === true) {
+
+            transparent.push(renderItem);
+
+        } else {
+
+            opaque.push(renderItem);
+
+        }
+
+    }
+
+    /**
+     *
+     * @param object 对象
+     * @param geometry 几何体
+     * @param material 材质
+     * @param groupOrder 0
+     * @param z 0
+     * @param group null
+     */
+    function unshift(object, geometry, material, groupOrder, z, group) {
+
+        const renderItem = getNextRenderItem(object, geometry, material, groupOrder, z, group);
+
+        if (material.transmission > 0.0) {
+
+            transmissive.unshift(renderItem);
+
+        } else if (material.transparent === true) {
+
+            transparent.unshift(renderItem);
+
+        } else {
+
+            opaque.unshift(renderItem);
+
+        }
+
+    }
+
+    function sort(customOpaqueSort, customTransparentSort) {
+
+        if (opaque.length > 1) opaque.sort(customOpaqueSort || painterSortStable);
+        if (transmissive.length > 1) transmissive.sort(customTransparentSort || reversePainterSortStable);
+        if (transparent.length > 1) transparent.sort(customTransparentSort || reversePainterSortStable);
+
+    }
+
+    function finish() {
+
+        // Clear references from inactive renderItems in the list
+
+        for (let i = renderItemsIndex, il = renderItems.length; i < il; i++) {
+
+            const renderItem = renderItems[i];
+
+            if (renderItem.id === null) break;
+
+            renderItem.id = null;
+            renderItem.object = null;
+            renderItem.geometry = null;
+            renderItem.material = null;
+            renderItem.group = null;
+
+        }
+
+    }
+
+    return {
+        opaque: opaque,
+        transmissive: transmissive,
+        transparent: transparent,
+
+        init: init,
+        push: push,
+        unshift: unshift,
+        finish: finish,
+
+        sort: sort
+    };
 
 }
 
@@ -182,65 +219,49 @@ function WebGLRenderList() {
  */
 function WebGLRenderLists() {
 
-  var lists = new WeakMap();
+    let lists = new WeakMap();
 
-  function onSceneDispose(event) {
+    function get(scene, renderCallDepth) {
 
-    var scene = event.target;
+        const listArray = lists.get(scene);
+        let list;
 
-    scene.removeEventListener('dispose', onSceneDispose);
+        if (listArray === undefined) {
 
-    lists.delete(scene);
+            list = new WebGLRenderList();
+            lists.set(scene, [list]);
 
-  }
+        } else {
 
-  /**
-   * 获取渲染列表
-   * @param scene 场景
-   * @param camera 相机
-   * @returns {{init: init, opaque: Array, unshift: unshift, sort: sort, transparent: Array, push: push}}
-   */
-  function get(scene, camera) {
+            if (renderCallDepth >= listArray.length) {
 
-    var cameras = lists.get(scene);
-    var list;
-    if (cameras === undefined) {
+                list = new WebGLRenderList();
+                listArray.push(list);
 
-      list = new WebGLRenderList();
-      lists.set(scene, new WeakMap());
-      lists.get(scene).set(camera, list);
+            } else {
 
-      scene.addEventListener('dispose', onSceneDispose);
+                list = listArray[renderCallDepth];
 
-    }
-    else {
+            }
 
-      list = cameras.get(camera);
-      if (list === undefined) {
+        }
 
-        list = new WebGLRenderList();
-        cameras.set(camera, list);
-
-      }
+        return list;
 
     }
 
-    return list;
+    function dispose() {
 
-  }
+        lists = new WeakMap();
 
-  function dispose() {
+    }
 
-    lists = new WeakMap();
-
-  }
-
-  return {
-    get: get,
-    dispose: dispose
-  };
+    return {
+        get: get,
+        dispose: dispose
+    };
 
 }
 
 
-export {WebGLRenderLists};
+export {WebGLRenderLists, WebGLRenderList};
