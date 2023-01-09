@@ -88,7 +88,7 @@ function WebGLRenderer(parameters = {}) {
     // render() can be called from within a callback triggered by another render.
     // We track this so that the nested render call gets its list and state isolated from the parent render call.
 
-    const renderListStack = [];
+    const renderListStack = []; // 多级渲染列表
     const renderStateStack = [];
 
     // public properties
@@ -113,7 +113,6 @@ function WebGLRenderer(parameters = {}) {
     this.autoClearStencil = true;
 
     // scene graph
-
     this.sortObjects = true; // 标记排序渲染物体
 
     // 用户定义裁剪
@@ -1030,9 +1029,9 @@ function WebGLRenderer(parameters = {}) {
         currentRenderList = renderLists.get(scene, renderListStack.length);
         currentRenderList.init();
 
-        // 对象添加到渲染列表
         renderListStack.push(currentRenderList);
 
+        // 对象添加到渲染列表
         projectObject(scene, camera, 0, _this.sortObjects);
 
         currentRenderList.finish();

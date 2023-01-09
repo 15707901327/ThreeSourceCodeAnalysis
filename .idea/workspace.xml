@@ -30,17 +30,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.r145源码">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Default_Changelist.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Default_Changelist.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/objects/Mesh.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Layers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Layers.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/Object3D.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Object3D.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/materials/Material.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/Material.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/Vector3.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Vector3.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLExtensions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLExtensions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLLights.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLLights.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLRenderLists.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLRenderLists.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLRenderStates.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLRenderStates.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scenes/Scene.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenes/Scene.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLObjects.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLObjects.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,29 +189,29 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r148/src/scenes/Scene.js",
+    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r148/src/materials/Material.js",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r148/src/scenes/Scene.js",
+    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r148/src/materials/Material.js",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\src\objects" />
+      <recent name="$PROJECT_DIR$/src/objects" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\ParticleSystem\tailflame" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\core" />
+      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\fire" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\models\gltf" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\ParticleSystem\tailflame" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\jsm" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\postprocessing" />
       <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/objects" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\examples\ParticleSystem\tailflame" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\core" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\examples\fire" />
-      <recent name="D:\workhome\ThreeSourceCodeAnalysis\r115\src\renderers" />
     </key>
   </component>
   <component name="RunManager">
@@ -657,14 +654,8 @@
       <workItem from="1670839424272" duration="40781000" />
       <workItem from="1672893707712" duration="4796000" />
       <workItem from="1672902054175" duration="2762000" />
-      <workItem from="1672983417476" duration="6287000" />
-    </task>
-    <task id="LOCAL-00054" summary="1.fbx格式">
-      <created>1573803215381</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1573803215381</updated>
+      <workItem from="1672983417476" duration="6349000" />
+      <workItem from="1673230187339" duration="13317000" />
     </task>
     <task id="LOCAL-00055" summary="1.裁剪面实例">
       <created>1574329254107</created>
@@ -1002,7 +993,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671113501304</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="1.r145源码">
+      <created>1672999706070</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1672999706071</updated>
+    </task>
+    <option name="localTasksCounter" value="104" />
     <servers />
   </component>
   <component name="TimeTrackingManager">

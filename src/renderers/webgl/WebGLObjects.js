@@ -1,8 +1,4 @@
 /**
- * @author mrdoob / http://mrdoob.com/
- */
-
-/**
  * 对象管理
  * @param gl 上下文
  * @param geometries 几何体管理
@@ -11,52 +7,77 @@
  * @return {{update: update, dispose: dispose}}
  * @constructor
  */
-function WebGLObjects( gl, geometries, attributes, info ) {
+function WebGLObjects(gl, geometries, attributes, info) {
 
-	var updateList = {};
+    let updateMap = new WeakMap();
 
-  /**
-   * 解析渲染对象几何体
-   * @param object 对象
-   * @returns {*}
-   */
-	function update( object ) {
-		var frame = info.render.frame;
+    /**
+     * 解析渲染对象几何体
+     * @param object 对象
+     * @returns {*}
+     */
+    function update(object) {
 
-		var geometry = object.geometry;
-		// 获取buffergeometry几何体
-		var buffergeometry = geometries.get( object, geometry );
+        const frame = info.render.frame;
+        const geometry = object.geometry;
+        // 获取buffergeometry几何体
+        const buffergeometry = geometries.get(object, geometry);
 
-		// Update once per frame
-		if ( updateList[ buffergeometry.id ] !== frame ) {
-			if ( geometry.isGeometry ) {
-				buffergeometry.updateFromObject( object );
-			}
+        // Update once per frame
 
-			// 更新几何体属性，为属性分配缓冲区对象
-			geometries.update( buffergeometry );
-			updateList[ buffergeometry.id ] = frame; // 设置渲染帧
-		}
+        if (updateMap.get(buffergeometry) !== frame) {
 
-		if ( object.isInstancedMesh ) {
-			attributes.update( object.instanceMatrix, gl.ARRAY_BUFFER );
-		}
+            geometries.update(buffergeometry);
 
-		return buffergeometry;
-	}
+            updateMap.set(buffergeometry, frame);
 
-	function dispose() {
+        }
 
-		updateList = {};
+        if (object.isInstancedMesh) {
 
-	}
+            if (object.hasEventListener('dispose', onInstancedMeshDispose) === false) {
 
-	return {
+                object.addEventListener('dispose', onInstancedMeshDispose);
 
-		update: update,
-		dispose: dispose
+            }
 
-	};
+            attributes.update(object.instanceMatrix, gl.ARRAY_BUFFER);
+
+            if (object.instanceColor !== null) {
+
+                attributes.update(object.instanceColor, gl.ARRAY_BUFFER);
+
+            }
+
+        }
+
+        return buffergeometry;
+    }
+
+    function dispose() {
+
+        updateMap = new WeakMap();
+
+    }
+
+    function onInstancedMeshDispose(event) {
+
+        const instancedMesh = event.target;
+
+        instancedMesh.removeEventListener('dispose', onInstancedMeshDispose);
+
+        attributes.remove(instancedMesh.instanceMatrix);
+
+        if (instancedMesh.instanceColor !== null) attributes.remove(instancedMesh.instanceColor);
+
+    }
+
+    return {
+
+        update: update,
+        dispose: dispose
+
+    };
 }
 
-export { WebGLObjects };
+export {WebGLObjects};

@@ -313,7 +313,7 @@ class Object3D extends EventDispatcher {
     /**
      * 把object对象放到children数组中，从原有得父类中移除该对象
      * @param object 可以是一个值，也可以是多个值
-     * @return {add}
+     * @return {Object3D}
      */
     add(object) {
 
