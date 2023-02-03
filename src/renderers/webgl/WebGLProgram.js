@@ -1,140 +1,159 @@
 import {WebGLUniforms} from './WebGLUniforms.js';
 import {WebGLShader} from './WebGLShader.js';
 import {ShaderChunk} from '../shaders/ShaderChunk.js';
-import { NoToneMapping, AddOperation, MixOperation, MultiplyOperation, CubeRefractionMapping, CubeUVReflectionMapping, CubeReflectionMapping, PCFSoftShadowMap, PCFShadowMap, VSMShadowMap, ACESFilmicToneMapping, CineonToneMapping, CustomToneMapping, ReinhardToneMapping, LinearToneMapping, sRGBEncoding, LinearEncoding, GLSL3 } from '../../constants.js';
+import {
+    NoToneMapping,
+    AddOperation,
+    MixOperation,
+    MultiplyOperation,
+    CubeRefractionMapping,
+    CubeUVReflectionMapping,
+    CubeReflectionMapping,
+    PCFSoftShadowMap,
+    PCFShadowMap,
+    VSMShadowMap,
+    ACESFilmicToneMapping,
+    CineonToneMapping,
+    CustomToneMapping,
+    ReinhardToneMapping,
+    LinearToneMapping,
+    sRGBEncoding,
+    LinearEncoding,
+    GLSL3
+} from '../../constants.js';
 
 let programIdCount = 0;
 
-function handleSource( string, errorLine ) {
+function handleSource(string, errorLine) {
 
-	const lines = string.split( '\n' );
-	const lines2 = [];
+    const lines = string.split('\n');
+    const lines2 = [];
 
-	const from = Math.max( errorLine - 6, 0 );
-	const to = Math.min( errorLine + 6, lines.length );
+    const from = Math.max(errorLine - 6, 0);
+    const to = Math.min(errorLine + 6, lines.length);
 
-	for ( let i = from; i < to; i ++ ) {
+    for (let i = from; i < to; i++) {
 
-		const line = i + 1;
-		lines2.push( `${line === errorLine ? '>' : ' '} ${line}: ${lines[ i ]}` );
+        const line = i + 1;
+        lines2.push(`${line === errorLine ? '>' : ' '} ${line}: ${lines[i]}`);
 
-  }
+    }
 
-	return lines2.join( '\n' );
+    return lines2.join('\n');
 
 }
 
 function getEncodingComponents(encoding) {
 
-  switch(encoding){
+    switch (encoding) {
 
-    case LinearEncoding:
-      return ['Linear', '( value )'];
-    case sRGBEncoding:
-      return ['sRGB', '( value )'];
-    default:
-			console.warn( 'THREE.WebGLProgram: Unsupported encoding:', encoding );
-			return [ 'Linear', '( value )' ];
+        case LinearEncoding:
+            return ['Linear', '( value )'];
+        case sRGBEncoding:
+            return ['sRGB', '( value )'];
+        default:
+            console.warn('THREE.WebGLProgram: Unsupported encoding:', encoding);
+            return ['Linear', '( value )'];
 
-  }
+    }
 
 }
 
 function getShaderErrors(gl, shader, type) {
 
-	const status = gl.getShaderParameter( shader, gl.COMPILE_STATUS );
-	const errors = gl.getShaderInfoLog( shader ).trim();
+    const status = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+    const errors = gl.getShaderInfoLog(shader).trim();
 
-	if ( status && errors === '' ) return '';
+    if (status && errors === '') return '';
 
-	const errorMatches = /ERROR: 0:(\d+)/.exec( errors );
-	if ( errorMatches ) {
+    const errorMatches = /ERROR: 0:(\d+)/.exec(errors);
+    if (errorMatches) {
 
-  // --enable-privileged-webgl-extension
-  // console.log( '**' + type + '**', gl.getExtension( 'WEBGL_debug_shaders' ).getTranslatedShaderSource( shader ) );
+        // --enable-privileged-webgl-extension
+        // console.log( '**' + type + '**', gl.getExtension( 'WEBGL_debug_shaders' ).getTranslatedShaderSource( shader ) );
 
-		const errorLine = parseInt( errorMatches[ 1 ] );
-		return type.toUpperCase() + '\n\n' + errors + '\n\n' + handleSource( gl.getShaderSource( shader ), errorLine );
+        const errorLine = parseInt(errorMatches[1]);
+        return type.toUpperCase() + '\n\n' + errors + '\n\n' + handleSource(gl.getShaderSource(shader), errorLine);
 
-	} else {
+    } else {
 
-		return errors;
+        return errors;
 
-	}
+    }
 
 }
 
 function getTexelEncodingFunction(functionName, encoding) {
 
-	const components = getEncodingComponents( encoding );
-  return 'vec4 ' + functionName + '( vec4 value ) { return LinearTo' + components[0] + components[1] + '; }';
+    const components = getEncodingComponents(encoding);
+    return 'vec4 ' + functionName + '( vec4 value ) { return LinearTo' + components[0] + components[1] + '; }';
 
 }
 
 function getToneMappingFunction(functionName, toneMapping) {
 
-	let toneMappingName;
+    let toneMappingName;
 
-  switch(toneMapping){
+    switch (toneMapping) {
 
-    case LinearToneMapping:
-      toneMappingName = 'Linear';
-      break;
+        case LinearToneMapping:
+            toneMappingName = 'Linear';
+            break;
 
-    case ReinhardToneMapping:
-      toneMappingName = 'Reinhard';
-      break;
+        case ReinhardToneMapping:
+            toneMappingName = 'Reinhard';
+            break;
 
-    case CineonToneMapping:
-      toneMappingName = 'OptimizedCineon';
-      break;
+        case CineonToneMapping:
+            toneMappingName = 'OptimizedCineon';
+            break;
 
-    case ACESFilmicToneMapping:
-      toneMappingName = 'ACESFilmic';
-      break;
+        case ACESFilmicToneMapping:
+            toneMappingName = 'ACESFilmic';
+            break;
 
-		case CustomToneMapping:
-			toneMappingName = 'Custom';
-			break;
+        case CustomToneMapping:
+            toneMappingName = 'Custom';
+            break;
 
-    default:
-			console.warn( 'THREE.WebGLProgram: Unsupported toneMapping:', toneMapping );
-			toneMappingName = 'Linear';
+        default:
+            console.warn('THREE.WebGLProgram: Unsupported toneMapping:', toneMapping);
+            toneMappingName = 'Linear';
 
-  }
+    }
 
-  return 'vec3 ' + functionName + '( vec3 color ) { return ' + toneMappingName + 'ToneMapping( color ); }';
+    return 'vec3 ' + functionName + '( vec3 color ) { return ' + toneMappingName + 'ToneMapping( color ); }';
 
 }
 
-function generateExtensions( parameters ) {
+function generateExtensions(parameters) {
 
-	const chunks = [
-		( parameters.extensionDerivatives || !! parameters.envMapCubeUVHeight || parameters.bumpMap || parameters.tangentSpaceNormalMap || parameters.clearcoatNormalMap || parameters.flatShading || parameters.shaderID === 'physical' ) ? '#extension GL_OES_standard_derivatives : enable' : '',
-		( parameters.extensionFragDepth || parameters.logarithmicDepthBuffer ) && parameters.rendererExtensionFragDepth ? '#extension GL_EXT_frag_depth : enable' : '',
-		( parameters.extensionDrawBuffers && parameters.rendererExtensionDrawBuffers ) ? '#extension GL_EXT_draw_buffers : require' : '',
-		( parameters.extensionShaderTextureLOD || parameters.envMap || parameters.transmission ) && parameters.rendererExtensionShaderTextureLod ? '#extension GL_EXT_shader_texture_lod : enable' : ''
-  ];
+    const chunks = [
+        (parameters.extensionDerivatives || !!parameters.envMapCubeUVHeight || parameters.bumpMap || parameters.tangentSpaceNormalMap || parameters.clearcoatNormalMap || parameters.flatShading || parameters.shaderID === 'physical') ? '#extension GL_OES_standard_derivatives : enable' : '',
+        (parameters.extensionFragDepth || parameters.logarithmicDepthBuffer) && parameters.rendererExtensionFragDepth ? '#extension GL_EXT_frag_depth : enable' : '',
+        (parameters.extensionDrawBuffers && parameters.rendererExtensionDrawBuffers) ? '#extension GL_EXT_draw_buffers : require' : '',
+        (parameters.extensionShaderTextureLOD || parameters.envMap || parameters.transmission) && parameters.rendererExtensionShaderTextureLod ? '#extension GL_EXT_shader_texture_lod : enable' : ''
+    ];
 
-  return chunks.filter(filterEmptyLine).join('\n');
+    return chunks.filter(filterEmptyLine).join('\n');
 
 }
 
 function generateDefines(defines) {
 
-	const chunks = [];
+    const chunks = [];
 
-	for ( const name in defines ) {
+    for (const name in defines) {
 
-		const value = defines[ name ];
+        const value = defines[name];
 
-    if (value === false) continue;
+        if (value === false) continue;
 
-    chunks.push('#define ' + name + ' ' + value);
+        chunks.push('#define ' + name + ' ' + value);
 
-  }
+    }
 
-  return chunks.join('\n');
+    return chunks.join('\n');
 
 }
 
@@ -146,37 +165,37 @@ function generateDefines(defines) {
  */
 function fetchAttributeLocations(gl, program) {
 
-	const attributes = {};
+    const attributes = {};
 
-	const n = gl.getProgramParameter( program, gl.ACTIVE_ATTRIBUTES );
+    const n = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
 
-	for ( let i = 0; i < n; i ++ ) {
+    for (let i = 0; i < n; i++) {
 
-		const info = gl.getActiveAttrib( program, i );
-		const name = info.name;
+        const info = gl.getActiveAttrib(program, i);
+        const name = info.name;
 
-		let locationSize = 1;
-		if ( info.type === gl.FLOAT_MAT2 ) locationSize = 2;
-		if ( info.type === gl.FLOAT_MAT3 ) locationSize = 3;
-		if ( info.type === gl.FLOAT_MAT4 ) locationSize = 4;
+        let locationSize = 1;
+        if (info.type === gl.FLOAT_MAT2) locationSize = 2;
+        if (info.type === gl.FLOAT_MAT3) locationSize = 3;
+        if (info.type === gl.FLOAT_MAT4) locationSize = 4;
 
-    // console.log( 'THREE.WebGLProgram: ACTIVE VERTEX ATTRIBUTE:', name, i );
+        // console.log( 'THREE.WebGLProgram: ACTIVE VERTEX ATTRIBUTE:', name, i );
 
-		attributes[ name ] = {
-			type: info.type,
-			location: gl.getAttribLocation( program, name ),
-			locationSize: locationSize
-		};
+        attributes[name] = {
+            type: info.type,
+            location: gl.getAttribLocation(program, name),
+            locationSize: locationSize
+        };
 
-  }
+    }
 
-  return attributes;
+    return attributes;
 
 }
 
 function filterEmptyLine(string) {
 
-  return string !== '';
+    return string !== '';
 
 }
 
@@ -188,20 +207,20 @@ function filterEmptyLine(string) {
  */
 function replaceLightNums(string, parameters) {
 
-	const numSpotLightCoords = parameters.numSpotLightShadows + parameters.numSpotLightMaps - parameters.numSpotLightShadowsWithMaps;
+    const numSpotLightCoords = parameters.numSpotLightShadows + parameters.numSpotLightMaps - parameters.numSpotLightShadowsWithMaps;
 
-  return string
-  .replace(/NUM_DIR_LIGHTS/g, parameters.numDirLights) // 替换平行光的数量
-  .replace(/NUM_SPOT_LIGHTS/g, parameters.numSpotLights)
-		.replace( /NUM_SPOT_LIGHT_MAPS/g, parameters.numSpotLightMaps )
-		.replace( /NUM_SPOT_LIGHT_COORDS/g, numSpotLightCoords )
-  .replace(/NUM_RECT_AREA_LIGHTS/g, parameters.numRectAreaLights)
-  .replace(/NUM_POINT_LIGHTS/g, parameters.numPointLights)
-  .replace(/NUM_HEMI_LIGHTS/g, parameters.numHemiLights)
-  .replace(/NUM_DIR_LIGHT_SHADOWS/g, parameters.numDirLightShadows)
-		.replace( /NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS/g, parameters.numSpotLightShadowsWithMaps )
-  .replace(/NUM_SPOT_LIGHT_SHADOWS/g, parameters.numSpotLightShadows)
-  .replace(/NUM_POINT_LIGHT_SHADOWS/g, parameters.numPointLightShadows);
+    return string
+        .replace(/NUM_DIR_LIGHTS/g, parameters.numDirLights) // 替换平行光的数量
+        .replace(/NUM_SPOT_LIGHTS/g, parameters.numSpotLights)
+        .replace(/NUM_SPOT_LIGHT_MAPS/g, parameters.numSpotLightMaps)
+        .replace(/NUM_SPOT_LIGHT_COORDS/g, numSpotLightCoords)
+        .replace(/NUM_RECT_AREA_LIGHTS/g, parameters.numRectAreaLights)
+        .replace(/NUM_POINT_LIGHTS/g, parameters.numPointLights)
+        .replace(/NUM_HEMI_LIGHTS/g, parameters.numHemiLights)
+        .replace(/NUM_DIR_LIGHT_SHADOWS/g, parameters.numDirLightShadows)
+        .replace(/NUM_SPOT_LIGHT_SHADOWS_WITH_MAPS/g, parameters.numSpotLightShadowsWithMaps)
+        .replace(/NUM_SPOT_LIGHT_SHADOWS/g, parameters.numSpotLightShadows)
+        .replace(/NUM_POINT_LIGHT_SHADOWS/g, parameters.numPointLightShadows);
 
 }
 
@@ -213,9 +232,9 @@ function replaceLightNums(string, parameters) {
  */
 function replaceClippingPlaneNums(string, parameters) {
 
-  return string
-  .replace(/NUM_CLIPPING_PLANES/g, parameters.numClippingPlanes)
-  .replace(/UNION_CLIPPING_PLANES/g, (parameters.numClippingPlanes - parameters.numClipIntersection));
+    return string
+        .replace(/NUM_CLIPPING_PLANES/g, parameters.numClippingPlanes)
+        .replace(/UNION_CLIPPING_PLANES/g, (parameters.numClippingPlanes - parameters.numClipIntersection));
 
 }
 
@@ -229,18 +248,18 @@ const includePattern = /^[ \t]*#include +<([\w\d./]+)>/gm;
  * @returns {void | never}
  */
 function resolveIncludes(string) {
-  return string.replace(includePattern, includeReplacer);
+    return string.replace(includePattern, includeReplacer);
 }
 
 function includeReplacer(match, include) {
 
-	const string = ShaderChunk[ include ];
+    const string = ShaderChunk[include];
 
-  if (string === undefined) {
-    throw new Error('Can not resolve #include <' + include + '>');
-  }
+    if (string === undefined) {
+        throw new Error('Can not resolve #include <' + include + '>');
+    }
 
-  return resolveIncludes(string);
+    return resolveIncludes(string);
 }
 
 // Unroll Loops
@@ -254,23 +273,23 @@ const unrollLoopPattern = /#pragma unroll_loop_start\s+for\s*\(\s*int\s+i\s*=\s*
  */
 function unrollLoops(string) {
 
-	return string.replace( unrollLoopPattern, loopReplacer );
+    return string.replace(unrollLoopPattern, loopReplacer);
 
 }
 
 function loopReplacer(match, start, end, snippet) {
 
-	let string = '';
+    let string = '';
 
-	for ( let i = parseInt( start ); i < parseInt( end ); i ++ ) {
+    for (let i = parseInt(start); i < parseInt(end); i++) {
 
-    string += snippet
-			.replace( /\[\s*i\s*\]/g, '[ ' + i + ' ]' )
-    .replace(/UNROLLED_LOOP_INDEX/g, i);
+        string += snippet
+            .replace(/\[\s*i\s*\]/g, '[ ' + i + ' ]')
+            .replace(/UNROLLED_LOOP_INDEX/g, i);
 
-  }
+    }
 
-  return string;
+    return string;
 
 }
 
@@ -281,130 +300,130 @@ function loopReplacer(match, start, end, snippet) {
  */
 function generatePrecision(parameters) {
 
-	let precisionstring = 'precision ' + parameters.precision + ' float;\nprecision ' + parameters.precision + ' int;';
+    let precisionstring = 'precision ' + parameters.precision + ' float;\nprecision ' + parameters.precision + ' int;';
 
-	if ( parameters.precision === 'highp' ) {
+    if (parameters.precision === 'highp') {
 
-		precisionstring += '\n#define HIGH_PRECISION';
+        precisionstring += '\n#define HIGH_PRECISION';
 
-	} else if ( parameters.precision === 'mediump' ) {
+    } else if (parameters.precision === 'mediump') {
 
-		precisionstring += '\n#define MEDIUM_PRECISION';
+        precisionstring += '\n#define MEDIUM_PRECISION';
 
-	} else if ( parameters.precision === 'lowp' ) {
+    } else if (parameters.precision === 'lowp') {
 
-		precisionstring += '\n#define LOW_PRECISION';
+        precisionstring += '\n#define LOW_PRECISION';
 
-  }
-  return precisionstring;
+    }
+    return precisionstring;
 }
 
 function generateShadowMapTypeDefine(parameters) {
 
-	let shadowMapTypeDefine = 'SHADOWMAP_TYPE_BASIC';
+    let shadowMapTypeDefine = 'SHADOWMAP_TYPE_BASIC';
 
-  if (parameters.shadowMapType === PCFShadowMap) {
-    shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF';
-  } else if (parameters.shadowMapType === PCFSoftShadowMap) {
-    shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF_SOFT';
+    if (parameters.shadowMapType === PCFShadowMap) {
+        shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF';
+    } else if (parameters.shadowMapType === PCFSoftShadowMap) {
+        shadowMapTypeDefine = 'SHADOWMAP_TYPE_PCF_SOFT';
 
-  } else if (parameters.shadowMapType === VSMShadowMap) {
+    } else if (parameters.shadowMapType === VSMShadowMap) {
 
-    shadowMapTypeDefine = 'SHADOWMAP_TYPE_VSM';
+        shadowMapTypeDefine = 'SHADOWMAP_TYPE_VSM';
 
-  }
+    }
 
-  return shadowMapTypeDefine;
+    return shadowMapTypeDefine;
 
 }
 
 function generateEnvMapTypeDefine(parameters) {
 
-	let envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
+    let envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
 
-  if (parameters.envMap) {
+    if (parameters.envMap) {
 
-    switch(parameters.envMapMode){
+        switch (parameters.envMapMode) {
 
-      case CubeReflectionMapping:
-      case CubeRefractionMapping:
-        envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
-        break;
+            case CubeReflectionMapping:
+            case CubeRefractionMapping:
+                envMapTypeDefine = 'ENVMAP_TYPE_CUBE';
+                break;
 
-      case CubeUVReflectionMapping:
-        envMapTypeDefine = 'ENVMAP_TYPE_CUBE_UV';
-        break;
+            case CubeUVReflectionMapping:
+                envMapTypeDefine = 'ENVMAP_TYPE_CUBE_UV';
+                break;
+
+        }
 
     }
 
-  }
-
-  return envMapTypeDefine;
+    return envMapTypeDefine;
 
 }
 
 function generateEnvMapModeDefine(parameters) {
 
-	let envMapModeDefine = 'ENVMAP_MODE_REFLECTION';
+    let envMapModeDefine = 'ENVMAP_MODE_REFLECTION';
 
-  if (parameters.envMap) {
+    if (parameters.envMap) {
 
-    switch(parameters.envMapMode){
+        switch (parameters.envMapMode) {
 
-      case CubeRefractionMapping:
+            case CubeRefractionMapping:
 
-        envMapModeDefine = 'ENVMAP_MODE_REFRACTION';
-        break;
+                envMapModeDefine = 'ENVMAP_MODE_REFRACTION';
+                break;
+
+        }
 
     }
 
-  }
-
-  return envMapModeDefine;
+    return envMapModeDefine;
 
 }
 
 function generateEnvMapBlendingDefine(parameters) {
 
-	let envMapBlendingDefine = 'ENVMAP_BLENDING_NONE';
+    let envMapBlendingDefine = 'ENVMAP_BLENDING_NONE';
 
-  if (parameters.envMap) {
+    if (parameters.envMap) {
 
-    switch(parameters.combine){
+        switch (parameters.combine) {
 
-      case MultiplyOperation:
-        envMapBlendingDefine = 'ENVMAP_BLENDING_MULTIPLY';
-        break;
+            case MultiplyOperation:
+                envMapBlendingDefine = 'ENVMAP_BLENDING_MULTIPLY';
+                break;
 
-      case MixOperation:
-        envMapBlendingDefine = 'ENVMAP_BLENDING_MIX';
-        break;
+            case MixOperation:
+                envMapBlendingDefine = 'ENVMAP_BLENDING_MIX';
+                break;
 
-      case AddOperation:
-        envMapBlendingDefine = 'ENVMAP_BLENDING_ADD';
-        break;
+            case AddOperation:
+                envMapBlendingDefine = 'ENVMAP_BLENDING_ADD';
+                break;
+
+        }
 
     }
 
-  }
-
-  return envMapBlendingDefine;
+    return envMapBlendingDefine;
 
 }
 
-function generateCubeUVSize( parameters ) {
+function generateCubeUVSize(parameters) {
 
-	const imageHeight = parameters.envMapCubeUVHeight;
+    const imageHeight = parameters.envMapCubeUVHeight;
 
-	if ( imageHeight === null ) return null;
+    if (imageHeight === null) return null;
 
-	const maxMip = Math.log2( imageHeight ) - 2;
+    const maxMip = Math.log2(imageHeight) - 2;
 
-	const texelHeight = 1.0 / imageHeight;
+    const texelHeight = 1.0 / imageHeight;
 
-	const texelWidth = 1.0 / ( 3 * Math.max( Math.pow( 2, maxMip ), 7 * 16 ) );
+    const texelWidth = 1.0 / (3 * Math.max(Math.pow(2, maxMip), 7 * 16));
 
-	return { texelWidth, texelHeight, maxMip };
+    return {texelWidth, texelHeight, maxMip};
 
 }
 
@@ -416,518 +435,516 @@ function generateCubeUVSize( parameters ) {
  * @returns {WebGLProgram}
  * @constructor
  */
-function WebGLProgram( renderer, cacheKey, parameters, bindingStates ) {
-	
-	// TODO Send this event to Three.js DevTools
-	// console.log( 'WebGLProgram', cacheKey );
- 
-	const gl = renderer.getContext();
+function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 
-	const defines = parameters.defines;
+    // TODO Send this event to Three.js DevTools
+    // console.log( 'WebGLProgram', cacheKey );
 
-	let vertexShader = parameters.vertexShader;
-	let fragmentShader = parameters.fragmentShader;
+    const gl = renderer.getContext();
 
-	const shadowMapTypeDefine = generateShadowMapTypeDefine( parameters );
-	const envMapTypeDefine = generateEnvMapTypeDefine( parameters );
-	const envMapModeDefine = generateEnvMapModeDefine( parameters );
-	const envMapBlendingDefine = generateEnvMapBlendingDefine( parameters );
-	const envMapCubeUVSize = generateCubeUVSize( parameters );
+    const defines = parameters.defines;
 
-	const customExtensions = parameters.isWebGL2 ? '' : generateExtensions( parameters );
+    let vertexShader = parameters.vertexShader;
+    let fragmentShader = parameters.fragmentShader;
 
-	const customDefines = generateDefines( defines );
+    const shadowMapTypeDefine = generateShadowMapTypeDefine(parameters);
+    const envMapTypeDefine = generateEnvMapTypeDefine(parameters);
+    const envMapModeDefine = generateEnvMapModeDefine(parameters);
+    const envMapBlendingDefine = generateEnvMapBlendingDefine(parameters);
+    const envMapCubeUVSize = generateCubeUVSize(parameters);
 
-	const program = gl.createProgram();
+    const customExtensions = parameters.isWebGL2 ? '' : generateExtensions(parameters);
 
-	let prefixVertex, prefixFragment;
-	let versionString = parameters.glslVersion ? '#version ' + parameters.glslVersion + '\n' : '';
+    const customDefines = generateDefines(defines);
 
-	if ( parameters.isRawShaderMaterial ) {
+    const program = gl.createProgram();
 
-    prefixVertex = [
+    let prefixVertex, prefixFragment;
+    let versionString = parameters.glslVersion ? '#version ' + parameters.glslVersion + '\n' : '';
 
-      customDefines
+    if (parameters.isRawShaderMaterial) {
 
-    ].filter(filterEmptyLine).join('\n');
+        prefixVertex = [
 
-    if (prefixVertex.length > 0) {
+            customDefines
 
-      prefixVertex += '\n';
+        ].filter(filterEmptyLine).join('\n');
 
-    }
+        if (prefixVertex.length > 0) {
 
-    prefixFragment = [
-
-      customExtensions,
-      customDefines
-
-    ].filter(filterEmptyLine).join('\n');
-
-    if (prefixFragment.length > 0) {
-
-      prefixFragment += '\n';
-
-    }
-
-  }
-  else {
-    prefixVertex = [
-
-      generatePrecision(parameters), // 设置精度
-
-			'#define SHADER_NAME ' + parameters.shaderName,
-
-      customDefines,
-
-      parameters.instancing ? '#define USE_INSTANCING' : '',
-			parameters.instancingColor ? '#define USE_INSTANCING_COLOR' : '',
-
-      parameters.supportsVertexTextures ? '#define VERTEX_TEXTURES' : '',
-
-      (parameters.useFog && parameters.fog) ? '#define USE_FOG' : '',
-      (parameters.useFog && parameters.fogExp2) ? '#define FOG_EXP2' : '',
-
-			parameters.map ? '#define USE_MAP' : '',
-      parameters.envMap ? '#define USE_ENVMAP' : '',
-      parameters.envMap ? '#define ' + envMapModeDefine : '',
-      parameters.lightMap ? '#define USE_LIGHTMAP' : '',
-      parameters.aoMap ? '#define USE_AOMAP' : '',
-      parameters.emissiveMap ? '#define USE_EMISSIVEMAP' : '',
-      parameters.bumpMap ? '#define USE_BUMPMAP' : '',
-      parameters.normalMap ? '#define USE_NORMALMAP' : '',
-      (parameters.normalMap && parameters.objectSpaceNormalMap) ? '#define OBJECTSPACE_NORMALMAP' : '',
-      (parameters.normalMap && parameters.tangentSpaceNormalMap) ? '#define TANGENTSPACE_NORMALMAP' : '',
-
-			parameters.clearcoatMap ? '#define USE_CLEARCOATMAP' : '',
-			parameters.clearcoatRoughnessMap ? '#define USE_CLEARCOAT_ROUGHNESSMAP' : '',
-      parameters.clearcoatNormalMap ? '#define USE_CLEARCOAT_NORMALMAP' : '',
-
-			parameters.iridescenceMap ? '#define USE_IRIDESCENCEMAP' : '',
-			parameters.iridescenceThicknessMap ? '#define USE_IRIDESCENCE_THICKNESSMAP' : '',
-
-      parameters.displacementMap && parameters.supportsVertexTextures ? '#define USE_DISPLACEMENTMAP' : '',
-      parameters.specularMap ? '#define USE_SPECULARMAP' : '',
-			parameters.specularIntensityMap ? '#define USE_SPECULARINTENSITYMAP' : '',
-			parameters.specularColorMap ? '#define USE_SPECULARCOLORMAP' : '',
-
-      parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
-      parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
-      parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
-
-			parameters.transmission ? '#define USE_TRANSMISSION' : '',
-			parameters.transmissionMap ? '#define USE_TRANSMISSIONMAP' : '',
-			parameters.thicknessMap ? '#define USE_THICKNESSMAP' : '',
-
-			parameters.sheenColorMap ? '#define USE_SHEENCOLORMAP' : '',
-			parameters.sheenRoughnessMap ? '#define USE_SHEENROUGHNESSMAP' : '',
-
-      parameters.vertexTangents ? '#define USE_TANGENT' : '',
-			parameters.vertexColors ? '#define USE_COLOR' : '',
-			parameters.vertexAlphas ? '#define USE_COLOR_ALPHA' : '',
-      parameters.vertexUvs ? '#define USE_UV' : '',
-      parameters.uvsVertexOnly ? '#define UVS_VERTEX_ONLY' : '',
-
-      parameters.flatShading ? '#define FLAT_SHADED' : '',
-
-      parameters.skinning ? '#define USE_SKINNING' : '',
-
-      parameters.morphTargets ? '#define USE_MORPHTARGETS' : '',
-      parameters.morphNormals && parameters.flatShading === false ? '#define USE_MORPHNORMALS' : '',
-			( parameters.morphColors && parameters.isWebGL2 ) ? '#define USE_MORPHCOLORS' : '',
-			( parameters.morphTargetsCount > 0 && parameters.isWebGL2 ) ? '#define MORPHTARGETS_TEXTURE' : '',
-			( parameters.morphTargetsCount > 0 && parameters.isWebGL2 ) ? '#define MORPHTARGETS_TEXTURE_STRIDE ' + parameters.morphTextureStride : '',
-			( parameters.morphTargetsCount > 0 && parameters.isWebGL2 ) ? '#define MORPHTARGETS_COUNT ' + parameters.morphTargetsCount : '',
-      parameters.doubleSided ? '#define DOUBLE_SIDED' : '',
-      parameters.flipSided ? '#define FLIP_SIDED' : '',
-
-      parameters.shadowMapEnabled ? '#define USE_SHADOWMAP' : '',
-      parameters.shadowMapEnabled ? '#define ' + shadowMapTypeDefine : '',
-
-      parameters.sizeAttenuation ? '#define USE_SIZEATTENUATION' : '',
-
-      parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
-			( parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth ) ? '#define USE_LOGDEPTHBUF_EXT' : '',
-
-      'uniform mat4 modelMatrix;',
-      'uniform mat4 modelViewMatrix;',
-      'uniform mat4 projectionMatrix;',
-      'uniform mat4 viewMatrix;',
-      'uniform mat3 normalMatrix;',
-      'uniform vec3 cameraPosition;',
-      'uniform bool isOrthographic;',
-
-      '#ifdef USE_INSTANCING',
-
-      ' attribute mat4 instanceMatrix;',
-
-      '#endif',
-
-			'#ifdef USE_INSTANCING_COLOR',
-
-			'	attribute vec3 instanceColor;',
-
-			'#endif',
-
-      'attribute vec3 position;',
-      'attribute vec3 normal;',
-      'attribute vec2 uv;',
-
-      '#ifdef USE_TANGENT',
-
-      '	attribute vec4 tangent;',
-
-      '#endif',
-
-      // 添加颜色变量
-			'#if defined( USE_COLOR_ALPHA )',
-
-			'	attribute vec4 color;',
-
-			'#elif defined( USE_COLOR )',
-
-      '	attribute vec3 color;',
-      '#endif',
-
-			'#if ( defined( USE_MORPHTARGETS ) && ! defined( MORPHTARGETS_TEXTURE ) )',
-
-      '	attribute vec3 morphTarget0;',
-      '	attribute vec3 morphTarget1;',
-      '	attribute vec3 morphTarget2;',
-      '	attribute vec3 morphTarget3;',
-
-      '	#ifdef USE_MORPHNORMALS',
-
-      '		attribute vec3 morphNormal0;',
-      '		attribute vec3 morphNormal1;',
-      '		attribute vec3 morphNormal2;',
-      '		attribute vec3 morphNormal3;',
-
-      '	#else',
-
-      '		attribute vec3 morphTarget4;',
-      '		attribute vec3 morphTarget5;',
-      '		attribute vec3 morphTarget6;',
-      '		attribute vec3 morphTarget7;',
-
-      '	#endif',
-
-      '#endif',
-
-      '#ifdef USE_SKINNING',
-
-      '	attribute vec4 skinIndex;',
-      '	attribute vec4 skinWeight;',
-
-      '#endif',
-
-      '\n'
-
-    ].filter(filterEmptyLine).join('\n');
-    prefixFragment = [
-
-      customExtensions,
-
-      generatePrecision(parameters),
-
-			'#define SHADER_NAME ' + parameters.shaderName, // 着色器名称
-
-      customDefines,
-
-      (parameters.useFog && parameters.fog) ? '#define USE_FOG' : '',
-      (parameters.useFog && parameters.fogExp2) ? '#define FOG_EXP2' : '',
-
-      parameters.map ? '#define USE_MAP' : '',
-      parameters.matcap ? '#define USE_MATCAP' : '',
-      parameters.envMap ? '#define USE_ENVMAP' : '',
-      parameters.envMap ? '#define ' + envMapTypeDefine : '',
-      parameters.envMap ? '#define ' + envMapModeDefine : '',
-      parameters.envMap ? '#define ' + envMapBlendingDefine : '',
-			envMapCubeUVSize ? '#define CUBEUV_TEXEL_WIDTH ' + envMapCubeUVSize.texelWidth : '',
-			envMapCubeUVSize ? '#define CUBEUV_TEXEL_HEIGHT ' + envMapCubeUVSize.texelHeight : '',
-			envMapCubeUVSize ? '#define CUBEUV_MAX_MIP ' + envMapCubeUVSize.maxMip + '.0' : '',
-      parameters.lightMap ? '#define USE_LIGHTMAP' : '',
-      parameters.aoMap ? '#define USE_AOMAP' : '',
-      parameters.emissiveMap ? '#define USE_EMISSIVEMAP' : '',
-      parameters.bumpMap ? '#define USE_BUMPMAP' : '',
-      parameters.normalMap ? '#define USE_NORMALMAP' : '',
-      (parameters.normalMap && parameters.objectSpaceNormalMap) ? '#define OBJECTSPACE_NORMALMAP' : '',
-      (parameters.normalMap && parameters.tangentSpaceNormalMap) ? '#define TANGENTSPACE_NORMALMAP' : '',
-
-			parameters.clearcoat ? '#define USE_CLEARCOAT' : '',
-			parameters.clearcoatMap ? '#define USE_CLEARCOATMAP' : '',
-			parameters.clearcoatRoughnessMap ? '#define USE_CLEARCOAT_ROUGHNESSMAP' : '',
-      parameters.clearcoatNormalMap ? '#define USE_CLEARCOAT_NORMALMAP' : '',
-
-			parameters.iridescence ? '#define USE_IRIDESCENCE' : '',
-			parameters.iridescenceMap ? '#define USE_IRIDESCENCEMAP' : '',
-			parameters.iridescenceThicknessMap ? '#define USE_IRIDESCENCE_THICKNESSMAP' : '',
-
-      parameters.specularMap ? '#define USE_SPECULARMAP' : '',
-			parameters.specularIntensityMap ? '#define USE_SPECULARINTENSITYMAP' : '',
-			parameters.specularColorMap ? '#define USE_SPECULARCOLORMAP' : '',
-      parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
-      parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
-      parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
-			parameters.alphaTest ? '#define USE_ALPHATEST' : '',
-
-      parameters.sheen ? '#define USE_SHEEN' : '',
-			parameters.sheenColorMap ? '#define USE_SHEENCOLORMAP' : '',
-			parameters.sheenRoughnessMap ? '#define USE_SHEENROUGHNESSMAP' : '',
-
-			parameters.transmission ? '#define USE_TRANSMISSION' : '',
-			parameters.transmissionMap ? '#define USE_TRANSMISSIONMAP' : '',
-			parameters.thicknessMap ? '#define USE_THICKNESSMAP' : '',
-
-			parameters.decodeVideoTexture ? '#define DECODE_VIDEO_TEXTURE' : '',
-
-      parameters.vertexTangents ? '#define USE_TANGENT' : '',
-			parameters.vertexColors || parameters.instancingColor ? '#define USE_COLOR' : '',
-			parameters.vertexAlphas ? '#define USE_COLOR_ALPHA' : '',
-      parameters.vertexUvs ? '#define USE_UV' : '',
-      parameters.uvsVertexOnly ? '#define UVS_VERTEX_ONLY' : '',
-
-      parameters.gradientMap ? '#define USE_GRADIENTMAP' : '',
-
-      parameters.flatShading ? '#define FLAT_SHADED' : '',
-
-      parameters.doubleSided ? '#define DOUBLE_SIDED' : '',
-      parameters.flipSided ? '#define FLIP_SIDED' : '',
-
-      parameters.shadowMapEnabled ? '#define USE_SHADOWMAP' : '',
-      parameters.shadowMapEnabled ? '#define ' + shadowMapTypeDefine : '',
-
-      parameters.premultipliedAlpha ? '#define PREMULTIPLIED_ALPHA' : '',
-
-      parameters.physicallyCorrectLights ? '#define PHYSICALLY_CORRECT_LIGHTS' : '',
-
-      parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
-			( parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth ) ? '#define USE_LOGDEPTHBUF_EXT' : '',
-
-      'uniform mat4 viewMatrix;', // 视图矩阵
-      'uniform vec3 cameraPosition;',
-      'uniform bool isOrthographic;',
-
-      (parameters.toneMapping !== NoToneMapping) ? '#define TONE_MAPPING' : '',
-      (parameters.toneMapping !== NoToneMapping) ? ShaderChunk['tonemapping_pars_fragment'] : '', // this code is required here because it is used by the toneMapping() function defined below
-      (parameters.toneMapping !== NoToneMapping) ? getToneMappingFunction('toneMapping', parameters.toneMapping) : '',
-
-      parameters.dithering ? '#define DITHERING' : '',
-			parameters.opaque ? '#define OPAQUE' : '',
-
-			ShaderChunk[ 'encodings_pars_fragment' ], // this code is required here because it is used by the various encoding/decoding function defined below
-			getTexelEncodingFunction( 'linearToOutputTexel', parameters.outputEncoding ),
-
-			parameters.useDepthPacking ? '#define DEPTH_PACKING ' + parameters.depthPacking : '',
-
-      '\n'
-
-    ].filter(filterEmptyLine).join('\n');
-  }
-
-  vertexShader = resolveIncludes(vertexShader);
-  vertexShader = replaceLightNums(vertexShader, parameters);
-  // 替换刨切的面数
-  vertexShader = replaceClippingPlaneNums(vertexShader, parameters);
-
-  fragmentShader = resolveIncludes(fragmentShader);
-  fragmentShader = replaceLightNums(fragmentShader, parameters);
-  // 替换刨切的面数
-  fragmentShader = replaceClippingPlaneNums(fragmentShader, parameters);
-
-  // 替换代码中的循环
-  vertexShader = unrollLoops(vertexShader);
-  fragmentShader = unrollLoops(fragmentShader);
-
-	if ( parameters.isWebGL2 && parameters.isRawShaderMaterial !== true ) {
-
-		// GLSL 3.0 conversion for built-in materials and ShaderMaterial
-
-		versionString = '#version 300 es\n';
-
-    prefixVertex = [
-			'precision mediump sampler2DArray;',
-      '#define attribute in',
-      '#define varying out',
-      '#define texture2D texture'
-    ].join('\n') + '\n' + prefixVertex;
-
-    prefixFragment = [
-      '#define varying in',
-			( parameters.glslVersion === GLSL3 ) ? '' : 'layout(location = 0) out highp vec4 pc_fragColor;',
-			( parameters.glslVersion === GLSL3 ) ? '' : '#define gl_FragColor pc_fragColor',
-      '#define gl_FragDepthEXT gl_FragDepth',
-      '#define texture2D texture',
-      '#define textureCube texture',
-      '#define texture2DProj textureProj',
-      '#define texture2DLodEXT textureLod',
-      '#define texture2DProjLodEXT textureProjLod',
-      '#define textureCubeLodEXT textureLod',
-      '#define texture2DGradEXT textureGrad',
-      '#define texture2DProjGradEXT textureProjGrad',
-      '#define textureCubeGradEXT textureGrad'
-    ].join('\n') + '\n' + prefixFragment;
-
-  }
-
-	const vertexGlsl = versionString + prefixVertex + vertexShader;
-	const fragmentGlsl = versionString + prefixFragment + fragmentShader;
-
-  // console.log( '*VERTEX*', vertexGlsl );
-  // console.log( '*FRAGMENT*', fragmentGlsl );
-
-  // 创建着色器
-	const glVertexShader = WebGLShader( gl, gl.VERTEX_SHADER, vertexGlsl );
-	const glFragmentShader = WebGLShader( gl, gl.FRAGMENT_SHADER, fragmentGlsl );
-
-  gl.attachShader(program, glVertexShader);
-  gl.attachShader(program, glFragmentShader);
-
-  // Force a particular attribute to index 0.
-
-	if ( parameters.index0AttributeName !== undefined ) {
-
-		gl.bindAttribLocation( program, 0, parameters.index0AttributeName );
-
-  }
-  else if (parameters.morphTargets === true) {
-
-    // programs with morphTargets displace position out of attribute 0
-    gl.bindAttribLocation(program, 0, 'position');
-
-  }
-
-  gl.linkProgram(program);
-
-  // check for link errors
-  if (renderer.debug.checkShaderErrors) {
-
-		const programLog = gl.getProgramInfoLog( program ).trim();
-		const vertexLog = gl.getShaderInfoLog( glVertexShader ).trim();
-		const fragmentLog = gl.getShaderInfoLog( glFragmentShader ).trim();
-
-		let runnable = true;
-		let haveDiagnostics = true;
-
-    if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
-
-      runnable = false;
-
-			const vertexErrors = getShaderErrors( gl, glVertexShader, 'vertex' );
-			const fragmentErrors = getShaderErrors( gl, glFragmentShader, 'fragment' );
-
-			console.error(
-				'THREE.WebGLProgram: Shader Error ' + gl.getError() + ' - ' +
-				'VALIDATE_STATUS ' + gl.getProgramParameter( program, gl.VALIDATE_STATUS ) + '\n\n' +
-				'Program Info Log: ' + programLog + '\n' +
-				vertexErrors + '\n' +
-				fragmentErrors
-			);
-
-    } else if (programLog !== '') {
-
-			console.warn( 'THREE.WebGLProgram: Program Info Log:', programLog );
-
-    } else if (vertexLog === '' || fragmentLog === '') {
-
-      haveDiagnostics = false;
-
-    }
-
-    if (haveDiagnostics) {
-
-      this.diagnostics = {
-
-        runnable: runnable,
-
-        programLog: programLog,
-
-        vertexShader: {
-
-          log: vertexLog,
-          prefix: prefixVertex
-
-        },
-
-        fragmentShader: {
-
-          log: fragmentLog,
-          prefix: prefixFragment
+            prefixVertex += '\n';
 
         }
 
-      };
+        prefixFragment = [
+
+            customExtensions,
+            customDefines
+
+        ].filter(filterEmptyLine).join('\n');
+
+        if (prefixFragment.length > 0) {
+
+            prefixFragment += '\n';
+
+        }
+
+    } else {
+        prefixVertex = [
+
+            generatePrecision(parameters), // 设置精度
+
+            '#define SHADER_NAME ' + parameters.shaderName,
+
+            customDefines,
+
+            parameters.instancing ? '#define USE_INSTANCING' : '',
+            parameters.instancingColor ? '#define USE_INSTANCING_COLOR' : '',
+
+            parameters.supportsVertexTextures ? '#define VERTEX_TEXTURES' : '',
+
+            (parameters.useFog && parameters.fog) ? '#define USE_FOG' : '',
+            (parameters.useFog && parameters.fogExp2) ? '#define FOG_EXP2' : '',
+
+            parameters.map ? '#define USE_MAP' : '',
+            parameters.envMap ? '#define USE_ENVMAP' : '',
+            parameters.envMap ? '#define ' + envMapModeDefine : '',
+            parameters.lightMap ? '#define USE_LIGHTMAP' : '',
+            parameters.aoMap ? '#define USE_AOMAP' : '',
+            parameters.emissiveMap ? '#define USE_EMISSIVEMAP' : '',
+            parameters.bumpMap ? '#define USE_BUMPMAP' : '',
+            parameters.normalMap ? '#define USE_NORMALMAP' : '',
+            (parameters.normalMap && parameters.objectSpaceNormalMap) ? '#define OBJECTSPACE_NORMALMAP' : '',
+            (parameters.normalMap && parameters.tangentSpaceNormalMap) ? '#define TANGENTSPACE_NORMALMAP' : '',
+
+            parameters.clearcoatMap ? '#define USE_CLEARCOATMAP' : '',
+            parameters.clearcoatRoughnessMap ? '#define USE_CLEARCOAT_ROUGHNESSMAP' : '',
+            parameters.clearcoatNormalMap ? '#define USE_CLEARCOAT_NORMALMAP' : '',
+
+            parameters.iridescenceMap ? '#define USE_IRIDESCENCEMAP' : '',
+            parameters.iridescenceThicknessMap ? '#define USE_IRIDESCENCE_THICKNESSMAP' : '',
+
+            parameters.displacementMap && parameters.supportsVertexTextures ? '#define USE_DISPLACEMENTMAP' : '',
+            parameters.specularMap ? '#define USE_SPECULARMAP' : '',
+            parameters.specularIntensityMap ? '#define USE_SPECULARINTENSITYMAP' : '',
+            parameters.specularColorMap ? '#define USE_SPECULARCOLORMAP' : '',
+
+            parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
+            parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
+            parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
+
+            parameters.transmission ? '#define USE_TRANSMISSION' : '',
+            parameters.transmissionMap ? '#define USE_TRANSMISSIONMAP' : '',
+            parameters.thicknessMap ? '#define USE_THICKNESSMAP' : '',
+
+            parameters.sheenColorMap ? '#define USE_SHEENCOLORMAP' : '',
+            parameters.sheenRoughnessMap ? '#define USE_SHEENROUGHNESSMAP' : '',
+
+            parameters.vertexTangents ? '#define USE_TANGENT' : '',
+            parameters.vertexColors ? '#define USE_COLOR' : '',
+            parameters.vertexAlphas ? '#define USE_COLOR_ALPHA' : '',
+            parameters.vertexUvs ? '#define USE_UV' : '',
+            parameters.uvsVertexOnly ? '#define UVS_VERTEX_ONLY' : '',
+
+            parameters.flatShading ? '#define FLAT_SHADED' : '',
+
+            parameters.skinning ? '#define USE_SKINNING' : '',
+
+            parameters.morphTargets ? '#define USE_MORPHTARGETS' : '',
+            parameters.morphNormals && parameters.flatShading === false ? '#define USE_MORPHNORMALS' : '',
+            (parameters.morphColors && parameters.isWebGL2) ? '#define USE_MORPHCOLORS' : '',
+            (parameters.morphTargetsCount > 0 && parameters.isWebGL2) ? '#define MORPHTARGETS_TEXTURE' : '',
+            (parameters.morphTargetsCount > 0 && parameters.isWebGL2) ? '#define MORPHTARGETS_TEXTURE_STRIDE ' + parameters.morphTextureStride : '',
+            (parameters.morphTargetsCount > 0 && parameters.isWebGL2) ? '#define MORPHTARGETS_COUNT ' + parameters.morphTargetsCount : '',
+            parameters.doubleSided ? '#define DOUBLE_SIDED' : '',
+            parameters.flipSided ? '#define FLIP_SIDED' : '',
+
+            parameters.shadowMapEnabled ? '#define USE_SHADOWMAP' : '',
+            parameters.shadowMapEnabled ? '#define ' + shadowMapTypeDefine : '',
+
+            parameters.sizeAttenuation ? '#define USE_SIZEATTENUATION' : '',
+
+            parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
+            (parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth) ? '#define USE_LOGDEPTHBUF_EXT' : '',
+
+            'uniform mat4 modelMatrix;',
+            'uniform mat4 modelViewMatrix;',
+            'uniform mat4 projectionMatrix;',
+            'uniform mat4 viewMatrix;',
+            'uniform mat3 normalMatrix;',
+            'uniform vec3 cameraPosition;',
+            'uniform bool isOrthographic;',
+
+            '#ifdef USE_INSTANCING',
+
+            ' attribute mat4 instanceMatrix;',
+
+            '#endif',
+
+            '#ifdef USE_INSTANCING_COLOR',
+
+            '	attribute vec3 instanceColor;',
+
+            '#endif',
+
+            'attribute vec3 position;',
+            'attribute vec3 normal;',
+            'attribute vec2 uv;',
+
+            '#ifdef USE_TANGENT',
+
+            '	attribute vec4 tangent;',
+
+            '#endif',
+
+            // 添加颜色变量
+            '#if defined( USE_COLOR_ALPHA )',
+
+            '	attribute vec4 color;',
+
+            '#elif defined( USE_COLOR )',
+
+            '	attribute vec3 color;',
+            '#endif',
+
+            '#if ( defined( USE_MORPHTARGETS ) && ! defined( MORPHTARGETS_TEXTURE ) )',
+
+            '	attribute vec3 morphTarget0;',
+            '	attribute vec3 morphTarget1;',
+            '	attribute vec3 morphTarget2;',
+            '	attribute vec3 morphTarget3;',
+
+            '	#ifdef USE_MORPHNORMALS',
+
+            '		attribute vec3 morphNormal0;',
+            '		attribute vec3 morphNormal1;',
+            '		attribute vec3 morphNormal2;',
+            '		attribute vec3 morphNormal3;',
+
+            '	#else',
+
+            '		attribute vec3 morphTarget4;',
+            '		attribute vec3 morphTarget5;',
+            '		attribute vec3 morphTarget6;',
+            '		attribute vec3 morphTarget7;',
+
+            '	#endif',
+
+            '#endif',
+
+            '#ifdef USE_SKINNING',
+
+            '	attribute vec4 skinIndex;',
+            '	attribute vec4 skinWeight;',
+
+            '#endif',
+
+            '\n'
+
+        ].filter(filterEmptyLine).join('\n');
+        prefixFragment = [
+
+            customExtensions,
+
+            generatePrecision(parameters),
+
+            '#define SHADER_NAME ' + parameters.shaderName, // 着色器名称
+
+            customDefines,
+
+            (parameters.useFog && parameters.fog) ? '#define USE_FOG' : '',
+            (parameters.useFog && parameters.fogExp2) ? '#define FOG_EXP2' : '',
+
+            parameters.map ? '#define USE_MAP' : '',
+            parameters.matcap ? '#define USE_MATCAP' : '',
+            parameters.envMap ? '#define USE_ENVMAP' : '',
+            parameters.envMap ? '#define ' + envMapTypeDefine : '',
+            parameters.envMap ? '#define ' + envMapModeDefine : '',
+            parameters.envMap ? '#define ' + envMapBlendingDefine : '',
+            envMapCubeUVSize ? '#define CUBEUV_TEXEL_WIDTH ' + envMapCubeUVSize.texelWidth : '',
+            envMapCubeUVSize ? '#define CUBEUV_TEXEL_HEIGHT ' + envMapCubeUVSize.texelHeight : '',
+            envMapCubeUVSize ? '#define CUBEUV_MAX_MIP ' + envMapCubeUVSize.maxMip + '.0' : '',
+            parameters.lightMap ? '#define USE_LIGHTMAP' : '',
+            parameters.aoMap ? '#define USE_AOMAP' : '',
+            parameters.emissiveMap ? '#define USE_EMISSIVEMAP' : '',
+            parameters.bumpMap ? '#define USE_BUMPMAP' : '',
+            parameters.normalMap ? '#define USE_NORMALMAP' : '',
+            (parameters.normalMap && parameters.objectSpaceNormalMap) ? '#define OBJECTSPACE_NORMALMAP' : '',
+            (parameters.normalMap && parameters.tangentSpaceNormalMap) ? '#define TANGENTSPACE_NORMALMAP' : '',
+
+            parameters.clearcoat ? '#define USE_CLEARCOAT' : '',
+            parameters.clearcoatMap ? '#define USE_CLEARCOATMAP' : '',
+            parameters.clearcoatRoughnessMap ? '#define USE_CLEARCOAT_ROUGHNESSMAP' : '',
+            parameters.clearcoatNormalMap ? '#define USE_CLEARCOAT_NORMALMAP' : '',
+
+            parameters.iridescence ? '#define USE_IRIDESCENCE' : '',
+            parameters.iridescenceMap ? '#define USE_IRIDESCENCEMAP' : '',
+            parameters.iridescenceThicknessMap ? '#define USE_IRIDESCENCE_THICKNESSMAP' : '',
+
+            parameters.specularMap ? '#define USE_SPECULARMAP' : '',
+            parameters.specularIntensityMap ? '#define USE_SPECULARINTENSITYMAP' : '',
+            parameters.specularColorMap ? '#define USE_SPECULARCOLORMAP' : '',
+            parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
+            parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
+            parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
+            parameters.alphaTest ? '#define USE_ALPHATEST' : '',
+
+            parameters.sheen ? '#define USE_SHEEN' : '',
+            parameters.sheenColorMap ? '#define USE_SHEENCOLORMAP' : '',
+            parameters.sheenRoughnessMap ? '#define USE_SHEENROUGHNESSMAP' : '',
+
+            parameters.transmission ? '#define USE_TRANSMISSION' : '',
+            parameters.transmissionMap ? '#define USE_TRANSMISSIONMAP' : '',
+            parameters.thicknessMap ? '#define USE_THICKNESSMAP' : '',
+
+            parameters.decodeVideoTexture ? '#define DECODE_VIDEO_TEXTURE' : '',
+
+            parameters.vertexTangents ? '#define USE_TANGENT' : '',
+            parameters.vertexColors || parameters.instancingColor ? '#define USE_COLOR' : '',
+            parameters.vertexAlphas ? '#define USE_COLOR_ALPHA' : '',
+            parameters.vertexUvs ? '#define USE_UV' : '',
+            parameters.uvsVertexOnly ? '#define UVS_VERTEX_ONLY' : '',
+
+            parameters.gradientMap ? '#define USE_GRADIENTMAP' : '',
+
+            parameters.flatShading ? '#define FLAT_SHADED' : '',
+
+            parameters.doubleSided ? '#define DOUBLE_SIDED' : '',
+            parameters.flipSided ? '#define FLIP_SIDED' : '',
+
+            parameters.shadowMapEnabled ? '#define USE_SHADOWMAP' : '',
+            parameters.shadowMapEnabled ? '#define ' + shadowMapTypeDefine : '',
+
+            parameters.premultipliedAlpha ? '#define PREMULTIPLIED_ALPHA' : '',
+
+            parameters.physicallyCorrectLights ? '#define PHYSICALLY_CORRECT_LIGHTS' : '',
+
+            parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
+            (parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth) ? '#define USE_LOGDEPTHBUF_EXT' : '',
+
+            'uniform mat4 viewMatrix;', // 视图矩阵
+            'uniform vec3 cameraPosition;',
+            'uniform bool isOrthographic;',
+
+            (parameters.toneMapping !== NoToneMapping) ? '#define TONE_MAPPING' : '',
+            (parameters.toneMapping !== NoToneMapping) ? ShaderChunk['tonemapping_pars_fragment'] : '', // this code is required here because it is used by the toneMapping() function defined below
+            (parameters.toneMapping !== NoToneMapping) ? getToneMappingFunction('toneMapping', parameters.toneMapping) : '',
+
+            parameters.dithering ? '#define DITHERING' : '',
+            parameters.opaque ? '#define OPAQUE' : '',
+
+            ShaderChunk['encodings_pars_fragment'], // this code is required here because it is used by the various encoding/decoding function defined below
+            getTexelEncodingFunction('linearToOutputTexel', parameters.outputEncoding),
+
+            parameters.useDepthPacking ? '#define DEPTH_PACKING ' + parameters.depthPacking : '',
+
+            '\n'
+
+        ].filter(filterEmptyLine).join('\n');
+    }
+
+    vertexShader = resolveIncludes(vertexShader);
+    vertexShader = replaceLightNums(vertexShader, parameters);
+    // 替换刨切的面数
+    vertexShader = replaceClippingPlaneNums(vertexShader, parameters);
+
+    fragmentShader = resolveIncludes(fragmentShader);
+    fragmentShader = replaceLightNums(fragmentShader, parameters);
+    // 替换刨切的面数
+    fragmentShader = replaceClippingPlaneNums(fragmentShader, parameters);
+
+    // 替换代码中的循环
+    vertexShader = unrollLoops(vertexShader);
+    fragmentShader = unrollLoops(fragmentShader);
+
+    if (parameters.isWebGL2 && parameters.isRawShaderMaterial !== true) {
+
+        // GLSL 3.0 conversion for built-in materials and ShaderMaterial
+
+        versionString = '#version 300 es\n';
+
+        prefixVertex = [
+            'precision mediump sampler2DArray;',
+            '#define attribute in',
+            '#define varying out',
+            '#define texture2D texture'
+        ].join('\n') + '\n' + prefixVertex;
+
+        prefixFragment = [
+            '#define varying in',
+            (parameters.glslVersion === GLSL3) ? '' : 'layout(location = 0) out highp vec4 pc_fragColor;',
+            (parameters.glslVersion === GLSL3) ? '' : '#define gl_FragColor pc_fragColor',
+            '#define gl_FragDepthEXT gl_FragDepth',
+            '#define texture2D texture',
+            '#define textureCube texture',
+            '#define texture2DProj textureProj',
+            '#define texture2DLodEXT textureLod',
+            '#define texture2DProjLodEXT textureProjLod',
+            '#define textureCubeLodEXT textureLod',
+            '#define texture2DGradEXT textureGrad',
+            '#define texture2DProjGradEXT textureProjGrad',
+            '#define textureCubeGradEXT textureGrad'
+        ].join('\n') + '\n' + prefixFragment;
 
     }
 
-  }
+    const vertexGlsl = versionString + prefixVertex + vertexShader;
+    const fragmentGlsl = versionString + prefixFragment + fragmentShader;
 
-	// Clean up
+    // console.log( '*VERTEX*', vertexGlsl );
+    // console.log( '*FRAGMENT*', fragmentGlsl );
 
-	// Crashes in iOS9 and iOS10. #18402
-	// gl.detachShader( program, glVertexShader );
-	// gl.detachShader( program, glFragmentShader );
+    // 创建着色器
+    const glVertexShader = WebGLShader(gl, gl.VERTEX_SHADER, vertexGlsl);
+    const glFragmentShader = WebGLShader(gl, gl.FRAGMENT_SHADER, fragmentGlsl);
 
-  gl.deleteShader(glVertexShader);
-  gl.deleteShader(glFragmentShader);
+    gl.attachShader(program, glVertexShader);
+    gl.attachShader(program, glFragmentShader);
 
-  // set up caching for uniform locations
+    // Force a particular attribute to index 0.
 
-	let cachedUniforms;
+    if (parameters.index0AttributeName !== undefined) {
 
-  /**
-   * 获取uniform变量的地址
-   * @return {*}
-   */
-  this.getUniforms = function() {
+        gl.bindAttribLocation(program, 0, parameters.index0AttributeName);
 
-    if (cachedUniforms === undefined) {
+    } else if (parameters.morphTargets === true) {
 
-      cachedUniforms = new WebGLUniforms(gl, program);
+        // programs with morphTargets displace position out of attribute 0
+        gl.bindAttribLocation(program, 0, 'position');
 
     }
 
-    return cachedUniforms;
+    gl.linkProgram(program);
 
-  };
+    // check for link errors
+    if (renderer.debug.checkShaderErrors) {
 
-  // set up caching for attribute locations
+        const programLog = gl.getProgramInfoLog(program).trim();
+        const vertexLog = gl.getShaderInfoLog(glVertexShader).trim();
+        const fragmentLog = gl.getShaderInfoLog(glFragmentShader).trim();
 
-	let cachedAttributes; // 缓冲attribute属性地址
+        let runnable = true;
+        let haveDiagnostics = true;
 
-  /**
-   * 获取Attribute的存储地址
-   * @return {*}
-   */
-  this.getAttributes = function() {
-    if (cachedAttributes === undefined) {
-      cachedAttributes = fetchAttributeLocations(gl, program);
+        if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
+
+            runnable = false;
+
+            const vertexErrors = getShaderErrors(gl, glVertexShader, 'vertex');
+            const fragmentErrors = getShaderErrors(gl, glFragmentShader, 'fragment');
+
+            console.error(
+                'THREE.WebGLProgram: Shader Error ' + gl.getError() + ' - ' +
+                'VALIDATE_STATUS ' + gl.getProgramParameter(program, gl.VALIDATE_STATUS) + '\n\n' +
+                'Program Info Log: ' + programLog + '\n' +
+                vertexErrors + '\n' +
+                fragmentErrors
+            );
+
+        } else if (programLog !== '') {
+
+            console.warn('THREE.WebGLProgram: Program Info Log:', programLog);
+
+        } else if (vertexLog === '' || fragmentLog === '') {
+
+            haveDiagnostics = false;
+
+        }
+
+        if (haveDiagnostics) {
+
+            this.diagnostics = {
+
+                runnable: runnable,
+
+                programLog: programLog,
+
+                vertexShader: {
+
+                    log: vertexLog,
+                    prefix: prefixVertex
+
+                },
+
+                fragmentShader: {
+
+                    log: fragmentLog,
+                    prefix: prefixFragment
+
+                }
+
+            };
+
+        }
+
     }
-    return cachedAttributes;
-  };
 
-  // free resource
+    // Clean up
 
-  this.destroy = function() {
+    // Crashes in iOS9 and iOS10. #18402
+    // gl.detachShader( program, glVertexShader );
+    // gl.detachShader( program, glFragmentShader );
 
-		bindingStates.releaseStatesOfProgram( this );
+    gl.deleteShader(glVertexShader);
+    gl.deleteShader(glFragmentShader);
 
-    gl.deleteProgram(program);
-    this.program = undefined;
+    // set up caching for uniform locations
 
-  };
+    let cachedUniforms;
 
-  //
+    /**
+     * 获取uniform变量的地址
+     * @return {*}
+     */
+    this.getUniforms = function () {
 
-	this.name = parameters.shaderName;
-  this.id = programIdCount++;
-  this.cacheKey = cacheKey;
-  this.usedTimes = 1;
-  this.program = program;
-  this.vertexShader = glVertexShader;
-  this.fragmentShader = glFragmentShader;
+        if (cachedUniforms === undefined) {
 
-  return this;
+            cachedUniforms = new WebGLUniforms(gl, program);
+
+        }
+
+        return cachedUniforms;
+
+    };
+
+    // set up caching for attribute locations
+
+    let cachedAttributes; // 缓冲attribute属性地址
+
+    /**
+     * 获取Attribute的存储地址
+     * @return {*}
+     */
+    this.getAttributes = function () {
+        if (cachedAttributes === undefined) {
+            cachedAttributes = fetchAttributeLocations(gl, program);
+        }
+        return cachedAttributes;
+    };
+
+    // free resource
+
+    this.destroy = function () {
+
+        bindingStates.releaseStatesOfProgram(this);
+
+        gl.deleteProgram(program);
+        this.program = undefined;
+
+    };
+
+    //
+
+    this.name = parameters.shaderName;
+    this.id = programIdCount++;
+    this.cacheKey = cacheKey;
+    this.usedTimes = 1;
+    this.program = program;
+    this.vertexShader = glVertexShader;
+    this.fragmentShader = glFragmentShader;
+
+    return this;
 
 }
 

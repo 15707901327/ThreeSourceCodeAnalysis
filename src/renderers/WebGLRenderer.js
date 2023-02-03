@@ -1,8 +1,8 @@
 import {
     REVISION,
     BackSide,
-    TwoPassDoubleSide,
     FrontSide,
+    DoubleSide,
     RGBAFormat,
     HalfFloatType,
     FloatType,
@@ -865,7 +865,7 @@ function WebGLRenderer(parameters = {}) {
 
         function prepare(material, scene, object) {
 
-            if (material.transparent === true && material.side === TwoPassDoubleSide) {
+            if (material.transparent === true && material.side === DoubleSide && material.forceSinglePass === false) {
 
                 material.side = BackSide;
                 material.needsUpdate = true;
@@ -875,7 +875,7 @@ function WebGLRenderer(parameters = {}) {
                 material.needsUpdate = true;
                 getProgram(material, scene, object);
 
-                material.side = TwoPassDoubleSide;
+                material.side = DoubleSide;
 
             } else {
 
@@ -1023,7 +1023,7 @@ function WebGLRenderer(parameters = {}) {
         // 裁剪
         _localClippingEnabled = this.localClippingEnabled;
         // 获取是否启动裁剪
-        _clippingEnabled = clipping.init(this.clippingPlanes, _localClippingEnabled, camera);
+        _clippingEnabled = clipping.init(this.clippingPlanes, _localClippingEnabled);
 
         // 初始化渲染列表
         currentRenderList = renderLists.get(scene, renderListStack.length);
@@ -1225,6 +1225,8 @@ function WebGLRenderer(parameters = {}) {
 
         currentRenderState.setupLightsView(camera);
 
+        if (_clippingEnabled === true) clipping.setGlobalState(_this.clippingPlanes, camera);
+
         if (transmissiveObjects.length > 0) renderTransmissionPass(opaqueObjects, scene, camera);
 
         if (viewport) state.viewport(_currentViewport.copy(viewport));
@@ -1340,7 +1342,7 @@ function WebGLRenderer(parameters = {}) {
 
         material.onBeforeRender(_this, scene, camera, geometry, object, group);
 
-        if (material.transparent === true && material.side === TwoPassDoubleSide) {
+        if (material.transparent === true && material.side === DoubleSide && material.forceSinglePass === false) {
 
             material.side = BackSide;
             material.needsUpdate = true;
@@ -1350,7 +1352,7 @@ function WebGLRenderer(parameters = {}) {
             material.needsUpdate = true;
             _this.renderBufferDirect(camera, scene, geometry, material, object, group);
 
-            material.side = TwoPassDoubleSide;
+            material.side = DoubleSide;
 
         } else {
             _this.renderBufferDirect(camera, scene, geometry, material, object, group);
@@ -1401,6 +1403,7 @@ function WebGLRenderer(parameters = {}) {
 
         }
 
+        // 获取着色器
         let program = programs.get(programCacheKey);
 
         if (program !== undefined) {

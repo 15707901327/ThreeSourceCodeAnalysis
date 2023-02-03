@@ -4,48 +4,49 @@
  */
 function WebGLProperties() {
 
-	var properties = new WeakMap();
+    let properties = new WeakMap();
 
-  /**
-	 * 获取map，如果未定义，设置为{}
-   * @param object
-   */
-	function get( object ) {
+    /**
+     * 获取map，如果未定义，设置为{}
+     * @param object
+     */
+    function get(object) {
 
-		var map = properties.get( object );
-		if ( map === undefined ) {
-			map = {};
-			properties.set( object, map );
-		}
+        let map = properties.get(object);
 
-		return map;
-	}
+        if (map === undefined) {
+            map = {};
+            properties.set(object, map);
+        }
 
-	function remove( object ) {
+        return map;
+    }
 
-		properties.delete( object );
+    function remove(object) {
 
-	}
+        properties.delete(object);
 
-	function update( object, key, value ) {
+    }
 
-		properties.get( object )[ key ] = value;
+    function update(object, key, value) {
 
-	}
+        properties.get(object)[key] = value;
 
-	function dispose() {
+    }
 
-		properties = new WeakMap();
+    function dispose() {
 
-	}
+        properties = new WeakMap();
 
-	return {
-		get: get,
-		remove: remove,
-		update: update,
-		dispose: dispose
-	};
+    }
+
+    return {
+        get: get,
+        remove: remove,
+        update: update,
+        dispose: dispose
+    };
 
 }
 
-export { WebGLProperties };
+export {WebGLProperties};

@@ -30,14 +30,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.r145源码">
-      <change afterPath="$PROJECT_DIR$/src/objects/Mesh.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Object3D.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Object3D.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/BufferGeometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/BufferGeometry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Layers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Layers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lights/AmbientLight.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/lights/AmbientLight.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lights/DirectionalLight.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/lights/DirectionalLight.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lights/Light.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/lights/Light.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/materials/LineBasicMaterial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/LineBasicMaterial.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/materials/Material.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/Material.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/MeshBasicMaterial.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/math/Vector3.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Vector3.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/Sphere.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Sphere.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/math/Vector2.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Vector2.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLObjects.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLObjects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLProgram.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLProgram.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLPrograms.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLPrograms.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLProperties.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLProperties.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,12 +196,12 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r148/src/materials/Material.js",
+    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r149/src/renderers/webgl/WebGLProgram.js",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r148/src/materials/Material.js",
+    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r149/src/renderers/webgl/WebGLProgram.js",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -655,14 +662,17 @@
       <workItem from="1672893707712" duration="4796000" />
       <workItem from="1672902054175" duration="2762000" />
       <workItem from="1672983417476" duration="6349000" />
-      <workItem from="1673230187339" duration="13317000" />
-    </task>
-    <task id="LOCAL-00055" summary="1.裁剪面实例">
-      <created>1574329254107</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1574329254127</updated>
+      <workItem from="1673230187339" duration="14965000" />
+      <workItem from="1673318362036" duration="6272000" />
+      <workItem from="1673401430220" duration="3843000" />
+      <workItem from="1673494112442" duration="1190000" />
+      <workItem from="1673574429743" duration="3255000" />
+      <workItem from="1673662134620" duration="3068000" />
+      <workItem from="1673761393661" duration="1864000" />
+      <workItem from="1675216137289" duration="2000" />
+      <workItem from="1675234091685" duration="4752000" />
+      <workItem from="1675326853724" duration="5733000" />
+      <workItem from="1675388789553" duration="6961000" />
     </task>
     <task id="LOCAL-00056" summary="1.状态管理">
       <created>1574332317284</created>
@@ -1000,7 +1010,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672999706071</updated>
     </task>
-    <option name="localTasksCounter" value="104" />
+    <task id="LOCAL-00104" summary="1.r145源码">
+      <created>1673257326764</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1673257326764</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TimeTrackingManager">

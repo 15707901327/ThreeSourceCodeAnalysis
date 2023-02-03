@@ -53,6 +53,9 @@ class Layers {
 
     }
 
+    /**
+     * 清空标识位
+     */
     disableAll() {
 
         this.mask = 0;

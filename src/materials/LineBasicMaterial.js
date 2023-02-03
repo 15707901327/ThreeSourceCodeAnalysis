@@ -1,5 +1,5 @@
-import { Material } from './Material.js';
-import { Color } from '../math/Color.js';
+import {Material} from './Material.js';
+import {Color} from '../math/Color.js';
 
 /**
  * parameters = {
@@ -11,43 +11,45 @@ import { Color } from '../math/Color.js';
  *  linejoin: "round"
  * }
  */
-function LineBasicMaterial( parameters ) {
+class LineBasicMaterial extends Material {
 
-	Material.call( this );
+    constructor(parameters) {
 
-	this.type = 'LineBasicMaterial';
+        super();
 
-	this.color = new Color( 0xffffff );
+        this.isLineBasicMaterial = true;
 
-	this.linewidth = 1;
-	this.linecap = 'round';
-	this.linejoin = 'round';
+        this.type = 'LineBasicMaterial';
 
-	this.morphTargets = false;
+        this.color = new Color(0xffffff);
 
-	this.setValues( parameters );
+        this.linewidth = 1;
+        this.linecap = 'round';
+        this.linejoin = 'round';
+
+        this.fog = true;
+
+        this.setValues(parameters);
+
+    }
+
+
+	copy( source ) {
+
+		super.copy( source );
+
+        this.color.copy(source.color);
+
+        this.linewidth = source.linewidth;
+        this.linecap = source.linecap;
+        this.linejoin = source.linejoin;
+
+		this.fog = source.fog;
+
+        return this;
+
+	}
 
 }
-
-LineBasicMaterial.prototype = Object.create( Material.prototype );
-LineBasicMaterial.prototype.constructor = LineBasicMaterial;
-
-LineBasicMaterial.prototype.isLineBasicMaterial = true;
-
-LineBasicMaterial.prototype.copy = function ( source ) {
-
-	Material.prototype.copy.call( this, source );
-
-	this.color.copy( source.color );
-
-	this.linewidth = source.linewidth;
-	this.linecap = source.linecap;
-	this.linejoin = source.linejoin;
-
-	this.morphTargets = source.morphTargets;
-
-	return this;
-
-};
 
 export { LineBasicMaterial };
