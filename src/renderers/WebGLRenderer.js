@@ -303,6 +303,7 @@ function WebGLRenderer(parameters = {}) {
 
         utils = new WebGLUtils(_gl, extensions, capabilities);
 
+        // 状态管理
         state = new WebGLState(_gl, extensions, capabilities);
 
         // 渲染信息管理

@@ -41,10 +41,10 @@
  *
  */
 
-import { CubeTexture } from '../../textures/CubeTexture.js';
-import { Texture } from '../../textures/Texture.js';
-import { DataArrayTexture } from '../../textures/DataArrayTexture.js';
-import { Data3DTexture } from '../../textures/Data3DTexture.js';
+import {CubeTexture} from '../../textures/CubeTexture.js';
+import {Texture} from '../../textures/Texture.js';
+import {DataArrayTexture} from '../../textures/DataArrayTexture.js';
+import {Data3DTexture} from '../../textures/Data3DTexture.js';
 
 const emptyTexture = /*@__PURE__*/ new Texture();
 const emptyArrayTexture = /*@__PURE__*/ new DataArrayTexture();
@@ -783,7 +783,6 @@ function setValueV4iArray( gl, v ) {
 	gl.uniform4iv( this.addr, v );
 
 }
-
 // Array of unsigned integer
 
 function setValueV1uiArray( gl, v ) {
