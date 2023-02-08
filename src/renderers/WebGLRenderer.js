@@ -315,6 +315,7 @@ function WebGLRenderer(parameters = {}) {
         cubeuvmaps = new WebGLCubeUVMaps(_this);
         attributes = new WebGLAttributes(_gl, capabilities);
         bindingStates = new WebGLBindingStates(_gl, extensions, attributes, capabilities);
+        // 几何体管理
         geometries = new WebGLGeometries(_gl, attributes, info, bindingStates);
         // 对象管理
         objects = new WebGLObjects(_gl, geometries, attributes, info);
@@ -748,12 +749,11 @@ function WebGLRenderer(parameters = {}) {
         let index = geometry.index;
         let rangeFactor = 1;
 
+        // 生成三角面边线索引
         if (material.wireframe === true) {
             index = geometries.getWireframeAttribute(geometry);
             rangeFactor = 2;
-
         }
-
         //
 
         const drawRange = geometry.drawRange;
