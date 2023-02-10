@@ -313,6 +313,7 @@ function WebGLRenderer(parameters = {}) {
         textures = new WebGLTextures(_gl, extensions, state, properties, capabilities, utils, info);
         cubemaps = new WebGLCubeMaps(_this);
         cubeuvmaps = new WebGLCubeUVMaps(_this);
+        // 顶点数据管理
         attributes = new WebGLAttributes(_gl, capabilities);
         bindingStates = new WebGLBindingStates(_gl, extensions, attributes, capabilities);
         // 几何体管理
@@ -331,6 +332,7 @@ function WebGLRenderer(parameters = {}) {
         shadowMap = new WebGLShadowMap(_this, objects, capabilities);
         uniformsGroups = new WebGLUniformsGroups(_gl, info, capabilities, state);
 
+        // 渲染buffer
         bufferRenderer = new WebGLBufferRenderer(_gl, extensions, info, capabilities);
         indexedBufferRenderer = new WebGLIndexedBufferRenderer(_gl, extensions, info, capabilities);
 

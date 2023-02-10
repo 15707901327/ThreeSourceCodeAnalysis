@@ -1,6 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
 
 /**
  * 属性管理
@@ -8,9 +5,11 @@
  * @returns {{get: (function(*=): any), update: update, remove: remove}}
  * @constructor
  */
-function WebGLAttributes( gl ) {
+function WebGLAttributes( gl, capabilities ) {
 
-	var buffers = new WeakMap();
+	const isWebGL2 = capabilities.isWebGL2;
+
+	const buffers = new WeakMap();
 
 	/**
 	 * 创建缓存区
@@ -20,30 +19,43 @@ function WebGLAttributes( gl ) {
 	 */
 	function createBuffer( attribute, bufferType ) {
 
-		var array = attribute.array;
-		var usage = attribute.usage;
+		const array = attribute.array;
+		const usage = attribute.usage;
 
-		var buffer = gl.createBuffer();
+		const buffer = gl.createBuffer();
 
 		gl.bindBuffer( bufferType, buffer );
 		gl.bufferData( bufferType, array, usage );
 
 		attribute.onUploadCallback();
 
-		var type = gl.FLOAT;
+		let type;
 
 		if ( array instanceof Float32Array ) {
 
 			type = gl.FLOAT;
 
+		} else if ( array instanceof Uint16Array ) {
+
+			if ( attribute.isFloat16BufferAttribute ) {
+
+				if ( isWebGL2 ) {
+
+					type = gl.HALF_FLOAT;
+
+				} else {
+
+					throw new Error( 'THREE.WebGLAttributes: Usage of Float16BufferAttribute requires WebGL2.' );
+
 		}
-		else if ( array instanceof Float64Array ) {
-			console.warn( 'THREE.WebGLAttributes: Unsupported data buffer format: Float64Array.' );
-		}
-		else if ( array instanceof Uint16Array ) {
+
+			} else {
+
 			type = gl.UNSIGNED_SHORT;
 		}
-		else if ( array instanceof Int16Array ) {
+
+		} else if ( array instanceof Int16Array ) {
+
 			type = gl.SHORT;
 		}
 		else if ( array instanceof Uint32Array ) {
@@ -56,7 +68,17 @@ function WebGLAttributes( gl ) {
 			type = gl.BYTE;
 		}
 		else if ( array instanceof Uint8Array ) {
+
 			type = gl.UNSIGNED_BYTE;
+
+		} else if ( array instanceof Uint8ClampedArray ) {
+
+			type = gl.UNSIGNED_BYTE;
+
+		} else {
+
+			throw new Error( 'THREE.WebGLAttributes: Unsupported buffer data format: ' + array );
+
 		}
 
 		return {
@@ -70,8 +92,8 @@ function WebGLAttributes( gl ) {
 
 	function updateBuffer( buffer, attribute, bufferType ) {
 
-		var array = attribute.array;
-		var updateRange = attribute.updateRange;
+		const array = attribute.array;
+		const updateRange = attribute.updateRange;
 
 		gl.bindBuffer( bufferType, buffer );
 
@@ -83,12 +105,23 @@ function WebGLAttributes( gl ) {
 
 		} else {
 
+			if ( isWebGL2 ) {
+
+				gl.bufferSubData( bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
+					array, updateRange.offset, updateRange.count );
+
+		} else {
+
 			gl.bufferSubData( bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
 				array.subarray( updateRange.offset, updateRange.offset + updateRange.count ) );
+
+			}
 
 			updateRange.count = - 1; // reset range
 
 		}
+
+		attribute.onUploadCallback();
 
 	}
 
@@ -105,7 +138,7 @@ function WebGLAttributes( gl ) {
 
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
 
-		var data = buffers.get( attribute );
+		const data = buffers.get( attribute );
 
 		if ( data ) {
 
@@ -120,13 +153,32 @@ function WebGLAttributes( gl ) {
 	/**
 	 * 更新属性的缓冲空间
 	 * @param attribute
-	 * @param bufferType
+	 * @param bufferType 类型
 	 */
 	function update( attribute, bufferType ) {
 
+		if ( attribute.isGLBufferAttribute ) {
+
+			const cached = buffers.get( attribute );
+
+			if ( ! cached || cached.version < attribute.version ) {
+
+				buffers.set( attribute, {
+					buffer: attribute.buffer,
+					type: attribute.type,
+					bytesPerElement: attribute.elementSize,
+					version: attribute.version
+				} );
+
+			}
+
+			return;
+
+		}
+
 		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
 
-		var data = buffers.get( attribute );
+		const data = buffers.get( attribute );
 
 		if ( data === undefined ) {
 			buffers.set( attribute, createBuffer( attribute, bufferType ) );

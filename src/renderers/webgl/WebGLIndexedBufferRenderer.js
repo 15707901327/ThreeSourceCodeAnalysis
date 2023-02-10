@@ -1,10 +1,6 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
 function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
 
-	var isWebGL2 = capabilities.isWebGL2;
+	const isWebGL2 = capabilities.isWebGL2;
 
 	var mode; // 绘制图形的方式
 
@@ -18,7 +14,7 @@ function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
 
 	}
 
-	var type, bytesPerElement;
+	let type, bytesPerElement;
 
 	function setIndex( value ) {
 
@@ -36,7 +32,7 @@ function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
 
 		gl.drawElements( mode, count, type, start * bytesPerElement );
 
-		info.update( count, mode );
+		info.update( count, mode, 1 );
 
 	}
 
@@ -47,11 +43,11 @@ function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
    * @param count
    * @param primcount
    */
-	function renderInstances( geometry, start, count, primcount ) {
+	function renderInstances( start, count, primcount ) {
 
 		if ( primcount === 0 ) return;
 
-		var extension, methodName;
+		let extension, methodName;
 
 		if ( isWebGL2 ) {
 			extension = gl;

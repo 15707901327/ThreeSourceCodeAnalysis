@@ -1,25 +1,21 @@
 /**
- * @author mrdoob / http://mrdoob.com/
- */
-
-/**
  * 获取数组中最小值
  * @param array
  * @returns {number|*}
  */
-function arrayMin( array ) {
+function arrayMin(array) {
 
-	if ( array.length === 0 ) return Infinity;
+    if (array.length === 0) return Infinity;
 
-	var min = array[ 0 ];
+    let min = array[0];
 
-	for ( var i = 1, l = array.length; i < l; ++ i ) {
+    for (let i = 1, l = array.length; i < l; ++i) {
 
-		if ( array[ i ] < min ) min = array[ i ];
+        if (array[i] < min) min = array[i];
 
-	}
+    }
 
-	return min;
+    return min;
 
 }
 
@@ -28,13 +24,55 @@ function arrayMin( array ) {
  * @param array
  * @returns {number|*}
  */
-function arrayMax( array ) {
-	if ( array.length === 0 ) return - Infinity;
-	var max = array[ 0 ];
-	for ( var i = 1, l = array.length; i < l; ++ i ) {
-		if ( array[ i ] > max ) max = array[ i ];
-	}
-	return max;
+function arrayMax(array) {
+    if (array.length === 0) return -Infinity;
+
+    let max = array[0];
+
+    for (let i = 1, l = array.length; i < l; ++i) {
+
+        if (array[i] > max) max = array[i];
+    }
+    return max;
+
 }
 
-export { arrayMin, arrayMax };
+function arrayNeedsUint32(array) {
+
+    // assumes larger values usually on last
+
+    for (let i = array.length - 1; i >= 0; --i) {
+
+        if (array[i] >= 65535) return true; // account for PRIMITIVE_RESTART_FIXED_INDEX, #24565
+
+    }
+
+    return false;
+
+}
+
+const TYPED_ARRAYS = {
+    Int8Array: Int8Array,
+    Uint8Array: Uint8Array,
+    Uint8ClampedArray: Uint8ClampedArray,
+    Int16Array: Int16Array,
+    Uint16Array: Uint16Array,
+    Int32Array: Int32Array,
+    Uint32Array: Uint32Array,
+    Float32Array: Float32Array,
+    Float64Array: Float64Array
+};
+
+function getTypedArray(type, buffer) {
+
+    return new TYPED_ARRAYS[type](buffer);
+
+}
+
+function createElementNS(name) {
+
+    return document.createElementNS('http://www.w3.org/1999/xhtml', name);
+
+}
+
+export {arrayMin, arrayMax, arrayNeedsUint32, getTypedArray, createElementNS};

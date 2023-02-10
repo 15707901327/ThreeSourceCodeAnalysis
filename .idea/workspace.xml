@@ -33,14 +33,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.r145源码">
-      <change afterPath="$PROJECT_DIR$/r149/build/three.module.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r149/example/jsm/controls/OrbitControls.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r149/example/materials/webgl_materials_wireframe.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r149/example/models/json/WaltHeadLo_buffergeometry.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLBindingStates.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/materials/wireframe/webgl_materials_wireframe.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/BufferAttribute.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/BufferAttribute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/materials/ShaderMaterial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/ShaderMaterial.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLGeometries.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLGeometries.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLAttributes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLAttributes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,22 +203,22 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r149/src/renderers/webgl/WebGLGeometries.js",
+    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r149/src/renderers/webgl/WebGLProgram.js",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r149/src/renderers/webgl/WebGLGeometries.js",
+    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r149/src/renderers/webgl/WebGLProgram.js",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\src\renderers\webgl" />
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\example\materials" />
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\example\modes\json" />
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\example\jsm" />
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\examples\jsm\libs" />
-      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\build" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\example\materials" />
@@ -683,6 +685,8 @@
       <workItem from="1675824945273" duration="1663000" />
       <workItem from="1675826694919" duration="135000" />
       <workItem from="1675845071794" duration="5963000" />
+      <workItem from="1675904559368" duration="19845000" />
+      <workItem from="1675992962638" duration="10027000" />
     </task>
     <task id="LOCAL-00059" summary="1.裁剪管理">
       <created>1574677318019</created>
