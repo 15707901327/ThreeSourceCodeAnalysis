@@ -2,14 +2,18 @@ export const REVISION = '149';
 // 设置鼠标含义
 export const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
 export const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
+
+// 设置剔除面
 export const CullFaceNone = 0;
 export const CullFaceBack = 1;
 export const CullFaceFront = 2;
 export const CullFaceFrontBack = 3;
+
 export const BasicShadowMap = 0;
 export const PCFShadowMap = 1;
 export const PCFSoftShadowMap = 2;
 export const VSMShadowMap = 3;
+
 export const FrontSide = 0;
 export const BackSide = 1;
 export const DoubleSide = 2;
@@ -24,34 +28,33 @@ export const MultiplyBlending = 4;
 export const CustomBlending = 5; // 自定义混合
 
 // 混合方程
-export var AddEquation = 100;
-export var SubtractEquation = 101;
-export var ReverseSubtractEquation = 102;
-export var MinEquation = 103;
-export var MaxEquation = 104;
-
-export var ZeroFactor = 200;
-export var OneFactor = 201;
-export var SrcColorFactor = 202;
-export var OneMinusSrcColorFactor = 203;
-export var SrcAlphaFactor = 204;
-export var OneMinusSrcAlphaFactor = 205;
-export var DstAlphaFactor = 206;
-export var OneMinusDstAlphaFactor = 207;
-export var DstColorFactor = 208;
-export var OneMinusDstColorFactor = 209;
-export var SrcAlphaSaturateFactor = 210;
-export var NeverDepth = 0;
-export var AlwaysDepth = 1;
-export var LessDepth = 2;
-export var LessEqualDepth = 3;
-export var EqualDepth = 4;
-export var GreaterEqualDepth = 5;
-export var GreaterDepth = 6;
-export var NotEqualDepth = 7;
-export var MultiplyOperation = 0;
-export var MixOperation = 1;
-export var AddOperation = 2;
+export const AddEquation = 100;
+export const SubtractEquation = 101;
+export const ReverseSubtractEquation = 102;
+export const MinEquation = 103;
+export const MaxEquation = 104;
+export const ZeroFactor = 200;
+export const OneFactor = 201;
+export const SrcColorFactor = 202;
+export const OneMinusSrcColorFactor = 203;
+export const SrcAlphaFactor = 204;
+export const OneMinusSrcAlphaFactor = 205;
+export const DstAlphaFactor = 206;
+export const OneMinusDstAlphaFactor = 207;
+export const DstColorFactor = 208;
+export const OneMinusDstColorFactor = 209;
+export const SrcAlphaSaturateFactor = 210;
+export const NeverDepth = 0;
+export const AlwaysDepth = 1;
+export const LessDepth = 2;
+export const LessEqualDepth = 3;
+export const EqualDepth = 4;
+export const GreaterEqualDepth = 5;
+export const GreaterDepth = 6;
+export const NotEqualDepth = 7;
+export const MultiplyOperation = 0;
+export const MixOperation = 1;
+export const AddOperation = 2;
 
 // 色调映射
 export const NoToneMapping = 0; // 禁用色调映射
