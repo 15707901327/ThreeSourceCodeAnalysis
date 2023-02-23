@@ -32,17 +32,13 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.r145源码">
-      <change afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLBindingStates.js" afterDir="false" />
+    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.blending实例测试">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/BufferAttribute.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/BufferAttribute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/materials/ShaderMaterial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/materials/ShaderMaterial.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLAttributes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLAttributes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLIndexedBufferRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/depth_texture/webgl_depth_texture.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/depth_texture/webgl_depth_texture.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/left.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/left.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_outline.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/postprocessing/webgl_postprocessing_outline.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r149/example/materials/blending/webgl_materials_blending.html" beforeDir="false" afterPath="$PROJECT_DIR$/r149/example/materials/blending/webgl_materials_blending.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,18 +196,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r149/src/renderers/webgl/WebGLProgram.js",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r149/src/renderers/webgl/WebGLProgram.js",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/14296/workhome/BASIS_WEBGL&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/14296/workhome/three.js-r149/src/materials/MeshBasicMaterial.js&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\src\renderers\webgl" />
@@ -687,13 +683,8 @@
       <workItem from="1675845071794" duration="5963000" />
       <workItem from="1675904559368" duration="19845000" />
       <workItem from="1675992962638" duration="10027000" />
-    </task>
-    <task id="LOCAL-00059" summary="1.裁剪管理">
-      <created>1574677318019</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1574677318020</updated>
+      <workItem from="1677046331303" duration="1979000" />
+      <workItem from="1677116092237" duration="2102000" />
     </task>
     <task id="LOCAL-00060" summary="1.添加r111">
       <created>1574932629756</created>
@@ -1031,7 +1022,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675605896730</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL-00108" summary="1.blending实例测试">
+      <created>1676962130860</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1676962130860</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -1088,7 +1086,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="1.水晶效果" />
     <MESSAGE value="1.buffergeometry和meshPhoneMaterial公用" />
     <MESSAGE value="1.计算法线实例" />
     <MESSAGE value="1.添加文档" />
@@ -1113,7 +1110,8 @@
     <MESSAGE value="1. 修改火焰demo" />
     <MESSAGE value="1. 修改火焰" />
     <MESSAGE value="1.r145源码" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.r145源码" />
+    <MESSAGE value="1.blending实例测试" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.blending实例测试" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
