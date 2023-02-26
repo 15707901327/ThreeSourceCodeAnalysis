@@ -10,14 +10,14 @@ import {
  */
 
 const SobelOperatorShader = {
-
+	
 	uniforms: {
-
-		'tDiffuse': { value: null },
-		'resolution': { value: new Vector2() }
-
+		
+		'tDiffuse': {value: null},
+		'resolution': {value: new Vector2()}
+		
 	},
-
+	
 	vertexShader: /* glsl */`
 
 		varying vec2 vUv;
@@ -29,7 +29,7 @@ const SobelOperatorShader = {
 			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
 		}`,
-
+	
 	fragmentShader: /* glsl */`
 
 		uniform sampler2D tDiffuse;
@@ -84,7 +84,7 @@ const SobelOperatorShader = {
 			gl_FragColor = vec4( vec3( G ), 1 );
 
 		}`
-
+	
 };
 
-export { SobelOperatorShader };
+export {SobelOperatorShader};

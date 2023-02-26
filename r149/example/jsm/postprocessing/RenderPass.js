@@ -3,6 +3,15 @@ import {
 } from 'three';
 import { Pass } from './Pass.js';
 
+/**
+ * 渲染通道：它只会渲染场景，但不会把结果输出到场景上
+ * @param scene 场景
+ * @param camera 相机
+ * @param overrideMaterial
+ * @param clearColor
+ * @param clearAlpha
+ * @constructor
+ */
 class RenderPass extends Pass {
 
 	constructor( scene, camera, overrideMaterial, clearColor, clearAlpha ) {
@@ -23,9 +32,16 @@ class RenderPass extends Pass {
 		this._oldClearColor = new Color();
 
 	}
-
+	
+	/**
+	 * 渲染场景到 readBuffer上
+	 * @param renderer 渲染器
+	 * @param writeBuffer 写入缓冲
+	 * @param readBuffer 读取缓冲
+	 */
 	render( renderer, writeBuffer, readBuffer /*, deltaTime, maskActive */ ) {
-
+		
+		// 关闭自动清空缓冲
 		const oldAutoClear = renderer.autoClear;
 		renderer.autoClear = false;
 
@@ -53,7 +69,8 @@ class RenderPass extends Pass {
 			renderer.clearDepth();
 
 		}
-
+		
+		// 设置渲染目标
 		renderer.setRenderTarget( this.renderToScreen ? null : readBuffer );
 
 		// TODO: Avoid using autoClear properties, see https://github.com/mrdoob/three.js/pull/15571#issuecomment-465669600

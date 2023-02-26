@@ -2,6 +2,7 @@ import {EventDispatcher} from '../core/EventDispatcher.js';
 import {Texture} from '../textures/Texture.js';
 import {LinearFilter} from '../constants.js';
 import {Vector4} from '../math/Vector4.js';
+import {Source} from '../textures/Source.js';
 
 /*
  In options, we can specify:
@@ -23,95 +24,113 @@ import {Vector4} from '../math/Vector4.js';
  * @constructor
  */
 class WebGLRenderTarget extends EventDispatcher {
+	
+	constructor(width = 1, height = 1, options = {}) {
+		
+		super();
+		
+		this.isWebGLRenderTarget = true;
+		
+		this.width = width;
+		this.height = height;
+		this.depth = 1;
+		
+		this.scissor = new Vector4(0, 0, width, height);
+		this.scissorTest = false;
+		
+		this.viewport = new Vector4(0, 0, width, height);
+		
+		const image = { width: width, height: height, depth: 1 };
+		
+		// 贴图
+		this.texture = new Texture( image, options.mapping, options.wrapS, options.wrapT, options.magFilter, options.minFilter, options.format, options.type, options.anisotropy, options.encoding );
+		this.texture.isRenderTargetTexture = true;
+		
+		// 添加图片，以及参数
+		this.texture.image = {};
+		this.texture.image.width = width;
+		this.texture.image.height = height;
+		
+		this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
+		this.texture.internalFormat = options.internalFormat !== undefined ? options.internalFormat : null;
+		// 纹理缩小时像素的取值format
+		this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
+		
+		this.depthBuffer = options.depthBuffer !== undefined ? options.depthBuffer : true;
+		this.stencilBuffer = options.stencilBuffer !== undefined ? options.stencilBuffer : false;
+		
+		// 深度纹理
+		this.depthTexture = options.depthTexture !== undefined ? options.depthTexture : null;
+		
+		this.samples = options.samples !== undefined ? options.samples : 0;
 
-    constructor(width, height, options) {
+	}
+	
+	/**
+	 * 设置渲染尺寸
+	 * @param width
+	 * @param height
+	 */
+	setSize( width, height, depth = 1 ) {
+		
+		if ( this.width !== width || this.height !== height || this.depth !== depth ) {
+			
+			this.width = width;
+			this.height = height;
+			this.depth = depth;
+			
+			this.texture.image.width = width;
+			this.texture.image.height = height;
+			this.texture.image.depth = depth;
+			
+			this.dispose();
+			
+		}
+		
+		this.viewport.set(0, 0, width, height);
+		this.scissor.set(0, 0, width, height);
+		
+	}
+	
+	clone() {
+		
+		return new this.constructor().copy(this);
+		
+	}
+	
+	copy(source) {
+		
+		this.width = source.width;
+		this.height = source.height;
+		this.depth = source.depth;
+		
+		this.viewport.copy(source.viewport);
+		
+		this.texture = source.texture.clone();
+		this.texture.isRenderTargetTexture = true;
 
-        super();
+		// ensure image object is not shared, see #20328
 
-        Object.defineProperty(this, 'isWebGLRenderTarget', {value: true});
+		const image = Object.assign( {}, source.texture.image );
+		this.texture.source = new Source( image );
+		
+		this.depthBuffer = source.depthBuffer;
+		this.stencilBuffer = source.stencilBuffer;
 
-        this.width = width;
-        this.height = height;
+		if ( source.depthTexture !== null ) this.depthTexture = source.depthTexture.clone();
 
-        this.scissor = new Vector4(0, 0, width, height);
-        this.scissorTest = false;
-
-        this.viewport = new Vector4(0, 0, width, height);
-
-        options = options || {};
-
-        // 贴图
-        this.texture = new Texture(undefined, options.mapping, options.wrapS, options.wrapT, options.magFilter, options.minFilter, options.format, options.type, options.anisotropy, options.encoding);
-
-        // 添加图片，以及参数
-        this.texture.image = {};
-        this.texture.image.width = width;
-        this.texture.image.height = height;
-
-        this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
-        // 纹理缩小时像素的取值format
-        this.texture.minFilter = options.minFilter !== undefined ? options.minFilter : LinearFilter;
-
-        this.depthBuffer = options.depthBuffer !== undefined ? options.depthBuffer : true;
-        this.stencilBuffer = options.stencilBuffer !== undefined ? options.stencilBuffer : true;
-        // 深度纹理
-        this.depthTexture = options.depthTexture !== undefined ? options.depthTexture : null;
-
-    }
-
-    /**
-     * 设置渲染尺寸
-     * @param width
-     * @param height
-     */
-    setSize(width, height) {
-
-        if (this.width !== width || this.height !== height) {
-
-            this.width = width;
-            this.height = height;
-
-            this.texture.image.width = width;
-            this.texture.image.height = height;
-
-            this.dispose();
-
-        }
-
-        this.viewport.set(0, 0, width, height);
-        this.scissor.set(0, 0, width, height);
-
-    }
-
-    clone() {
-
-        return new this.constructor().copy(this);
-
-    }
-
-    copy(source) {
-
-        this.width = source.width;
-        this.height = source.height;
-
-        this.viewport.copy(source.viewport);
-
-        this.texture = source.texture.clone();
-
-        this.depthBuffer = source.depthBuffer;
-        this.stencilBuffer = source.stencilBuffer;
-        this.depthTexture = source.depthTexture;
-
-        return this;
-
-    }
-
-    dispose() {
-
-        this.dispatchEvent({type: 'dispose'});
-
-    }
-
+		this.samples = source.samples;
+		
+		return this;
+		
+	}
+	
+	dispose() {
+		
+		this.dispatchEvent({type: 'dispose'});
+		
+	}
+	
 }
 
 export {WebGLRenderTarget};

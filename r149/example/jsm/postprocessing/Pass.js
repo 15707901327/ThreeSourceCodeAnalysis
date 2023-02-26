@@ -5,6 +5,10 @@ import {
 	Mesh
 } from 'three';
 
+/**
+ * 渲染通道基类
+ * @constructor
+ */
 class Pass {
 
 	constructor() {
