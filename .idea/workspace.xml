@@ -32,9 +32,15 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87076f0f-b35b-4a01-a4c3-7f4383e9ecdb" name="Default Changelist" comment="1.blending实例测试">
+    <list default="true" id="0790b2dd-a170-40a2-b490-d63f327d5aaf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r149/example/jsm/postprocessing/EffectComposer.js" beforeDir="false" afterPath="$PROJECT_DIR$/r149/example/jsm/postprocessing/EffectComposer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r149/example/jsm/postprocessing/Pass.js" beforeDir="false" afterPath="$PROJECT_DIR$/r149/example/jsm/postprocessing/Pass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r149/example/jsm/postprocessing/RenderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/r149/example/jsm/postprocessing/RenderPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r149/example/jsm/shaders/SobelOperatorShader.js" beforeDir="false" afterPath="$PROJECT_DIR$/r149/example/jsm/shaders/SobelOperatorShader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r149/example/postprocessing/webgl_postprocessing_sobel.html" beforeDir="false" afterPath="$PROJECT_DIR$/r149/example/postprocessing/webgl_postprocessing_sobel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderTarget.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderTarget.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/textures/Texture.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/textures/Texture.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +103,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -104,6 +115,14 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="0b023e50-71ce-46b9-b459-eab7867ad86f" />
+        <option name="url" value="https://github.com/15707901327/ThreeSourceCodeAnalysis.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">

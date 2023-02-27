@@ -1,160 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>three.js webgl - postprocessing - sobel (edge detection)</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="../../../examples/main.css">
-	</head>
-	<body>
+<head>
+    <title>three.js webgl - postprocessing - sobel (edge detection)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="../../../examples/main.css">
+</head>
+<body>
 
-		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener noreferrer">three.js</a> - webgl - postprocessing<br/>
-			sobel (edge detection)
-		</div>
+<div id="info">
+    <a href="https://threejs.org" target="_blank" rel="noopener noreferrer">three.js</a> - webgl - postprocessing<br/>
+    sobel (edge detection)
+</div>
 
-		<!-- Import maps polyfill -->
-		<!-- Remove this when import maps will be widely supported -->
-		<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+<!-- Import maps polyfill -->
+<!-- Remove this when import maps will be widely supported -->
+<script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 
-		<script type="importmap">
+<script type="importmap">
 			{
 				"imports": {
 					"three": "../../build/three.module.js",
 					"three/addons/": "../jsm/"
 				}
 			}
-		</script>
+</script>
 
-		<script type="module">
+<script type="module">
 
-			import * as THREE from 'three';
+    import * as THREE from 'three';
 
-			import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+    // import {GUI} from 'three/addons/libs/lil-gui.module.min.js';
 
-			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 
-			import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-			import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-			import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+    import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+    import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+    import {ShaderPass} from 'three/addons/postprocessing/ShaderPass.js';
 
-			import { LuminosityShader } from 'three/addons/shaders/LuminosityShader.js';
-			import { SobelOperatorShader } from 'three/addons/shaders/SobelOperatorShader.js';
+    // import {LuminosityShader} from 'three/addons/shaders/LuminosityShader.js';
+    import {SobelOperatorShader} from 'three/addons/shaders/SobelOperatorShader.js';
 
-			let camera, scene, renderer, composer;
+    let camera, scene, renderer, composer;
 
-			let effectSobel;
+    let effectSobel;
 
-			const params = {
-				enable: true
-			};
+    const params = {
+        enable: true
+    };
 
-			init();
-			animate();
+    init();
+    animate();
 
-			function init() {
+    function init() {
 
-				//
+        scene = new THREE.Scene();
 
-				scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(0, 10, 25);
+        camera.lookAt(scene.position);
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 200 );
-				camera.position.set( 0, 10, 25 );
-				camera.lookAt( scene.position );
+        const geometry = new THREE.TorusKnotGeometry(8, 3, 256, 32, 2, 3);
+        const material = new THREE.MeshPhongMaterial({color: 0xffff00});
 
-				//
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
 
-				const geometry = new THREE.TorusKnotGeometry( 8, 3, 256, 32, 2, 3 );
-				const material = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
+        const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+        scene.add(ambientLight);
 
-				const mesh = new THREE.Mesh( geometry, material );
-				scene.add( mesh );
+        const pointLight = new THREE.PointLight(0xffffff, 0.8);
+        camera.add(pointLight);
+        scene.add(camera);
 
-				//
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-				const ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
-				scene.add( ambientLight );
+        // postprocessing
+        composer = new EffectComposer(renderer);
+        const renderPass = new RenderPass(scene, camera);
+        composer.addPass(renderPass);
 
-				const pointLight = new THREE.PointLight( 0xffffff, 0.8 );
-				camera.add( pointLight );
-				scene.add( camera );
+        // color to grayscale conversion
+        // const effectGrayScale = new ShaderPass(LuminosityShader);
+        // composer.addPass(effectGrayScale);
 
-				//
+        // you might want to use a gaussian blur filter before
+        // the next pass to improve the result of the Sobel operator
 
-				renderer = new THREE.WebGLRenderer();
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
+        // Sobel operator
+        // effectSobel = new ShaderPass(SobelOperatorShader);
+        // effectSobel.uniforms['resolution'].value.x = window.innerWidth * window.devicePixelRatio;
+        // effectSobel.uniforms['resolution'].value.y = window.innerHeight * window.devicePixelRatio;
+        // composer.addPass(effectSobel);
 
-				// postprocessing
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.minDistance = 10;
+        controls.maxDistance = 100;
 
-				composer = new EffectComposer( renderer );
-				const renderPass = new RenderPass( scene, camera );
-				composer.addPass( renderPass );
+        //
 
-				// color to grayscale conversion
+        // const gui = new GUI();
+        //
+        // gui.add(params, 'enable');
+        // gui.open();
 
-				const effectGrayScale = new ShaderPass( LuminosityShader );
-				composer.addPass( effectGrayScale );
+        //
 
-				// you might want to use a gaussian blur filter before
-				// the next pass to improve the result of the Sobel operator
+        window.addEventListener('resize', onWindowResize);
 
-				// Sobel operator
+    }
 
-				effectSobel = new ShaderPass( SobelOperatorShader );
-				effectSobel.uniforms[ 'resolution' ].value.x = window.innerWidth * window.devicePixelRatio;
-				effectSobel.uniforms[ 'resolution' ].value.y = window.innerHeight * window.devicePixelRatio;
-				composer.addPass( effectSobel );
+    function onWindowResize() {
 
-				const controls = new OrbitControls( camera, renderer.domElement );
-				controls.minDistance = 10;
-				controls.maxDistance = 100;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
 
-				//
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
 
-				const gui = new GUI();
+        // effectSobel.uniforms['resolution'].value.x = window.innerWidth * window.devicePixelRatio;
+        // effectSobel.uniforms['resolution'].value.y = window.innerHeight * window.devicePixelRatio;
 
-				gui.add( params, 'enable' );
-				gui.open();
+    }
 
-				//
+    function animate() {
 
-				window.addEventListener( 'resize', onWindowResize );
+        requestAnimationFrame(animate);
 
-			}
+        if (params.enable === true) {
 
-			function onWindowResize() {
+            debugger
+            composer.render();
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+        } else {
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				composer.setSize( window.innerWidth, window.innerHeight );
+            renderer.render(scene, camera);
 
-				effectSobel.uniforms[ 'resolution' ].value.x = window.innerWidth * window.devicePixelRatio;
-				effectSobel.uniforms[ 'resolution' ].value.y = window.innerHeight * window.devicePixelRatio;
+        }
 
-			}
+    }
 
-			function animate() {
+</script>
 
-				requestAnimationFrame( animate );
-
-				if ( params.enable === true ) {
-
-					debugger
-					composer.render();
-
-				} else {
-
-					renderer.render( scene, camera );
-
-				}
-
-			}
-
-		</script>
-
-	</body>
+</body>
 </html>
