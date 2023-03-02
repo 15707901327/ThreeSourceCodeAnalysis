@@ -1,15 +1,13 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
+import {BackSide, FrontSide, CubeUVReflectionMapping, sRGBEncoding} from '../../constants.js';
+import {BoxGeometry} from '../../geometries/BoxGeometry.js';
+import {PlaneGeometry} from '../../geometries/PlaneGeometry.js';
+import {ShaderMaterial} from '../../materials/ShaderMaterial.js';
+import {Color} from '../../math/Color.js';
+import {Mesh} from '../../objects/Mesh.js';
+import {ShaderLib} from '../shaders/ShaderLib.js';
+import {cloneUniforms, getUnlitUniformColorSpace} from '../shaders/UniformsUtils.js';
 
-import { BackSide, FrontSide } from '../../constants.js';
-import { BoxBufferGeometry } from '../../geometries/BoxGeometry.js';
-import { PlaneBufferGeometry } from '../../geometries/PlaneGeometry.js';
-import { ShaderMaterial } from '../../materials/ShaderMaterial.js';
-import { Color } from '../../math/Color.js';
-import { Mesh } from '../../objects/Mesh.js';
-import { ShaderLib } from '../shaders/ShaderLib.js';
-import { cloneUniforms } from '../shaders/UniformsUtils.js';
+const _rgb = {r: 0, b: 0, g: 0};
 
 /**
  * 渲染背景
@@ -20,186 +18,217 @@ import { cloneUniforms } from '../shaders/UniformsUtils.js';
  * @returns {{setClearColor: setClearColor, getClearColor: (function(): *), render: render, getClearAlpha: (function(): number), setClearAlpha: setClearAlpha}}
  * @constructor
  */
-function WebGLBackground( renderer, state, objects, premultipliedAlpha ) {
+function WebGLBackground(renderer, cubemaps, cubeuvmaps, state, objects, alpha, premultipliedAlpha) {
 
-	var clearColor = new Color( 0x000000 );
-	var clearAlpha = 0;
+    const clearColor = new Color(0x000000);
+    let clearAlpha = alpha === true ? 0 : 1;
 
-	var planeMesh;
-	var boxMesh;
-	// Store the current background texture and its `version`
-	// so we can recompile the material accordingly.
-	var currentBackground = null;
-	var currentBackgroundVersion = 0;
+    let planeMesh;
+    let boxMesh;
 
-	/**
-	 * 背景对象添加到渲染列表中
-	 * @param renderList 渲染列表
-	 * @param scene 场景
-	 * @param camera 相机
-	 * @param forceClear 是否强制刷新缓冲区
-	 */
-	function render( renderList, scene, camera, forceClear ) {
-		var background = scene.background;
+    let currentBackground = null;
+    let currentBackgroundVersion = 0;
+    let currentTonemapping = null;
 
-		// Ignore background in AR
-		// TODO: Reconsider this.
+    /**
+     * 背景对象添加到渲染列表中
+     * @param renderList 渲染列表
+     * @param scene 场景
+     * @param camera 相机
+     * @param forceClear 是否强制刷新缓冲区
+     */
+    function render(renderList, scene) {
 
-		var vr = renderer.vr;
-		var session = vr.getSession && vr.getSession();
+        let forceClear = false;
+        let background = scene.isScene === true ? scene.background : null;
 
-		if ( session && session.environmentBlendMode === 'additive' ) {
-			background = null;
-		}
+        if (background && background.isTexture) {
 
-		if ( background === null ) {
-			setClear( clearColor, clearAlpha );
-			currentBackground = null;
-			currentBackgroundVersion = 0;
-		}
-		else if ( background && background.isColor ) {
+            const usePMREM = scene.backgroundBlurriness > 0; // use PMREM if the user wants to blur the background
+            background = (usePMREM ? cubeuvmaps : cubemaps).get(background);
 
-			setClear( background, 1 );
-			forceClear = true;
-			currentBackground = null;
-			currentBackgroundVersion = 0;
+        }
 
-		}
+        // Ignore background in AR
+        // TODO: Reconsider this.
 
-		if ( renderer.autoClear || forceClear ) {
-			renderer.clear( renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil );
-		}
+        const xr = renderer.xr;
+        const session = xr.getSession && xr.getSession();
 
-		if ( background && ( background.isCubeTexture || background.isWebGLRenderTargetCube ) ) {
+        if (session && session.environmentBlendMode === 'additive') {
+            background = null;
+        }
 
-			if ( boxMesh === undefined ) {
+        if (background === null) {
+            setClear(clearColor, clearAlpha);
 
-				boxMesh = new Mesh(new BoxBufferGeometry( 1, 1, 1 ), new ShaderMaterial( {
-						type: 'BackgroundCubeMaterial',
-						uniforms: cloneUniforms( ShaderLib.cube.uniforms ),
-						vertexShader: ShaderLib.cube.vertexShader,
-						fragmentShader: ShaderLib.cube.fragmentShader,
-						side: BackSide,
-						depthTest: false,
-						depthWrite: false,
-						fog: false
-					} ));
+        } else if (background && background.isColor) {
 
-				boxMesh.geometry.deleteAttribute( 'normal' );
-				boxMesh.geometry.deleteAttribute( 'uv' );
+            setClear(background, 1);
+            forceClear = true;
 
-				boxMesh.onBeforeRender = function ( renderer, scene, camera ) {
-					this.matrixWorld.copyPosition( camera.matrixWorld );
-				};
+        }
 
-				// enable code injection for non-built-in material
-				Object.defineProperty( boxMesh.material, 'map', {
-					get: function () {
-						return this.uniforms.tCube.value;
-					}
-				} );
+        if (renderer.autoClear || forceClear) {
+            renderer.clear(renderer.autoClearColor, renderer.autoClearDepth, renderer.autoClearStencil);
+        }
 
-				objects.update( boxMesh );
+        if (background && (background.isCubeTexture || background.mapping === CubeUVReflectionMapping)) {
 
-			}
+            if (boxMesh === undefined) {
 
-			var texture = background.isWebGLRenderTargetCube ? background.texture : background;
-			boxMesh.material.uniforms.tCube.value = texture;
-			boxMesh.material.uniforms.tFlip.value = ( background.isWebGLRenderTargetCube ) ? 1 : - 1;
+                boxMesh = new Mesh(
+                    new BoxGeometry(1, 1, 1),
+                    new ShaderMaterial({
+                        name: 'BackgroundCubeMaterial',
+                        uniforms: cloneUniforms(ShaderLib.backgroundCube.uniforms),
+                        vertexShader: ShaderLib.backgroundCube.vertexShader,
+                        fragmentShader: ShaderLib.backgroundCube.fragmentShader,
+                        side: BackSide,
+                        depthTest: false,
+                        depthWrite: false,
+                        fog: false
+                    }));
 
-			if ( currentBackground !== background || currentBackgroundVersion !== texture.version ) {
-				boxMesh.material.needsUpdate = true;
+                boxMesh.geometry.deleteAttribute('normal');
+                boxMesh.geometry.deleteAttribute('uv');
 
-				currentBackground = background;
-				currentBackgroundVersion = texture.version;
-			}
+                boxMesh.onBeforeRender = function (renderer, scene, camera) {
+                    this.matrixWorld.copyPosition(camera.matrixWorld);
+                };
 
-			// push to the pre-sorted opaque render list
-			renderList.unshift( boxMesh, boxMesh.geometry, boxMesh.material, 0, 0, null );
+                // add "envMap" material property so the renderer can evaluate it like for built-in materials
+                Object.defineProperty(boxMesh.material, 'envMap', {
 
-		}
-		else if ( background && background.isTexture ) {
+                    get: function () {
 
-			if ( planeMesh === undefined ) {
+                        return this.uniforms.envMap.value;
 
-				planeMesh = new Mesh(
-					new PlaneBufferGeometry( 2, 2 ),
-					new ShaderMaterial( {
-						type: 'BackgroundMaterial',
-						uniforms: cloneUniforms( ShaderLib.background.uniforms ),
-						vertexShader: ShaderLib.background.vertexShader,
-						fragmentShader: ShaderLib.background.fragmentShader,
-						side: FrontSide,
-						depthTest: false,
-						depthWrite: false,
-						fog: false
-					} )
-				);
+                    }
+                });
 
-				planeMesh.geometry.deleteAttribute( 'normal' );
+                objects.update(boxMesh);
 
-				// enable code injection for non-built-in material
-				Object.defineProperty( planeMesh.material, 'map', {
-					get: function () {
-						return this.uniforms.t2D.value;
-					}
-				} );
+            }
 
-				objects.update( planeMesh );
+            boxMesh.material.uniforms.envMap.value = background;
+            boxMesh.material.uniforms.flipEnvMap.value = (background.isCubeTexture && background.isRenderTargetTexture === false) ? -1 : 1;
+            boxMesh.material.uniforms.backgroundBlurriness.value = scene.backgroundBlurriness;
+            boxMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+            boxMesh.material.toneMapped = (background.encoding === sRGBEncoding) ? false : true;
 
-			}
+            if (currentBackground !== background ||
+                currentBackgroundVersion !== background.version ||
+                currentTonemapping !== renderer.toneMapping) {
 
-			planeMesh.material.uniforms.t2D.value = background;
+                boxMesh.material.needsUpdate = true;
 
-			if ( background.matrixAutoUpdate === true ) {
-				background.updateMatrix();
-			}
+                currentBackground = background;
+                currentBackgroundVersion = background.version;
+                currentTonemapping = renderer.toneMapping;
 
-			planeMesh.material.uniforms.uvTransform.value.copy( background.matrix );
+            }
 
-			if ( currentBackground !== background || currentBackgroundVersion !== background.version ) {
+            boxMesh.layers.enableAll();
 
-				planeMesh.material.needsUpdate = true;
+            // push to the pre-sorted opaque render list
+            renderList.unshift(boxMesh, boxMesh.geometry, boxMesh.material, 0, 0, null);
 
-				currentBackground = background;
-				currentBackgroundVersion = background.version;
-			}
+        } else if (background && background.isTexture) {
 
-			// push to the pre-sorted opaque render list
-			renderList.unshift( planeMesh, planeMesh.geometry, planeMesh.material, 0, 0, null );
-		}
-	}
+            if (planeMesh === undefined) {
 
-  /**
-   * 设置背景颜色
-   * @param color
-   * @param alpha
-   */
-	function setClear( color, alpha ) {
-		state.buffers.color.setClear( color.r, color.g, color.b, alpha, premultipliedAlpha );
-	}
+                planeMesh = new Mesh(
+                    new PlaneGeometry(2, 2),
+                    new ShaderMaterial({
+                        name: 'BackgroundMaterial',
+                        uniforms: cloneUniforms(ShaderLib.background.uniforms),
+                        vertexShader: ShaderLib.background.vertexShader,
+                        fragmentShader: ShaderLib.background.fragmentShader,
+                        side: FrontSide,
+                        depthTest: false,
+                        depthWrite: false,
+                        fog: false
+                    })
+                );
 
-	return {
+                planeMesh.geometry.deleteAttribute('normal');
 
-		getClearColor: function () {
-			return clearColor;
-		},
-		setClearColor: function ( color, alpha ) {
-			clearColor.set( color );
-			clearAlpha = alpha !== undefined ? alpha : 1;
-			setClear( clearColor, clearAlpha );
-		},
-		getClearAlpha: function () {
-			return clearAlpha;
-		},
-		setClearAlpha: function ( alpha ) {
-			clearAlpha = alpha;
-			setClear( clearColor, clearAlpha );
-		},
-		render: render
+                // add "map" material property so the renderer can evaluate it like for built-in materials
+                Object.defineProperty(planeMesh.material, 'map', {
+                    get: function () {
+                        return this.uniforms.t2D.value;
+                    }
+                });
 
-	};
+                objects.update(planeMesh);
+
+            }
+
+            planeMesh.material.uniforms.t2D.value = background;
+            planeMesh.material.uniforms.backgroundIntensity.value = scene.backgroundIntensity;
+            planeMesh.material.toneMapped = (background.encoding === sRGBEncoding) ? false : true;
+
+            if (background.matrixAutoUpdate === true) {
+                background.updateMatrix();
+            }
+
+            planeMesh.material.uniforms.uvTransform.value.copy(background.matrix);
+
+            if (currentBackground !== background ||
+                currentBackgroundVersion !== background.version ||
+                currentTonemapping !== renderer.toneMapping) {
+
+                planeMesh.material.needsUpdate = true;
+
+                currentBackground = background;
+                currentBackgroundVersion = background.version;
+                currentTonemapping = renderer.toneMapping;
+
+            }
+
+            planeMesh.layers.enableAll();
+
+            // push to the pre-sorted opaque render list
+            renderList.unshift(planeMesh, planeMesh.geometry, planeMesh.material, 0, 0, null);
+        }
+    }
+
+    /**
+     * 设置背景颜色
+     * @param color
+     * @param alpha
+     */
+    function setClear(color, alpha) {
+
+        color.getRGB(_rgb, getUnlitUniformColorSpace(renderer));
+
+        state.buffers.color.setClear(_rgb.r, _rgb.g, _rgb.b, alpha, premultipliedAlpha);
+
+    }
+
+    return {
+
+        getClearColor: function () {
+            return clearColor;
+        },
+        setClearColor: function (color, alpha = 1) {
+
+            clearColor.set(color);
+            clearAlpha = alpha;
+            setClear(clearColor, clearAlpha);
+        },
+        getClearAlpha: function () {
+            return clearAlpha;
+        },
+        setClearAlpha: function (alpha) {
+            clearAlpha = alpha;
+            setClear(clearColor, clearAlpha);
+        },
+        render: render
+
+    };
 
 }
 
-export { WebGLBackground };
+export {WebGLBackground};

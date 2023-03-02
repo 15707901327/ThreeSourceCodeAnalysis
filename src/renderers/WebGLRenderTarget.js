@@ -47,10 +47,7 @@ class WebGLRenderTarget extends EventDispatcher {
         this.texture.isRenderTargetTexture = true;
 
         // 添加图片，以及参数
-        this.texture.image = {};
-        this.texture.image.width = width;
-        this.texture.image.height = height;
-
+        this.texture.flipY = false;
         this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : false;
         this.texture.internalFormat = options.internalFormat !== undefined ? options.internalFormat : null;
         // 纹理缩小时像素的取值format

@@ -366,7 +366,7 @@ function WebGLState(gl, extensions, capabilities) {
 
     let currentBoundFramebuffers = {};
     let currentDrawbuffers = new WeakMap();
-    let defaultDrawbuffers = [];
+    let defaultDrawbuffers = [];  // 默认写入的颜色渲染缓冲区
 
     let currentProgram = null; // 当前使用的着色器程序
 
@@ -480,6 +480,12 @@ function WebGLState(gl, extensions, capabilities) {
         }
     }
 
+    /**
+     * 帧缓冲区对象绑定到target目标上
+     * @param target
+     * @param framebuffer
+     * @return {boolean}
+     */
     function bindFramebuffer(target, framebuffer) {
 
         if (currentBoundFramebuffers[target] !== framebuffer) {
@@ -514,6 +520,11 @@ function WebGLState(gl, extensions, capabilities) {
 
     }
 
+    /**
+     * 定义片元颜色写入的渲染缓冲区
+     * @param renderTarget
+     * @param framebuffer
+     */
     function drawBuffers(renderTarget, framebuffer) {
 
         let drawBuffers = defaultDrawbuffers;
