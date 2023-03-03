@@ -33,27 +33,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0790b2dd-a170-40a2-b490-d63f327d5aaf" name="Changes" comment="1.r149后处理">
-      <change afterPath="$PROJECT_DIR$/r150/build/three.module.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/r150/example/jsm/controls/OrbitControls.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/textures/Source.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/jsm/postprocessing/EffectComposer.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/postprocessing/EffectComposer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/jsm/postprocessing/MaskPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/postprocessing/MaskPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/jsm/postprocessing/Pass.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/postprocessing/Pass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/jsm/postprocessing/RenderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/postprocessing/RenderPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/jsm/postprocessing/ShaderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/postprocessing/ShaderPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/jsm/shaders/CopyShader.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/shaders/CopyShader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/jsm/shaders/LuminosityShader.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/shaders/LuminosityShader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/jsm/shaders/SobelOperatorShader.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/shaders/SobelOperatorShader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r149/example/postprocessing/webgl_postprocessing_sobel.html" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/postprocessing/webgl_postprocessing_sobel.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/math/Color.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Color.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/math/Vector4.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/math/Vector4.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderTarget.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderTarget.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r150/example/jsm/postprocessing/ShaderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/postprocessing/ShaderPass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/r150/example/postprocessing/webgl_postprocessing_sobel.html" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/postprocessing/webgl_postprocessing_sobel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/shaders/UniformsUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/shaders/UniformsUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLBackground.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLBackground.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLCapabilities.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLTextures.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLTextures.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,12 +213,12 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r150/src/math/Vector4.js",
+    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r150/src/textures/Texture.js",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r150/src/math/Vector4.js",
+    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r150/src/textures/Texture.js",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -716,14 +702,8 @@
       <workItem from="1677202760965" duration="3438000" />
       <workItem from="1677553228386" duration="580000" />
       <workItem from="1677634507291" duration="14447000" />
-      <workItem from="1677725740656" duration="11387000" />
-    </task>
-    <task id="LOCAL-00062" summary="1.刨切实例">
-      <created>1575702301503</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1575702301504</updated>
+      <workItem from="1677725740656" duration="11413000" />
+      <workItem from="1677820099745" duration="13391000" />
     </task>
     <task id="LOCAL-00063" summary="1.模板缓冲">
       <created>1575972837424</created>
@@ -1061,7 +1041,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677482680338</updated>
     </task>
-    <option name="localTasksCounter" value="111" />
+    <task id="LOCAL-00111" summary="1.r149后处理">
+      <created>1677751354195</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1677751354195</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="TimeTrackingManager">

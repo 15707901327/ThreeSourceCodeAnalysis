@@ -949,7 +949,7 @@ function WebGLState(gl, extensions, capabilities) {
      */
     function bindTexture(webglType, webglTexture, webglSlot) {
 
-        // 激活纹理单元
+        // 纹理单元
         if (webglSlot === undefined) {
 
             if (currentTextureSlot === null) {

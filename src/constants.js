@@ -158,6 +158,7 @@ export const AdditiveAnimationBlendMode = 2501;
 export const TrianglesDrawMode = 0;// 绘制三角形
 export const TriangleStripDrawMode = 1;// 带状的三角形
 export const TriangleFanDrawMode = 2;// 扇形的图形
+
 export const LinearEncoding = 3000;
 export const sRGBEncoding = 3001;
 
