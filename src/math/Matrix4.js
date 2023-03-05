@@ -1,31 +1,10 @@
 import {Vector3} from './Vector3.js';
 
-var _v1 = new Vector3();
-var _m1 = new Matrix4();
-var _zero = new Vector3(0, 0, 0);
-var _one = new Vector3(1, 1, 1);
-var _x = new Vector3();
-var _y = new Vector3();
-var _z = new Vector3();
+class Matrix4 {
 
-/**
- * @author mrdoob / http://mrdoob.com/
- * @author supereggbert / http://www.paulbrunt.co.uk/
- * @author philogb / http://blog.thejit.org/
- * @author jordi_ros / http://plattsoft.com
- * @author D1plo1d / http://github.com/D1plo1d
- * @author alteredq / http://alteredqualia.com/
- * @author mikael emtinger / http://gomo.se/
- * @author timknip / http://www.floorplanner.com/
- * @author bhouston / http://clara.io
- * @author WestLangley / http://github.com/WestLangley
- */
+	constructor() {
 
-/**
- * 矩阵
- * @constructor
- */
-function Matrix4() {
+		Matrix4.prototype.isMatrix4 = true;
 
   this.elements = [
 
@@ -36,21 +15,11 @@ function Matrix4() {
 
   ];
 
-  if (arguments.length > 0) {
-
-    console.error('THREE.Matrix4: the constructor no longer reads arguments. use .set() instead.');
-
   }
 
-}
+	set( n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44 ) {
 
-Object.assign(Matrix4.prototype, {
-
-  isMatrix4: true,
-
-  set: function(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
-
-    var te = this.elements;
+		const te = this.elements;
 
     te[0] = n11;
     te[4] = n12;
@@ -71,9 +40,9 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  identity: function() {
+	identity() {
 
     this.set(
       1, 0, 0, 0,
@@ -84,18 +53,18 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  clone: function() {
+	clone() {
 
     return new Matrix4().fromArray(this.elements);
 
-  },
+	}
 
-  copy: function(m) {
+	copy( m ) {
 
-    var te = this.elements;
-    var me = m.elements;
+		const te = this.elements;
+		const me = m.elements;
 
     te[0] = me[0];
     te[1] = me[1];
@@ -116,11 +85,11 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  copyPosition: function(m) {
+	copyPosition( m ) {
 
-    var te = this.elements, me = m.elements;
+		const te = this.elements, me = m.elements;
 
     te[12] = me[12];
     te[13] = me[13];
@@ -128,9 +97,26 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  extractBasis: function(xAxis, yAxis, zAxis) {
+	setFromMatrix3( m ) {
+
+		const me = m.elements;
+
+		this.set(
+
+			me[ 0 ], me[ 3 ], me[ 6 ], 0,
+			me[ 1 ], me[ 4 ], me[ 7 ], 0,
+			me[ 2 ], me[ 5 ], me[ 8 ], 0,
+			0, 0, 0, 1
+
+		);
+
+		return this;
+
+	}
+
+	extractBasis( xAxis, yAxis, zAxis ) {
 
     xAxis.setFromMatrixColumn(this, 0);
     yAxis.setFromMatrixColumn(this, 1);
@@ -138,9 +124,9 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  makeBasis: function(xAxis, yAxis, zAxis) {
+	makeBasis( xAxis, yAxis, zAxis ) {
 
     this.set(
       xAxis.x, yAxis.x, zAxis.x, 0,
@@ -151,23 +137,23 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
   /**
    * 将提供的矩阵m的旋转分量提取到此矩阵的旋转分量中。
    * @param m 矩阵
    * @returns {Matrix4}
    */
-  extractRotation: function(m) {
+	extractRotation( m ) {
 
     // this method does not support reflection matrices
 
-    var te = this.elements;
-    var me = m.elements;
+		const te = this.elements;
+		const me = m.elements;
 
-    var scaleX = 1 / _v1.setFromMatrixColumn(m, 0).length();
-    var scaleY = 1 / _v1.setFromMatrixColumn(m, 1).length();
-    var scaleZ = 1 / _v1.setFromMatrixColumn(m, 2).length();
+		const scaleX = 1 / _v1.setFromMatrixColumn( m, 0 ).length();
+		const scaleY = 1 / _v1.setFromMatrixColumn( m, 1 ).length();
+		const scaleZ = 1 / _v1.setFromMatrixColumn( m, 2 ).length();
 
     te[0] = me[0] * scaleX;
     te[1] = me[1] * scaleX;
@@ -191,26 +177,20 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
-
-  makeRotationFromEuler: function(euler) {
-
-    if (!(euler && euler.isEuler)) {
-
-      console.error('THREE.Matrix4: .makeRotationFromEuler() now expects a Euler rotation rather than a Vector3 and order.');
-
     }
 
-    var te = this.elements;
+	makeRotationFromEuler( euler ) {
 
-    var x = euler.x, y = euler.y, z = euler.z;
-    var a = Math.cos(x), b = Math.sin(x);
-    var c = Math.cos(y), d = Math.sin(y);
-    var e = Math.cos(z), f = Math.sin(z);
+		const te = this.elements;
+
+		const x = euler.x, y = euler.y, z = euler.z;
+		const a = Math.cos( x ), b = Math.sin( x );
+		const c = Math.cos( y ), d = Math.sin( y );
+		const e = Math.cos( z ), f = Math.sin( z );
 
     if (euler.order === 'XYZ') {
 
-      var ae = a * e, af = a * f, be = b * e, bf = b * f;
+			const ae = a * e, af = a * f, be = b * e, bf = b * f;
 
       te[0] = c * e;
       te[4] = -c * f;
@@ -226,7 +206,7 @@ Object.assign(Matrix4.prototype, {
 
     } else if (euler.order === 'YXZ') {
 
-      var ce = c * e, cf = c * f, de = d * e, df = d * f;
+			const ce = c * e, cf = c * f, de = d * e, df = d * f;
 
       te[0] = ce + df * b;
       te[4] = de * b - cf;
@@ -242,7 +222,7 @@ Object.assign(Matrix4.prototype, {
 
     } else if (euler.order === 'ZXY') {
 
-      var ce = c * e, cf = c * f, de = d * e, df = d * f;
+			const ce = c * e, cf = c * f, de = d * e, df = d * f;
 
       te[0] = ce - df * b;
       te[4] = -a * f;
@@ -258,7 +238,7 @@ Object.assign(Matrix4.prototype, {
 
     } else if (euler.order === 'ZYX') {
 
-      var ae = a * e, af = a * f, be = b * e, bf = b * f;
+			const ae = a * e, af = a * f, be = b * e, bf = b * f;
 
       te[0] = c * e;
       te[4] = be * d - af;
@@ -274,7 +254,7 @@ Object.assign(Matrix4.prototype, {
 
     } else if (euler.order === 'YZX') {
 
-      var ac = a * c, ad = a * d, bc = b * c, bd = b * d;
+			const ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
       te[0] = c * e;
       te[4] = bd - ac * f;
@@ -290,7 +270,7 @@ Object.assign(Matrix4.prototype, {
 
     } else if (euler.order === 'XZY') {
 
-      var ac = a * c, ad = a * d, bc = b * c, bd = b * d;
+			const ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
       te[0] = c * e;
       te[4] = -f;
@@ -319,26 +299,26 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
   /**
    * 根据四元数初始化一个矩阵
    * @param q Quaternion实例
    */
-  makeRotationFromQuaternion: function(q) {
+	makeRotationFromQuaternion( q ) {
 
     return this.compose(_zero, q, _one);
 
-  },
+	}
 
   /**
    * @param eye 相机的位置
    * @param target 查看的位置
    * @param up 相机的上方向
    */
-  lookAt: function(eye, target, up) {
+	lookAt( eye, target, up ) {
 
-    var te = this.elements;
+		const te = this.elements;
 
     _z.subVectors(eye, target);
 
@@ -387,26 +367,19 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
-
-  multiply: function(m, n) {
-
-    if (n !== undefined) {
-
-      console.warn('THREE.Matrix4: .multiply() now only accepts one argument. Use .multiplyMatrices( a, b ) instead.');
-      return this.multiplyMatrices(m, n);
-
     }
+
+	multiply( m ) {
 
     return this.multiplyMatrices(this, m);
 
-  },
+	}
 
-  premultiply: function(m) {
+	premultiply( m ) {
 
     return this.multiplyMatrices(m, this);
 
-  },
+	}
 
   /**
    * 计算矩阵乘积，复制给当前矩阵
@@ -414,21 +387,21 @@ Object.assign(Matrix4.prototype, {
    * @param b
    * @returns {Matrix4}
    */
-  multiplyMatrices: function(a, b) {
+	multiplyMatrices( a, b ) {
 
-    var ae = a.elements;
-    var be = b.elements;
-    var te = this.elements;
+		const ae = a.elements;
+		const be = b.elements;
+		const te = this.elements;
 
-    var a11 = ae[0], a12 = ae[4], a13 = ae[8], a14 = ae[12];
-    var a21 = ae[1], a22 = ae[5], a23 = ae[9], a24 = ae[13];
-    var a31 = ae[2], a32 = ae[6], a33 = ae[10], a34 = ae[14];
-    var a41 = ae[3], a42 = ae[7], a43 = ae[11], a44 = ae[15];
+		const a11 = ae[ 0 ], a12 = ae[ 4 ], a13 = ae[ 8 ], a14 = ae[ 12 ];
+		const a21 = ae[ 1 ], a22 = ae[ 5 ], a23 = ae[ 9 ], a24 = ae[ 13 ];
+		const a31 = ae[ 2 ], a32 = ae[ 6 ], a33 = ae[ 10 ], a34 = ae[ 14 ];
+		const a41 = ae[ 3 ], a42 = ae[ 7 ], a43 = ae[ 11 ], a44 = ae[ 15 ];
 
-    var b11 = be[0], b12 = be[4], b13 = be[8], b14 = be[12];
-    var b21 = be[1], b22 = be[5], b23 = be[9], b24 = be[13];
-    var b31 = be[2], b32 = be[6], b33 = be[10], b34 = be[14];
-    var b41 = be[3], b42 = be[7], b43 = be[11], b44 = be[15];
+		const b11 = be[ 0 ], b12 = be[ 4 ], b13 = be[ 8 ], b14 = be[ 12 ];
+		const b21 = be[ 1 ], b22 = be[ 5 ], b23 = be[ 9 ], b24 = be[ 13 ];
+		const b31 = be[ 2 ], b32 = be[ 6 ], b33 = be[ 10 ], b34 = be[ 14 ];
+		const b41 = be[ 3 ], b42 = be[ 7 ], b43 = be[ 11 ], b44 = be[ 15 ];
 
     te[0] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
     te[4] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
@@ -452,11 +425,11 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  multiplyScalar: function(s) {
+	multiplyScalar( s ) {
 
-    var te = this.elements;
+		const te = this.elements;
 
     te[0] *= s;
     te[4] *= s;
@@ -477,37 +450,20 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
-
-  applyToBufferAttribute: function(attribute) {
-
-    for (var i = 0, l = attribute.count; i < l; i++) {
-
-      _v1.x = attribute.getX(i);
-      _v1.y = attribute.getY(i);
-      _v1.z = attribute.getZ(i);
-
-      _v1.applyMatrix4(this);
-
-      attribute.setXYZ(i, _v1.x, _v1.y, _v1.z);
-
     }
 
-    return attribute;
-
-  },
   /**
    * 计算并返回当前矩阵的行列式
    * @return {number}
    */
-  determinant: function() {
+	determinant() {
 
-    var te = this.elements;
+		const te = this.elements;
 
-    var n11 = te[0], n12 = te[4], n13 = te[8], n14 = te[12];
-    var n21 = te[1], n22 = te[5], n23 = te[9], n24 = te[13];
-    var n31 = te[2], n32 = te[6], n33 = te[10], n34 = te[14];
-    var n41 = te[3], n42 = te[7], n43 = te[11], n44 = te[15];
+		const n11 = te[ 0 ], n12 = te[ 4 ], n13 = te[ 8 ], n14 = te[ 12 ];
+		const n21 = te[ 1 ], n22 = te[ 5 ], n23 = te[ 9 ], n24 = te[ 13 ];
+		const n31 = te[ 2 ], n32 = te[ 6 ], n33 = te[ 10 ], n34 = te[ 14 ];
+		const n41 = te[ 3 ], n42 = te[ 7 ], n43 = te[ 11 ], n44 = te[ 15 ];
 
     //TODO: make this more efficient
     //( based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm )
@@ -548,12 +504,12 @@ Object.assign(Matrix4.prototype, {
 
     );
 
-  },
+	}
 
-  transpose: function() {
+	transpose() {
 
-    var te = this.elements;
-    var tmp;
+		const te = this.elements;
+		let tmp;
 
     tmp = te[1];
     te[1] = te[4];
@@ -577,11 +533,11 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  setPosition: function(x, y, z) {
+	setPosition( x, y, z ) {
 
-    var te = this.elements;
+		const te = this.elements;
 
     if (x.isVector3) {
 
@@ -599,7 +555,7 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
   /**
    * 使用此处概述的方法将此矩阵设置为传递的矩阵m的倒数。
@@ -607,43 +563,26 @@ Object.assign(Matrix4.prototype, {
    * @param throwOnDegenerate
    * @return {*}
    */
-  getInverse: function(m, throwOnDegenerate) {
+	invert() {
 
     // based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
-    var te = this.elements,
-      me = m.elements,
+		const te = this.elements,
 
-      n11 = me[0], n21 = me[1], n31 = me[2], n41 = me[3],
-      n12 = me[4], n22 = me[5], n32 = me[6], n42 = me[7],
-      n13 = me[8], n23 = me[9], n33 = me[10], n43 = me[11],
-      n14 = me[12], n24 = me[13], n34 = me[14], n44 = me[15],
+			n11 = te[ 0 ], n21 = te[ 1 ], n31 = te[ 2 ], n41 = te[ 3 ],
+			n12 = te[ 4 ], n22 = te[ 5 ], n32 = te[ 6 ], n42 = te[ 7 ],
+			n13 = te[ 8 ], n23 = te[ 9 ], n33 = te[ 10 ], n43 = te[ 11 ],
+			n14 = te[ 12 ], n24 = te[ 13 ], n34 = te[ 14 ], n44 = te[ 15 ],
 
       t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44,
       t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44,
       t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44,
       t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
 
-    var det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
+		const det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
 
-    if (det === 0) {
+		if ( det === 0 ) return this.set( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 );
 
-      var msg = "THREE.Matrix4: .getInverse() can't invert matrix, determinant is 0";
-
-      if (throwOnDegenerate === true) {
-
-        throw new Error(msg);
-
-      } else {
-
-        console.warn(msg);
-
-      }
-
-      return this.identity();
-
-    }
-
-    var detInv = 1 / det;
+		const detInv = 1 / det;
 
     te[0] = t11 * detInv;
     te[1] = (n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 + n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44) * detInv;
@@ -667,12 +606,12 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  scale: function(v) {
+	scale( v ) {
 
-    var te = this.elements;
-    var x = v.x, y = v.y, z = v.z;
+		const te = this.elements;
+		const x = v.x, y = v.y, z = v.z;
 
     te[0] *= x;
     te[4] *= y;
@@ -689,21 +628,21 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  getMaxScaleOnAxis: function() {
+	getMaxScaleOnAxis() {
 
-    var te = this.elements;
+		const te = this.elements;
 
-    var scaleXSq = te[0] * te[0] + te[1] * te[1] + te[2] * te[2];
-    var scaleYSq = te[4] * te[4] + te[5] * te[5] + te[6] * te[6];
-    var scaleZSq = te[8] * te[8] + te[9] * te[9] + te[10] * te[10];
+		const scaleXSq = te[ 0 ] * te[ 0 ] + te[ 1 ] * te[ 1 ] + te[ 2 ] * te[ 2 ];
+		const scaleYSq = te[ 4 ] * te[ 4 ] + te[ 5 ] * te[ 5 ] + te[ 6 ] * te[ 6 ];
+		const scaleZSq = te[ 8 ] * te[ 8 ] + te[ 9 ] * te[ 9 ] + te[ 10 ] * te[ 10 ];
 
     return Math.sqrt(Math.max(scaleXSq, scaleYSq, scaleZSq));
 
-  },
+	}
 
-  makeTranslation: function(x, y, z) {
+	makeTranslation( x, y, z ) {
 
     this.set(
       1, 0, 0, x,
@@ -714,11 +653,11 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  makeRotationX: function(theta) {
+	makeRotationX( theta ) {
 
-    var c = Math.cos(theta), s = Math.sin(theta);
+		const c = Math.cos( theta ), s = Math.sin( theta );
 
     this.set(
       1, 0, 0, 0,
@@ -729,11 +668,11 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  makeRotationY: function(theta) {
+	makeRotationY( theta ) {
 
-    var c = Math.cos(theta), s = Math.sin(theta);
+		const c = Math.cos( theta ), s = Math.sin( theta );
 
     this.set(
       c, 0, s, 0,
@@ -744,11 +683,11 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  makeRotationZ: function(theta) {
+	makeRotationZ( theta ) {
 
-    var c = Math.cos(theta), s = Math.sin(theta);
+		const c = Math.cos( theta ), s = Math.sin( theta );
 
     this.set(
       c, -s, 0, 0,
@@ -759,17 +698,17 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  makeRotationAxis: function(axis, angle) {
+	makeRotationAxis( axis, angle ) {
 
     // Based on http://www.gamedev.net/reference/articles/article1199.asp
 
-    var c = Math.cos(angle);
-    var s = Math.sin(angle);
-    var t = 1 - c;
-    var x = axis.x, y = axis.y, z = axis.z;
-    var tx = t * x, ty = t * y;
+		const c = Math.cos( angle );
+		const s = Math.sin( angle );
+		const t = 1 - c;
+		const x = axis.x, y = axis.y, z = axis.z;
+		const tx = t * x, ty = t * y;
 
     this.set(
       tx * x + c, tx * y - s * z, tx * z + s * y, 0,
@@ -780,9 +719,9 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  makeScale: function(x, y, z) {
+	makeScale( x, y, z ) {
 
     this.set(
       x, 0, 0, 0,
@@ -793,20 +732,21 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  makeShear: function(x, y, z) {
+	makeShear( xy, xz, yx, yz, zx, zy ) {
 
     this.set(
-      1, y, z, 0,
-      x, 1, z, 0,
-      x, y, 1, 0,
+
+			1, yx, zx, 0,
+			xy, 1, zy, 0,
+			xz, yz, 1, 0,
       0, 0, 0, 1
     );
 
     return this;
 
-  },
+	}
 
   /**
    * 使用参数初始化当前的矩阵
@@ -815,17 +755,17 @@ Object.assign(Matrix4.prototype, {
    * @param scale
    * @return {compose}
    */
-  compose: function(position, quaternion, scale) {
+	compose( position, quaternion, scale ) {
 
-    var te = this.elements;
+		const te = this.elements;
 
-    var x = quaternion._x, y = quaternion._y, z = quaternion._z, w = quaternion._w;
-    var x2 = x + x, y2 = y + y, z2 = z + z;
-    var xx = x * x2, xy = x * y2, xz = x * z2;
-    var yy = y * y2, yz = y * z2, zz = z * z2;
-    var wx = w * x2, wy = w * y2, wz = w * z2;
+		const x = quaternion._x, y = quaternion._y, z = quaternion._z, w = quaternion._w;
+		const x2 = x + x,	y2 = y + y, z2 = z + z;
+		const xx = x * x2, xy = x * y2, xz = x * z2;
+		const yy = y * y2, yz = y * z2, zz = z * z2;
+		const wx = w * x2, wy = w * y2, wz = w * z2;
 
-    var sx = scale.x, sy = scale.y, sz = scale.z;
+		const sx = scale.x, sy = scale.y, sz = scale.z;
 
     te[0] = (1 - (yy + zz)) * sx;
     te[1] = (xy + wz) * sx;
@@ -849,18 +789,18 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  decompose: function(position, quaternion, scale) {
+	decompose( position, quaternion, scale ) {
 
-    var te = this.elements;
+		const te = this.elements;
 
-    var sx = _v1.set(te[0], te[1], te[2]).length();
-    var sy = _v1.set(te[4], te[5], te[6]).length();
-    var sz = _v1.set(te[8], te[9], te[10]).length();
+		let sx = _v1.set( te[ 0 ], te[ 1 ], te[ 2 ] ).length();
+		const sy = _v1.set( te[ 4 ], te[ 5 ], te[ 6 ] ).length();
+		const sz = _v1.set( te[ 8 ], te[ 9 ], te[ 10 ] ).length();
 
     // if determine is negative, we need to invert one scale
-    var det = this.determinant();
+		const det = this.determinant();
     if (det < 0) sx = -sx;
 
     position.x = te[12];
@@ -870,9 +810,9 @@ Object.assign(Matrix4.prototype, {
     // scale the rotation part
     _m1.copy(this);
 
-    var invSX = 1 / sx;
-    var invSY = 1 / sy;
-    var invSZ = 1 / sz;
+		const invSX = 1 / sx;
+		const invSY = 1 / sy;
+		const invSZ = 1 / sz;
 
     _m1.elements[0] *= invSX;
     _m1.elements[1] *= invSX;
@@ -894,7 +834,8 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
+	
   /**
    * 根据参数设置投影矩阵
    * @param left
@@ -905,22 +846,16 @@ Object.assign(Matrix4.prototype, {
    * @param far
    * @return {makePerspective}
    */
-  makePerspective: function(left, right, top, bottom, near, far) {
+	makePerspective( left, right, top, bottom, near, far ) {
 
-    if (far === undefined) {
+		const te = this.elements;
+		const x = 2 * near / ( right - left );
+		const y = 2 * near / ( top - bottom );
 
-      console.warn('THREE.Matrix4: .makePerspective() has been redefined and has a new signature. Please check the docs.');
-
-    }
-
-    var te = this.elements;
-    var x = 2 * near / (right - left);
-    var y = 2 * near / (top - bottom);
-
-    var a = (right + left) / (right - left);
-    var b = (top + bottom) / (top - bottom);
-    var c = -(far + near) / (far - near);
-    var d = -2 * far * near / (far - near);
+		const a = ( right + left ) / ( right - left );
+		const b = ( top + bottom ) / ( top - bottom );
+		const c = - ( far + near ) / ( far - near );
+		const d = - 2 * far * near / ( far - near );
 
     te[0] = x;
     te[4] = 0;
@@ -941,18 +876,18 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  makeOrthographic: function(left, right, top, bottom, near, far) {
+	makeOrthographic( left, right, top, bottom, near, far ) {
 
-    var te = this.elements;
-    var w = 1.0 / (right - left);
-    var h = 1.0 / (top - bottom);
-    var p = 1.0 / (far - near);
+		const te = this.elements;
+		const w = 1.0 / ( right - left );
+		const h = 1.0 / ( top - bottom );
+		const p = 1.0 / ( far - near );
 
-    var x = (right + left) * w;
-    var y = (top + bottom) * h;
-    var z = (far + near) * p;
+		const x = ( right + left ) * w;
+		const y = ( top + bottom ) * h;
+		const z = ( far + near ) * p;
 
     te[0] = 2 * w;
     te[4] = 0;
@@ -973,14 +908,14 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  equals: function(matrix) {
+	equals( matrix ) {
 
-    var te = this.elements;
-    var me = matrix.elements;
+		const te = this.elements;
+		const me = matrix.elements;
 
-    for (var i = 0; i < 16; i++) {
+		for ( let i = 0; i < 16; i ++ ) {
 
       if (te[i] !== me[i]) return false;
 
@@ -988,13 +923,11 @@ Object.assign(Matrix4.prototype, {
 
     return true;
 
-  },
+	}
 
-  fromArray: function(array, offset) {
+	fromArray( array, offset = 0 ) {
 
-    if (offset === undefined) offset = 0;
-
-    for (var i = 0; i < 16; i++) {
+		for ( let i = 0; i < 16; i ++ ) {
 
       this.elements[i] = array[i + offset];
 
@@ -1002,14 +935,11 @@ Object.assign(Matrix4.prototype, {
 
     return this;
 
-  },
+	}
 
-  toArray: function(array, offset) {
+	toArray( array = [], offset = 0 ) {
 
-    if (array === undefined) array = [];
-    if (offset === undefined) offset = 0;
-
-    var te = this.elements;
+		const te = this.elements;
 
     array[offset] = te[0];
     array[offset + 1] = te[1];
@@ -1035,7 +965,14 @@ Object.assign(Matrix4.prototype, {
 
   }
 
-});
+}
 
+const _v1 = /*@__PURE__*/ new Vector3();
+const _m1 = /*@__PURE__*/ new Matrix4();
+const _zero = /*@__PURE__*/ new Vector3( 0, 0, 0 );
+const _one = /*@__PURE__*/ new Vector3( 1, 1, 1 );
+const _x = /*@__PURE__*/ new Vector3();
+const _y = /*@__PURE__*/ new Vector3();
+const _z = /*@__PURE__*/ new Vector3();
 
 export {Matrix4};

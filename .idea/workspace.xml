@@ -34,10 +34,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0790b2dd-a170-40a2-b490-d63f327d5aaf" name="Changes" comment="1.r149后处理">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLUtils.js" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLUtils.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/cameras/Camera.js" afterPath="$PROJECT_DIR$/src/cameras/Camera.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/math/Matrix4.js" afterPath="$PROJECT_DIR$/src/math/Matrix4.js" />
     </list>
-    <ignored path="$PROJECT_DIR$/.idea/shelf/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/dat_gui_doc/" />
@@ -47,12 +46,33 @@
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
     <ignored path="$PROJECT_DIR$/tween_doc/" />
+    <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="ShaderMaterial.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/materials/ShaderMaterial.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="271">
+              <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+                <element signature="e#975#1238#0" expanded="false" />
+                <element signature="e#1463#1558#0" expanded="false" />
+                <element signature="n#!!block;n#copy#0;n#ShaderMaterial#0" expanded="false" />
+                <element signature="n#!!block;n#toJSON#0;n#ShaderMaterial#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -64,12 +84,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>setValueT2DArrayArray</find>
-      <find>setValueV1iArray</find>
-      <find>setValueT1</find>
-      <find>program</find>
-      <find>useProgram</find>
-      <find>_currentCamera</find>
       <find>m_uniforms</find>
       <find>uniformsList</find>
       <find>WebGLMaterials</find>
@@ -94,6 +108,12 @@
       <find>bindingStates</find>
       <find>render</find>
       <find>renderBufferDirect</find>
+      <find>fromArray</find>
+      <find>invert</find>
+      <find>matrixWorldInverse</find>
+      <find>_projScreenMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);</find>
+      <find>multiplyMatrices</find>
+      <find>_projScreenMatrix</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -140,6 +160,7 @@
         <option value="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" />
         <option value="$PROJECT_DIR$/src/renderers/webgl/WebGLUniforms.js" />
         <option value="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
+        <option value="$PROJECT_DIR$/src/math/Matrix4.js" />
       </list>
     </option>
   </component>
@@ -157,9 +178,8 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="83" />
-    <option name="y" value="19" />
     <option name="width" value="1191" />
-    <option name="height" value="713" />
+    <option name="height" value="732" />
   </component>
   <component name="ProjectId" id="1hdGY6K3llREu92WKrwyMSP0I9l" />
   <component name="ProjectView">
@@ -189,12 +209,6 @@
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="cameras" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -210,21 +224,22 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../three.js-r150/src/materials/ShaderMaterial.js" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\src\textures" />
-      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r50\build" />
-      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r50\example" />
-      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\src\renderers\webgl" />
-      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\example\materials" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r50\example\jsm" />
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r50\example" />
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\example\materials" />
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\example\materials\wireframe" />
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\build" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/cameras" />
+      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\src\textures" />
+      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r50\build" />
+      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r50\example" />
+      <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\src\renderers\webgl" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -1055,20 +1070,22 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71350000" />
+    <option name="totallyTimeSpent" value="74949000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="83" y="19" width="1191" height="713" extended-state="0" />
+    <frame x="83" y="0" width="1191" height="732" extended-state="0" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17777778" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14239483" sideWeight="0.5136752" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14239483" sideWeight="0.4863248" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32025117" sideWeight="0.517094" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32025117" sideWeight="0.48290598" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1931624" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1077,22 +1094,11 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ID_ORDER">
-      <list>
-        <option value="Default.Root" />
-        <option value="Default.Author" />
-        <option value="Default.Date" />
-        <option value="Default.Subject" />
-      </list>
-    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -1202,38 +1208,11 @@
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLObjects.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="36" column="23" lean-forward="false" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/materials/RawShaderMaterial.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-77">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/materials/ShaderMaterial.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="183" column="3" lean-forward="false" selection-start-line="183" selection-start-column="3" selection-end-line="183" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/BufferAttribute.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1290">
-          <caret line="29" column="26" lean-forward="false" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLGeometries.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="624">
@@ -1724,89 +1703,129 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/cameras/OrthographicCamera.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="85" column="27" lean-forward="false" selection-start-line="85" selection-start-column="27" selection-end-line="85" selection-end-column="27" />
+          <folding>
+            <element signature="n#!!block;n#constructor#0;n#OrthographicCamera#0" expanded="false" />
+            <element signature="n#!!block;n#copy#0;n#OrthographicCamera#0" expanded="false" />
+            <element signature="n#!!block;n#setViewOffset#0;n#OrthographicCamera#0" expanded="false" />
+            <element signature="n#!!block;n#clearViewOffset#0;n#OrthographicCamera#0" expanded="false" />
+            <element signature="n#!!block;n#updateProjectionMatrix#0;n#OrthographicCamera#0" expanded="false" />
+            <element signature="e#1807#2142#0" expanded="false" />
+            <element signature="n#!!block;n#toJSON#0;n#OrthographicCamera#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cameras/Camera.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!block;n#clone#0;n#Camera#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/math/Matrix4.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="389" column="2" lean-forward="false" selection-start-line="389" selection-start-column="2" selection-end-line="427" selection-end-column="3" />
+          <folding>
+            <element signature="n#!!block;n#constructor#0;n#Matrix4#0" expanded="false" />
+            <element signature="e#131#201#0" expanded="false" />
+            <element signature="n#!!block;n#set#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#identity#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#clone#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#copy#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#copyPosition#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#setFromMatrix3#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#extractBasis#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeBasis#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!doc;n#extractRotation#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#extractRotation#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeRotationFromEuler#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!doc;n#makeRotationFromQuaternion#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeRotationFromQuaternion#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!doc;n#lookAt#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#lookAt#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#multiply#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#premultiply#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!doc;n#multiplyMatrices#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#multiplyMatrices#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#multiplyScalar#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!doc;n#determinant#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#determinant#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#transpose#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#setPosition#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!doc;n#invert#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#invert#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#scale#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#getMaxScaleOnAxis#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeTranslation#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeRotationX#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeRotationY#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeRotationZ#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeRotationAxis#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeScale#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeShear#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!doc;n#compose#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#compose#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#decompose#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!doc;n#makePerspective#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makePerspective#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#makeOrthographic#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#equals#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#fromArray#0;n#Matrix4#0" expanded="false" />
+            <element signature="n#!!block;n#toArray#0;n#Matrix4#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderers/WebGLRenderer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-94">
-          <caret line="1807" column="0" lean-forward="true" selection-start-line="1807" selection-start-column="0" selection-end-line="1807" selection-end-column="0" />
+        <state relative-caret-position="73">
+          <caret line="1176" column="21" lean-forward="true" selection-start-line="1176" selection-start-column="21" selection-end-line="1176" selection-end-column="21" />
           <folding>
-            <element signature="e#0#233#0" expanded="true" />
             <element signature="n#!!block;n#createCanvasElement#0" expanded="false" />
-            <element signature="e#4030#4209#0" expanded="false" />
+            <element signature="e#3932#4111#0" expanded="false" />
             <element signature="n#!!block;n#getTargetPixelRatio#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!block;n#getContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="e#6588#8412#0" expanded="false" />
-            <element signature="e#6625#6985#0" expanded="false" />
-            <element signature="e#8427#8521#0" expanded="false" />
+            <element signature="e#6445#8269#0" expanded="false" />
+            <element signature="e#8284#8378#0" expanded="false" />
             <element signature="n#!!doc;n#initGLContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!block;n#initGLContext#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="e#16031#16908#0" expanded="false" />
-            <element signature="e#16766#16874#0" expanded="false" />
             <element signature="n#!!block;n#onContextLost#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!block;n#onContextRestore#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!block;n#onMaterialDispose#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!block;n#deallocateMaterial#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="e#19770#19939#0" expanded="false" />
-            <element signature="e#19969#20084#0" expanded="false" />
-            <element signature="e#20139#20257#0" expanded="false" />
             <element signature="n#!!block;n#onAnimationFrame#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="e#25020#25153#0" expanded="false" />
-            <element signature="e#25574#25727#0" expanded="false" />
-            <element signature="e#26730#26808#0" expanded="false" />
-            <element signature="e#27379#27642#0" expanded="false" />
-            <element signature="e#27777#28099#0" expanded="false" />
-            <element signature="e#28400#28493#0" expanded="false" />
-            <element signature="e#28499#28551#0" expanded="false" />
-            <element signature="e#28625#28715#0" expanded="false" />
-            <element signature="e#28721#28772#0" expanded="false" />
+            <element signature="e#24957#25090#0" expanded="false" />
+            <element signature="e#25511#25664#0" expanded="false" />
             <element signature="n#!!doc;n#projectObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="n#!!block;n#projectObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!doc;n#renderObjects#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!doc;n#renderObject#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="e#36383#36773#0" expanded="false" />
             <element signature="n#!!block;n#getProgram#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="e#38245#38442#0" expanded="false" />
-            <element signature="e#38550#38877#0" expanded="false" />
-            <element signature="e#38883#39279#0" expanded="false" />
-            <element signature="e#39441#39510#0" expanded="false" />
-            <element signature="e#39830#41337#0" expanded="false" />
             <element signature="n#!!block;n#updateCommonMaterialProperties#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!doc;n#setProgram#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="e#44312#44810#0" expanded="false" />
-            <element signature="e#44928#47184#0" expanded="false" />
-            <element signature="e#47114#47174#0" expanded="false" />
-            <element signature="e#47190#47303#0" expanded="false" />
-            <element signature="e#47416#47488#0" expanded="false" />
-            <element signature="e#47917#48013#0" expanded="false" />
-            <element signature="e#48098#50548#0" expanded="false" />
-            <element signature="e#48196#48425#0" expanded="false" />
-            <element signature="e#48479#48600#0" expanded="false" />
-            <element signature="e#48645#49072#0" expanded="false" />
-            <element signature="e#49086#49120#0" expanded="false" />
-            <element signature="e#49421#49659#0" expanded="false" />
-            <element signature="e#49948#50063#0" expanded="false" />
-            <element signature="e#50897#51682#0" expanded="false" />
-            <element signature="e#51910#51993#0" expanded="false" />
-            <element signature="e#52085#52244#0" expanded="false" />
-            <element signature="e#52400#52577#0" expanded="false" />
-            <element signature="e#52765#53228#0" expanded="false" />
-            <element signature="e#53337#53417#0" expanded="false" />
-            <element signature="e#53723#53879#0" expanded="false" />
-            <element signature="e#53920#53996#0" expanded="false" />
-            <element signature="e#54332#54841#0" expanded="false" />
             <element signature="n#!!block;n#markUniformsLightsNeedsUpdate#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="n#!!doc;n#materialNeedsLights#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
             <element signature="n#!!block;n#materialNeedsLights#0;n#!!block;n#WebGLRenderer#0" expanded="false" />
-            <element signature="e#55996#56044#0" expanded="false" />
-            <element signature="e#56091#56142#0" expanded="false" />
-            <element signature="e#56184#56229#0" expanded="false" />
-            <element signature="e#56319#57380#0" expanded="false" />
-            <element signature="e#57465#57706#0" expanded="false" />
-            <element signature="e#57803#61324#0" expanded="false" />
-            <element signature="e#61435#64047#0" expanded="false" />
-            <element signature="e#64126#64497#0" expanded="false" />
-            <element signature="e#64587#66000#0" expanded="false" />
-            <element signature="e#66103#69334#0" expanded="false" />
-            <element signature="e#69379#69818#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/materials/ShaderMaterial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#975#1238#0" expanded="false" />
+            <element signature="e#1463#1558#0" expanded="false" />
+            <element signature="n#!!block;n#copy#0;n#ShaderMaterial#0" expanded="false" />
+            <element signature="n#!!block;n#toJSON#0;n#ShaderMaterial#0" expanded="false" />
           </folding>
         </state>
       </provider>
