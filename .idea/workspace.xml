@@ -33,14 +33,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0790b2dd-a170-40a2-b490-d63f327d5aaf" name="Changes" comment="1.r149后处理">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r150/example/jsm/postprocessing/ShaderPass.js" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/jsm/postprocessing/ShaderPass.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/r150/example/postprocessing/webgl_postprocessing_sobel.html" beforeDir="false" afterPath="$PROJECT_DIR$/r150/example/postprocessing/webgl_postprocessing_sobel.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLState.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLTextures.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLTextures.js" afterDir="false" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" afterPath="$PROJECT_DIR$/src/renderers/WebGLRenderer.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/renderers/webgl/WebGLUtils.js" afterPath="$PROJECT_DIR$/src/renderers/webgl/WebGLUtils.js" />
     </list>
+    <ignored path="$PROJECT_DIR$/.idea/shelf/" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/build/" />
+    <ignored path="$PROJECT_DIR$/dat_gui_doc/" />
+    <ignored path="$PROJECT_DIR$/docs/" />
+    <ignored path="$PROJECT_DIR$/examples/" />
+    <ignored path="$PROJECT_DIR$/src/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <ignored path="$PROJECT_DIR$/tween_doc/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -99,14 +107,10 @@
     <option name="BRANCH" value="origin/master" />
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="REBASE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="SET_USER_NAME_GLOBALLY" value="false" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;
-  }
-}</component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -189,14 +193,7 @@
               <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
               <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="renderers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ThreeSourceCodeAnalysis" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ThreeSourceCodeAnalysis" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="renderers" type="462c0819:PsiDirectoryNode" />
-              <item name="webgl" type="462c0819:PsiDirectoryNode" />
+              <item name="cameras" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -210,18 +207,10 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/14296/workhome/three.js-r150/src/textures/Texture.js",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "two.files.diff.last.used.file": "C:/Users/14296/workhome/three.js-r150/src/textures/Texture.js",
-    "vue.rearranger.settings.migration": "true"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\src\textures" />
@@ -238,10 +227,23 @@
       <recent name="C:\Users\14296\workhome\ThreeSourceCodeAnalysis\r149\build" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager">
-    <configuration name="test.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/test.js" working-dir="$PROJECT_DIR$">
-      <method v="2" />
-    </configuration>
+    <configuration name="test.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" nameIsGenerated="true" path-to-node="project" path-to-js-file="$PROJECT_DIR$/test.js" working-dir="$PROJECT_DIR$" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -704,6 +706,7 @@
       <workItem from="1677634507291" duration="14447000" />
       <workItem from="1677725740656" duration="11413000" />
       <workItem from="1677820099745" duration="13391000" />
+      <workItem from="1678007565514" duration="129000" />
     </task>
     <task id="LOCAL-00063" summary="1.模板缓冲">
       <created>1575972837424</created>
@@ -1052,21 +1055,20 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71221000" />
+    <option name="totallyTimeSpent" value="71350000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="83" y="19" width="1191" height="713" extended-state="0" />
     <layout>
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17777778" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.5102564" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.4897436" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14239483" sideWeight="0.5136752" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14239483" sideWeight="0.4863248" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17777778" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1075,11 +1077,12 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ID_ORDER">
@@ -1096,11 +1099,29 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
@@ -1182,6 +1203,7 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/renderers/webgl/WebGLObjects.js">
@@ -1223,13 +1245,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="369">
           <caret line="444" column="0" lean-forward="true" selection-start-line="444" selection-start-column="0" selection-end-line="444" selection-end-column="0" />
-          <folding>
-            <element signature="e#4350#4579#0" expanded="false" />
-            <element signature="e#4525#4559#0" expanded="false" />
-            <element signature="e#4614#4693#0" expanded="false" />
-            <element signature="e#4722#4879#0" expanded="false" />
-            <element signature="e#10081#10911#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1457,15 +1472,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="220">
           <caret line="25" column="8" lean-forward="true" selection-start-line="25" selection-start-column="8" selection-end-line="27" selection-end-column="65" />
-          <folding>
-            <element signature="n#!!block;n#alphaTest#0;n#Material#0" expanded="false" />
-            <element signature="n#!!block;n#alphaTest#1;n#Material#0" expanded="false" />
-            <element signature="n#!!block;n#setValues#0;n#Material#0" expanded="false" />
-            <element signature="n#!!block;n#toJSON#0;n#Material#0" expanded="false" />
-            <element signature="n#!!block;n#clone#0;n#Material#0" expanded="false" />
-            <element signature="n#!!block;n#copy#0;n#Material#0" expanded="false" />
-            <element signature="n#!!block;n#dispose#0;n#Material#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1547,7 +1553,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="11117" column="0" lean-forward="true" selection-start-line="11117" selection-start-column="0" selection-end-line="11117" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1690,15 +1695,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="650" column="34" lean-forward="false" selection-start-line="650" selection-start-column="34" selection-end-line="650" selection-end-column="34" />
-          <folding>
-            <element signature="e#18394#18600#0" expanded="false" />
-            <element signature="e#18658#18761#0" expanded="false" />
-            <element signature="e#19069#19153#0" expanded="false" />
-            <element signature="e#19232#19353#0" expanded="false" />
-            <element signature="e#19378#19562#0" expanded="false" />
-            <element signature="e#37850#38090#0" expanded="false" />
-            <element signature="e#38123#38363#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1716,11 +1712,6 @@
             <element signature="n#!!block;n#disable#0;n#!!block;n#WebGLState#0" expanded="false" />
             <element signature="n#!!block;n#bindFramebuffer#0;n#!!block;n#WebGLState#0" expanded="false" />
             <element signature="n#!!block;n#drawBuffers#0;n#!!block;n#WebGLState#0" expanded="false" />
-            <element signature="e#12825#12960#0" expanded="false" />
-            <element signature="e#12979#13066#0" expanded="false" />
-            <element signature="e#13072#13282#0" expanded="false" />
-            <element signature="e#13162#13277#0" expanded="false" />
-            <element signature="e#13304#13773#0" expanded="false" />
             <element signature="n#!!doc;n#setBlending#0;n#!!block;n#WebGLState#0" expanded="false" />
             <element signature="n#!!block;n#setBlending#0;n#!!block;n#WebGLState#0" expanded="false" />
             <element signature="n#!!doc;n#setMaterial#0;n#!!block;n#WebGLState#0" expanded="false" />

@@ -299,7 +299,7 @@ function WebGLRenderer(parameters = {}) {
         extensions.init(capabilities);
 
         utils = new WebGLUtils(_gl, extensions, capabilities);
-
+        
         // 状态管理
         state = new WebGLState(_gl, extensions, capabilities);
 
@@ -1873,11 +1873,6 @@ function WebGLRenderer(parameters = {}) {
 
     }
 
-    /**
-     *
-     * @param material
-     * @returns {*|boolean}
-     */
     function materialNeedsLights(material) {
 
         return material.isMeshLambertMaterial || material.isMeshToonMaterial || material.isMeshPhongMaterial ||
