@@ -299,7 +299,7 @@ function WebGLRenderer(parameters = {}) {
         extensions.init(capabilities);
 
         utils = new WebGLUtils(_gl, extensions, capabilities);
-        
+
         // 状态管理
         state = new WebGLState(_gl, extensions, capabilities);
 
@@ -1964,13 +1964,11 @@ function WebGLRenderer(parameters = {}) {
                 state.bindFramebuffer(_gl.FRAMEBUFFER, null);
                 useDefaultFramebuffer = false;
 
-            }
-            else if (renderTargetProperties.__webglFramebuffer === undefined) {
+            } else if (renderTargetProperties.__webglFramebuffer === undefined) {
 
                 textures.setupRenderTarget(renderTarget);
 
-            }
-            else if (renderTargetProperties.__hasExternalTextures) {
+            } else if (renderTargetProperties.__hasExternalTextures) {
 
                 // Color and depth texture must be rebound in order for the swapchain to update.
                 textures.rebindTextures(renderTarget, properties.get(renderTarget.texture).__webglTexture, properties.get(renderTarget.depthTexture).__webglTexture);

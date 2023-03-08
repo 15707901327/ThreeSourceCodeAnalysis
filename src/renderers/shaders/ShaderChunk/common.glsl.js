@@ -1,11 +1,10 @@
 export default /* glsl */`
-#define PI 3.14159265359
-#define PI2 6.28318530718
-#define PI_HALF 1.5707963267949
-#define RECIPROCAL_PI 0.31830988618
-#define RECIPROCAL_PI2 0.15915494
-#define LOG2 1.442695
-#define EPSILON 1e-6  // 1x10的-6次方 相当于接近0的小数
+#define PI 3.141592653589793
+#define PI2 6.283185307179586
+#define PI_HALF 1.5707963267948966
+#define RECIPROCAL_PI 0.3183098861837907
+#define RECIPROCAL_PI2 0.15915494309189535
+#define EPSILON 1e-6
 
 // 定义数值范围[0,1]
 #ifndef saturate
@@ -16,13 +15,12 @@ export default /* glsl */`
 
 // 计算x的n次方
 float pow2( const in float x ) { return x*x; }
+vec3 pow2( const in vec3 x ) { return x*x; }
 float pow3( const in float x ) { return x*x*x; }
 float pow4( const in float x ) { float x2 = x*x; return x2*x2; }
+float max3( const in vec3 v ) { return max( max( v.x, v.y ), v.z ); }
+float average( const in vec3 v ) { return dot( v, vec3( 0.3333333 ) ); }
 
-// 三向量x,y,z三个数平均数
-float average( const in vec3 color ) { return dot( color, vec3( 0.3333 ) ); }
-
-// 随机数
 // expects values in the range of [0,1]x[0,1], returns values in the [0,1] range.
 // do not collapse into a single function per: http://byteblacksmith.com/improvements-to-the-canonical-one-liner-glsl-rand-for-opengl-es-2-0/
 highp float rand( const in vec2 uv ) {
@@ -34,7 +32,6 @@ highp float rand( const in vec2 uv ) {
 #ifdef HIGH_PRECISION
 	float precisionSafeLength( vec3 v ) { return length( v ); }
 #else
-	float max3( vec3 v ) { return max( max( v.x, v.y ), v.z ); }
 	float precisionSafeLength( vec3 v ) {
 		float maxComponent = max3( abs( v ) );
 		return length( v / maxComponent ) * maxComponent;
@@ -61,7 +58,7 @@ struct GeometricContext {
 	vec3 position;
 	vec3 normal;
 	vec3 viewDir;
-#ifdef CLEARCOAT
+#ifdef USE_CLEARCOAT
 	vec3 clearcoatNormal;
 #endif
 };
@@ -84,30 +81,6 @@ vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
 
 }
 
-// 点相对平面做投影
-vec3 projectOnPlane(in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {
-
-	float distance = dot( planeNormal, point - pointOnPlane );
-
-	return - distance * planeNormal + point;
-
-}
-
-// 判断点在平面哪一边
-float sideOfPlane( in vec3 point, in vec3 pointOnPlane, in vec3 planeNormal ) {
-
-	return sign( dot( point - pointOnPlane, planeNormal ) );
-
-}
-
-// 线个平面相交点
-vec3 linePlaneIntersect( in vec3 pointOnLine, in vec3 lineDirection, in vec3 pointOnPlane, in vec3 planeNormal ) {
-
-	return lineDirection * ( dot( planeNormal, pointOnPlane - pointOnLine ) / dot( planeNormal, lineDirection ) ) + pointOnLine;
-
-}
-
-// 矩阵求转置
 mat3 transposeMat3( const in mat3 m ) {
 
 	mat3 tmp;
@@ -122,17 +95,123 @@ mat3 transposeMat3( const in mat3 m ) {
 
 // 线性rgb颜色值求相对亮度
 // https://en.wikipedia.org/wiki/Relative_luminance
-float linearToRelativeLuminance( const in vec3 color ) {
+float luminance( const in vec3 rgb ) {
 
-	vec3 weights = vec3( 0.2126, 0.7152, 0.0722 );
+	// assumes rgb is in linear color space with sRGB primaries and D65 white point
 
-	return dot( weights, color.rgb );
+	const vec3 weights = vec3( 0.2126729, 0.7151522, 0.0721750 );
+
+	return dot( weights, rgb );
 
 }
 
 bool isPerspectiveMatrix( mat4 m ) {
 
   return m[ 2 ][ 3 ] == - 1.0;
+
+}
+
+vec2 equirectUv( in vec3 dir ) {
+
+	// dir is assumed to be unit length
+
+	float u = atan( dir.z, dir.x ) * RECIPROCAL_PI2 + 0.5;
+
+	float v = asin( clamp( dir.y, - 1.0, 1.0 ) ) * RECIPROCAL_PI + 0.5;
+
+	return vec2( u, v );
+
+}
+
+// Mipped Bicubic Texture Filtering by N8
+// https://www.shadertoy.com/view/Dl2SDW
+
+float w0( float a ) {
+
+	return ( 1.0 / 6.0 ) * ( a * ( a * ( - a + 3.0 ) - 3.0 ) + 1.0 );
+
+}
+
+float w1( float a ) {
+
+	return ( 1.0 / 6.0 ) * ( a *  a * ( 3.0 * a - 6.0 ) + 4.0 );
+
+}
+
+float w2( float a ){
+
+    return ( 1.0 / 6.0 ) * ( a * ( a * ( - 3.0 * a + 3.0 ) + 3.0 ) + 1.0 );
+
+}
+
+float w3( float a ) {
+
+	return ( 1.0 / 6.0 ) * ( a * a * a );
+
+}
+
+// g0 and g1 are the two amplitude functions
+float g0( float a ) {
+
+	return w0( a ) + w1( a );
+
+}
+
+float g1( float a ) {
+
+	return w2( a ) + w3( a );
+
+}
+
+// h0 and h1 are the two offset functions
+float h0( float a ) {
+
+	return - 1.0 + w1( a ) / ( w0( a ) + w1( a ) );
+
+}
+
+float h1( float a ) {
+
+    return 1.0 + w3( a ) / ( w2( a ) + w3( a ) );
+
+}
+
+vec4 bicubic( sampler2D tex, vec2 uv, vec4 texelSize, vec2 fullSize, float lod ) {
+
+	uv = uv * texelSize.zw + 0.5;
+
+	vec2 iuv = floor( uv );
+    vec2 fuv = fract( uv );
+
+    float g0x = g0( fuv.x );
+    float g1x = g1( fuv.x );
+    float h0x = h0( fuv.x );
+    float h1x = h1( fuv.x );
+    float h0y = h0( fuv.y );
+    float h1y = h1( fuv.y );
+
+    vec2 p0 = ( vec2( iuv.x + h0x, iuv.y + h0y ) - 0.5 ) * texelSize.xy;
+    vec2 p1 = ( vec2( iuv.x + h1x, iuv.y + h0y ) - 0.5 ) * texelSize.xy;
+    vec2 p2 = ( vec2( iuv.x + h0x, iuv.y + h1y ) - 0.5 ) * texelSize.xy;
+    vec2 p3 = ( vec2( iuv.x + h1x, iuv.y + h1y ) - 0.5 ) * texelSize.xy;
+    
+    vec2 lodFudge = pow( 1.95, lod ) / fullSize;
+
+	return g0( fuv.y ) * ( g0x * textureLod( tex, p0, lod ) + g1x * textureLod( tex, p1, lod ) ) +
+		   g1( fuv.y ) * ( g0x * textureLod( tex, p2, lod ) + g1x * textureLod( tex, p3, lod ) );
+
+}
+
+vec4 textureBicubic( sampler2D sampler, vec2 uv, float lod ) {
+
+	vec2 fLodSize = vec2( textureSize( sampler, int( lod ) ) );
+	vec2 cLodSize = vec2( textureSize( sampler, int( lod + 1.0 ) ) );
+	vec2 fLodSizeInv = 1.0 / fLodSize;
+	vec2 cLodSizeInv = 1.0 / cLodSize;
+	vec2 fullSize = vec2( textureSize( sampler, 0 ) );
+	vec4 fSample = bicubic( sampler, uv, vec4( fLodSizeInv, fLodSize ), fullSize, floor( lod ) );
+	vec4 cSample = bicubic( sampler, uv, vec4( cLodSizeInv, cLodSize ), fullSize, ceil( lod ) );
+	return mix( fSample, cSample, fract( lod ) );
 
 }
 `;

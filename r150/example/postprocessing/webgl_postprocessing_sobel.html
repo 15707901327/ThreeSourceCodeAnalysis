@@ -92,10 +92,10 @@
         // the next pass to improve the result of the Sobel operator
 
         // Sobel operator
-        // effectSobel = new ShaderPass(SobelOperatorShader);
-        // effectSobel.uniforms['resolution'].value.x = window.innerWidth * window.devicePixelRatio;
-        // effectSobel.uniforms['resolution'].value.y = window.innerHeight * window.devicePixelRatio;
-        // composer.addPass(effectSobel);
+        effectSobel = new ShaderPass(SobelOperatorShader);
+        effectSobel.uniforms['resolution'].value.x = window.innerWidth * window.devicePixelRatio;
+        effectSobel.uniforms['resolution'].value.y = window.innerHeight * window.devicePixelRatio;
+        composer.addPass(effectSobel);
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.minDistance = 10;
@@ -122,8 +122,8 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         composer.setSize(window.innerWidth, window.innerHeight);
 
-        // effectSobel.uniforms['resolution'].value.x = window.innerWidth * window.devicePixelRatio;
-        // effectSobel.uniforms['resolution'].value.y = window.innerHeight * window.devicePixelRatio;
+        effectSobel.uniforms['resolution'].value.x = window.innerWidth * window.devicePixelRatio;
+        effectSobel.uniforms['resolution'].value.y = window.innerHeight * window.devicePixelRatio;
 
     }
 

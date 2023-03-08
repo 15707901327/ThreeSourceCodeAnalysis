@@ -457,6 +457,10 @@ function WebGLTextures(_gl, extensions, state, properties, capabilities, utils, 
         textureUnits = 0;
     }
 
+    /**
+     * 分配纹理单元
+     * @return {number}
+     */
     function allocateTextureUnit() {
 
         const textureUnit = textureUnits;

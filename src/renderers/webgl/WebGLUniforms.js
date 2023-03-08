@@ -60,68 +60,68 @@ const arrayCacheI32 = [];
 
 // Float32Array caches used for uploading Matrix uniforms
 
-const mat4array = new Float32Array( 16 );
-const mat3array = new Float32Array( 9 );
-const mat2array = new Float32Array( 4 );
+const mat4array = new Float32Array(16);
+const mat3array = new Float32Array(9);
+const mat2array = new Float32Array(4);
 
 // Flattening for arrays of vectors and matrices
 
 function flatten(array, nBlocks, blockSize) {
 
-	const firstElem = array[ 0 ];
+    const firstElem = array[0];
 
-	if (firstElem <= 0 || firstElem > 0) return array;
-	// unoptimized: ! isNaN( firstElem )
-	// see http://jacksondunstan.com/articles/983
+    if (firstElem <= 0 || firstElem > 0) return array;
+    // unoptimized: ! isNaN( firstElem )
+    // see http://jacksondunstan.com/articles/983
 
-	const n = nBlocks * blockSize;
-	let r = arrayCacheF32[ n ];
+    const n = nBlocks * blockSize;
+    let r = arrayCacheF32[n];
 
-	if (r === undefined) {
+    if (r === undefined) {
 
-		r = new Float32Array(n);
-		arrayCacheF32[n] = r;
+        r = new Float32Array(n);
+        arrayCacheF32[n] = r;
 
-	}
+    }
 
-	if (nBlocks !== 0) {
+    if (nBlocks !== 0) {
 
-		firstElem.toArray(r, 0);
+        firstElem.toArray(r, 0);
 
-		for ( let i = 1, offset = 0; i !== nBlocks; ++ i ) {
+        for (let i = 1, offset = 0; i !== nBlocks; ++i) {
 
-			offset += blockSize;
-			array[i].toArray(r, offset);
+            offset += blockSize;
+            array[i].toArray(r, offset);
 
-		}
+        }
 
-	}
+    }
 
-	return r;
+    return r;
 
 }
 
 function arraysEqual(a, b) {
 
-	if (a.length !== b.length) return false;
+    if (a.length !== b.length) return false;
 
-	for ( let i = 0, l = a.length; i < l; i ++ ) {
+    for (let i = 0, l = a.length; i < l; i++) {
 
-		if (a[i] !== b[i]) return false;
+        if (a[i] !== b[i]) return false;
 
-	}
+    }
 
-	return true;
+    return true;
 
 }
 
 function copyArray(a, b) {
 
-	for ( let i = 0, l = b.length; i < l; i ++ ) {
+    for (let i = 0, l = b.length; i < l; i++) {
 
-		a[i] = b[i];
+        a[i] = b[i];
 
-	}
+    }
 
 }
 
@@ -129,22 +129,22 @@ function copyArray(a, b) {
 
 function allocTexUnits(textures, n) {
 
-	let r = arrayCacheI32[ n ];
+    let r = arrayCacheI32[n];
 
-	if (r === undefined) {
+    if (r === undefined) {
 
-		r = new Int32Array(n);
-		arrayCacheI32[n] = r;
+        r = new Int32Array(n);
+        arrayCacheI32[n] = r;
 
-	}
+    }
 
-	for ( let i = 0; i !== n; ++ i ) {
+    for (let i = 0; i !== n; ++i) {
 
-		r[ i ] = textures.allocateTextureUnit();
+        r[i] = textures.allocateTextureUnit();
 
-	}
+    }
 
-	return r;
+    return r;
 
 }
 
@@ -157,13 +157,13 @@ function allocTexUnits(textures, n) {
 
 function setValueV1f(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if (cache[0] === v) return;
+    if (cache[0] === v) return;
 
-	gl.uniform1f(this.addr, v);
+    gl.uniform1f(this.addr, v);
 
-	cache[0] = v;
+    cache[0] = v;
 
 }
 
@@ -171,28 +171,28 @@ function setValueV1f(gl, v) {
 
 function setValueV2f(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if (v.x !== undefined) {
+    if (v.x !== undefined) {
 
-		if (cache[0] !== v.x || cache[1] !== v.y) {
+        if (cache[0] !== v.x || cache[1] !== v.y) {
 
-			gl.uniform2f(this.addr, v.x, v.y);
+            gl.uniform2f(this.addr, v.x, v.y);
 
-			cache[0] = v.x;
-			cache[1] = v.y;
+            cache[0] = v.x;
+            cache[1] = v.y;
 
-		}
+        }
 
-	} else {
+    } else {
 
-		if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-		gl.uniform2fv(this.addr, v);
+        gl.uniform2fv(this.addr, v);
 
-		copyArray(cache, v);
+        copyArray(cache, v);
 
-	}
+    }
 
 }
 
@@ -203,70 +203,70 @@ function setValueV2f(gl, v) {
  */
 function setValueV3f(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if (v.x !== undefined) {
+    if (v.x !== undefined) {
 
-		if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
+        if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
 
-			gl.uniform3f(this.addr, v.x, v.y, v.z);
+            gl.uniform3f(this.addr, v.x, v.y, v.z);
 
-			cache[0] = v.x;
-			cache[1] = v.y;
-			cache[2] = v.z;
+            cache[0] = v.x;
+            cache[1] = v.y;
+            cache[2] = v.z;
 
-		}
+        }
 
-	} else if (v.r !== undefined) {
+    } else if (v.r !== undefined) {
 
-		if (cache[0] !== v.r || cache[1] !== v.g || cache[2] !== v.b) {
+        if (cache[0] !== v.r || cache[1] !== v.g || cache[2] !== v.b) {
 
-			gl.uniform3f(this.addr, v.r, v.g, v.b);
+            gl.uniform3f(this.addr, v.r, v.g, v.b);
 
-			cache[0] = v.r;
-			cache[1] = v.g;
-			cache[2] = v.b;
+            cache[0] = v.r;
+            cache[1] = v.g;
+            cache[2] = v.b;
 
-		}
+        }
 
-	} else {
+    } else {
 
-		if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-		gl.uniform3fv(this.addr, v);
+        gl.uniform3fv(this.addr, v);
 
-		copyArray(cache, v);
+        copyArray(cache, v);
 
-	}
+    }
 
 }
 
 function setValueV4f(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if (v.x !== undefined) {
+    if (v.x !== undefined) {
 
-		if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
+        if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
 
-			gl.uniform4f(this.addr, v.x, v.y, v.z, v.w);
+            gl.uniform4f(this.addr, v.x, v.y, v.z, v.w);
 
-			cache[0] = v.x;
-			cache[1] = v.y;
-			cache[2] = v.z;
-			cache[3] = v.w;
+            cache[0] = v.x;
+            cache[1] = v.y;
+            cache[2] = v.z;
+            cache[3] = v.w;
 
-		}
+        }
 
-	} else {
+    } else {
 
-		if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-		gl.uniform4fv(this.addr, v);
+        gl.uniform4fv(this.addr, v);
 
-		copyArray(cache, v);
+        copyArray(cache, v);
 
-	}
+    }
 
 }
 
@@ -274,95 +274,95 @@ function setValueV4f(gl, v) {
 
 function setValueM2(gl, v) {
 
-	const cache = this.cache;
-	const elements = v.elements;
+    const cache = this.cache;
+    const elements = v.elements;
 
-	if (elements === undefined) {
+    if (elements === undefined) {
 
-		if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-		gl.uniformMatrix2fv(this.addr, false, v);
+        gl.uniformMatrix2fv(this.addr, false, v);
 
-		copyArray(cache, v);
+        copyArray(cache, v);
 
-	} else {
+    } else {
 
-		if (arraysEqual(cache, elements)) return;
+        if (arraysEqual(cache, elements)) return;
 
-		mat2array.set(elements);
+        mat2array.set(elements);
 
-		gl.uniformMatrix2fv(this.addr, false, mat2array);
+        gl.uniformMatrix2fv(this.addr, false, mat2array);
 
-		copyArray(cache, elements);
+        copyArray(cache, elements);
 
-	}
+    }
 
 }
 
 function setValueM3(gl, v) {
 
-	const cache = this.cache;
-	const elements = v.elements;
+    const cache = this.cache;
+    const elements = v.elements;
 
-	if (elements === undefined) {
+    if (elements === undefined) {
 
-		if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-		gl.uniformMatrix3fv(this.addr, false, v);
+        gl.uniformMatrix3fv(this.addr, false, v);
 
-		copyArray(cache, v);
+        copyArray(cache, v);
 
-	} else {
+    } else {
 
-		if (arraysEqual(cache, elements)) return;
+        if (arraysEqual(cache, elements)) return;
 
-		mat3array.set(elements);
+        mat3array.set(elements);
 
-		gl.uniformMatrix3fv(this.addr, false, mat3array);
+        gl.uniformMatrix3fv(this.addr, false, mat3array);
 
-		copyArray(cache, elements);
+        copyArray(cache, elements);
 
-	}
+    }
 
 }
 
 function setValueM4(gl, v) {
 
-	const cache = this.cache;
-	const elements = v.elements;
+    const cache = this.cache;
+    const elements = v.elements;
 
-	if (elements === undefined) {
+    if (elements === undefined) {
 
-		if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-		gl.uniformMatrix4fv(this.addr, false, v);
+        gl.uniformMatrix4fv(this.addr, false, v);
 
-		copyArray(cache, v);
+        copyArray(cache, v);
 
-	} else {
+    } else {
 
-		if (arraysEqual(cache, elements)) return;
+        if (arraysEqual(cache, elements)) return;
 
-		mat4array.set(elements);
+        mat4array.set(elements);
 
-		gl.uniformMatrix4fv(this.addr, false, mat4array);
+        gl.uniformMatrix4fv(this.addr, false, mat4array);
 
-		copyArray(cache, elements);
+        copyArray(cache, elements);
 
-	}
+    }
 
 }
 
 // Single integer / boolean
 function setValueV1i(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if (cache[0] === v) return;
+    if (cache[0] === v) return;
 
-	gl.uniform1i(this.addr, v);
+    gl.uniform1i(this.addr, v);
 
-	cache[0] = v;
+    cache[0] = v;
 
 }
 
@@ -370,85 +370,85 @@ function setValueV1i(gl, v) {
 
 function setValueV2i(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if ( v.x !== undefined ) {
+    if (v.x !== undefined) {
 
-		if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y ) {
+        if (cache[0] !== v.x || cache[1] !== v.y) {
 
-			gl.uniform2i( this.addr, v.x, v.y );
+            gl.uniform2i(this.addr, v.x, v.y);
 
-			cache[ 0 ] = v.x;
-			cache[ 1 ] = v.y;
+            cache[0] = v.x;
+            cache[1] = v.y;
 
-		}
+        }
 
-	} else {
+    } else {
 
-	if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-	gl.uniform2iv(this.addr, v);
+        gl.uniform2iv(this.addr, v);
 
-	copyArray(cache, v);
+        copyArray(cache, v);
 
-}
+    }
 
 }
 
 function setValueV3i(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if ( v.x !== undefined ) {
+    if (v.x !== undefined) {
 
-		if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y || cache[ 2 ] !== v.z ) {
+        if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
 
-			gl.uniform3i( this.addr, v.x, v.y, v.z );
+            gl.uniform3i(this.addr, v.x, v.y, v.z);
 
-			cache[ 0 ] = v.x;
-			cache[ 1 ] = v.y;
-			cache[ 2 ] = v.z;
+            cache[0] = v.x;
+            cache[1] = v.y;
+            cache[2] = v.z;
 
-		}
+        }
 
-	} else {
+    } else {
 
-	if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-	gl.uniform3iv(this.addr, v);
+        gl.uniform3iv(this.addr, v);
 
-	copyArray(cache, v);
+        copyArray(cache, v);
 
-}
+    }
 
 }
 
 function setValueV4i(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if ( v.x !== undefined ) {
+    if (v.x !== undefined) {
 
-		if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y || cache[ 2 ] !== v.z || cache[ 3 ] !== v.w ) {
+        if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
 
-			gl.uniform4i( this.addr, v.x, v.y, v.z, v.w );
+            gl.uniform4i(this.addr, v.x, v.y, v.z, v.w);
 
-			cache[ 0 ] = v.x;
-			cache[ 1 ] = v.y;
-			cache[ 2 ] = v.z;
-			cache[ 3 ] = v.w;
+            cache[0] = v.x;
+            cache[1] = v.y;
+            cache[2] = v.z;
+            cache[3] = v.w;
 
-		}
+        }
 
-	} else {
+    } else {
 
-	if (arraysEqual(cache, v)) return;
+        if (arraysEqual(cache, v)) return;
 
-	gl.uniform4iv(this.addr, v);
+        gl.uniform4iv(this.addr, v);
 
-	copyArray(cache, v);
+        copyArray(cache, v);
 
-}
+    }
 
 }
 
@@ -456,99 +456,99 @@ function setValueV4i(gl, v) {
 
 function setValueV1ui(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if (cache[0] === v) return;
+    if (cache[0] === v) return;
 
-	gl.uniform1ui(this.addr, v);
+    gl.uniform1ui(this.addr, v);
 
-	cache[0] = v;
+    cache[0] = v;
 
 }
 
 // Single unsigned integer vector (from flat array or THREE.VectorN)
 
-function setValueV2ui( gl, v ) {
+function setValueV2ui(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if ( v.x !== undefined ) {
+    if (v.x !== undefined) {
 
-		if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y ) {
+        if (cache[0] !== v.x || cache[1] !== v.y) {
 
-			gl.uniform2ui( this.addr, v.x, v.y );
+            gl.uniform2ui(this.addr, v.x, v.y);
 
-			cache[ 0 ] = v.x;
-			cache[ 1 ] = v.y;
+            cache[0] = v.x;
+            cache[1] = v.y;
 
-		}
+        }
 
-	} else {
+    } else {
 
-		if ( arraysEqual( cache, v ) ) return;
+        if (arraysEqual(cache, v)) return;
 
-		gl.uniform2uiv( this.addr, v );
+        gl.uniform2uiv(this.addr, v);
 
-		copyArray( cache, v );
+        copyArray(cache, v);
 
-	}
-
-}
-
-function setValueV3ui( gl, v ) {
-
-	const cache = this.cache;
-
-	if ( v.x !== undefined ) {
-
-		if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y || cache[ 2 ] !== v.z ) {
-
-			gl.uniform3ui( this.addr, v.x, v.y, v.z );
-
-			cache[ 0 ] = v.x;
-			cache[ 1 ] = v.y;
-			cache[ 2 ] = v.z;
-
-		}
-
-	} else {
-
-		if ( arraysEqual( cache, v ) ) return;
-
-		gl.uniform3uiv( this.addr, v );
-
-		copyArray( cache, v );
-
-	}
+    }
 
 }
 
-function setValueV4ui( gl, v ) {
+function setValueV3ui(gl, v) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	if ( v.x !== undefined ) {
+    if (v.x !== undefined) {
 
-		if ( cache[ 0 ] !== v.x || cache[ 1 ] !== v.y || cache[ 2 ] !== v.z || cache[ 3 ] !== v.w ) {
+        if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
 
-			gl.uniform4ui( this.addr, v.x, v.y, v.z, v.w );
+            gl.uniform3ui(this.addr, v.x, v.y, v.z);
 
-			cache[ 0 ] = v.x;
-			cache[ 1 ] = v.y;
-			cache[ 2 ] = v.z;
-			cache[ 3 ] = v.w;
+            cache[0] = v.x;
+            cache[1] = v.y;
+            cache[2] = v.z;
 
-		}
+        }
 
-	} else {
+    } else {
 
-		if ( arraysEqual( cache, v ) ) return;
+        if (arraysEqual(cache, v)) return;
 
-		gl.uniform4uiv( this.addr, v );
+        gl.uniform3uiv(this.addr, v);
 
-		copyArray( cache, v );
+        copyArray(cache, v);
 
-	}
+    }
+
+}
+
+function setValueV4ui(gl, v) {
+
+    const cache = this.cache;
+
+    if (v.x !== undefined) {
+
+        if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
+
+            gl.uniform4ui(this.addr, v.x, v.y, v.z, v.w);
+
+            cache[0] = v.x;
+            cache[1] = v.y;
+            cache[2] = v.z;
+            cache[3] = v.w;
+
+        }
+
+    } else {
+
+        if (arraysEqual(cache, v)) return;
+
+        gl.uniform4uiv(this.addr, v);
+
+        copyArray(cache, v);
+
+    }
 
 }
 
@@ -560,67 +560,67 @@ function setValueV4ui( gl, v ) {
  * @param v {Texture}
  * @param textures {WebGLTextures}
  */
-function setValueT1( gl, v, textures ) {
+function setValueT1(gl, v, textures) {
 
-	const cache = this.cache;
-	const unit = textures.allocateTextureUnit();
+    const cache = this.cache;
+    const unit = textures.allocateTextureUnit();
 
-	if ( cache[ 0 ] !== unit ) {
+    if (cache[0] !== unit) {
 
-		gl.uniform1i( this.addr, unit );
-		cache[ 0 ] = unit;
+        gl.uniform1i(this.addr, unit);
+        cache[0] = unit;
 
-	}
+    }
 
-	textures.setTexture2D( v || emptyTexture, unit );
-
-}
-
-function setValueT3D1( gl, v, textures ) {
-
-	const cache = this.cache;
-	const unit = textures.allocateTextureUnit();
-
-	if ( cache[ 0 ] !== unit ) {
-
-		gl.uniform1i( this.addr, unit );
-		cache[ 0 ] = unit;
-
-	}
-
-	textures.setTexture3D( v || empty3dTexture, unit );
+    textures.setTexture2D(v || emptyTexture, unit);
 
 }
 
-function setValueT6( gl, v, textures ) {
+function setValueT3D1(gl, v, textures) {
 
-	const cache = this.cache;
-	const unit = textures.allocateTextureUnit();
+    const cache = this.cache;
+    const unit = textures.allocateTextureUnit();
 
-	if ( cache[ 0 ] !== unit ) {
+    if (cache[0] !== unit) {
 
-		gl.uniform1i( this.addr, unit );
-		cache[ 0 ] = unit;
+        gl.uniform1i(this.addr, unit);
+        cache[0] = unit;
 
-	}
+    }
 
-	textures.setTextureCube( v || emptyCubeTexture, unit );
+    textures.setTexture3D(v || empty3dTexture, unit);
 
 }
 
-function setValueT2DArray1( gl, v, textures ) {
+function setValueT6(gl, v, textures) {
 
-	const cache = this.cache;
-	const unit = textures.allocateTextureUnit();
+    const cache = this.cache;
+    const unit = textures.allocateTextureUnit();
 
-	if ( cache[ 0 ] !== unit ) {
+    if (cache[0] !== unit) {
 
-		gl.uniform1i( this.addr, unit );
-		cache[ 0 ] = unit;
+        gl.uniform1i(this.addr, unit);
+        cache[0] = unit;
 
-	}
+    }
 
-	textures.setTexture2DArray( v || emptyArrayTexture, unit );
+    textures.setTextureCube(v || emptyCubeTexture, unit);
+
+}
+
+function setValueT2DArray1(gl, v, textures) {
+
+    const cache = this.cache;
+    const unit = textures.allocateTextureUnit();
+
+    if (cache[0] !== unit) {
+
+        gl.uniform1i(this.addr, unit);
+        cache[0] = unit;
+
+    }
+
+    textures.setTexture2DArray(v || emptyArrayTexture, unit);
 
 }
 
@@ -632,75 +632,78 @@ function setValueT2DArray1( gl, v, textures ) {
  */
 function getSingularSetter(type) {
 
-	switch (type) {
+    switch (type) {
 
-		case 0x1406:
-			return setValueV1f; // FLOAT
-		case 0x8b50:
-			return setValueV2f; // _VEC2
-		case 0x8b51:
-			return setValueV3f; // _VEC3
-		case 0x8b52:
-			return setValueV4f; // _VEC4
+        case 0x1406:
+            return setValueV1f; // FLOAT
+        case 0x8b50:
+            return setValueV2f; // _VEC2
+        case 0x8b51:
+            return setValueV3f; // _VEC3
+        case 0x8b52:
+            return setValueV4f; // _VEC4
 
-		case 0x8b5a:
-			return setValueM2; // _MAT2
-		case 0x8b5b:
-			return setValueM3; // _MAT3
-		case 0x8b5c:
-			return setValueM4; // _MAT4
+        case 0x8b5a:
+            return setValueM2; // _MAT2
+        case 0x8b5b:
+            return setValueM3; // _MAT3
+        case 0x8b5c:
+            return setValueM4; // _MAT4
 
-		case 0x1404:
-		case 0x8b56:
-			return setValueV1i; // INT, BOOL
-		case 0x8b53:
-		case 0x8b57:
-			return setValueV2i; // _VEC2
-		case 0x8b54:
-		case 0x8b58:
-			return setValueV3i; // _VEC3
-		case 0x8b55:
-		case 0x8b59:
-			return setValueV4i; // _VEC4
+        case 0x1404:
+        case 0x8b56:
+            return setValueV1i; // INT, BOOL
+        case 0x8b53:
+        case 0x8b57:
+            return setValueV2i; // _VEC2
+        case 0x8b54:
+        case 0x8b58:
+            return setValueV3i; // _VEC3
+        case 0x8b55:
+        case 0x8b59:
+            return setValueV4i; // _VEC4
 
-		case 0x1405:
-			return setValueV1ui; // UINT
-		case 0x8dc6: return setValueV2ui; // _VEC2
-		case 0x8dc7: return setValueV3ui; // _VEC3
-		case 0x8dc8: return setValueV4ui; // _VEC4
+        case 0x1405:
+            return setValueV1ui; // UINT
+        case 0x8dc6:
+            return setValueV2ui; // _VEC2
+        case 0x8dc7:
+            return setValueV3ui; // _VEC3
+        case 0x8dc8:
+            return setValueV4ui; // _VEC4
 
-		case 0x8b5e: // SAMPLER_2D
-		case 0x8d66: // SAMPLER_EXTERNAL_OES
-		case 0x8dca: // INT_SAMPLER_2D
-		case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
-		case 0x8b62: // SAMPLER_2D_SHADOW
-			return setValueT1;
+        case 0x8b5e: // SAMPLER_2D
+        case 0x8d66: // SAMPLER_EXTERNAL_OES
+        case 0x8dca: // INT_SAMPLER_2D
+        case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
+        case 0x8b62: // SAMPLER_2D_SHADOW
+            return setValueT1;
 
-		case 0x8b5f: // SAMPLER_3D
-		case 0x8dcb: // INT_SAMPLER_3D
-		case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
-			return setValueT3D1;
+        case 0x8b5f: // SAMPLER_3D
+        case 0x8dcb: // INT_SAMPLER_3D
+        case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
+            return setValueT3D1;
 
-		case 0x8b60: // SAMPLER_CUBE
-		case 0x8dcc: // INT_SAMPLER_CUBE
-		case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
-		case 0x8dc5: // SAMPLER_CUBE_SHADOW
-			return setValueT6;
+        case 0x8b60: // SAMPLER_CUBE
+        case 0x8dcc: // INT_SAMPLER_CUBE
+        case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
+        case 0x8dc5: // SAMPLER_CUBE_SHADOW
+            return setValueT6;
 
-		case 0x8dc1: // SAMPLER_2D_ARRAY
-		case 0x8dcf: // INT_SAMPLER_2D_ARRAY
-		case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
-		case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
-			return setValueT2DArray1;
+        case 0x8dc1: // SAMPLER_2D_ARRAY
+        case 0x8dcf: // INT_SAMPLER_2D_ARRAY
+        case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
+        case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
+            return setValueT2DArray1;
 
-	}
+    }
 
 }
 
 // Array of scalars
 function setValueV1fArray(gl, v) {
 
-	gl.uniform1fv(this.addr, v);
+    gl.uniform1fv(this.addr, v);
 
 }
 
@@ -708,25 +711,25 @@ function setValueV1fArray(gl, v) {
 
 function setValueV2fArray(gl, v) {
 
-	const data = flatten( v, this.size, 2 );
+    const data = flatten(v, this.size, 2);
 
-	gl.uniform2fv(this.addr, data);
+    gl.uniform2fv(this.addr, data);
 
 }
 
 function setValueV3fArray(gl, v) {
 
-	const data = flatten( v, this.size, 3 );
+    const data = flatten(v, this.size, 3);
 
-	gl.uniform3fv(this.addr, data);
+    gl.uniform3fv(this.addr, data);
 
 }
 
 function setValueV4fArray(gl, v) {
 
-	const data = flatten( v, this.size, 4 );
+    const data = flatten(v, this.size, 4);
 
-	gl.uniform4fv(this.addr, data);
+    gl.uniform4fv(this.addr, data);
 
 }
 
@@ -734,80 +737,81 @@ function setValueV4fArray(gl, v) {
 
 function setValueM2Array(gl, v) {
 
-	const data = flatten( v, this.size, 4 );
+    const data = flatten(v, this.size, 4);
 
-	gl.uniformMatrix2fv(this.addr, false, data);
+    gl.uniformMatrix2fv(this.addr, false, data);
 
 }
 
 function setValueM3Array(gl, v) {
 
-	const data = flatten( v, this.size, 9 );
+    const data = flatten(v, this.size, 9);
 
-	gl.uniformMatrix3fv(this.addr, false, data);
+    gl.uniformMatrix3fv(this.addr, false, data);
 
 }
 
 function setValueM4Array(gl, v) {
 
-	const data = flatten( v, this.size, 16 );
+    const data = flatten(v, this.size, 16);
 
-	gl.uniformMatrix4fv(this.addr, false, data);
+    gl.uniformMatrix4fv(this.addr, false, data);
 
 }
 
 // Array of integer / boolean
 
 function setValueV1iArray(gl, v) {
-	
-	gl.uniform1iv(this.addr, v);
-	
+
+    gl.uniform1iv(this.addr, v);
+
 }
 
 // Array of integer / boolean vectors (from flat array)
 
-function setValueV2iArray( gl, v ) {
+function setValueV2iArray(gl, v) {
 
-	gl.uniform2iv( this.addr, v );
-
-}
-
-function setValueV3iArray( gl, v ) {
-
-	gl.uniform3iv( this.addr, v );
+    gl.uniform2iv(this.addr, v);
 
 }
 
-function setValueV4iArray( gl, v ) {
+function setValueV3iArray(gl, v) {
 
-	gl.uniform4iv( this.addr, v );
+    gl.uniform3iv(this.addr, v);
 
 }
+
+function setValueV4iArray(gl, v) {
+
+    gl.uniform4iv(this.addr, v);
+
+}
+
 // Array of unsigned integer
 
-function setValueV1uiArray( gl, v ) {
+function setValueV1uiArray(gl, v) {
 
-	gl.uniform1uiv( this.addr, v );
+    gl.uniform1uiv(this.addr, v);
 
 }
 
 // Array of unsigned integer vectors (from flat array)
 
-function setValueV2uiArray( gl, v ) {
+function setValueV2uiArray(gl, v) {
 
-	gl.uniform2uiv( this.addr, v );
-
-}
-
-function setValueV3uiArray( gl, v ) {
-
-	gl.uniform3uiv( this.addr, v );
+    gl.uniform2uiv(this.addr, v);
 
 }
 
-function setValueV4uiArray( gl, v ) {
+function setValueV3uiArray(gl, v) {
 
-	gl.uniform4uiv( this.addr, v );
+    gl.uniform3uiv(this.addr, v);
+
+}
+
+function setValueV4uiArray(gl, v) {
+
+    gl.uniform4uiv(this.addr, v);
 
 }
 
@@ -816,97 +820,97 @@ function setValueV4uiArray( gl, v ) {
 
 function setValueT1Array(gl, v, textures) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	const n = v.length;
+    const n = v.length;
 
-	const units = allocTexUnits( textures, n );
+    const units = allocTexUnits(textures, n);
 
-	if ( ! arraysEqual( cache, units ) ) {
+    if (!arraysEqual(cache, units)) {
 
-	gl.uniform1iv(this.addr, units);
+        gl.uniform1iv(this.addr, units);
 
-		copyArray( cache, units );
+        copyArray(cache, units);
 
-	}
+    }
 
-	for ( let i = 0; i !== n; ++ i ) {
+    for (let i = 0; i !== n; ++i) {
 
-		textures.setTexture2D( v[ i ] || emptyTexture, units[ i ] );
+        textures.setTexture2D(v[i] || emptyTexture, units[i]);
 
-	}
+    }
 
 }
 
-function setValueT3DArray( gl, v, textures ) {
+function setValueT3DArray(gl, v, textures) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	const n = v.length;
+    const n = v.length;
 
-	const units = allocTexUnits( textures, n );
+    const units = allocTexUnits(textures, n);
 
-	if ( ! arraysEqual( cache, units ) ) {
+    if (!arraysEqual(cache, units)) {
 
-		gl.uniform1iv( this.addr, units );
+        gl.uniform1iv(this.addr, units);
 
-		copyArray( cache, units );
+        copyArray(cache, units);
 
-	}
+    }
 
-	for ( let i = 0; i !== n; ++ i ) {
+    for (let i = 0; i !== n; ++i) {
 
-		textures.setTexture3D( v[ i ] || empty3dTexture, units[ i ] );
+        textures.setTexture3D(v[i] || empty3dTexture, units[i]);
 
-	}
+    }
 
 }
 
 function setValueT6Array(gl, v, textures) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	const n = v.length;
+    const n = v.length;
 
-	const units = allocTexUnits( textures, n );
+    const units = allocTexUnits(textures, n);
 
-	if ( ! arraysEqual( cache, units ) ) {
+    if (!arraysEqual(cache, units)) {
 
-	gl.uniform1iv(this.addr, units);
+        gl.uniform1iv(this.addr, units);
 
-		copyArray( cache, units );
+        copyArray(cache, units);
 
-	}
+    }
 
-	for ( let i = 0; i !== n; ++ i ) {
+    for (let i = 0; i !== n; ++i) {
 
-		textures.setTextureCube( v[ i ] || emptyCubeTexture, units[ i ] );
+        textures.setTextureCube(v[i] || emptyCubeTexture, units[i]);
 
-	}
+    }
 
 }
 
-function setValueT2DArrayArray( gl, v, textures ) {
+function setValueT2DArrayArray(gl, v, textures) {
 
-	const cache = this.cache;
+    const cache = this.cache;
 
-	const n = v.length;
+    const n = v.length;
 
-	const units = allocTexUnits( textures, n );
+    const units = allocTexUnits(textures, n);
 
-	if ( ! arraysEqual( cache, units ) ) {
+    if (!arraysEqual(cache, units)) {
 
-		gl.uniform1iv( this.addr, units );
+        gl.uniform1iv(this.addr, units);
 
-		copyArray( cache, units );
+        copyArray(cache, units);
 
-	}
+    }
 
-	for ( let i = 0; i !== n; ++ i ) {
+    for (let i = 0; i !== n; ++i) {
 
-		textures.setTexture2DArray( v[ i ] || emptyArrayTexture, units[ i ] );
+        textures.setTexture2DArray(v[i] || emptyArrayTexture, units[i]);
 
-	}
+    }
 
 }
 
@@ -919,67 +923,71 @@ function setValueT2DArrayArray( gl, v, textures ) {
  */
 function getPureArraySetter(type) {
 
-	switch (type) {
+    switch (type) {
 
-		case 0x1406:
-			return setValueV1fArray; // FLOAT
-		case 0x8b50:
-			return setValueV2fArray; // _VEC2
-		case 0x8b51:
-			return setValueV3fArray; // _VEC3
-		case 0x8b52:
-			return setValueV4fArray; // _VEC4
+        case 0x1406:
+            return setValueV1fArray; // FLOAT
+        case 0x8b50:
+            return setValueV2fArray; // _VEC2
+        case 0x8b51:
+            return setValueV3fArray; // _VEC3
+        case 0x8b52:
+            return setValueV4fArray; // _VEC4
 
-		case 0x8b5a:
-			return setValueM2Array; // _MAT2
-		case 0x8b5b:
-			return setValueM3Array; // _MAT3
-		case 0x8b5c:
-			return setValueM4Array; // _MAT4
+        case 0x8b5a:
+            return setValueM2Array; // _MAT2
+        case 0x8b5b:
+            return setValueM3Array; // _MAT3
+        case 0x8b5c:
+            return setValueM4Array; // _MAT4
 
-		case 0x1404:
-		case 0x8b56:
-			return setValueV1iArray; // INT, BOOL
-		case 0x8b53:
-		case 0x8b57:
-			return setValueV2iArray; // _VEC2
-		case 0x8b54:
-		case 0x8b58:
-			return setValueV3iArray; // _VEC3
-		case 0x8b55:
-		case 0x8b59:
-			return setValueV4iArray; // _VEC4
+        case 0x1404:
+        case 0x8b56:
+            return setValueV1iArray; // INT, BOOL
+        case 0x8b53:
+        case 0x8b57:
+            return setValueV2iArray; // _VEC2
+        case 0x8b54:
+        case 0x8b58:
+            return setValueV3iArray; // _VEC3
+        case 0x8b55:
+        case 0x8b59:
+            return setValueV4iArray; // _VEC4
 
-		case 0x1405: return setValueV1uiArray; // UINT
-		case 0x8dc6: return setValueV2uiArray; // _VEC2
-		case 0x8dc7: return setValueV3uiArray; // _VEC3
-		case 0x8dc8: return setValueV4uiArray; // _VEC4
+        case 0x1405:
+            return setValueV1uiArray; // UINT
+        case 0x8dc6:
+            return setValueV2uiArray; // _VEC2
+        case 0x8dc7:
+            return setValueV3uiArray; // _VEC3
+        case 0x8dc8:
+            return setValueV4uiArray; // _VEC4
 
-		case 0x8b5e: // SAMPLER_2D
-		case 0x8d66: // SAMPLER_EXTERNAL_OES
-		case 0x8dca: // INT_SAMPLER_2D
-		case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
-		case 0x8b62: // SAMPLER_2D_SHADOW
-			return setValueT1Array;
+        case 0x8b5e: // SAMPLER_2D
+        case 0x8d66: // SAMPLER_EXTERNAL_OES
+        case 0x8dca: // INT_SAMPLER_2D
+        case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
+        case 0x8b62: // SAMPLER_2D_SHADOW
+            return setValueT1Array;
 
-		case 0x8b5f: // SAMPLER_3D
-		case 0x8dcb: // INT_SAMPLER_3D
-		case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
-			return setValueT3DArray;
+        case 0x8b5f: // SAMPLER_3D
+        case 0x8dcb: // INT_SAMPLER_3D
+        case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
+            return setValueT3DArray;
 
-		case 0x8b60: // SAMPLER_CUBE
-		case 0x8dcc: // INT_SAMPLER_CUBE
-		case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
-		case 0x8dc5: // SAMPLER_CUBE_SHADOW
-			return setValueT6Array;
+        case 0x8b60: // SAMPLER_CUBE
+        case 0x8dcc: // INT_SAMPLER_CUBE
+        case 0x8dd4: // UNSIGNED_INT_SAMPLER_CUBE
+        case 0x8dc5: // SAMPLER_CUBE_SHADOW
+            return setValueT6Array;
 
-		case 0x8dc1: // SAMPLER_2D_ARRAY
-		case 0x8dcf: // INT_SAMPLER_2D_ARRAY
-		case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
-		case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
-			return setValueT2DArrayArray;
+        case 0x8dc1: // SAMPLER_2D_ARRAY
+        case 0x8dcf: // INT_SAMPLER_2D_ARRAY
+        case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
+        case 0x8dc4: // SAMPLER_2D_ARRAY_SHADOW
+            return setValueT2DArrayArray;
 
-	}
+    }
 }
 
 /**
@@ -991,17 +999,18 @@ function getPureArraySetter(type) {
  */
 class SingleUniform {
 
-	constructor( id, activeInfo, addr ) {
+    constructor(id, activeInfo, addr) {
 
-	this.id = id;
-	this.addr = addr;
-	this.cache = [];
-	this.setValue = getSingularSetter(activeInfo.type);
+        this.id = id;
+        this.addr = addr;
+        this.cache = [];
+        this.setValue = getSingularSetter(activeInfo.type);
 
-	// this.path = activeInfo.name; // DEBUG
+        // this.path = activeInfo.name; // DEBUG
+    }
+
 }
 
-}
 /**
  *
  * @param id
@@ -1011,16 +1020,16 @@ class SingleUniform {
  */
 class PureArrayUniform {
 
-	constructor( id, activeInfo, addr ) {
+    constructor(id, activeInfo, addr) {
 
-	this.id = id;
-	this.addr = addr;
-	this.cache = [];
-	this.size = activeInfo.size;
-	this.setValue = getPureArraySetter(activeInfo.type);
-	// this.path = activeInfo.name; // DEBUG
+        this.id = id;
+        this.addr = addr;
+        this.cache = [];
+        this.size = activeInfo.size;
+        this.setValue = getPureArraySetter(activeInfo.type);
+        // this.path = activeInfo.name; // DEBUG
 
-	}
+    }
 
 }
 
@@ -1031,26 +1040,26 @@ class PureArrayUniform {
  */
 class StructuredUniform {
 
-	constructor( id ) {
+    constructor(id) {
 
-	this.id = id;
+        this.id = id;
 
-	this.seq = [];
-	this.map = {};
-}
+        this.seq = [];
+        this.map = {};
+    }
 
-	setValue( gl, value, textures ) {
+    setValue(gl, value, textures) {
 
-		const seq = this.seq;
+        const seq = this.seq;
 
-		for ( let i = 0, n = seq.length; i !== n; ++ i ) {
+        for (let i = 0, n = seq.length; i !== n; ++i) {
 
-			const u = seq[ i ];
-		u.setValue(gl, value[u.id], textures);
+            const u = seq[i];
+            u.setValue(gl, value[u.id], textures);
 
-	}
+        }
 
-	}
+    }
 
 }
 
@@ -1074,8 +1083,8 @@ const RePathPart = /(\w+)(\])?(\[|\.)?/g;
  * @param uniformObject
  */
 function addUniform(container, uniformObject) {
-	container.seq.push(uniformObject);
-	container.map[uniformObject.id] = uniformObject;
+    container.seq.push(uniformObject);
+    container.map[uniformObject.id] = uniformObject;
 }
 
 /**
@@ -1086,52 +1095,52 @@ function addUniform(container, uniformObject) {
  */
 function parseUniform(activeInfo, addr, container) {
 
-	const path = activeInfo.name,
-		pathLength = path.length;
+    const path = activeInfo.name,
+        pathLength = path.length;
 
-	// reset RegExp object, because of the early exit of a previous run
-	RePathPart.lastIndex = 0;
+    // reset RegExp object, because of the early exit of a previous run
+    RePathPart.lastIndex = 0;
 
-	while (true) {
+    while (true) {
 
-		/**
-		 * exec() 方法用于检索字符串中的正则表达式的匹配。
-		 * 返回一个数组：
-		 *  0：正则表达式匹配的文本
-		 *  1：RegExpObject 的第 1 个子表达式相匹配的文本
-		 *  2：RegExpObject 的第 2 个子表达式相匹配的文本（如果有的话）
-		 *  index： 属性声明的是匹配文本的第一个字符的位置
-		 *  input：属性则存放的是被检索的字符串 string
-		 *  但是，当 RegExpObject 是一个全局正则表达式时，它会在 RegExpObject 的 lastIndex 属性指定的字符处开始检索字符串 string。
-		 *  当 exec() 找到了与表达式相匹配的文本时，在匹配后，它将把 RegExpObject 的 lastIndex 属性设置为匹配文本的最后一个字符的下一个位置。
-		 *  这就是说，您可以通过反复调用 exec() 方法来遍历字符串中的所有匹配文本。当 exec() 再也找不到匹配的文本时，它将返回 null，并把 lastIndex 属性重置为 0。
-		 */
-		const match = RePathPart.exec( path ),
-			matchEnd = RePathPart.lastIndex;
+        /**
+         * exec() 方法用于检索字符串中的正则表达式的匹配。
+         * 返回一个数组：
+         *  0：正则表达式匹配的文本
+         *  1：RegExpObject 的第 1 个子表达式相匹配的文本
+         *  2：RegExpObject 的第 2 个子表达式相匹配的文本（如果有的话）
+         *  index： 属性声明的是匹配文本的第一个字符的位置
+         *  input：属性则存放的是被检索的字符串 string
+         *  但是，当 RegExpObject 是一个全局正则表达式时，它会在 RegExpObject 的 lastIndex 属性指定的字符处开始检索字符串 string。
+         *  当 exec() 找到了与表达式相匹配的文本时，在匹配后，它将把 RegExpObject 的 lastIndex 属性设置为匹配文本的最后一个字符的下一个位置。
+         *  这就是说，您可以通过反复调用 exec() 方法来遍历字符串中的所有匹配文本。当 exec() 再也找不到匹配的文本时，它将返回 null，并把 lastIndex 属性重置为 0。
+         */
+        const match = RePathPart.exec(path),
+            matchEnd = RePathPart.lastIndex;
 
-		let id = match[ 1 ];
-		const idIsIndex = match[ 2 ] === ']',
-			subscript = match[ 3 ];
+        let id = match[1];
+        const idIsIndex = match[2] === ']',
+            subscript = match[3];
 
-		if (idIsIndex) id = id | 0; // convert to integer
+        if (idIsIndex) id = id | 0; // convert to integer
 
-		if (subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength) {
-			// bare name or "pure" bottom-level array "[0]" suffix
-			addUniform(container, subscript === undefined ? new SingleUniform(id, activeInfo, addr) : new PureArrayUniform(id, activeInfo, addr));
-			break;
-		} else {
-			// step into inner node / create it in case it doesn't exist
+        if (subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength) {
+            // bare name or "pure" bottom-level array "[0]" suffix
+            addUniform(container, subscript === undefined ? new SingleUniform(id, activeInfo, addr) : new PureArrayUniform(id, activeInfo, addr));
+            break;
+        } else {
+            // step into inner node / create it in case it doesn't exist
 
-			const map = container.map;
-			let next = map[ id ];
+            const map = container.map;
+            let next = map[id];
 
-			if (next === undefined) {
-				next = new StructuredUniform(id);
-				addUniform(container, next);
-			}
-			container = next;
-		}
-	}
+            if (next === undefined) {
+                next = new StructuredUniform(id);
+                addUniform(container, next);
+            }
+            container = next;
+        }
+    }
 }
 
 // Root Container
@@ -1144,94 +1153,94 @@ function parseUniform(activeInfo, addr, container) {
  */
 class WebGLUniforms {
 
-	constructor( gl, program ) {
+    constructor(gl, program) {
 
-	this.seq = [];
-	this.map = {};
+        this.seq = [];
+        this.map = {};
 
-	// 获取变量Uniform的数量
-		const n = gl.getProgramParameter( program, gl.ACTIVE_UNIFORMS );
+        // 获取变量Uniform的数量
+        const n = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
 
-		for ( let i = 0; i < n; ++ i ) {
+        for (let i = 0; i < n; ++i) {
 
-			const info = gl.getActiveUniform( program, i ),
-				addr = gl.getUniformLocation( program, info.name );
+            const info = gl.getActiveUniform(program, i),
+                addr = gl.getUniformLocation(program, info.name);
 
-		parseUniform(info, addr, this);
+            parseUniform(info, addr, this);
 
-	}
+        }
+
+    }
+
+    /**
+     *
+     * @param gl
+     * @param name
+     * @param value
+     * @param textures
+     */
+    setValue(gl, name, value, textures) {
+
+        const u = this.map[name];
+
+        if (u !== undefined) u.setValue(gl, value, textures);
+
+    }
+
+    setOptional(gl, object, name) {
+
+        const v = object[name];
+
+        if (v !== undefined) this.setValue(gl, name, v);
+
+    }
+
+    /**
+     * 将uniforms变量传送给着色器
+     * @param gl 上下文
+     * @param seq uniformsList
+     * @param values{Object}
+     * @param textures {WebGLTextures}
+     */
+    static upload(gl, seq, values, textures) {
+
+        for (let i = 0, n = seq.length; i !== n; ++i) {
+
+            const u = seq[i],
+                v = values[u.id];
+
+            if (v.needsUpdate !== false) {
+
+                // note: always updating when .needsUpdate is undefined
+                u.setValue(gl, v.value, textures);
+
+            }
+
+        }
+
+    }
+
+    /**
+     * 比较同时存在的属性，添加到数组
+     * @param seq
+     * @param values
+     * @return {Array}
+     */
+    static seqWithValue(seq, values) {
+
+        const r = [];
+
+        for (let i = 0, n = seq.length; i !== n; ++i) {
+
+            const u = seq[i];
+            if (u.id in values) r.push(u);
+
+        }
+
+        return r;
+
+    }
 
 }
 
-/**
- *
- * @param gl
- * @param name
- * @param value
- * @param textures
- */
-	setValue( gl, name, value, textures ) {
-
-		const u = this.map[ name ];
-
-	if (u !== undefined) u.setValue(gl, value, textures);
-
-	}
-
-	setOptional( gl, object, name ) {
-
-		const v = object[ name ];
-
-	if (v !== undefined) this.setValue(gl, name, v);
-
-	}
-
-/**
- * 将uniforms变量传送给着色器
- * @param gl 上下文
- * @param seq uniformsList
- * @param values{Object}
- * @param textures {WebGLTextures}
- */
-	static upload( gl, seq, values, textures ) {
-
-		for ( let i = 0, n = seq.length; i !== n; ++ i ) {
-
-			const u = seq[ i ],
-				v = values[ u.id ];
-
-		if (v.needsUpdate !== false) {
-
-			// note: always updating when .needsUpdate is undefined
-			u.setValue(gl, v.value, textures);
-
-		}
-
-	}
-
-	}
-
-/**
- * 比较同时存在的属性，添加到数组
- * @param seq
- * @param values
- * @return {Array}
- */
-	static seqWithValue( seq, values ) {
-
-		const r = [];
-
-		for ( let i = 0, n = seq.length; i !== n; ++ i ) {
-
-			const u = seq[ i ];
-		if (u.id in values) r.push(u);
-
-	}
-
-	return r;
-
-	}
-
-}
-
-export { WebGLUniforms };
+export {WebGLUniforms};

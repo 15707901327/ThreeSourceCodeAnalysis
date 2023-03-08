@@ -1,624 +1,623 @@
-﻿function WebGLBindingStates( gl, extensions, attributes, capabilities ) {
+﻿function WebGLBindingStates(gl, extensions, attributes, capabilities) {
 
-	const maxVertexAttributes = gl.getParameter( gl.MAX_VERTEX_ATTRIBS );
+    const maxVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
 
-	const extension = capabilities.isWebGL2 ? null : extensions.get( 'OES_vertex_array_object' );
-	const vaoAvailable = capabilities.isWebGL2 || extension !== null;
+    const extension = capabilities.isWebGL2 ? null : extensions.get('OES_vertex_array_object');
+    const vaoAvailable = capabilities.isWebGL2 || extension !== null;
 
-	const bindingStates = {};
+    const bindingStates = {};
 
-	const defaultState = createBindingState( null );
-	let currentState = defaultState;
-	let forceUpdate = false;
+    const defaultState = createBindingState(null);
+    let currentState = defaultState;
+    let forceUpdate = false;
 
-	function setup( object, material, program, geometry, index ) {
+    function setup(object, material, program, geometry, index) {
 
-		let updateBuffers = false;
+        let updateBuffers = false;
 
-		if ( vaoAvailable ) {
+        if (vaoAvailable) {
 
-			const state = getBindingState( geometry, program, material );
+            const state = getBindingState(geometry, program, material);
 
-			if ( currentState !== state ) {
+            if (currentState !== state) {
 
-				currentState = state;
-				bindVertexArrayObject( currentState.object );
+                currentState = state;
+                bindVertexArrayObject(currentState.object);
 
-			}
+            }
 
-			// 检查是否需要更新buffer
-			updateBuffers = needsUpdate( object, geometry, program, index );
+            // 检查是否需要更新buffer
+            updateBuffers = needsUpdate(object, geometry, program, index);
 
-			if ( updateBuffers ) saveCache( object, geometry, program, index );
+            if (updateBuffers) saveCache(object, geometry, program, index);
 
-		} else {
+        } else {
 
-			const wireframe = ( material.wireframe === true );
+            const wireframe = (material.wireframe === true);
 
-			if ( currentState.geometry !== geometry.id ||
-				currentState.program !== program.id ||
-				currentState.wireframe !== wireframe ) {
+            if (currentState.geometry !== geometry.id ||
+                currentState.program !== program.id ||
+                currentState.wireframe !== wireframe) {
 
-				currentState.geometry = geometry.id;
-				currentState.program = program.id;
-				currentState.wireframe = wireframe;
+                currentState.geometry = geometry.id;
+                currentState.program = program.id;
+                currentState.wireframe = wireframe;
 
-				updateBuffers = true;
+                updateBuffers = true;
 
-			}
+            }
 
-		}
+        }
 
-		if ( index !== null ) {
+        if (index !== null) {
 
-			attributes.update( index, gl.ELEMENT_ARRAY_BUFFER );
+            attributes.update(index, gl.ELEMENT_ARRAY_BUFFER);
 
-		}
+        }
 
-		if ( updateBuffers || forceUpdate ) {
+        if (updateBuffers || forceUpdate) {
 
-			forceUpdate = false;
+            forceUpdate = false;
 
-			setupVertexAttributes( object, material, program, geometry );
+            setupVertexAttributes(object, material, program, geometry);
 
-			if ( index !== null ) {
+            if (index !== null) {
 
-				gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, attributes.get( index ).buffer );
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, attributes.get(index).buffer);
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
-	function createVertexArrayObject() {
+    function createVertexArrayObject() {
 
-		if ( capabilities.isWebGL2 ) return gl.createVertexArray();
+        if (capabilities.isWebGL2) return gl.createVertexArray();
 
-		return extension.createVertexArrayOES();
+        return extension.createVertexArrayOES();
 
-	}
+    }
 
-	function bindVertexArrayObject( vao ) {
+    function bindVertexArrayObject(vao) {
 
-		if ( capabilities.isWebGL2 ) return gl.bindVertexArray( vao );
+        if (capabilities.isWebGL2) return gl.bindVertexArray(vao);
 
-		return extension.bindVertexArrayOES( vao );
+        return extension.bindVertexArrayOES(vao);
 
-	}
+    }
 
-	function deleteVertexArrayObject( vao ) {
+    function deleteVertexArrayObject(vao) {
 
-		if ( capabilities.isWebGL2 ) return gl.deleteVertexArray( vao );
+        if (capabilities.isWebGL2) return gl.deleteVertexArray(vao);
 
-		return extension.deleteVertexArrayOES( vao );
+        return extension.deleteVertexArrayOES(vao);
 
-	}
+    }
 
-	function getBindingState( geometry, program, material ) {
+    function getBindingState(geometry, program, material) {
 
-		const wireframe = ( material.wireframe === true );
+        const wireframe = (material.wireframe === true);
 
-		let programMap = bindingStates[ geometry.id ];
+        let programMap = bindingStates[geometry.id];
 
-		if ( programMap === undefined ) {
+        if (programMap === undefined) {
 
-			programMap = {};
-			bindingStates[ geometry.id ] = programMap;
+            programMap = {};
+            bindingStates[geometry.id] = programMap;
 
-		}
+        }
 
-		let stateMap = programMap[ program.id ];
+        let stateMap = programMap[program.id];
 
-		if ( stateMap === undefined ) {
+        if (stateMap === undefined) {
 
-			stateMap = {};
-			programMap[ program.id ] = stateMap;
+            stateMap = {};
+            programMap[program.id] = stateMap;
 
-		}
+        }
 
-		let state = stateMap[ wireframe ];
+        let state = stateMap[wireframe];
 
-		if ( state === undefined ) {
+        if (state === undefined) {
 
-			state = createBindingState( createVertexArrayObject() );
-			stateMap[ wireframe ] = state;
+            state = createBindingState(createVertexArrayObject());
+            stateMap[wireframe] = state;
 
-		}
+        }
 
-		return state;
+        return state;
 
-	}
+    }
 
-	function createBindingState( vao ) {
+    function createBindingState(vao) {
 
-		const newAttributes = [];
-		const enabledAttributes = [];
-		const attributeDivisors = [];
+        const newAttributes = [];
+        const enabledAttributes = [];
+        const attributeDivisors = [];
 
-		for ( let i = 0; i < maxVertexAttributes; i ++ ) {
+        for (let i = 0; i < maxVertexAttributes; i++) {
 
-			newAttributes[ i ] = 0;
-			enabledAttributes[ i ] = 0;
-			attributeDivisors[ i ] = 0;
+            newAttributes[i] = 0;
+            enabledAttributes[i] = 0;
+            attributeDivisors[i] = 0;
 
-		}
+        }
 
-		return {
+        return {
 
-			// for backward compatibility on non-VAO support browser
-			geometry: null,
-			program: null,
-			wireframe: false,
+            // for backward compatibility on non-VAO support browser
+            geometry: null,
+            program: null,
+            wireframe: false,
 
-			newAttributes: newAttributes,
-			enabledAttributes: enabledAttributes,
-			attributeDivisors: attributeDivisors,
-			object: vao,
-			attributes: {},
-			index: null
+            newAttributes: newAttributes,
+            enabledAttributes: enabledAttributes,
+            attributeDivisors: attributeDivisors,
+            object: vao,
+            attributes: {},
+            index: null
 
-		};
+        };
 
-	}
+    }
 
-	function needsUpdate( object, geometry, program, index ) {
+    function needsUpdate(object, geometry, program, index) {
 
-		const cachedAttributes = currentState.attributes;
-		const geometryAttributes = geometry.attributes;
+        const cachedAttributes = currentState.attributes;
+        const geometryAttributes = geometry.attributes;
 
-		let attributesNum = 0;
+        let attributesNum = 0;
 
-		const programAttributes = program.getAttributes();
+        const programAttributes = program.getAttributes();
 
-		for ( const name in programAttributes ) {
+        for (const name in programAttributes) {
 
-			const programAttribute = programAttributes[ name ];
+            const programAttribute = programAttributes[name];
 
-			if ( programAttribute.location >= 0 ) {
+            if (programAttribute.location >= 0) {
 
-				const cachedAttribute = cachedAttributes[ name ];
-				let geometryAttribute = geometryAttributes[ name ];
+                const cachedAttribute = cachedAttributes[name];
+                let geometryAttribute = geometryAttributes[name];
 
-				if ( geomertyAttribute === undefined ) {
+                if (geometryAttribute === undefined) {
 
-					if ( name === 'instanceMatrix' && object.instanceMatrix ) geometryAttribute = object.instanceMatrix;
-					if ( name === 'instanceColor' && object.instanceColor ) geometryAttribute = object.instanceColor;
+                    if (name === 'instanceMatrix' && object.instanceMatrix) geometryAttribute = object.instanceMatrix;
+                    if (name === 'instanceColor' && object.instanceColor) geometryAttribute = object.instanceColor;
 
-				}
+                }
 
-				if ( cachedAttribute === undefined ) return true;
+                if (cachedAttribute === undefined) return true;
 
-				if ( cachedAttribute.attribute !== geometryAttribute ) return true;
+                if (cachedAttribute.attribute !== geometryAttribute) return true;
 
-				if ( geometryAttribute && cachedAttribute.data !== geometryAttribute.data ) return true;
+                if (geometryAttribute && cachedAttribute.data !== geometryAttribute.data) return true;
 
-				attributesNum ++;
+                attributesNum++;
 
-			}
+            }
 
-		}
+        }
 
-		if ( currentState.attributesNum !== attributesNum ) return true;
+        if (currentState.attributesNum !== attributesNum) return true;
 
-		if ( currentState.index !== index ) return true;
+        if (currentState.index !== index) return true;
 
-		return false;
+        return false;
 
-	}
+    }
 
-	function saveCache( object, geometry, program, index ) {
+    function saveCache(object, geometry, program, index) {
 
-		const cache = {};
-		const attributes = geometry.attributes;
-		let attributesNum = 0;
+        const cache = {};
+        const attributes = geometry.attributes;
+        let attributesNum = 0;
 
-		const programAttributes = program.getAttributes();
+        const programAttributes = program.getAttributes();
 
-		for ( const name in programAttributes ) {
+        for (const name in programAttributes) {
 
-			const programAttribute = programAttributes[ name ];
+            const programAttribute = programAttributes[name];
 
-			if ( programAttribute.location >= 0 ) {
+            if (programAttribute.location >= 0) {
 
-				let attribute = attributes[ name ];
+                let attribute = attributes[name];
 
-				if ( attribute === undefined ) {
+                if (attribute === undefined) {
 
-					if ( name === 'instanceMatrix' && object.instanceMatrix ) attribute = object.instanceMatrix;
-					if ( name === 'instanceColor' && object.instanceColor ) attribute = object.instanceColor;
+                    if (name === 'instanceMatrix' && object.instanceMatrix) attribute = object.instanceMatrix;
+                    if (name === 'instanceColor' && object.instanceColor) attribute = object.instanceColor;
 
-				}
+                }
 
-				const data = {};
-				data.attribute = attribute;
+                const data = {};
+                data.attribute = attribute;
 
-				if ( attribute && attribute.data ) {
+                if (attribute && attribute.data) {
 
-					data.data = attribute.data;
+                    data.data = attribute.data;
 
-				}
+                }
 
-				cache[ name ] = data;
+                cache[name] = data;
 
-				attributesNum ++;
+                attributesNum++;
 
-			}
+            }
 
-		}
+        }
 
-		currentState.attributes = cache;
-		currentState.attributesNum = attributesNum;
+        currentState.attributes = cache;
+        currentState.attributesNum = attributesNum;
 
-		currentState.index = index;
+        currentState.index = index;
 
-	}
+    }
 
-	function initAttributes() {
+    function initAttributes() {
 
-		const newAttributes = currentState.newAttributes;
+        const newAttributes = currentState.newAttributes;
 
-		for ( let i = 0, il = newAttributes.length; i < il; i ++ ) {
+        for (let i = 0, il = newAttributes.length; i < il; i++) {
 
-			newAttributes[ i ] = 0;
+            newAttributes[i] = 0;
 
-		}
+        }
 
-	}
+    }
 
-	function enableAttribute( attribute ) {
+    function enableAttribute(attribute) {
 
-		enableAttributeAndDivisor( attribute, 0 );
+        enableAttributeAndDivisor(attribute, 0);
 
-	}
+    }
 
-	function enableAttributeAndDivisor( attribute, meshPerAttribute ) {
+    function enableAttributeAndDivisor(attribute, meshPerAttribute) {
 
-		const newAttributes = currentState.newAttributes;
-		const enabledAttributes = currentState.enabledAttributes;
-		const attributeDivisors = currentState.attributeDivisors;
+        const newAttributes = currentState.newAttributes;
+        const enabledAttributes = currentState.enabledAttributes;
+        const attributeDivisors = currentState.attributeDivisors;
 
-		newAttributes[ attribute ] = 1;
+        newAttributes[attribute] = 1;
 
-		if ( enabledAttributes[ attribute ] === 0 ) {
+        if (enabledAttributes[attribute] === 0) {
 
-			gl.enableVertexAttribArray( attribute );
-			enabledAttributes[ attribute ] = 1;
+            gl.enableVertexAttribArray(attribute);
+            enabledAttributes[attribute] = 1;
 
-		}
+        }
 
-		if ( attributeDivisors[ attribute ] !== meshPerAttribute ) {
+        if (attributeDivisors[attribute] !== meshPerAttribute) {
 
-			const extension = capabilities.isWebGL2 ? gl : extensions.get( 'ANGLE_instanced_arrays' );
+            const extension = capabilities.isWebGL2 ? gl : extensions.get('ANGLE_instanced_arrays');
 
-			extension[ capabilities.isWebGL2 ? 'vertexAttribDivisor' : 'vertexAttribDivisorANGLE' ]( attribute, meshPerAttribute );
-			attributeDivisors[ attribute ] = meshPerAttribute;
+            extension[capabilities.isWebGL2 ? 'vertexAttribDivisor' : 'vertexAttribDivisorANGLE'](attribute, meshPerAttribute);
+            attributeDivisors[attribute] = meshPerAttribute;
 
-		}
+        }
 
-	}
+    }
 
-	function disableUnusedAttributes() {
+    function disableUnusedAttributes() {
 
-		const newAttributes = currentState.newAttributes;
-		const enabledAttributes = currentState.enabledAttributes;
+        const newAttributes = currentState.newAttributes;
+        const enabledAttributes = currentState.enabledAttributes;
 
-		for ( let i = 0, il = enabledAttributes.length; i < il; i ++ ) {
+        for (let i = 0, il = enabledAttributes.length; i < il; i++) {
 
-			if ( enabledAttributes[ i ] !== newAttributes[ i ] ) {
+            if (enabledAttributes[i] !== newAttributes[i]) {
 
-				gl.disableVertexAttribArray( i );
-				enabledAttributes[ i ] = 0;
+                gl.disableVertexAttribArray(i);
+                enabledAttributes[i] = 0;
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
-	function vertexAttribPointer( index, size, type, normalized, stride, offset ) {
+    function vertexAttribPointer(index, size, type, normalized, stride, offset) {
 
-		if ( capabilities.isWebGL2 === true && ( type === gl.INT || type === gl.UNSIGNED_INT ) ) {
+        if (capabilities.isWebGL2 === true && (type === gl.INT || type === gl.UNSIGNED_INT)) {
 
-			gl.vertexAttribIPointer( index, size, type, stride, offset );
+            gl.vertexAttribIPointer(index, size, type, stride, offset);
 
-		} else {
+        } else {
 
-			gl.vertexAttribPointer( index, size, type, normalized, stride, offset );
+            gl.vertexAttribPointer(index, size, type, normalized, stride, offset);
 
-		}
+        }
 
-	}
+    }
 
-	function setupVertexAttributes( object, material, program, geometry ) {
+    function setupVertexAttributes(object, material, program, geometry) {
 
-		if ( capabilities.isWebGL2 === false && ( object.isInstancedMesh || geometry.isInstancedBufferGeometry ) ) {
+        if (capabilities.isWebGL2 === false && (object.isInstancedMesh || geometry.isInstancedBufferGeometry)) {
 
-			if ( extensions.get( 'ANGLE_instanced_arrays' ) === null ) return;
+            if (extensions.get('ANGLE_instanced_arrays') === null) return;
 
-		}
+        }
 
-		initAttributes();
+        initAttributes();
 
-		const geometryAttributes = geometry.attributes;
+        const geometryAttributes = geometry.attributes;
 
-		const programAttributes = program.getAttributes();
+        const programAttributes = program.getAttributes();
 
-		const materialDefaultAttributeValues = material.defaultAttributeValues;
+        const materialDefaultAttributeValues = material.defaultAttributeValues;
 
-		for ( const name in programAttributes ) {
+        for (const name in programAttributes) {
 
-			const programAttribute = programAttributes[ name ];
+            const programAttribute = programAttributes[name];
 
-			if ( programAttribute.location >= 0 ) {
+            if (programAttribute.location >= 0) {
 
-				let geometryAttribute = geometryAttributes[ name ];
+                let geometryAttribute = geometryAttributes[name];
 
-				if ( geometryAttribute === undefined ) {
+                if (geometryAttribute === undefined) {
 
-					if ( name === 'instanceMatrix' && object.instanceMatrix ) geometryAttribute = object.instanceMatrix;
-					if ( name === 'instanceColor' && object.instanceColor ) geometryAttribute = object.instanceColor;
+                    if (name === 'instanceMatrix' && object.instanceMatrix) geometryAttribute = object.instanceMatrix;
+                    if (name === 'instanceColor' && object.instanceColor) geometryAttribute = object.instanceColor;
 
-				}
+                }
 
-				if ( geometryAttribute !== undefined ) {
+                if (geometryAttribute !== undefined) {
 
-					const normalized = geometryAttribute.normalized;
-					const size = geometryAttribute.itemSize;
+                    const normalized = geometryAttribute.normalized;
+                    const size = geometryAttribute.itemSize;
 
-					const attribute = attributes.get( geometryAttribute );
+                    const attribute = attributes.get(geometryAttribute);
 
-					// TODO Attribute may not be available on context restore
+                    // TODO Attribute may not be available on context restore
 
-					if ( attribute === undefined ) continue;
+                    if (attribute === undefined) continue;
 
-					const buffer = attribute.buffer;
-					const type = attribute.type;
-					const bytesPerElement = attribute.bytesPerElement;
+                    const buffer = attribute.buffer;
+                    const type = attribute.type;
+                    const bytesPerElement = attribute.bytesPerElement;
 
-					if ( geometryAttribute.isInterleavedBufferAttribute ) {
+                    if (geometryAttribute.isInterleavedBufferAttribute) {
 
-						const data = geometryAttribute.data;
-						const stride = data.stride;
-						const offset = geometryAttribute.offset;
+                        const data = geometryAttribute.data;
+                        const stride = data.stride;
+                        const offset = geometryAttribute.offset;
 
-						if ( data.isInstancedInterleavedBuffer ) {
+                        if (data.isInstancedInterleavedBuffer) {
 
-							for ( let i = 0; i < programAttribute.locationSize; i ++ ) {
+                            for (let i = 0; i < programAttribute.locationSize; i++) {
 
-								enableAttributeAndDivisor( programAttribute.location + i, data.meshPerAttribute );
+                                enableAttributeAndDivisor(programAttribute.location + i, data.meshPerAttribute);
 
-							}
+                            }
 
-							if ( object.isInstancedMesh !== true && geometry._maxInstanceCount === undefined ) {
+                            if (object.isInstancedMesh !== true && geometry._maxInstanceCount === undefined) {
 
-								geometry._maxInstanceCount = data.meshPerAttribute * data.count;
+                                geometry._maxInstanceCount = data.meshPerAttribute * data.count;
 
-							}
+                            }
 
-						} else {
+                        } else {
 
-							for ( let i = 0; i < programAttribute.locationSize; i ++ ) {
+                            for (let i = 0; i < programAttribute.locationSize; i++) {
 
-								enableAttribute( programAttribute.location + i );
+                                enableAttribute(programAttribute.location + i);
 
-							}
+                            }
 
-						}
+                        }
 
-						gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
+                        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
-						for ( let i = 0; i < programAttribute.locationSize; i ++ ) {
+                        for (let i = 0; i < programAttribute.locationSize; i++) {
 
-							vertexAttribPointer(
-								programAttribute.location + i,
-								size / programAttribute.locationSize,
-								type,
-								normalized,
-								stride * bytesPerElement,
-								( offset + ( size / programAttribute.locationSize ) * i ) * bytesPerElement
-							);
+                            vertexAttribPointer(
+                                programAttribute.location + i,
+                                size / programAttribute.locationSize,
+                                type,
+                                normalized,
+                                stride * bytesPerElement,
+                                (offset + (size / programAttribute.locationSize) * i) * bytesPerElement
+                            );
 
-						}
+                        }
 
-					} else {
+                    } else {
 
-						if ( geometryAttribute.isInstancedBufferAttribute ) {
+                        if (geometryAttribute.isInstancedBufferAttribute) {
 
-							for ( let i = 0; i < programAttribute.locationSize; i ++ ) {
+                            for (let i = 0; i < programAttribute.locationSize; i++) {
 
-								enableAttributeAndDivisor( programAttribute.location + i, geometryAttribute.meshPerAttribute );
+                                enableAttributeAndDivisor(programAttribute.location + i, geometryAttribute.meshPerAttribute);
 
-							}
+                            }
 
-							if ( object.isInstancedMesh !== true && geometry._maxInstanceCount === undefined ) {
+                            if (object.isInstancedMesh !== true && geometry._maxInstanceCount === undefined) {
 
-								geometry._maxInstanceCount = geometryAttribute.meshPerAttribute * geometryAttribute.count;
+                                geometry._maxInstanceCount = geometryAttribute.meshPerAttribute * geometryAttribute.count;
 
-							}
+                            }
 
-						} else {
+                        } else {
 
-							for ( let i = 0; i < programAttribute.locationSize; i ++ ) {
+                            for (let i = 0; i < programAttribute.locationSize; i++) {
 
-								enableAttribute( programAttribute.location + i );
+                                enableAttribute(programAttribute.location + i);
 
-							}
+                            }
 
-						}
+                        }
 
-						gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
+                        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
-						for ( let i = 0; i < programAttribute.locationSize; i ++ ) {
+                        for (let i = 0; i < programAttribute.locationSize; i++) {
 
-							vertexAttribPointer(
-								programAttribute.location + i,
-								size / programAttribute.locationSize,
-								type,
-								normalized,
-								size * bytesPerElement,
-								( size / programAttribute.locationSize ) * i * bytesPerElement
-							);
+                            vertexAttribPointer(
+                                programAttribute.location + i,
+                                size / programAttribute.locationSize,
+                                type,
+                                normalized,
+                                size * bytesPerElement,
+                                (size / programAttribute.locationSize) * i * bytesPerElement
+                            );
 
-						}
+                        }
 
-					}
+                    }
 
-				} else if ( materialDefaultAttributeValues !== undefined ) {
+                } else if (materialDefaultAttributeValues !== undefined) {
 
-					const value = materialDefaultAttributeValues[ name ];
+                    const value = materialDefaultAttributeValues[name];
 
-					if ( value !== undefined ) {
+                    if (value !== undefined) {
 
-						switch ( value.length ) {
+                        switch (value.length) {
 
-							case 2:
-								gl.vertexAttrib2fv( programAttribute.location, value );
-								break;
+                            case 2:
+                                gl.vertexAttrib2fv(programAttribute.location, value);
+                                break;
 
-							case 3:
-								gl.vertexAttrib3fv( programAttribute.location, value );
-								break;
+                            case 3:
+                                gl.vertexAttrib3fv(programAttribute.location, value);
+                                break;
 
-							case 4:
-								gl.vertexAttrib4fv( programAttribute.location, value );
-								break;
+                            case 4:
+                                gl.vertexAttrib4fv(programAttribute.location, value);
+                                break;
 
-							default:
-								gl.vertexAttrib1fv( programAttribute.location, value );
+                            default:
+                                gl.vertexAttrib1fv(programAttribute.location, value);
 
-						}
+                        }
 
-					}
+                    }
 
-				}
+                }
 
-			}
+            }
 
-		}
+        }
 
-		disableUnusedAttributes();
+        disableUnusedAttributes();
 
-	}
+    }
 
-	function dispose() {
+    function dispose() {
 
-		reset();
+        reset();
 
-		for ( const geometryId in bindingStates ) {
+        for (const geometryId in bindingStates) {
 
-			const programMap = bindingStates[ geometryId ];
+            const programMap = bindingStates[geometryId];
 
-			for ( const programId in programMap ) {
+            for (const programId in programMap) {
 
-				const stateMap = programMap[ programId ];
+                const stateMap = programMap[programId];
 
-				for ( const wireframe in stateMap ) {
+                for (const wireframe in stateMap) {
 
-					deleteVertexArrayObject( stateMap[ wireframe ].object );
+                    deleteVertexArrayObject(stateMap[wireframe].object);
 
-					delete stateMap[ wireframe ];
+                    delete stateMap[wireframe];
 
-				}
+                }
 
-				delete programMap[ programId ];
+                delete programMap[programId];
 
-			}
+            }
 
-			delete bindingStates[ geometryId ];
+            delete bindingStates[geometryId];
 
-		}
+        }
 
-	}
+    }
 
-	function releaseStatesOfGeometry( geometry ) {
+    function releaseStatesOfGeometry(geometry) {
 
-		if ( bindingStates[ geometry.id ] === undefined ) return;
+        if (bindingStates[geometry.id] === undefined) return;
 
-		const programMap = bindingStates[ geometry.id ];
+        const programMap = bindingStates[geometry.id];
 
-		for ( const programId in programMap ) {
+        for (const programId in programMap) {
 
-			const stateMap = programMap[ programId ];
+            const stateMap = programMap[programId];
 
-			for ( const wireframe in stateMap ) {
+            for (const wireframe in stateMap) {
 
-				deleteVertexArrayObject( stateMap[ wireframe ].object );
+                deleteVertexArrayObject(stateMap[wireframe].object);
 
-				delete stateMap[ wireframe ];
+                delete stateMap[wireframe];
 
-			}
+            }
 
-			delete programMap[ programId ];
+            delete programMap[programId];
 
-		}
+        }
 
-		delete bindingStates[ geometry.id ];
+        delete bindingStates[geometry.id];
 
-	}
+    }
 
-	function releaseStatesOfProgram( program ) {
+    function releaseStatesOfProgram(program) {
 
-		for ( const geometryId in bindingStates ) {
+        for (const geometryId in bindingStates) {
 
-			const programMap = bindingStates[ geometryId ];
+            const programMap = bindingStates[geometryId];
 
-			if ( programMap[ program.id ] === undefined ) continue;
+            if (programMap[program.id] === undefined) continue;
 
-			const stateMap = programMap[ program.id ];
+            const stateMap = programMap[program.id];
 
-			for ( const wireframe in stateMap ) {
+            for (const wireframe in stateMap) {
 
-				deleteVertexArrayObject( stateMap[ wireframe ].object );
+                deleteVertexArrayObject(stateMap[wireframe].object);
 
-				delete stateMap[ wireframe ];
+                delete stateMap[wireframe];
 
-			}
+            }
 
-			delete programMap[ program.id ];
+            delete programMap[program.id];
 
-		}
+        }
 
-	}
+    }
 
-	function reset() {
+    function reset() {
 
-		resetDefaultState();
-		forceUpdate = true;
+        resetDefaultState();
+        forceUpdate = true;
 
-		if ( currentState === defaultState ) return;
+        if (currentState === defaultState) return;
 
-		currentState = defaultState;
-		bindVertexArrayObject( currentState.object );
+        currentState = defaultState;
+        bindVertexArrayObject(currentState.object);
 
-	}
+    }
 
-	// for backward-compatibility
+    // for backward-compatibility
 
-	function resetDefaultState() {
+    function resetDefaultState() {
 
-		defaultState.geometry = null;
-		defaultState.program = null;
-		defaultState.wireframe = false;
+        defaultState.geometry = null;
+        defaultState.program = null;
+        defaultState.wireframe = false;
 
-	}
+    }
 
-	return {
+    return {
 
-		setup: setup,
-		reset: reset,
-		resetDefaultState: resetDefaultState,
-		dispose: dispose,
-		releaseStatesOfGeometry: releaseStatesOfGeometry,
-		releaseStatesOfProgram: releaseStatesOfProgram,
+        setup: setup,
+        reset: reset,
+        resetDefaultState: resetDefaultState,
+        dispose: dispose,
+        releaseStatesOfGeometry: releaseStatesOfGeometry,
+        releaseStatesOfProgram: releaseStatesOfProgram,
 
-		initAttributes: initAttributes,
-		enableAttribute: enableAttribute,
-		disableUnusedAttributes: disableUnusedAttributes
+        initAttributes: initAttributes,
+        enableAttribute: enableAttribute,
+        disableUnusedAttributes: disableUnusedAttributes
 
-	};
+    };
 
 }
 
-
-export { WebGLBindingStates };
+export {WebGLBindingStates};
