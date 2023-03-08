@@ -15,15 +15,17 @@ import {
 import {Pass, FullScreenQuad} from './Pass.js';
 import {CopyShader} from '../shaders/CopyShader.js';
 
+/**
+ * 轮廓通道
+ * @param resolution
+ * @param scene 场景
+ * @param camera 相机
+ * @param selectedObjects 添加轮廓物体集合
+ */
 class OutlinePass extends Pass {
 
     /**
      * 轮廓通道
-     * @param resolution
-     * @param scene 场景
-     * @param camera 相机
-     * @param selectedObjects 添加轮廓物体集合
-     * @constructor
      */
     constructor(resolution, scene, camera, selectedObjects) {
 
@@ -32,17 +34,16 @@ class OutlinePass extends Pass {
         this.renderScene = scene;
         this.renderCamera = camera;
         this.selectedObjects = selectedObjects !== undefined ? selectedObjects : [];// 添加光晕的物体列表
-        this.visibleEdgeColor = new Color(1, 1, 1);// 显示边缘颜色
-        this.hiddenEdgeColor = new Color(0.1, 0.04, 0.02);// 隐藏边缘颜色
-        this.edgeGlow = 0.0;// 边缘发光
-        this.usePatternTexture = false;// 使用图案纹理
-        this.edgeThickness = 1.0;// 边缘厚度
-        this.edgeStrength = 3.0;// 边缘力量
+        this.visibleEdgeColor = new Color(1, 1, 1); // 显示边缘颜色
+        this.hiddenEdgeColor = new Color(0.1, 0.04, 0.02); // 隐藏边缘颜色
+        this.edgeGlow = 0.0; // 边缘发光
+        this.usePatternTexture = false; // 使用图案纹理
+        this.edgeThickness = 1.0; // 边缘厚度
+        this.edgeStrength = 3.0; // 边缘力量
         this.downSampleRatio = 2;
-        this.pulsePeriod = 0;// 脉冲周期
+        this.pulsePeriod = 0; // 脉冲周期
 
-        this._visibilityCache = new Map();
-
+        this._visibilityCache = new Map(); // 保持物体的原始可见度
 
         this.resolution = (resolution !== undefined) ? new Vector2(resolution.x, resolution.y) : new Vector2(256, 256);
 
@@ -64,6 +65,7 @@ class OutlinePass extends Pass {
         this.prepareMaskMaterial.side = DoubleSide;
         this.prepareMaskMaterial.fragmentShader = replaceDepthToViewZ(this.prepareMaskMaterial.fragmentShader, this.renderCamera);
 
+        // 深度图
         this.renderTargetDepthBuffer = new WebGLRenderTarget(this.resolution.x, this.resolution.y);
         this.renderTargetDepthBuffer.texture.name = 'OutlinePass.depth';
         this.renderTargetDepthBuffer.texture.generateMipmaps = false;
@@ -75,6 +77,7 @@ class OutlinePass extends Pass {
         this.renderTargetBlurBuffer1 = new WebGLRenderTarget(resx, resy);
         this.renderTargetBlurBuffer1.texture.name = 'OutlinePass.blur1';
         this.renderTargetBlurBuffer1.texture.generateMipmaps = false;
+
         this.renderTargetBlurBuffer2 = new WebGLRenderTarget(Math.round(resx / 2), Math.round(resy / 2));
         this.renderTargetBlurBuffer2.texture.name = 'OutlinePass.blur2';
         this.renderTargetBlurBuffer2.texture.generateMipmaps = false;
@@ -83,6 +86,7 @@ class OutlinePass extends Pass {
         this.renderTargetEdgeBuffer1 = new WebGLRenderTarget(resx, resy);
         this.renderTargetEdgeBuffer1.texture.name = 'OutlinePass.edge1';
         this.renderTargetEdgeBuffer1.texture.generateMipmaps = false;
+
         this.renderTargetEdgeBuffer2 = new WebGLRenderTarget(Math.round(resx / 2), Math.round(resy / 2));
         this.renderTargetEdgeBuffer2.texture.name = 'OutlinePass.edge2';
         this.renderTargetEdgeBuffer2.texture.generateMipmaps = false;
@@ -314,6 +318,14 @@ class OutlinePass extends Pass {
 
     }
 
+    /**
+     * 渲染
+     * @param renderer
+     * @param writeBuffer
+     * @param readBuffer
+     * @param deltaTime
+     * @param maskActive
+     */
     render(renderer, writeBuffer, readBuffer, deltaTime, maskActive) {
 
         if (this.selectedObjects.length > 0) {
@@ -328,19 +340,20 @@ class OutlinePass extends Pass {
 
             renderer.setClearColor(0xffffff, 1);
 
-            // Make selected objects invisible
+            // 设置选中物体不可见
             this.changeVisibilityOfSelectedObjects(false);
 
+            // 记录当前场景背景
             const currentBackground = this.renderScene.background;
             this.renderScene.background = null;
 
-            // 1. Draw Non Selected objects in the depth buffer
+            // 1. 绘制未选中物体深度图
             this.renderScene.overrideMaterial = this.depthMaterial;
             renderer.setRenderTarget(this.renderTargetDepthBuffer);
             renderer.clear();
             renderer.render(this.renderScene, this.renderCamera);
 
-            // Make selected objects visible
+            // 恢复选中物体的透明度
             this.changeVisibilityOfSelectedObjects(true);
             this._visibilityCache.clear();
 
@@ -348,6 +361,7 @@ class OutlinePass extends Pass {
             this.updateTextureMatrix();
 
             // Make non selected objects invisible, and draw only the selected objects, by comparing the depth buffer of non selected objects
+            // 选中物体 比较深度后的渲染状态
             this.changeVisibilityOfNonSelectedObjects(false);
             this.renderScene.overrideMaterial = this.prepareMaskMaterial;
             this.prepareMaskMaterial.uniforms['cameraNearFar'].value.set(this.renderCamera.near, this.renderCamera.far);
@@ -372,7 +386,7 @@ class OutlinePass extends Pass {
             this.tempPulseColor1.copy(this.visibleEdgeColor);
             this.tempPulseColor2.copy(this.hiddenEdgeColor);
 
-      // 轮廓呼吸效果
+            // 轮廓呼吸效果
             if (this.pulsePeriod > 0) {
 
                 const scalar = (1 + 0.25) / 2 + Math.cos(performance.now() * 0.01 / this.pulsePeriod) * (1.0 - 0.25) / 2;
@@ -427,7 +441,6 @@ class OutlinePass extends Pass {
             this.overlayMaterial.uniforms['edgeStrength'].value = this.edgeStrength;
             this.overlayMaterial.uniforms['edgeGlow'].value = this.edgeGlow;
             this.overlayMaterial.uniforms['usePatternTexture'].value = this.usePatternTexture;
-
 
             if (maskActive) renderer.state.buffers.stencil.setTest(true);
 
