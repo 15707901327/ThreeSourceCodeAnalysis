@@ -47,9 +47,9 @@ class Material extends EventDispatcher {
         this.blendDstAlpha = null;
         this.blendEquationAlpha = null;
 
-        this.depthFunc = LessEqualDepth;// 指定了一个将传入像素深度与当前深度缓冲区值进行比较的函数
-        this.depthTest = true; // 设置是否启动隐藏面消除
-        this.depthWrite = true;  // 是否锁定深度
+		this.depthFunc = LessEqualDepth;
+		this.depthTest = true;
+		this.depthWrite = true;
 
         this.stencilWriteMask = 0xff;
         this.stencilFunc = AlwaysStencilFunc;
