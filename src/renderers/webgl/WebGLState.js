@@ -818,6 +818,7 @@ function WebGLState(gl, extensions, capabilities) {
 
         }
 
+        // 设置多边形偏移
         setPolygonOffset(material.polygonOffset, material.polygonOffsetFactor, material.polygonOffsetUnits);
 
         material.alphaToCoverage === true
