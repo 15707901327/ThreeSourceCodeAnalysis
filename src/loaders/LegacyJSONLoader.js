@@ -17,7 +17,7 @@ import { DefaultLoadingManager } from './LoadingManager.js';
 /**
  * manager：加载器管理器
  */
-function JSONLoader( manager ) {
+function LegacyJSONLoader(manager ) {
 
 	if ( typeof manager === 'boolean' ) {
 
