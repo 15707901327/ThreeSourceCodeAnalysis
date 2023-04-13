@@ -1,201 +1,195 @@
-
 /**
  * 属性管理
  * @param gl
  * @returns {{get: (function(*=): any), update: update, remove: remove}}
  * @constructor
  */
-function WebGLAttributes( gl, capabilities ) {
+function WebGLAttributes(gl, capabilities) {
 
-	const isWebGL2 = capabilities.isWebGL2;
+    const isWebGL2 = capabilities.isWebGL2;
 
-	const buffers = new WeakMap();
+    const buffers = new WeakMap();
 
-	/**
-	 * 创建缓存区
-	 * @param attribute
-	 * @param bufferType buffer类型
-	 * @return {{buffer: AudioBuffer | WebGLBuffer, type: number, bytesPerElement: number, version}}
-	 */
-	function createBuffer( attribute, bufferType ) {
+    /**
+     * 创建缓存区
+     * @param attribute
+     * @param bufferType buffer类型
+     * @return {{buffer: AudioBuffer | WebGLBuffer, type: number, bytesPerElement: number, version}}
+     */
+    function createBuffer(attribute, bufferType) {
 
-		const array = attribute.array;
-		const usage = attribute.usage;
+        const array = attribute.array;
+        const usage = attribute.usage;
 
-		const buffer = gl.createBuffer();
+        const buffer = gl.createBuffer();
 
-		gl.bindBuffer( bufferType, buffer );
-		gl.bufferData( bufferType, array, usage );
+        gl.bindBuffer(bufferType, buffer);
+        gl.bufferData(bufferType, array, usage);
 
-		attribute.onUploadCallback();
+        attribute.onUploadCallback();
 
-		let type;
+        let type;
 
-		if ( array instanceof Float32Array ) {
+        if (array instanceof Float32Array) {
 
-			type = gl.FLOAT;
+            type = gl.FLOAT;
 
-		} else if ( array instanceof Uint16Array ) {
+        } else if (array instanceof Uint16Array) {
 
-			if ( attribute.isFloat16BufferAttribute ) {
+            if (attribute.isFloat16BufferAttribute) {
 
-				if ( isWebGL2 ) {
+                if (isWebGL2) {
 
-					type = gl.HALF_FLOAT;
+                    type = gl.HALF_FLOAT;
 
-				} else {
+                } else {
 
-					throw new Error( 'THREE.WebGLAttributes: Usage of Float16BufferAttribute requires WebGL2.' );
+                    throw new Error('THREE.WebGLAttributes: Usage of Float16BufferAttribute requires WebGL2.');
 
-		}
+                }
 
-			} else {
+            } else {
 
-			type = gl.UNSIGNED_SHORT;
-		}
+                type = gl.UNSIGNED_SHORT;
+            }
 
-		} else if ( array instanceof Int16Array ) {
+        } else if (array instanceof Int16Array) {
 
-			type = gl.SHORT;
-		}
-		else if ( array instanceof Uint32Array ) {
-			type = gl.UNSIGNED_INT;
-		}
-		else if ( array instanceof Int32Array ) {
-			type = gl.INT;
-		}
-		else if ( array instanceof Int8Array ) {
-			type = gl.BYTE;
-		}
-		else if ( array instanceof Uint8Array ) {
+            type = gl.SHORT;
+        } else if (array instanceof Uint32Array) {
+            type = gl.UNSIGNED_INT;
+        } else if (array instanceof Int32Array) {
+            type = gl.INT;
+        } else if (array instanceof Int8Array) {
+            type = gl.BYTE;
+        } else if (array instanceof Uint8Array) {
 
-			type = gl.UNSIGNED_BYTE;
+            type = gl.UNSIGNED_BYTE;
 
-		} else if ( array instanceof Uint8ClampedArray ) {
+        } else if (array instanceof Uint8ClampedArray) {
 
-			type = gl.UNSIGNED_BYTE;
+            type = gl.UNSIGNED_BYTE;
 
-		} else {
+        } else {
 
-			throw new Error( 'THREE.WebGLAttributes: Unsupported buffer data format: ' + array );
+            throw new Error('THREE.WebGLAttributes: Unsupported buffer data format: ' + array);
 
-		}
+        }
 
-		return {
-			buffer: buffer, // 属性的缓冲空间
-			type: type, // 属性类型
-			bytesPerElement: array.BYTES_PER_ELEMENT,
-			version: attribute.version // 版本
-		};
+        return {
+            buffer: buffer, // 属性的缓冲空间
+            type: type, // 属性类型
+            bytesPerElement: array.BYTES_PER_ELEMENT,
+            version: attribute.version // 版本
+        };
 
-	}
+    }
 
-	function updateBuffer( buffer, attribute, bufferType ) {
+    function updateBuffer(buffer, attribute, bufferType) {
 
-		const array = attribute.array;
-		const updateRange = attribute.updateRange;
+        const array = attribute.array;
+        const updateRange = attribute.updateRange;
 
-		gl.bindBuffer( bufferType, buffer );
+        gl.bindBuffer(bufferType, buffer);
 
-		if ( updateRange.count === - 1 ) {
+        if (updateRange.count === -1) {
 
-			// Not using update ranges
+            // Not using update ranges
 
-			gl.bufferSubData( bufferType, 0, array );
+            gl.bufferSubData(bufferType, 0, array);
 
-		} else {
+        } else {
 
-			if ( isWebGL2 ) {
+            if (isWebGL2) {
 
-				gl.bufferSubData( bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
-					array, updateRange.offset, updateRange.count );
+                gl.bufferSubData(bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
+                    array, updateRange.offset, updateRange.count);
 
-		} else {
+            } else {
 
-			gl.bufferSubData( bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
-				array.subarray( updateRange.offset, updateRange.offset + updateRange.count ) );
+                gl.bufferSubData(bufferType, updateRange.offset * array.BYTES_PER_ELEMENT,
+                    array.subarray(updateRange.offset, updateRange.offset + updateRange.count));
 
-			}
+            }
 
-			updateRange.count = - 1; // reset range
+            updateRange.count = -1; // reset range
 
-		}
+        }
 
-		attribute.onUploadCallback();
+        attribute.onUploadCallback();
 
-	}
+    }
 
-	//
-	function get( attribute ) {
+    //
+    function get(attribute) {
 
-		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
+        if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-		return buffers.get( attribute );
+        return buffers.get(attribute);
 
-	}
+    }
 
-	function remove( attribute ) {
+    function remove(attribute) {
 
-		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
+        if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-		const data = buffers.get( attribute );
+        const data = buffers.get(attribute);
 
-		if ( data ) {
+        if (data) {
 
-			gl.deleteBuffer( data.buffer );
+            gl.deleteBuffer(data.buffer);
 
-			buffers.delete( attribute );
+            buffers.delete(attribute);
 
-		}
+        }
 
-	}
+    }
 
-	/**
-	 * 更新属性的缓冲空间
-	 * @param attribute
-	 * @param bufferType 类型
-	 */
-	function update( attribute, bufferType ) {
+    /**
+     * 更新属性的缓冲空间
+     * @param attribute
+     * @param bufferType 类型
+     */
+    function update(attribute, bufferType) {
 
-		if ( attribute.isGLBufferAttribute ) {
+        if (attribute.isGLBufferAttribute) {
 
-			const cached = buffers.get( attribute );
+            const cached = buffers.get(attribute);
 
-			if ( ! cached || cached.version < attribute.version ) {
+            if (!cached || cached.version < attribute.version) {
 
-				buffers.set( attribute, {
-					buffer: attribute.buffer,
-					type: attribute.type,
-					bytesPerElement: attribute.elementSize,
-					version: attribute.version
-				} );
+                buffers.set(attribute, {
+                    buffer: attribute.buffer,
+                    type: attribute.type,
+                    bytesPerElement: attribute.elementSize,
+                    version: attribute.version
+                });
 
-			}
+            }
 
-			return;
+            return;
 
-		}
+        }
 
-		if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
+        if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
 
-		const data = buffers.get( attribute );
+        const data = buffers.get(attribute);
 
-		if ( data === undefined ) {
-			buffers.set( attribute, createBuffer( attribute, bufferType ) );
-		}
-		else if ( data.version < attribute.version ) {
-			updateBuffer( data.buffer, attribute, bufferType );
-			data.version = attribute.version;
-		}
+        if (data === undefined) {
+            buffers.set(attribute, createBuffer(attribute, bufferType));
+        } else if (data.version < attribute.version) {
+            updateBuffer(data.buffer, attribute, bufferType);
+            data.version = attribute.version;
+        }
 
-	}
+    }
 
-	return {
-		get: get,
-		remove: remove,
-		update: update
-	};
+    return {
+        get: get,
+        remove: remove,
+        update: update
+    };
 }
 
 
-export { WebGLAttributes };
+export {WebGLAttributes};
