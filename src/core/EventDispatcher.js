@@ -2,20 +2,18 @@
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
-function EventDispatcher() {}
-
-Object.assign( EventDispatcher.prototype, {
+class EventDispatcher {
 
 	/**
 	 * 添加事件
 	 * @param type 事件类型
 	 * @param listener
 	 */
-	addEventListener: function ( type, listener ) {
+	addEventListener( type, listener ) {
 
 		if ( this._listeners === undefined ) this._listeners = {};
 
-		var listeners = this._listeners;
+		const listeners = this._listeners;
 
 		if ( listeners[ type ] === undefined ) {
 			listeners[ type ] = [];
@@ -25,7 +23,7 @@ Object.assign( EventDispatcher.prototype, {
 			listeners[ type ].push( listener );
 		}
 
-	},
+	}
 
 	/**
 	 * 判断是否注册当前事件
@@ -33,54 +31,68 @@ Object.assign( EventDispatcher.prototype, {
 	 * @param listener
 	 * @returns {boolean}
 	 */
-	hasEventListener: function ( type, listener ) {
-		if ( this._listeners === undefined ) return false;
-		var listeners = this._listeners;
-		return listeners[ type ] !== undefined && listeners[ type ].indexOf( listener ) !== - 1;
-	},
+	hasEventListener( type, listener ) {
 
+		if ( this._listeners === undefined ) return false;
+
+		const listeners = this._listeners;
+
+		return listeners[ type ] !== undefined && listeners[ type ].indexOf( listener ) !== - 1;
+
+	}
+	
 	/**
 	 * 移除当前事件
 	 * @param type
 	 * @param listener
 	 */
-	removeEventListener: function ( type, listener ) {
+	removeEventListener( type, listener ) {
 
 		if ( this._listeners === undefined ) return;
 
-		var listeners = this._listeners;
-		var listenerArray = listeners[ type ];
+		const listeners = this._listeners;
+		const listenerArray = listeners[ type ];
 
 		if ( listenerArray !== undefined ) {
-			var index = listenerArray.indexOf( listener );
+
+			const index = listenerArray.indexOf( listener );
+
 			if ( index !== - 1 ) {
 				listenerArray.splice( index, 1 );
+
+			}
+
 			}
 		}
-	},
 
 	/**
 	 * 派发事件
 	 * @param event
 	 */
-	dispatchEvent: function ( event ) {
+	dispatchEvent( event ) {
 
 		if ( this._listeners === undefined ) return;
 
-		var listeners = this._listeners;
-		var listenerArray = listeners[ event.type ];
+		const listeners = this._listeners;
+		const listenerArray = listeners[ event.type ];
 
 		if ( listenerArray !== undefined ) {
 			event.target = this;
 
 			// Make a copy, in case listeners are removed while iterating.
-			var array = listenerArray.slice( 0 );
-			for ( var i = 0, l = array.length; i < l; i ++ ) {
+			const array = listenerArray.slice( 0 );
+
+			for ( let i = 0, l = array.length; i < l; i ++ ) {
+
 				array[ i ].call( this, event );
 			}
+
+			event.target = null;
+
 		}
 	}
-} );
+
+}
 
 
 export { EventDispatcher };
