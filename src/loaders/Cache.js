@@ -1,13 +1,4 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- */
-
-/**
- * 缓存
- * @type {{add: Cache.add, get: (function(*): *), clear: Cache.clear, files: {}, enabled: boolean, remove:
- *   Cache.remove}}
- */
-var Cache = {
+const Cache = {
 
 	enabled: false,
 

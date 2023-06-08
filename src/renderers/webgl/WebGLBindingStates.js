@@ -1,4 +1,6 @@
-﻿function WebGLBindingStates(gl, extensions, attributes, capabilities) {
+﻿import { IntType } from '../../constants.js';
+
+function WebGLBindingStates(gl, extensions, attributes, capabilities) {
 
     const maxVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
 
@@ -316,9 +318,9 @@
 
     }
 
-    function vertexAttribPointer(index, size, type, normalized, stride, offset) {
+	function vertexAttribPointer( index, size, type, normalized, stride, offset, integer ) {
 
-        if (capabilities.isWebGL2 === true && (type === gl.INT || type === gl.UNSIGNED_INT)) {
+		if ( integer === true ) {
 
             gl.vertexAttribIPointer(index, size, type, stride, offset);
 
@@ -376,6 +378,10 @@
                     const type = attribute.type;
                     const bytesPerElement = attribute.bytesPerElement;
 
+					// check for integer attributes (WebGL 2 only)
+
+					const integer = ( capabilities.isWebGL2 === true && ( type === gl.INT || type === gl.UNSIGNED_INT || geometryAttribute.gpuType === IntType ) );
+
                     if (geometryAttribute.isInterleavedBufferAttribute) {
 
                         const data = geometryAttribute.data;
@@ -416,7 +422,8 @@
                                 type,
                                 normalized,
                                 stride * bytesPerElement,
-                                (offset + (size / programAttribute.locationSize) * i) * bytesPerElement
+								( offset + ( size / programAttribute.locationSize ) * i ) * bytesPerElement,
+								integer
                             );
 
                         }
@@ -457,7 +464,8 @@
                                 type,
                                 normalized,
                                 size * bytesPerElement,
-                                (size / programAttribute.locationSize) * i * bytesPerElement
+								( size / programAttribute.locationSize ) * i * bytesPerElement,
+								integer
                             );
 
                         }
