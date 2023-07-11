@@ -23,13 +23,13 @@ import {
 	UnsignedShort5551Type,
 	WebGLCoordinateSystem
 } from '../constants.js';
-import { Color } from '../math/Color.js';
+import {Color} from '../math/Color.js';
 import {Frustum} from '../math/Frustum.js';
 import {Matrix4} from '../math/Matrix4.js';
-import { Vector2 } from '../math/Vector2.js';
+import {Vector2} from '../math/Vector2.js';
 import {Vector3} from '../math/Vector3.js';
 import {Vector4} from '../math/Vector4.js';
-import { floorPowerOfTwo } from '../math/MathUtils.js';
+import {floorPowerOfTwo} from '../math/MathUtils.js';
 import {WebGLAnimation} from './webgl/WebGLAnimation.js';
 import {WebGLAttributes} from './webgl/WebGLAttributes.js';
 import {WebGLBackground} from './webgl/WebGLBackground.js';
@@ -99,8 +99,8 @@ class WebGLRenderer {
 			
 		}
 		
-		const uintClearColor = new Uint32Array( 4 );
-		const intClearColor = new Int32Array( 4 );
+		const uintClearColor = new Uint32Array(4);
+		const intClearColor = new Int32Array(4);
 		
 		let currentRenderList = null; // 当前渲染列表
 		let currentRenderState = null; // 当前渲染状态
@@ -177,7 +177,7 @@ class WebGLRenderer {
 		const _currentScissor = new Vector4();
 		let _currentScissorTest = null;
 		
-		const _currentClearColor = new Color( 0x000000 ); // 当前绘图区域
+		const _currentClearColor = new Color(0x000000); // 当前绘图区域
 		let _currentClearAlpha = 0;
 		
 		//
@@ -293,12 +293,12 @@ class WebGLRenderer {
 				
 			}
 			
-			if ( _gl instanceof WebGLRenderingContext ) { // @deprecated, r153
-
-				console.warn( 'THREE.WebGLRenderer: WebGL 1 support was deprecated in r153 and will be removed in r163.' );
-
+			if (_gl instanceof WebGLRenderingContext) { // @deprecated, r153
+				
+				console.warn('THREE.WebGLRenderer: WebGL 1 support was deprecated in r153 and will be removed in r163.');
+				
 			}
-
+			
 			// Some experimental-webgl implementations do not have getShaderPrecisionFormat
 			
 			if (_gl.getShaderPrecisionFormat === undefined) {
@@ -365,7 +365,7 @@ class WebGLRenderer {
 			materials = new WebGLMaterials(_this, properties);
 			renderLists = new WebGLRenderLists(); // 渲染列表
 			renderStates = new WebGLRenderStates(extensions, capabilities);
-			background = new WebGLBackground( _this, cubemaps, cubeuvmaps, state, objects, _alpha, premultipliedAlpha );
+			background = new WebGLBackground(_this, cubemaps, cubeuvmaps, state, objects, _alpha, premultipliedAlpha);
 			shadowMap = new WebGLShadowMap(_this, objects, capabilities);
 			uniformsGroups = new WebGLUniformsGroups(_gl, info, capabilities, state);
 			
@@ -625,23 +625,23 @@ class WebGLRenderer {
 			
 			let bits = 0;
 			
-			if ( color ) {
-
+			if (color) {
+				
 				// check if we're trying to clear an integer target
 				let isIntegerFormat = false;
-				if ( _currentRenderTarget !== null ) {
-
+				if (_currentRenderTarget !== null) {
+					
 					const targetFormat = _currentRenderTarget.texture.format;
 					isIntegerFormat = targetFormat === RGBAIntegerFormat ||
 						targetFormat === RGIntegerFormat ||
 						targetFormat === RedIntegerFormat;
-
+					
 				}
-
+				
 				// use the appropriate clear functions to clear the target if it's a signed
 				// or unsigned integer target
-				if ( isIntegerFormat ) {
-
+				if (isIntegerFormat) {
+					
 					const targetType = _currentRenderTarget.texture.type;
 					const isUnsignedType = targetType === UnsignedByteType ||
 						targetType === UnsignedIntType ||
@@ -649,41 +649,41 @@ class WebGLRenderer {
 						targetType === UnsignedInt248Type ||
 						targetType === UnsignedShort4444Type ||
 						targetType === UnsignedShort5551Type;
-
+					
 					const clearColor = background.getClearColor();
 					const a = background.getClearAlpha();
 					const r = clearColor.r;
 					const g = clearColor.g;
 					const b = clearColor.b;
-
-					const __webglFramebuffer = properties.get( _currentRenderTarget ).__webglFramebuffer;
-
-					if ( isUnsignedType ) {
-
-						uintClearColor[ 0 ] = r;
-						uintClearColor[ 1 ] = g;
-						uintClearColor[ 2 ] = b;
-						uintClearColor[ 3 ] = a;
-						_gl.clearBufferuiv( _gl.COLOR, __webglFramebuffer, uintClearColor );
-
+					
+					const __webglFramebuffer = properties.get(_currentRenderTarget).__webglFramebuffer;
+					
+					if (isUnsignedType) {
+						
+						uintClearColor[0] = r;
+						uintClearColor[1] = g;
+						uintClearColor[2] = b;
+						uintClearColor[3] = a;
+						_gl.clearBufferuiv(_gl.COLOR, __webglFramebuffer, uintClearColor);
+						
 					} else {
-
-						intClearColor[ 0 ] = r;
-						intClearColor[ 1 ] = g;
-						intClearColor[ 2 ] = b;
-						intClearColor[ 3 ] = a;
-						_gl.clearBufferiv( _gl.COLOR, __webglFramebuffer, intClearColor );
-
+						
+						intClearColor[0] = r;
+						intClearColor[1] = g;
+						intClearColor[2] = b;
+						intClearColor[3] = a;
+						_gl.clearBufferiv(_gl.COLOR, __webglFramebuffer, intClearColor);
+						
 					}
-
+					
 				} else {
-
+					
 					bits |= _gl.COLOR_BUFFER_BIT;
-
+					
 				}
-
+				
 			}
-
+			
 			if (depth) bits |= _gl.DEPTH_BUFFER_BIT;
 			if (stencil) bits |= _gl.STENCIL_BUFFER_BIT;
 			
@@ -1099,7 +1099,7 @@ class WebGLRenderer {
 			
 			if (xr.enabled === true && xr.isPresenting === true) {
 				
-				camera = xr.updateCameraXR( camera ); // use XR camera for rendering
+				camera = xr.updateCameraXR(camera); // use XR camera for rendering
 				
 			}
 			
@@ -1148,8 +1148,8 @@ class WebGLRenderer {
 			// 重新设置渲染信息
 			if (this.info.autoReset === true) this.info.reset();
 			
-			this.info.render.frame ++;
-
+			this.info.render.frame++;
+			
 			//
 			
 			// 背景对象添加到渲染列表
@@ -1288,16 +1288,16 @@ class WebGLRenderer {
 						// 计算模型投影到屏幕上的坐标
 						if (sortObjects) {
 							
-							if ( object.boundingSphere !== undefined ) {
-
-								if ( object.boundingSphere === null ) object.computeBoundingSphere();
-								_vector3.copy( object.boundingSphere.center );
-
+							if (object.boundingSphere !== undefined) {
+								
+								if (object.boundingSphere === null) object.computeBoundingSphere();
+								_vector3.copy(object.boundingSphere.center);
+								
 							} else {
-
-							if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
-								_vector3.copy( geometry.boundingSphere.center );
-
+								
+								if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
+								_vector3.copy(geometry.boundingSphere.center);
+								
 							}
 							
 							_vector3
@@ -1365,11 +1365,11 @@ class WebGLRenderer {
 		
 		function renderTransmissionPass(opaqueObjects, transmissiveObjects, scene, camera) {
 			
-				const isWebGL2 = capabilities.isWebGL2;
+			const isWebGL2 = capabilities.isWebGL2;
+			
+			if (_transmissionRenderTarget === null) {
 				
-			if ( _transmissionRenderTarget === null ) {
-
-				_transmissionRenderTarget = new WebGLRenderTarget( 1, 1, {
+				_transmissionRenderTarget = new WebGLRenderTarget(1, 1, {
 					generateMipmaps : true,
 					type : extensions.has('EXT_color_buffer_half_float') ? HalfFloatType : UnsignedByteType,
 					minFilter : LinearMipmapLinearFilter,
@@ -1388,27 +1388,27 @@ class WebGLRenderer {
 				
 			}
 			
-			_this.getDrawingBufferSize( _vector2 );
-
-			if ( isWebGL2 ) {
-
-				_transmissionRenderTarget.setSize( _vector2.x, _vector2.y );
-
+			_this.getDrawingBufferSize(_vector2);
+			
+			if (isWebGL2) {
+				
+				_transmissionRenderTarget.setSize(_vector2.x, _vector2.y);
+				
 			} else {
-
-				_transmissionRenderTarget.setSize( floorPowerOfTwo( _vector2.x ), floorPowerOfTwo( _vector2.y ) );
-
+				
+				_transmissionRenderTarget.setSize(floorPowerOfTwo(_vector2.x), floorPowerOfTwo(_vector2.y));
+				
 			}
-
+			
 			//
 			
 			const currentRenderTarget = _this.getRenderTarget();
 			_this.setRenderTarget(_transmissionRenderTarget);
-
-			_this.getClearColor( _currentClearColor );
+			
+			_this.getClearColor(_currentClearColor);
 			_currentClearAlpha = _this.getClearAlpha();
-			if ( _currentClearAlpha < 1 ) _this.setClearColor( 0xffffff, 0.5 );
-
+			if (_currentClearAlpha < 1) _this.setClearColor(0xffffff, 0.5);
+			
 			_this.clear();
 			
 			// Turn off the features which can affect the frag color for opaque objects pass.
@@ -1459,8 +1459,8 @@ class WebGLRenderer {
 			
 			_this.setRenderTarget(currentRenderTarget);
 			
-			_this.setClearColor( _currentClearColor, _currentClearAlpha );
-
+			_this.setClearColor(_currentClearColor, _currentClearAlpha);
+			
 			_this.toneMapping = currentToneMapping;
 			
 		}
@@ -1694,7 +1694,7 @@ class WebGLRenderer {
 			const colorSpace = (_currentRenderTarget === null) ? _this.outputColorSpace : (_currentRenderTarget.isXRRenderTarget === true ? _currentRenderTarget.texture.colorSpace : LinearSRGBColorSpace);
 			const envMap = (material.isMeshStandardMaterial ? cubeuvmaps : cubemaps).get(material.envMap || environment);
 			const vertexAlphas = material.vertexColors === true && !!geometry.attributes.color && geometry.attributes.color.itemSize === 4;
-			const vertexTangents = !! geometry.attributes.tangent && ( !! material.normalMap || material.anisotropy > 0 );
+			const vertexTangents = !!geometry.attributes.tangent && (!!material.normalMap || material.anisotropy > 0);
 			const morphTargets = !!geometry.morphAttributes.position;
 			const morphNormals = !!geometry.morphAttributes.normal;
 			const morphColors = !!geometry.morphAttributes.color;
@@ -2468,11 +2468,11 @@ class WebGLRenderer {
 	}
 	
 	get coordinateSystem() {
-
+		
 		return WebGLCoordinateSystem;
-
+		
 	}
-
+	
 	get physicallyCorrectLights() { // @deprecated, r150
 		
 		console.warn('THREE.WebGLRenderer: the property .physicallyCorrectLights has been removed. Set renderer.useLegacyLights instead.');
