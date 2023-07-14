@@ -1,5 +1,5 @@
-export const REVISION = '149';
-// 设置鼠标含义
+export const REVISION = '154';
+
 export const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
 export const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
 
@@ -158,8 +158,9 @@ export const AdditiveAnimationBlendMode = 2501;
 export const TrianglesDrawMode = 0;// 绘制三角形
 export const TriangleStripDrawMode = 1;// 带状的三角形
 export const TriangleFanDrawMode = 2;// 扇形的图形
-
+/** @deprecated Use LinearSRGBColorSpace or NoColorSpace in three.js r152+. */
 export const LinearEncoding = 3000;
+/** @deprecated Use SRGBColorSpace in three.js r152+. */
 export const sRGBEncoding = 3001;
 
 // 深度打包编码
@@ -172,6 +173,7 @@ export const ObjectSpaceNormalMap = 1;
 export const NoColorSpace = '';
 export const SRGBColorSpace = 'srgb';
 export const LinearSRGBColorSpace = 'srgb-linear';
+export const DisplayP3ColorSpace = 'display-p3';
 
 export const ZeroStencilOp = 0;
 export const KeepStencilOp = 7680;
@@ -191,6 +193,15 @@ export const NotEqualStencilFunc = 517;
 export const GreaterEqualStencilFunc = 518;
 export const AlwaysStencilFunc = 519;
 
+export const NeverCompare = 512;
+export const LessCompare = 513;
+export const EqualCompare = 514;
+export const LessEqualCompare = 515;
+export const GreaterCompare = 516;
+export const NotEqualCompare = 517;
+export const GreaterEqualCompare = 518;
+export const AlwaysCompare = 519;
+
 export const StaticDrawUsage = 35044;
 export const DynamicDrawUsage = 35048;
 export const StreamDrawUsage = 35040;
@@ -205,3 +216,6 @@ export const GLSL1 = '100';
 export const GLSL3 = '300 es';
 
 export const _SRGBAFormat = 1035; // fallback for WebGL 1
+
+export const WebGLCoordinateSystem = 2000;
+export const WebGPUCoordinateSystem = 2001;

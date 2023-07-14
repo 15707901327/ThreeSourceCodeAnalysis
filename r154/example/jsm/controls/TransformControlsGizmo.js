@@ -1,7 +1,6 @@
 import {
 	BoxGeometry,
 	BufferGeometry,
-	CylinderGeometry,
 	Euler,
 	Float32BufferAttribute,
 	Line,
@@ -16,6 +15,7 @@ import {
 	TorusGeometry,
 	Vector3
 } from 'three';
+import {CylinderGeometry} from "../../../../src/geometries/CylinderGeometry.js";
 
 const _tempVector = new Vector3();
 const _tempQuaternion = new Quaternion();
@@ -332,86 +332,86 @@ class TransformControlsGizmo extends Object3D {
 			]
 		};
 		
-		// Creates an Object3D with gizmos described in custom hierarchy definition.
-		
-		function setupGizmo(gizmoMap) {
-			
-			const gizmo = new Object3D();
-			
-			for (const name in gizmoMap) {
-				
-				for (let i = gizmoMap[name].length; i--;) {
-					
-					const object = gizmoMap[name][i][0].clone();
-					const position = gizmoMap[name][i][1];
-					const rotation = gizmoMap[name][i][2];
-					const scale = gizmoMap[name][i][3];
-					const tag = gizmoMap[name][i][4];
-					
-					// name and tag properties are essential for picking and updating logic.
-					object.name = name;
-					object.tag = tag;
-					
-					if (position) {
-						
-						object.position.set(position[0], position[1], position[2]);
-						
-					}
-					
-					if (rotation) {
-						
-						object.rotation.set(rotation[0], rotation[1], rotation[2]);
-						
-					}
-					
-					if (scale) {
-						
-						object.scale.set(scale[0], scale[1], scale[2]);
-						
-					}
-					
-					object.updateMatrix();
-					
-					const tempGeometry = object.geometry.clone();
-					tempGeometry.applyMatrix4(object.matrix);
-					object.geometry = tempGeometry;
-					object.renderOrder = Infinity;
-					
-					object.position.set(0, 0, 0);
-					object.rotation.set(0, 0, 0);
-					object.scale.set(1, 1, 1);
-					
-					gizmo.add(object);
-					
-				}
-				
-			}
-			
-			return gizmo;
-			
-		}
-		
 		// Gizmo creation
 		
 		this.gizmo = {};
 		this.picker = {};
 		this.helper = {};
 		
-		this.add(this.gizmo['translate'] = setupGizmo(gizmoTranslate));
-		this.add(this.gizmo['rotate'] = setupGizmo(gizmoRotate));
-		this.add(this.gizmo['scale'] = setupGizmo(gizmoScale));
-		this.add(this.picker['translate'] = setupGizmo(pickerTranslate));
-		this.add(this.picker['rotate'] = setupGizmo(pickerRotate));
-		this.add(this.picker['scale'] = setupGizmo(pickerScale));
-		this.add(this.helper['translate'] = setupGizmo(helperTranslate));
-		this.add(this.helper['rotate'] = setupGizmo(helperRotate));
-		this.add(this.helper['scale'] = setupGizmo(helperScale));
+		this.add(this.gizmo['translate'] = this.setupGizmo(gizmoTranslate));
+		this.add(this.gizmo['rotate'] = this.setupGizmo(gizmoRotate));
+		this.add(this.gizmo['scale'] = this.setupGizmo(gizmoScale));
+		this.add(this.picker['translate'] = this.setupGizmo(pickerTranslate));
+		this.add(this.picker['rotate'] = this.setupGizmo(pickerRotate));
+		this.add(this.picker['scale'] = this.setupGizmo(pickerScale));
+		this.add(this.helper['translate'] = this.setupGizmo(helperTranslate));
+		this.add(this.helper['rotate'] = this.setupGizmo(helperRotate));
+		this.add(this.helper['scale'] = this.setupGizmo(helperScale));
 		
 		// Pickers should be hidden always
 		
 		this.picker['translate'].visible = false;
 		this.picker['rotate'].visible = false;
 		this.picker['scale'].visible = false;
+		
+	}
+	
+	// Creates an Object3D with gizmos described in custom hierarchy definition.
+	
+	setupGizmo(gizmoMap) {
+		
+		const gizmo = new Object3D();
+		
+		for (const name in gizmoMap) {
+			
+			for (let i = gizmoMap[name].length; i--;) {
+				
+				const object = gizmoMap[name][i][0].clone();
+				const position = gizmoMap[name][i][1];
+				const rotation = gizmoMap[name][i][2];
+				const scale = gizmoMap[name][i][3];
+				const tag = gizmoMap[name][i][4];
+				
+				// name and tag properties are essential for picking and updating logic.
+				object.name = name;
+				object.tag = tag;
+				
+				if (position) {
+					
+					object.position.set(position[0], position[1], position[2]);
+					
+				}
+				
+				if (rotation) {
+					
+					object.rotation.set(rotation[0], rotation[1], rotation[2]);
+					
+				}
+				
+				if (scale) {
+					
+					object.scale.set(scale[0], scale[1], scale[2]);
+					
+				}
+				
+				object.updateMatrix();
+				
+				const tempGeometry = object.geometry.clone();
+				tempGeometry.applyMatrix4(object.matrix);
+				object.geometry = tempGeometry;
+				object.renderOrder = Infinity;
+				
+				object.position.set(0, 0, 0);
+				object.rotation.set(0, 0, 0);
+				object.scale.set(1, 1, 1);
+				
+				gizmo.add(object);
+				
+			}
+			
+		}
+		
+		return gizmo;
 		
 	}
 	
@@ -449,18 +449,13 @@ class TransformControlsGizmo extends Object3D {
 			handle.rotation.set(0, 0, 0);
 			handle.position.copy(this.worldPosition);
 			
+			// 计算缩放
 			let factor;
-			
 			if (this.camera.isOrthographicCamera) {
-				
 				factor = (this.camera.top - this.camera.bottom) / this.camera.zoom;
-				
 			} else {
-				
 				factor = this.worldPosition.distanceTo(this.cameraPosition) * Math.min(1.9 * Math.tan(Math.PI * this.camera.fov / 360) / this.camera.zoom, 7);
-				
 			}
-			
 			handle.scale.set(1, 1, 1).multiplyScalar(factor * this.size / 4);
 			
 			// TODO: simplify helpers and consider decoupling from gizmo
@@ -698,7 +693,6 @@ class TransformControlsGizmo extends Object3D {
 			handle.visible = handle.visible && (handle.name.indexOf('E') === -1 || (this.showX && this.showY && this.showZ));
 			
 			// highlight selected axis
-			
 			handle.material._color = handle.material._color || handle.material.color.clone();
 			handle.material._opacity = handle.material._opacity || handle.material.opacity;
 			
@@ -706,23 +700,23 @@ class TransformControlsGizmo extends Object3D {
 			handle.material.opacity = handle.material._opacity;
 			
 			if (this.enabled && this.axis) {
-				
+
 				if (handle.name === this.axis) {
-					
+
 					handle.material.color.setHex(0xffff00);
 					handle.material.opacity = 1.0;
-					
+
 				} else if (this.axis.split('').some(function (a) {
 					
 					return handle.name === a;
-					
+
 				})) {
-					
+
 					handle.material.color.setHex(0xffff00);
 					handle.material.opacity = 1.0;
-					
+
 				}
-				
+
 			}
 			
 		}

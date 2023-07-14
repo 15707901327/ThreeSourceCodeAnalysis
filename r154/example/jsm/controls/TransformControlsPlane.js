@@ -34,7 +34,7 @@ class TransformControlsPlane extends Mesh {
 	updateMatrixWorld(force) {
 		
 		const _tempVector = new Vector3();
-
+		
 		// Reusable utility variables
 		const _alignVector = new Vector3(0, 1, 0);
 		const _identityQuaternion = new Quaternion();

@@ -34,69 +34,29 @@ class TransformControls extends Object3D {
 		this.domElement = domElement;
 		this.domElement.style.touchAction = 'none'; // disable touch scroll
 		
-		//
-		const _gizmo = new TransformControlsGizmo();
-		this._gizmo = _gizmo;
-		this.add(_gizmo);
+		// 控制器辅助线
+		this._gizmo = new TransformControlsGizmo();
+		this.add(this._gizmo);
 		
 		// 点击辅助面
-		const _plane = new TransformControlsPlane();
-		this._plane = _plane;
+		this._plane = new TransformControlsPlane();
 		this.add(this._plane);
-		
-		const scope = this;
-		
-		// Defined getter, setter and store for a property
-		function defineProperty(propName, defaultValue) {
-			
-			let propValue = defaultValue;
-			
-			Object.defineProperty(scope, propName, {
-				
-				get : function () {
-					
-					return propValue !== undefined ? propValue : defaultValue;
-					
-				},
-				
-				set : function (value) {
-					
-					if (propValue !== value) {
-						
-						propValue = value;
-						_plane[propName] = value;
-						_gizmo[propName] = value;
-						
-						scope.dispatchEvent({type : propName + '-changed', value : value});
-						scope.dispatchEvent(this._changeEvent);
-						
-					}
-					
-				}
-				
-			});
-			
-			scope[propName] = defaultValue;
-			_plane[propName] = defaultValue;
-			_gizmo[propName] = defaultValue;
-			
-		}
 		
 		// Define properties with getters/setter
 		// Setting the defined property will automatically trigger change event
 		// Defined properties are passed down to gizmo and plane
 		
-		defineProperty('camera', camera);
-		defineProperty('object', undefined);    // 当前控制物体
-		defineProperty('enabled', true);        // 标识是否启用事件
-		defineProperty('axis', null);           // 当前拾取到的坐标轴
-		defineProperty('mode', 'translate');
-		defineProperty('space', 'world');       // 坐标空间
-		defineProperty('size', 1);
-		defineProperty('dragging', false);     // 标识移动状态
-		defineProperty('showX', true);
-		defineProperty('showY', true);
-		defineProperty('showZ', true);
+		this.defineProperty('camera', camera);
+		this.defineProperty('object', undefined);    // 当前控制物体
+		this.defineProperty('enabled', true);        // 标识是否启用事件
+		this.defineProperty('axis', null);           // 当前拾取到的坐标轴
+		this.defineProperty('mode', 'translate');
+		this.defineProperty('space', 'world');       // 坐标空间
+		this.defineProperty('size', 1);
+		this.defineProperty('dragging', false);     // 标识移动状态
+		this.defineProperty('showX', true);
+		this.defineProperty('showY', true);
+		this.defineProperty('showZ', true);
 		
 		// Reusable utility variables
 		
@@ -114,17 +74,17 @@ class TransformControls extends Object3D {
 		
 		// TODO: remove properties unused in plane and gizmo
 		
-		defineProperty('worldPosition', worldPosition);              // 位置
-		defineProperty('worldPositionStart', worldPositionStart);    // 起始位置
-		defineProperty('worldQuaternion', worldQuaternion);          // 四元数
-		defineProperty('worldQuaternionStart', worldQuaternionStart);// 起始四元数
-		defineProperty('cameraPosition', cameraPosition);
-		defineProperty('cameraQuaternion', cameraQuaternion);
-		defineProperty('pointStart', pointStart); // 起始坐标
-		defineProperty('pointEnd', pointEnd);     // 终点坐标
-		defineProperty('rotationAxis', rotationAxis);
-		defineProperty('rotationAngle', rotationAngle);
-		defineProperty('eye', eye);
+		this.defineProperty('worldPosition', worldPosition);              // 位置
+		this.defineProperty('worldPositionStart', worldPositionStart);    // 起始位置
+		this.defineProperty('worldQuaternion', worldQuaternion);          // 四元数
+		this.defineProperty('worldQuaternionStart', worldQuaternionStart);// 起始四元数
+		this.defineProperty('cameraPosition', cameraPosition);
+		this.defineProperty('cameraQuaternion', cameraQuaternion);
+		this.defineProperty('pointStart', pointStart); // 起始坐标
+		this.defineProperty('pointEnd', pointEnd);     // 终点坐标
+		this.defineProperty('rotationAxis', rotationAxis);
+		this.defineProperty('rotationAngle', rotationAngle);
+		this.defineProperty('eye', eye);
 		
 		this._offset = new Vector3();    // 移动距离
 		this._startNorm = new Vector3();
@@ -170,6 +130,44 @@ class TransformControls extends Object3D {
 		this.domElement.addEventListener('pointerdown', this._onPointerDown);
 		this.domElement.addEventListener('pointermove', this._onPointerHover);
 		this.domElement.addEventListener('pointerup', this._onPointerUp);
+		
+	}
+	
+	// Defined getter, setter and store for a property
+	defineProperty(propName, defaultValue) {
+		
+		let scope = this;
+		
+		let propValue = defaultValue;
+		
+		Object.defineProperty(scope, propName, {
+			
+			get : function () {
+				
+				return propValue !== undefined ? propValue : defaultValue;
+				
+			},
+			
+			set : function (value) {
+				
+				if (propValue !== value) {
+					
+					propValue = value;
+					scope._plane[propName] = value;
+					scope._gizmo[propName] = value;
+					
+					scope.dispatchEvent({type : propName + '-changed', value : value});
+					scope.dispatchEvent(this._changeEvent);
+					
+				}
+				
+			}
+			
+		});
+		
+		scope[propName] = defaultValue;
+		scope._plane[propName] = defaultValue;
+		scope._gizmo[propName] = defaultValue;
 		
 	}
 	
