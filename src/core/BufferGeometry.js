@@ -212,6 +212,7 @@ class BufferGeometry extends EventDispatcher {
 		
 		// rotate geometry around world x-axis
 		
+		console.log(_m1)
 		_m1.makeRotationX(angle);
 		
 		this.applyMatrix4(_m1);

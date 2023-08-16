@@ -189,6 +189,9 @@ class TransformControls extends Object3D {
 			}
 			
 			this.object.matrixWorld.decompose(this.worldPosition, this.worldQuaternion, this._worldScale);
+			console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+			console.log("this.object.matrixWorld",this.object.matrixWorld)
+			console.log("this.worldQuaternion",this.worldQuaternion)
 			
 			this._parentQuaternionInv.copy(this._parentQuaternion).invert();
 			this._worldQuaternionInv.copy(this.worldQuaternion).invert();
@@ -380,52 +383,52 @@ class TransformControls extends Object3D {
 		} else if (mode === 'rotate') {
 			
 			this._offset.copy(this.pointEnd).sub(this.pointStart);
-			
+
 			const ROTATION_SPEED = 20 / this.worldPosition.distanceTo(this._tempVector.setFromMatrixPosition(this.camera.matrixWorld));
-			
+
 			if (axis === 'E') {
-				
-				this.rotationAxis.copy(this.eye);
-				this.rotationAngle = this.pointEnd.angleTo(this.pointStart);
-				
-				this._startNorm.copy(this.pointStart).normalize();
-				this._endNorm.copy(this.pointEnd).normalize();
-				
-				this.rotationAngle *= (this._endNorm.cross(this._startNorm).dot(this.eye) < 0 ? 1 : -1);
-				
+
+				// this.rotationAxis.copy(this.eye);
+				// this.rotationAngle = this.pointEnd.angleTo(this.pointStart);
+				//
+				// this._startNorm.copy(this.pointStart).normalize();
+				// this._endNorm.copy(this.pointEnd).normalize();
+				//
+				// this.rotationAngle *= (this._endNorm.cross(this._startNorm).dot(this.eye) < 0 ? 1 : -1);
+
 			} else if (axis === 'XYZE') {
-				
-				this.rotationAxis.copy(this._offset).cross(this.eye).normalize();
-				this.rotationAngle = this._offset.dot(this._tempVector.copy(this.rotationAxis).cross(this.eye)) * ROTATION_SPEED;
-				
+
+				// this.rotationAxis.copy(this._offset).cross(this.eye).normalize();
+				// this.rotationAngle = this._offset.dot(this._tempVector.copy(this.rotationAxis).cross(this.eye)) * ROTATION_SPEED;
+
 			} else if (axis === 'X' || axis === 'Y' || axis === 'Z') {
-				
+
 				this.rotationAxis.copy(this._unit[axis]);
-				
+
 				this._tempVector.copy(this._unit[axis]);
-				
+
 				if (space === 'local') {
-					
+
 					this._tempVector.applyQuaternion(this.worldQuaternion);
-					
+
 				}
-				
+
 				this.rotationAngle = this._offset.dot(this._tempVector.cross(this.eye).normalize()) * ROTATION_SPEED;
-				
+
 			}
-			
+
 			// Apply rotate
 			if (space === 'local' && axis !== 'E' && axis !== 'XYZE') {
-				
+
 				object.quaternion.copy(this._quaternionStart);
 				object.quaternion.multiply(this._tempQuaternion.setFromAxisAngle(this.rotationAxis, this.rotationAngle)).normalize();
-				
+
 			} else {
-				
+
 				this.rotationAxis.applyQuaternion(this._parentQuaternionInv);
 				object.quaternion.copy(this._tempQuaternion.setFromAxisAngle(this.rotationAxis, this.rotationAngle));
 				object.quaternion.multiply(this._quaternionStart).normalize();
-				
+
 			}
 			
 		}

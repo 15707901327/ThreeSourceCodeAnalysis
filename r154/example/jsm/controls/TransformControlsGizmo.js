@@ -72,8 +72,15 @@ class TransformControlsGizmo extends Object3D {
 		const matHelper = gizmoLineMaterial.clone();
 		matHelper.opacity = 0.5;
 		
-		const matRed = gizmoMaterial.clone();
-		matRed.color.setHex(0xff0000);
+		const matRed = new MeshBasicMaterial({
+			depthTest : true,
+			depthWrite : true,
+			fog : false,
+			toneMapped : false,
+			transparent : true
+		});
+		// const matRed = gizmoMaterial.clone();
+		// matRed.color.setHex(0xff0000);
 		
 		const matGreen = gizmoMaterial.clone();
 		matGreen.color.setHex(0x00ff00);
@@ -103,7 +110,14 @@ class TransformControlsGizmo extends Object3D {
 		const matYellow = gizmoMaterial.clone();
 		matYellow.color.setHex(0xffff00);
 		
-		const matGray = gizmoMaterial.clone();
+		const matGray = new MeshBasicMaterial({
+			depthTest : true,
+			depthWrite : true,
+			fog : false,
+			toneMapped : false,
+			transparent : true
+		});
+		// const matGray = gizmoMaterial.clone();
 		matGray.color.setHex(0x787878);
 		
 		// reusable geometry
@@ -428,14 +442,13 @@ class TransformControlsGizmo extends Object3D {
 		this.gizmo['translate'].visible = this.mode === 'translate';
 		this.gizmo['rotate'].visible = this.mode === 'rotate';
 		this.gizmo['scale'].visible = this.mode === 'scale';
-		
 		this.helper['translate'].visible = this.mode === 'translate';
 		this.helper['rotate'].visible = this.mode === 'rotate';
 		this.helper['scale'].visible = this.mode === 'scale';
 		
-		
 		let handles = [];
 		handles = handles.concat(this.picker[this.mode].children);
+		handles = handles.concat(this.gizmo['translate'].children);
 		handles = handles.concat(this.gizmo[this.mode].children);
 		handles = handles.concat(this.helper[this.mode].children);
 		
@@ -572,7 +585,8 @@ class TransformControlsGizmo extends Object3D {
 			
 			// Align handles to current local or world rotation
 			
-			handle.quaternion.copy(quaternion);
+			// handle.quaternion.copy(quaternion);
+			console.log(handle.quaternion)
 			
 			if (this.mode === 'translate' || this.mode === 'scale') {
 				
@@ -700,23 +714,23 @@ class TransformControlsGizmo extends Object3D {
 			handle.material.opacity = handle.material._opacity;
 			
 			if (this.enabled && this.axis) {
-
+				
 				if (handle.name === this.axis) {
-
+					
 					handle.material.color.setHex(0xffff00);
 					handle.material.opacity = 1.0;
-
+					
 				} else if (this.axis.split('').some(function (a) {
 					
 					return handle.name === a;
-
+					
 				})) {
-
+					
 					handle.material.color.setHex(0xffff00);
 					handle.material.opacity = 1.0;
-
+					
 				}
-
+				
 			}
 			
 		}

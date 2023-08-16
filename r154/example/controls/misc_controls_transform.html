@@ -70,7 +70,7 @@
 		texture.colorSpace = THREE.SRGBColorSpace;
 		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
-		const geometry = new THREE.BoxGeometry(200, 200, 200);
+		const geometry = new THREE.BoxGeometry(100, 200, 200);
 		const material = new THREE.MeshLambertMaterial({map : texture, transparent : true});
 
 		orbit = new OrbitControls(currentCamera, renderer.domElement);
@@ -88,9 +88,20 @@
 
 		const mesh = new THREE.Mesh(geometry, material);
 		scene.add(mesh);
+		// mesh.rotateZ(Math.PI/2)
+		// mesh.rotateX(Math.PI/2)
+		// mesh.matrix.set(
+		// 	0,0,1,2,
+        //     1,0,0,2,
+        //     0,1,0,2,
+        //     0,0,0,1
+        // );
+		// mesh.matrixAutoUpdate = false;
+		// mesh.matrixWorldAutoUpdate = false;
 
 		control.attach(mesh);
 		scene.add(control);
+		control.setMode('rotate');
 
 		window.addEventListener('resize', onWindowResize);
 
