@@ -12,6 +12,7 @@ import {
 	PCFSoftShadowMap,
 	PCFShadowMap,
 	VSMShadowMap,
+	AgXToneMapping,
 	ACESFilmicToneMapping,
 	CineonToneMapping,
 	CustomToneMapping,
@@ -19,8 +20,16 @@ import {
 	LinearToneMapping,
 	GLSL3,
 	LinearSRGBColorSpace,
-	SRGBColorSpace
+	SRGBColorSpace,
+	LinearDisplayP3ColorSpace,
+	DisplayP3ColorSpace,
+	P3Primaries,
+	Rec709Primaries
 } from '../../constants.js';
+import {ColorManagement} from '../../math/ColorManagement.js';
+
+// From https://www.khronos.org/registry/webgl/extensions/KHR_parallel_shader_compile/
+const COMPLETION_STATUS_KHR = 0x91B1;
 
 let programIdCount = 0;
 
@@ -45,15 +54,38 @@ function handleSource(string, errorLine) {
 
 function getEncodingComponents(colorSpace) {
 	
+	const workingPrimaries = ColorManagement.getPrimaries(ColorManagement.workingColorSpace);
+	const encodingPrimaries = ColorManagement.getPrimaries(colorSpace);
+	
+	let gamutMapping;
+	
+	if (workingPrimaries === encodingPrimaries) {
+		
+		gamutMapping = '';
+		
+	} else if (workingPrimaries === P3Primaries && encodingPrimaries === Rec709Primaries) {
+		
+		gamutMapping = 'LinearDisplayP3ToLinearSRGB';
+		
+	} else if (workingPrimaries === Rec709Primaries && encodingPrimaries === P3Primaries) {
+		
+		gamutMapping = 'LinearSRGBToLinearDisplayP3';
+		
+	}
+	
 	switch (colorSpace) {
 		
 		case LinearSRGBColorSpace:
-			return ['Linear', '( value )'];
+		case LinearDisplayP3ColorSpace:
+			return [gamutMapping, 'LinearTransferOETF'];
+		
 		case SRGBColorSpace:
-			return ['sRGB', '( value )'];
+		case DisplayP3ColorSpace:
+			return [gamutMapping, 'sRGBTransferOETF'];
+		
 		default:
 			console.warn('THREE.WebGLProgram: Unsupported color space:', colorSpace);
-			return ['Linear', '( value )'];
+			return [gamutMapping, 'LinearTransferOETF'];
 		
 	}
 	
@@ -86,7 +118,7 @@ function getShaderErrors(gl, shader, type) {
 function getTexelEncodingFunction(functionName, colorSpace) {
 	
 	const components = getEncodingComponents(colorSpace);
-	return 'vec4 ' + functionName + '( vec4 value ) { return LinearTo' + components[0] + components[1] + '; }';
+	return `vec4 ${functionName}( vec4 value ) { return ${components[0]}( ${components[1]}( value ) ); }`;
 	
 }
 
@@ -112,6 +144,10 @@ function getToneMappingFunction(functionName, toneMapping) {
 			toneMappingName = 'ACESFilmic';
 			break;
 		
+		case AgXToneMapping:
+			toneMappingName = 'AgX';
+			break;
+		
 		case CustomToneMapping:
 			toneMappingName = 'Custom';
 			break;
@@ -133,6 +169,16 @@ function generateExtensions(parameters) {
 		(parameters.extensionFragDepth || parameters.logarithmicDepthBuffer) && parameters.rendererExtensionFragDepth ? '#extension GL_EXT_frag_depth : enable' : '',
 		(parameters.extensionDrawBuffers && parameters.rendererExtensionDrawBuffers) ? '#extension GL_EXT_draw_buffers : require' : '',
 		(parameters.extensionShaderTextureLOD || parameters.envMap || parameters.transmission) && parameters.rendererExtensionShaderTextureLod ? '#extension GL_EXT_shader_texture_lod : enable' : ''
+	];
+	
+	return chunks.filter(filterEmptyLine).join('\n');
+	
+}
+
+function generateVertexExtensions(parameters) {
+	
+	const chunks = [
+		parameters.extensionClipCullDistance ? '#extension GL_ANGLE_clip_cull_distance : require' : ''
 	];
 	
 	return chunks.filter(filterEmptyLine).join('\n');
@@ -251,12 +297,31 @@ function resolveIncludes(string) {
 	return string.replace(includePattern, includeReplacer);
 }
 
+const shaderChunkMap = new Map([
+	['encodings_fragment', 'colorspace_fragment'], // @deprecated, r154
+	['encodings_pars_fragment', 'colorspace_pars_fragment'], // @deprecated, r154
+	['output_fragment', 'opaque_fragment'], // @deprecated, r154
+]);
+
 function includeReplacer(match, include) {
 	
-	const string = ShaderChunk[include];
+	let string = ShaderChunk[include];
 	
 	if (string === undefined) {
-		throw new Error('Can not resolve #include <' + include + '>');
+		
+		const newInclude = shaderChunkMap.get(include);
+		
+		if (newInclude !== undefined) {
+			
+			string = ShaderChunk[newInclude];
+			console.warn('THREE.WebGLRenderer: Shader chunk "%s" has been deprecated. Use "%s" instead.', include, newInclude);
+			
+		} else {
+			
+			throw new Error('Can not resolve #include <' + include + '>');
+			
+		}
+		
 	}
 	
 	return resolveIncludes(string);
@@ -455,6 +520,8 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 	
 	const customExtensions = parameters.isWebGL2 ? '' : generateExtensions(parameters);
 	
+	const customVertexExtensions = generateVertexExtensions(parameters);
+	
 	const customDefines = generateDefines(defines);
 	
 	const program = gl.createProgram();
@@ -506,6 +573,8 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			
 			customDefines,
 			
+			parameters.extensionClipCullDistance ? '#define USE_CLIP_DISTANCE' : '',
+			parameters.batching ? '#define USE_BATCHING' : '',
 			parameters.instancing ? '#define USE_INSTANCING' : '',
 			parameters.instancingColor ? '#define USE_INSTANCING_COLOR' : '',
 			
@@ -524,6 +593,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			parameters.displacementMap ? '#define USE_DISPLACEMENTMAP' : '',
 			parameters.emissiveMap ? '#define USE_EMISSIVEMAP' : '',
 			
+			parameters.anisotropy ? '#define USE_ANISOTROPY' : '',
 			parameters.anisotropyMap ? '#define USE_ANISOTROPYMAP' : '',
 			
 			parameters.clearcoatMap ? '#define USE_CLEARCOATMAP' : '',
@@ -540,6 +610,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			parameters.roughnessMap ? '#define USE_ROUGHNESSMAP' : '',
 			parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
 			parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
+			parameters.alphaHash ? '#define USE_ALPHAHASH' : '',
 			
 			parameters.transmission ? '#define USE_TRANSMISSION' : '',
 			parameters.transmissionMap ? '#define USE_TRANSMISSIONMAP' : '',
@@ -583,7 +654,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			
 			//
 			
-			parameters.vertexTangents ? '#define USE_TANGENT' : '',
+			parameters.vertexTangents && parameters.flatShading === false ? '#define USE_TANGENT' : '',
 			parameters.vertexColors ? '#define USE_COLOR' : '',
 			parameters.vertexAlphas ? '#define USE_COLOR_ALPHA' : '',
 			parameters.vertexUv1s ? '#define USE_UV1' : '',
@@ -609,6 +680,8 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			parameters.shadowMapEnabled ? '#define ' + shadowMapTypeDefine : '',
 			
 			parameters.sizeAttenuation ? '#define USE_SIZEATTENUATION' : '',
+			
+			parameters.numLightProbes > 0 ? '#define USE_LIGHT_PROBES' : '',
 			
 			parameters.useLegacyLights ? '#define LEGACY_LIGHTS' : '',
 			
@@ -759,6 +832,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			parameters.metalnessMap ? '#define USE_METALNESSMAP' : '',
 			parameters.alphaMap ? '#define USE_ALPHAMAP' : '',
 			parameters.alphaTest ? '#define USE_ALPHATEST' : '',
+			parameters.alphaHash ? '#define USE_ALPHAHASH' : '',
 			
 			parameters.sheen ? '#define USE_SHEEN' : '',
 			parameters.sheenColorMap ? '#define USE_SHEEN_COLORMAP' : '',
@@ -768,7 +842,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			parameters.transmissionMap ? '#define USE_TRANSMISSIONMAP' : '',
 			parameters.thicknessMap ? '#define USE_THICKNESSMAP' : '',
 			
-			parameters.vertexTangents ? '#define USE_TANGENT' : '',
+			parameters.vertexTangents && parameters.flatShading === false ? '#define USE_TANGENT' : '',
 			parameters.vertexColors || parameters.instancingColor ? '#define USE_COLOR' : '',
 			parameters.vertexAlphas ? '#define USE_COLOR_ALPHA' : '',
 			parameters.vertexUv1s ? '#define USE_UV1' : '',
@@ -789,7 +863,11 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			
 			parameters.premultipliedAlpha ? '#define PREMULTIPLIED_ALPHA' : '',
 			
+			parameters.numLightProbes > 0 ? '#define USE_LIGHT_PROBES' : '',
+			
 			parameters.useLegacyLights ? '#define LEGACY_LIGHTS' : '',
+			
+			parameters.decodeVideoTexture ? '#define DECODE_VIDEO_TEXTURE' : '',
 			
 			parameters.logarithmicDepthBuffer ? '#define USE_LOGDEPTHBUF' : '',
 			(parameters.logarithmicDepthBuffer && parameters.rendererExtensionFragDepth) ? '#define USE_LOGDEPTHBUF_EXT' : '',
@@ -805,7 +883,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 			parameters.dithering ? '#define DITHERING' : '',
 			parameters.opaque ? '#define OPAQUE' : '',
 			
-			ShaderChunk['encodings_pars_fragment'], // this code is required here because it is used by the various encoding/decoding function defined below
+			ShaderChunk['colorspace_pars_fragment'], // this code is required here because it is used by the various encoding/decoding function defined below
 			getTexelEncodingFunction('linearToOutputTexel', parameters.outputColorSpace),
 			
 			parameters.useDepthPacking ? '#define DEPTH_PACKING ' + parameters.depthPacking : '',
@@ -814,13 +892,16 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 		
 		].filter(filterEmptyLine).join('\n');
 	}
-	
+
+	// 替换#include
 	vertexShader = resolveIncludes(vertexShader);
+	// 替换顶点着色器灯光数量
 	vertexShader = replaceLightNums(vertexShader, parameters);
 	// 替换刨切的面数
 	vertexShader = replaceClippingPlaneNums(vertexShader, parameters);
 	
 	fragmentShader = resolveIncludes(fragmentShader);
+	// 替换片元着色器灯光数量
 	fragmentShader = replaceLightNums(fragmentShader, parameters);
 	// 替换刨切的面数
 	fragmentShader = replaceClippingPlaneNums(fragmentShader, parameters);
@@ -836,6 +917,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 		versionString = '#version 300 es\n';
 		
 		prefixVertex = [
+			customVertexExtensions,
 			'precision mediump sampler2DArray;',
 			'#define attribute in',
 			'#define varying out',
@@ -843,6 +925,7 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 		].join('\n') + '\n' + prefixVertex;
 		
 		prefixFragment = [
+			'precision mediump sampler2DArray;',
 			'#define varying in',
 			(parameters.glslVersion === GLSL3) ? '' : 'layout(location = 0) out highp vec4 pc_fragColor;',
 			(parameters.glslVersion === GLSL3) ? '' : '#define gl_FragColor pc_fragColor',
@@ -888,87 +971,94 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 	
 	gl.linkProgram(program);
 	
-	// check for link errors
-	if (renderer.debug.checkShaderErrors) {
+	function onFirstUse(self) {
 		
-		const programLog = gl.getProgramInfoLog(program).trim();
-		const vertexLog = gl.getShaderInfoLog(glVertexShader).trim();
-		const fragmentLog = gl.getShaderInfoLog(glFragmentShader).trim();
-		
-		let runnable = true;
-		let haveDiagnostics = true;
-		
-		if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
+		// check for link errors
+		if (renderer.debug.checkShaderErrors) {
 			
-			runnable = false;
+			const programLog = gl.getProgramInfoLog(program).trim();
+			const vertexLog = gl.getShaderInfoLog(glVertexShader).trim();
+			const fragmentLog = gl.getShaderInfoLog(glFragmentShader).trim();
 			
-			if (typeof renderer.debug.onShaderError === 'function') {
-				
-				renderer.debug.onShaderError(gl, program, glVertexShader, glFragmentShader);
-				
-			} else {
-				
-				// default error reporting
-				
-				const vertexErrors = getShaderErrors(gl, glVertexShader, 'vertex');
-				const fragmentErrors = getShaderErrors(gl, glFragmentShader, 'fragment');
-				
-				console.error(
-					'THREE.WebGLProgram: Shader Error ' + gl.getError() + ' - ' +
-					'VALIDATE_STATUS ' + gl.getProgramParameter(program, gl.VALIDATE_STATUS) + '\n\n' +
-					'Program Info Log: ' + programLog + '\n' +
-					vertexErrors + '\n' +
-					fragmentErrors
-				);
-				
-			}
+			let runnable = true;
+			let haveDiagnostics = true;
 			
-		} else if (programLog !== '') {
-			
-			console.warn('THREE.WebGLProgram: Program Info Log:', programLog);
-			
-		} else if (vertexLog === '' || fragmentLog === '') {
-			
-			haveDiagnostics = false;
-			
-		}
-		
-		if (haveDiagnostics) {
-			
-			this.diagnostics = {
+			if (gl.getProgramParameter(program, gl.LINK_STATUS) === false) {
 				
-				runnable : runnable,
+				runnable = false;
 				
-				programLog : programLog,
-				
-				vertexShader : {
+				if (typeof renderer.debug.onShaderError === 'function') {
 					
-					log : vertexLog,
-					prefix : prefixVertex
+					renderer.debug.onShaderError(gl, program, glVertexShader, glFragmentShader);
 					
-				},
-				
-				fragmentShader : {
+				} else {
 					
-					log : fragmentLog,
-					prefix : prefixFragment
+					// default error reporting
+					
+					const vertexErrors = getShaderErrors(gl, glVertexShader, 'vertex');
+					const fragmentErrors = getShaderErrors(gl, glFragmentShader, 'fragment');
+					
+					console.error(
+						'THREE.WebGLProgram: Shader Error ' + gl.getError() + ' - ' +
+						'VALIDATE_STATUS ' + gl.getProgramParameter(program, gl.VALIDATE_STATUS) + '\n\n' +
+						'Program Info Log: ' + programLog + '\n' +
+						vertexErrors + '\n' +
+						fragmentErrors
+					);
 					
 				}
 				
-			};
+			} else if (programLog !== '') {
+				
+				console.warn('THREE.WebGLProgram: Program Info Log:', programLog);
+				
+			} else if (vertexLog === '' || fragmentLog === '') {
+				
+				haveDiagnostics = false;
+				
+			}
+			
+			if (haveDiagnostics) {
+				
+				self.diagnostics = {
+					
+					runnable : runnable,
+					
+					programLog : programLog,
+					
+					vertexShader : {
+						
+						log : vertexLog,
+						prefix : prefixVertex
+						
+					},
+					
+					fragmentShader : {
+						
+						log : fragmentLog,
+						prefix : prefixFragment
+						
+					}
+					
+				};
+				
+			}
 			
 		}
 		
+		// Clean up
+		
+		// Crashes in iOS9 and iOS10. #18402
+		// gl.detachShader( program, glVertexShader );
+		// gl.detachShader( program, glFragmentShader );
+		
+		gl.deleteShader(glVertexShader);
+		gl.deleteShader(glFragmentShader);
+		
+		cachedUniforms = new WebGLUniforms(gl, program);
+		cachedAttributes = fetchAttributeLocations(gl, program);
+		
 	}
-	
-	// Clean up
-	
-	// Crashes in iOS9 and iOS10. #18402
-	// gl.detachShader( program, glVertexShader );
-	// gl.detachShader( program, glFragmentShader );
-	
-	gl.deleteShader(glVertexShader);
-	gl.deleteShader(glFragmentShader);
 	
 	// set up caching for uniform locations
 	
@@ -982,7 +1072,8 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 		
 		if (cachedUniforms === undefined) {
 			
-			cachedUniforms = new WebGLUniforms(gl, program);
+			// Populates cachedUniforms and cachedAttributes
+			onFirstUse(this);
 			
 		}
 		
@@ -1000,9 +1091,30 @@ function WebGLProgram(renderer, cacheKey, parameters, bindingStates) {
 	 */
 	this.getAttributes = function () {
 		if (cachedAttributes === undefined) {
-			cachedAttributes = fetchAttributeLocations(gl, program);
+			
+			// Populates cachedAttributes and cachedUniforms
+			onFirstUse(this);
+			
 		}
 		return cachedAttributes;
+		
+	};
+	
+	// indicate when the program is ready to be used. if the KHR_parallel_shader_compile extension isn't supported,
+	// flag the program as ready immediately. It may cause a stall when it's first used.
+	
+	let programReady = (parameters.rendererExtensionParallelShaderCompile === false);
+	
+	this.isReady = function () {
+		
+		if (programReady === false) {
+			
+			programReady = gl.getProgramParameter(program, COMPLETION_STATUS_KHR);
+			
+		}
+		
+		return programReady;
+		
 	};
 	
 	// free resource

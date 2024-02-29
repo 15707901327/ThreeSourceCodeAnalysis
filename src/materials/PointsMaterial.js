@@ -1,64 +1,50 @@
-import { Material } from './Material.js';
-import { Color } from '../math/Color.js';
+import {Material} from './Material.js';
+import {Color} from '../math/Color.js';
 
-/**
- * @author mrdoob / http://mrdoob.com/
- * @author alteredq / http://alteredqualia.com/
- *
- * parameters = {
- *  color: <hex>,
- *  opacity: <float>,
- *  map: new THREE.Texture( <Image> ),
- *
- *  size: <float>,
- *  sizeAttenuation: <bool>
- *
- *  morphTargets: <bool>
- * }
- */
-
-function PointsMaterial( parameters ) {
-
-	Material.call( this );
-
-	this.type = 'PointsMaterial';
-
-	this.color = new Color( 0xffffff );
-
-	this.map = null;
-
-	this.size = 1; // 点的大小
-	this.sizeAttenuation = true;
-
-	this.morphTargets = false;
-
-	this.lights = false;
-
-	this.setValues( parameters );
-
+class PointsMaterial extends Material {
+	
+	constructor(parameters) {
+		
+		super();
+		
+		this.isPointsMaterial = true;
+		
+		this.type = 'PointsMaterial';
+		
+		this.color = new Color(0xffffff);
+		
+		this.map = null;
+		
+		this.alphaMap = null;
+		
+		this.size = 1;
+		this.sizeAttenuation = true;
+		
+		this.fog = true;
+		
+		this.setValues(parameters);
+		
+	}
+	
+	copy(source) {
+		
+		super.copy(source);
+		
+		this.color.copy(source.color);
+		
+		this.map = source.map;
+		
+		this.alphaMap = source.alphaMap;
+		
+		this.size = source.size;
+		this.sizeAttenuation = source.sizeAttenuation;
+		
+		this.fog = source.fog;
+		
+		return this;
+		
+	}
+	
 }
 
-PointsMaterial.prototype = Object.create( Material.prototype );
-PointsMaterial.prototype.constructor = PointsMaterial;
-
-PointsMaterial.prototype.isPointsMaterial = true;
-
-PointsMaterial.prototype.copy = function ( source ) {
-
-	Material.prototype.copy.call( this, source );
-
-	this.color.copy( source.color );
-
-	this.map = source.map;
-
-	this.size = source.size;
-	this.sizeAttenuation = source.sizeAttenuation;
-
-	this.morphTargets = source.morphTargets;
-
-	return this;
-
-};
-
-
-export { PointsMaterial };
+export {PointsMaterial};

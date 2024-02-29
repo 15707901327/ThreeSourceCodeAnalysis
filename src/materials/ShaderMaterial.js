@@ -30,11 +30,14 @@ class ShaderMaterial extends Material {
         this.lights = false; // set to use scene lights
         this.clipping = false; // set to use user-defined clipping planes
 
+		this.forceSinglePass = true;
+
         this.extensions = {
             derivatives: false, // set to use derivatives
             fragDepth: false, // set to use fragment depth values
             drawBuffers: false, // set to use draw buffers
-            shaderTextureLOD: false // set to use shader texture LOD
+			shaderTextureLOD: false, // set to use shader texture LOD
+			clipCullDistance: false // set to use vertex shader clipping
         };
 
         // When rendered geometry doesn't include these attributes but the material does,
@@ -42,7 +45,7 @@ class ShaderMaterial extends Material {
         this.defaultAttributeValues = {
             'color': [1, 1, 1],
             'uv': [0, 0],
-            'uv2': [0, 0]
+			'uv1': [ 0, 0 ]
         };
 
         this.index0AttributeName = undefined;
@@ -162,6 +165,9 @@ class ShaderMaterial extends Material {
 
         data.vertexShader = this.vertexShader;
         data.fragmentShader = this.fragmentShader;
+
+		data.lights = this.lights;
+		data.clipping = this.clipping;
 
         const extensions = {};
 

@@ -36,11 +36,10 @@ function WebGLRenderState(extensions, capabilities) {
 
     /**
      * 设置灯光
-     * @param camera 相机
      */
-    function setupLights(physicallyCorrectLights) {
+	function setupLights( useLegacyLights ) {
 
-        lights.setup(lightsArray, physicallyCorrectLights);
+		lights.setup( lightsArray, useLegacyLights );
 
     }
 

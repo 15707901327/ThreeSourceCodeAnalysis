@@ -170,7 +170,9 @@ function WebGLLights(extensions, capabilities) {
             numDirectionalShadows: -1,
             numPointShadows: -1,
             numSpotShadows: -1,
-            numSpotMaps: -1
+			numSpotMaps: - 1,
+
+			numLightProbes: - 1
         },
 
         ambient: [0, 0, 0], // 环境光 颜色*强度
@@ -192,7 +194,8 @@ function WebGLLights(extensions, capabilities) {
         pointShadowMap: [],
         pointShadowMatrix: [],
         hemi: [],
-        numSpotLightShadowsWithMaps: 0
+		numSpotLightShadowsWithMaps: 0,
+		numLightProbes: 0
 
     };
 
@@ -208,7 +211,7 @@ function WebGLLights(extensions, capabilities) {
      * @param shadows
      * @param camera 相机
      */
-    function setup(lights, physicallyCorrectLights) {
+	function setup( lights, useLegacyLights ) {
 
         // 灯光颜色分量
         let r = 0, g = 0, b = 0;
@@ -228,14 +231,16 @@ function WebGLLights(extensions, capabilities) {
         let numSpotMaps = 0;
         let numSpotShadowsWithMaps = 0;
 
+		let numLightProbes = 0;
+
         // ordering : [shadow casting + map texturing, map texturing, shadow casting, none ]
         lights.sort(shadowCastingAndTexturingLightsFirst);
 
         // artist-friendly light intensity scaling factor
-        const scaleFactor = (physicallyCorrectLights !== true) ? Math.PI : 1;
+		const scaleFactor = ( useLegacyLights === true ) ? Math.PI : 1;
 
         // 便利灯光，处理灯光，获取灯光颜色分量
-        for (var i = 0, l = lights.length; i < l; i++) {
+		for ( let i = 0, l = lights.length; i < l; i ++ ) {
 
             const light = lights[i];
 
@@ -259,6 +264,8 @@ function WebGLLights(extensions, capabilities) {
                     state.probe[j].addScaledVector(light.sh.coefficients[j], intensity);
 
                 }
+
+				numLightProbes ++;
 
             } else if (light.isDirectionalLight) {
 
@@ -408,10 +415,19 @@ function WebGLLights(extensions, capabilities) {
 
                 // WebGL 2
 
+				if ( extensions.has( 'OES_texture_float_linear' ) === true ) {
+
                 state.rectAreaLTC1 = UniformsLib.LTC_FLOAT_1;
                 state.rectAreaLTC2 = UniformsLib.LTC_FLOAT_2;
 
             } else {
+
+					state.rectAreaLTC1 = UniformsLib.LTC_HALF_1;
+					state.rectAreaLTC2 = UniformsLib.LTC_HALF_2;
+
+				}
+
+			} else {
 
                 // WebGL 1
 
@@ -449,7 +465,8 @@ function WebGLLights(extensions, capabilities) {
             hash.numDirectionalShadows !== numDirectionalShadows ||
             hash.numPointShadows !== numPointShadows ||
             hash.numSpotShadows !== numSpotShadows ||
-            hash.numSpotMaps !== numSpotMaps) {
+			hash.numSpotMaps !== numSpotMaps ||
+			hash.numLightProbes !== numLightProbes ) {
 
             state.directional.length = directionalLength;
             state.spot.length = spotLength;
@@ -468,6 +485,7 @@ function WebGLLights(extensions, capabilities) {
             state.spotLightMatrix.length = numSpotShadows + numSpotMaps - numSpotShadowsWithMaps;
             state.spotLightMap.length = numSpotMaps;
             state.numSpotLightShadowsWithMaps = numSpotShadowsWithMaps;
+			state.numLightProbes = numLightProbes;
 
             hash.directionalLength = directionalLength;
             hash.pointLength = pointLength;
@@ -479,6 +497,8 @@ function WebGLLights(extensions, capabilities) {
             hash.numPointShadows = numPointShadows;
             hash.numSpotShadows = numSpotShadows;
             hash.numSpotMaps = numSpotMaps;
+
+			hash.numLightProbes = numLightProbes;
 
             state.version = nextVersion++;
 
