@@ -581,7 +581,7 @@ class Object3D extends EventDispatcher {
 
     /**
      * 更新当前对象以及子类对象的本地和世界坐标矩阵
-     * @param force
+     * @param for
      */
     updateMatrixWorld(force) {
 
