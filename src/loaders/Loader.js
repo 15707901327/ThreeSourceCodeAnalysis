@@ -13,6 +13,7 @@ class Loader {
 
         // 加载策略
         this.crossOrigin = 'anonymous';
+        this.withCredentials = false;
         // 路径
         this.path = '';
         // 资源加载路径
@@ -80,5 +81,7 @@ class Loader {
     }
 
 }
+
+Loader.DEFAULT_MATERIAL_NAME = '__DEFAULT';
 
 export {Loader};

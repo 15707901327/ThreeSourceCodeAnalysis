@@ -1363,7 +1363,8 @@ class WebGLRenderer {
 								if (object.boundingSphere === null) object.computeBoundingSphere();
 								_vector3.copy(object.boundingSphere.center);
 								
-							} else {
+							}
+							else {
 								
 								if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
 								_vector3.copy(geometry.boundingSphere.center);
@@ -2642,6 +2643,5 @@ class WebGLRenderer {
 		
 	}
 	
-	export {
-	WebGLRenderer
-};
+
+export { WebGLRenderer };
