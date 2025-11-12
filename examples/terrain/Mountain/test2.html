@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    body {
+      overflow: hidden;
+      margin: 0;
+    }
+
+    #canvasDemo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 256px;
+      height: 256px;
+      background: white;
+      opacity: 1;
+    }
+  </style>
+
+  <script type="module">
+    import * as THREE from "../../../build/three_r109.module.js";
+    import {OrbitControls} from "../../jsm/controls/OrbitControls_slr107.js";
+
+    var heatVertex = `
+
+    varying vec2 vUv;
+    varying vec3 vColor;
+    varying vec3 vPosition;
+
+    void main() {
+      vUv = uv;
+      vPosition = position;
+
+      #ifdef USE_COLOR
+        vColor = color;
+      #endif
+
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+    }
+`;
+
+    var heatFragment = `
+    varying vec2 vUv;
+    varying vec3 vPosition;
+    varying vec3 vColor;
+
+    uniform sampler2D heightMap1;
+    uniform sampler2D heightMap2;
+
+    void main() {
+      vec4 diffue = vec4(0.0);
+
+      if(vPosition.y > 40.0){
+        diffue = texture2D(heightMap1, vUv);
+      }
+      else{
+        float alpha = vPosition.y/(40.0);  // 比例系数
+        diffue = mix(texture2D(heightMap2,vUv),texture2D(heightMap1, vUv),alpha);
+      }
+
+      #ifdef USE_COLOR
+        diffue = vec4(vColor,1.0);
+      #endif
+
+      gl_FragColor = diffue;
+    }
+`;
+
+    var imgDate;
+
+    function createPotCloud() {     //创建点云
+      var height = canvas.height;
+      var width = canvas.width;
+
+      // var height = 50;
+      // var width = 50;
+      var num = 6;
+      var scale = 100;
+      var particles = (height - 1) * (width - 1) * num;
+      var geometry = new THREE.BufferGeometry();
+
+      var positions = new Float32Array(particles * 3);
+      var colors = new Float32Array(particles * 3);
+      var uvs = new Float32Array(particles * 2);
+
+      var len = num * 3;
+      var uv_len = num * 2;
+      for (var i = 0; i < height - 1; i++) {
+        for (var k = 0; k < width - 1; k++) {
+
+          // v1
+          positions[(k * (height - 1) + i) * len] = k - width / 2;
+          positions[(k * (height - 1) + i) * len + 1] = imgDate.data[4 * (k * height + i)] / 255.0 * scale;
+          positions[(k * (height - 1) + i) * len + 2] = i - height / 2;
+
+          colors[(k * (height - 1) + i) * len] = imgDate.data[4 * (k * height + i)] / 255.0;
+          colors[(k * (height - 1) + i) * len + 1] = imgDate.data[4 * (k * height + i) + 1] / 255.0;
+          colors[(k * (height - 1) + i) * len + 2] = imgDate.data[4 * (k * height + i) + 2] / 255.0;
+
+          uvs[(k * (height - 1) + i) * uv_len] = i / (height - 1);
+          uvs[(k * (height - 1) + i) * uv_len + 1] = k / (width - 1);
+
+          // v2
+          positions[(k * (height - 1) + i) * len + 3] = k - width / 2;
+          positions[(k * (height - 1) + i) * len + 4] = imgDate.data[4 * (k * height + i + 1)] / 255.0 * scale;
+          positions[(k * (height - 1) + i) * len + 5] = i + 1 - height / 2;
+
+          colors[(k * (height - 1) + i) * len + 3] = imgDate.data[4 * (k * height + i + 1)] / 255.0;
+          colors[(k * (height - 1) + i) * len + 4] = imgDate.data[4 * (k * height + i + 1) + 1] / 255.0;
+          colors[(k * (height - 1) + i) * len + 5] = imgDate.data[4 * (k * height + i + 1) + 2] / 255.0;
+
+          uvs[(k * (height - 1) + i) * uv_len + 2] = (i + 1) / (height - 1);
+          uvs[(k * (height - 1) + i) * uv_len + 3] = k / (width - 1);
+
+          // v3
+          positions[(k * (height - 1) + i) * len + 6] = k + 1 - width / 2;
+          positions[(k * (height - 1) + i) * len + 7] = imgDate.data[4 * ((k + 1) * height + i + 1)] / 255.0 * scale;
+          positions[(k * (height - 1) + i) * len + 8] = i + 1 - height / 2;
+
+          uvs[(k * (height - 1) + i) * uv_len + 4] = (i + 1) / (height - 1);
+          uvs[(k * (height - 1) + i) * uv_len + 5] = (k + 1) / (width - 1);
+
+          colors[(k * (height - 1) + i) * len + 6] = imgDate.data[4 * ((k + 1) * height + 1 + i)] / 255.0;
+          colors[(k * (height - 1) + i) * len + 7] = imgDate.data[4 * ((k + 1) * height + i + 1) + 1] / 255.0;
+          colors[(k * (height - 1) + i) * len + 8] = imgDate.data[4 * ((k + 1) * height + i + 1) + 2] / 255.0;
+
+          // v1
+          positions[(k * (height - 1) + i) * len + 9] = k - width / 2;
+          positions[(k * (height - 1) + i) * len + 10] = imgDate.data[4 * (k * height + i)] / 255.0 * scale;
+          positions[(k * (height - 1) + i) * len + 11] = i - height / 2;
+
+          colors[(k * (height - 1) + i) * len + 9] = imgDate.data[4 * (k * height + i)] / 255.0;
+          colors[(k * (height - 1) + i) * len + 10] = imgDate.data[4 * (k * height + i) + 1] / 255.0;
+          colors[(k * (height - 1) + i) * len + 11] = imgDate.data[4 * (k * height + i) + 2] / 255.0;
+
+          uvs[(k * (height - 1) + i) * uv_len + 6] = i / (height - 1);
+          uvs[(k * (height - 1) + i) * uv_len + 7] = k / (width - 1);
+
+          // v3
+          positions[(k * (height - 1) + i) * len + 12] = k + 1 - width / 2;
+          positions[(k * (height - 1) + i) * len + 13] = imgDate.data[4 * ((k + 1) * height + i + 1)] / 255.0 * scale;
+          positions[(k * (height - 1) + i) * len + 14] = i + 1 - height / 2;
+
+          colors[(k * (height - 1) + i) * len + 12] = imgDate.data[4 * ((k + 1) * height + i + 1)] / 255.0;
+          colors[(k * (height - 1) + i) * len + 13] = imgDate.data[4 * ((k + 1) * height + i + 1) + 1] / 255.0;
+          colors[(k * (height - 1) + i) * len + 14] = imgDate.data[4 * ((k + 1) * height + i + 1) + 2] / 255.0;
+
+          uvs[(k * (height - 1) + i) * uv_len + 8] = (i + 1) / (height - 1);
+          uvs[(k * (height - 1) + i) * uv_len + 9] = (k + 1) / (width - 1);
+
+          // v4
+          positions[(k * (height - 1) + i) * len + 15] = k + 1 - width / 2;
+          positions[(k * (height - 1) + i) * len + 16] = imgDate.data[4 * ((k + 1) * height + i)] / 255.0 * scale;
+          positions[(k * (height - 1) + i) * len + 17] = i - height / 2;
+
+          uvs[(k * (height - 1) + i) * uv_len + 10] = i / (height - 1);
+          uvs[(k * (height - 1) + i) * uv_len + 11] = (k + 1) / (width - 1);
+
+          colors[(k * (height - 1) + i) * len + 15] = imgDate.data[4 * ((k + 1) * height + i)] / 255.0;
+          colors[(k * (height - 1) + i) * len + 16] = imgDate.data[4 * ((k + 1) * height + i) + 1] / 255.0;
+          colors[(k * (height - 1) + i) * len + 17] = imgDate.data[4 * ((k + 1) * height + i) + 2] / 255.0;
+        }
+      }
+      geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geometry.addAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+
+      var heightMap1 = new THREE.TextureLoader().load('textures/heightMap1.jpg');
+      heightMap1.wrapS = heightMap1.wrapT = THREE.RepeatWrapping;
+
+      var heightMap2 = new THREE.TextureLoader().load('textures/heightMap2.jpg');
+      heightMap2.wrapS = heightMap2.wrapT = THREE.RepeatWrapping;
+
+      var material = new THREE.ShaderMaterial({
+        uniforms: {
+          heightMap1: {value: heightMap1},
+          heightMap2: {value: heightMap2},
+        },
+        vertexShader: heatVertex,
+        fragmentShader: heatFragment,
+        // vertexColors: THREE.VertexColors,
+        // wireframe:true
+      });
+
+      var mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+    }
+
+    function createHeightMap() {
+      var canvas = document.getElementById("canvas");
+      var content = canvas.getContext("2d");
+      canvas.width = 256;
+      canvas.height = 256;
+
+      var img = new Image();
+      img.src = "textures/heightMap.jpg";
+      img.onload = function() {
+        content.drawImage(img, 0, 0, canvas.width, canvas.height);
+        imgDate = content.getImageData(0, 0, canvas.width, canvas.height);
+        createPotCloud();   // 创建点云
+      };
+    }
+
+    var heightMap = createHeightMap();
+
+    var scene = new THREE.Scene();
+
+    var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.set(87.22540086282403, 212.44527659425196, -218.13932046234618);
+
+    var renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    var controls = new OrbitControls(camera, renderer.domElement);
+
+    render();
+
+    function render() {
+      console.log(camera.position);
+      requestAnimationFrame(render);
+      renderer.render(scene, camera);
+    }
+  </script>
+</head>
+<body>
+<div id="canvasDemo">
+  <canvas id="canvas"></canvas>
+</div>
+</body>
+</html>

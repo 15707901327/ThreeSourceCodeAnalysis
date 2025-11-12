@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>webgl - gpu选择几何实例</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <style>
+    body {
+      font-family: Monospace;
+      background-color: #f0f0f0;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .info {
+      position: absolute;
+      background-color: black;
+      opacity: 0.8;
+      color: white;
+      text-align: center;
+      top: 0;
+      width: 100%;
+    }
+
+    .info a {
+      color: #00ffff;
+    }
+
+    #notSupported {
+      width: 50%;
+      margin: auto;
+      border: 2px red solid;
+      margin-top: 20px;
+      padding: 10px;
+    }
+  </style>
+
+<!--  <script src="../../build/three_r98.js"></script>-->
+  <script src="../../build/three_r105.js"></script>
+  <script src="../js/controls/TrackballControls.js"></script>
+  <script src="../js/libs/stats.min.js"></script>
+
+  <script id="vertMerged" type="x-shader/x-vertex">
+		#define SHADER_NAME vertMerged
+
+		precision highp float;
+
+		uniform mat4 modelViewMatrix;
+		uniform mat4 projectionMatrix;
+
+		attribute vec3 position;
+		#ifdef PICKING
+			attribute vec3 pickingColor;
+		#else
+			attribute vec3 color;
+			varying vec3 vPosition;
+		#endif
+
+		varying vec3 vColor;
+
+		void main()	{
+
+			vec3 positionEye = ( modelViewMatrix * vec4( position, 1.0 ) ).xyz;
+
+			#ifdef PICKING
+				vColor = pickingColor;
+			#else
+				vColor = color;
+				vPosition = positionEye;
+			#endif
+
+			gl_Position = projectionMatrix * vec4( positionEye, 1.0 );
+
+		}
+
+
+
+  </script>
+  <script id="fragMerged" type="x-shader/x-fragment">
+		#define SHADER_NAME fragMerged
+
+		#extension GL_OES_standard_derivatives : enable
+
+		precision highp float;
+
+		varying vec3 vColor;
+
+		#ifndef PICKING
+			varying vec3 vPosition;
+		#endif
+
+		void main()	{
+
+			#ifdef PICKING
+				gl_FragColor = vec4( vColor, 1.0 );
+			#else
+				vec3 fdx = dFdx( vPosition );
+				vec3 fdy = dFdy( vPosition );
+				vec3 normal = normalize( cross( fdx, fdy ) );
+				float diffuse = dot( normal, vec3( 0.0, 0.0, 1.0 ) );
+
+				gl_FragColor = vec4( diffuse * vColor, 1.0 );
+			#endif
+
+		}
+
+
+
+  </script>
+  <script id="vertInstanced" type="x-shader/x-vertex">
+		#define SHADER_NAME vertInstanced
+
+		precision highp float;
+
+		uniform mat4 modelViewMatrix;
+		uniform mat4 projectionMatrix;
+
+		attribute vec3 position;
+		attribute vec3 mcol0;
+		attribute vec3 mcol1;
+		attribute vec3 mcol2;
+		attribute vec3 mcol3;
+
+		#ifdef PICKING
+			attribute vec3 pickingColor;
+		#else
+			attribute vec3 color;
+			varying vec3 vPosition;
+		#endif
+
+		varying vec3 vColor;
+
+		void main()	{
+
+			mat4 matrix = mat4(
+				vec4( mcol0, 0 ),
+				vec4( mcol1, 0 ),
+				vec4( mcol2, 0 ),
+				vec4( mcol3, 1 )
+			);
+
+			vec3 positionEye = ( modelViewMatrix * matrix * vec4( position, 1.0 ) ).xyz;
+
+			#ifdef PICKING
+				vColor = pickingColor;
+			#else
+				vColor = color;
+				vPosition = positionEye;
+			#endif
+
+			gl_Position = projectionMatrix * vec4( positionEye, 1.0 );
+
+		}
+
+
+
+  </script>
+  <script id="fragInstanced" type="x-shader/x-fragment">
+		#define SHADER_NAME fragInstanced
+
+		#extension GL_OES_standard_derivatives : enable
+
+		precision highp float;
+
+		varying vec3 vColor;
+
+		#ifndef PICKING
+			varying vec3 vPosition;
+		#endif
+
+		void main()	{
+
+			#ifdef PICKING
+				gl_FragColor = vec4( vColor, 1.0 );
+			#else
+				vec3 fdx = dFdx( vPosition );
+				vec3 fdy = dFdy( vPosition );
+				vec3 normal = normalize( cross( fdx, fdy ) );
+				float diffuse = dot( normal, vec3( 0.0, 0.0, 1.0 ) );
+
+				gl_FragColor = vec4( diffuse * vColor, 1.0 );
+			#endif
+
+		}
+
+
+
+  </script>
+  <script id="vertMaterial" type="x-shader/x-vertex">
+		#define SHADER_NAME vertMaterial
+
+		precision highp float;
+
+		uniform mat4 modelViewMatrix;
+		uniform mat4 projectionMatrix;
+
+		attribute vec3 position;
+
+		#ifndef PICKING
+			varying vec3 vPosition;
+		#endif
+
+		void main()	{
+
+			vec3 positionEye = ( modelViewMatrix * vec4( position, 1.0 ) ).xyz;
+
+			#ifndef PICKING
+				vPosition = positionEye;
+			#endif
+
+			gl_Position = projectionMatrix * vec4( positionEye, 1.0 );
+
+		}
+
+
+
+  </script>
+  <script id="fragMaterial" type="x-shader/x-fragment">
+		#define SHADER_NAME fragMaterial
+
+		#extension GL_OES_standard_derivatives : enable
+
+		precision highp float;
+
+		#ifdef PICKING
+			uniform vec3 pickingColor;
+		#else
+			uniform vec3 color;
+			varying vec3 vPosition;
+		#endif
+
+		void main()	{
+
+			#ifdef PICKING
+				gl_FragColor = vec4( pickingColor, 1.0 );
+			#else
+				vec3 fdx = dFdx( vPosition );
+				vec3 fdy = dFdy( vPosition );
+				vec3 normal = normalize( cross( fdx, fdy ) );
+				float diffuse = dot( normal, vec3( 0.0, 0.0, 1.0 ) );
+
+				gl_FragColor = vec4( diffuse * color, 1.0 );
+			#endif
+
+		}
+
+
+
+  </script>
+
+  <script src="../js/PGL/PGL.js"></script>
+  <script src="webgl_interactive_instances_gpu.js"></script>
+  <script>
+    window.onload = function (ev) {
+      var scene3D = new PGL.Scene3D();
+      scene3D.init();
+    };
+  </script>
+</head>
+<body>
+<div class="info">
+  <br/><br/>
+  <div>该演示比较了构造和渲染单个几何体的许多实例的不同方法。</div>
+  <br/>
+  <div>
+    <div style="display:inline-block;">
+      <span>number of<br/>geometry instances</span>
+      <br/>
+      <select id="instanceCount">
+        <option>100</option>
+        <option>500</option>
+        <option selected>1000</option>
+        <option>2000</option>
+        <option>3000</option>
+        <option>5000</option>
+        <option>10000</option>
+        <option>20000</option>
+        <option>30000</option>
+        <option>50000</option>
+        <option>100000</option>
+      </select>
+    </div>
+    <div style="display:inline-block;">
+      <span>method of<br/>construction/rendering</span>
+      <br/>
+      <select id="method">
+        <option>instanced</option>
+        <option selected>merged</option>
+        <option>singleMaterial</option>
+        <option>multiMaterial</option>
+      </select>
+    </div>
+    <div style="display:inline-block;">
+      <span>render continuously<br/>(to get fps reading)</span>
+      <br/>
+      <input id="animate" type="checkbox" checked/>
+    </div>
+    <div style="display:inline-block;">
+      <span>use override material<br/>(only effects singleMaterial method)</span>
+      <br/>
+      <input id="override" type="checkbox" checked/>
+    </div>
+    <div style="display:inline-block;">
+      <span>construct anew<br/>(to get additional timings)</span>
+      <br/>
+      <button id="construct" type="button">do it</button>
+    </div>
+  </div>
+  <div>
+    <span>Materials: #<span id="materialCount"></span></span>
+    <span>Objects: #<span id="objectCount"></span></span>
+    <span>Drawcalls: #<span id="drawcalls"></span></span>
+    <span>Construction time: <span id="initTime"></span>ms</span>
+  </div>
+</div>
+<div id="container"></div>
+</body>
+</html>

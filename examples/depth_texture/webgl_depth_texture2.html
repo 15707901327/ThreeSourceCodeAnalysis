@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>three.js webgl - Depth Texture</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="../main.css">
+  <style>
+    #error {
+      margin: auto;
+      margin-top: 40px;
+      display: block;
+      max-width: 400px;
+      padding: 20px;
+      background: #CE0808;
+    }
+  </style>
+
+  <script id="post-vert" type="x-shader/x-vertex">
+			varying vec2 vUv;
+
+			void main() {
+				vUv = uv;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+			}
+  </script>
+  <script id="post-frag" type="x-shader/x-fragment">
+			#include <packing>
+
+			varying vec2 vUv;
+			uniform sampler2D tDiffuse;
+			uniform sampler2D tDepth;
+			uniform float cameraNear;
+			uniform float cameraFar;
+			uniform float time;
+
+			uniform float space;
+			uniform float offsetS;
+			uniform float offsetT;
+			uniform float width;
+			uniform vec3 colorL;
+			uniform float minBlur;
+			uniform float maxBlur;
+
+			// 定义环结构体
+			struct LOOP {
+			  float space; // 间距
+			  float offsetS; // 中心点坐标偏移
+			  float offsetT; // 中心点坐标偏移
+			  float width; // 环的宽度
+			  vec3 color; // 颜色
+			  float minBlur; // 环颜色渐变宽度
+			  float maxBlur; // 环颜色渐变宽度
+      };
+      /*
+      * 计算圆环半径
+      * t：时间
+      * uv：
+      * beginRGB：开始颜色
+      * endRGB：结束颜色
+      */
+      vec3 loopColor(LOOP loop,float t, vec2 uv,vec3 beginRGB){
+          // 改变uv的中心点
+          uv.s -= loop.offsetS;
+          uv.t -= loop.offsetT;
+
+          float min_width = mod(t, 1.0) * loop.space; // 内圈的大小
+          float max_width = min_width + loop.width; // 外圈的大小
+
+          // 点到原点的长度
+          float dis = length(uv);
+          dis = mod(dis, loop.space);
+          dis = max(dis, min_width) == dis ? dis : dis + loop.space;
+
+          float c1 = smoothstep(min_width, min_width + loop.minBlur, dis);
+          float c2 = 1.0 - smoothstep(max_width - loop.maxBlur, max_width, dis);
+
+          return mix(beginRGB,loop.color,c1*c2) + beginRGB ;
+      }
+
+      // 读取深度信息
+			float readDepth( sampler2D depthSampler, vec2 coord ) {
+				float fragCoordZ = texture2D( depthSampler, coord ).r;
+				float viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );
+				return viewZToOrthographicDepth( viewZ, cameraNear, cameraFar );
+			}
+
+      vec3 fragColor;
+			void main() {
+			  LOOP loop = LOOP(space, offsetS, offsetT, width, colorL, minBlur, maxBlur);
+			  float depth = readDepth( tDepth, vUv );
+				vec3 diffuse = texture2D( tDiffuse, vUv ).rgb;
+				diffuse = diffuse * pow((1.0 - depth),5.0);
+
+				 // 计算混合色值
+				vec3 mixColor = loopColor(loop, time, vUv,diffuse);
+				// 根据深度排除背景颜色
+				max(depth,1.0) == depth ? fragColor = diffuse:fragColor = mixColor;
+
+				gl_FragColor.rgb = fragColor;
+				gl_FragColor.a = 1.0;
+			}
+
+  </script>
+
+</head>
+<body>
+<canvas></canvas>
+<div id="info">
+  <a href="http://threejs.org" target="_blank" rel="noopener">threejs</a> webgl - depth texture<br/>
+  Stores render target depth in a texture attachment.<br/>
+  Created by <a href="http://twitter.com/mattdesl" target="_blank" rel="noopener">@mattdesl</a>.
+
+  <div id="error" style="display: none;">
+    Your browser does not support <strong>WEBGL_depth_texture</strong>.<br/><br/>
+    This demo will not work.
+  </div>
+</div>
+
+<script type="module">
+
+  import * as THREE from '../../build/three_r107.module.js';
+  import Stats from '../jsm/libs/stats.module.js';
+  import dat from '../jsm/libs/dat.gui.module.js';
+  import {OrbitControls} from '../jsm/controls/OrbitControls.js';
+
+  var camera, scene, renderer, stats;
+  var target;
+  var postScene, postCamera;
+  var supportsExtension = true;
+
+  init();
+  animate();
+
+  function init() {
+
+    // 初始化渲染器
+    renderer = new THREE.WebGLRenderer({canvas: document.querySelector('canvas')});
+    if (!renderer.extensions.get('WEBGL_depth_texture')) {
+      supportsExtension = false;
+      document.querySelector('#error').style.display = 'block';
+      return;
+    }
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Stats
+    stats = new Stats();
+    document.body.appendChild(stats.dom);
+
+    // 初始化相机
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 50);
+    camera.position.z = 4;
+
+    // 初始化控制器
+    var controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.rotateSpeed = 0.35;
+
+    // Create a multi render target with Float buffers
+    // 使用Float缓冲区创建多渲染目标
+    target = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+    target.texture.format = THREE.RGBFormat; // 纹理数据的格式
+    target.texture.minFilter = THREE.NearestFilter;
+    target.texture.magFilter = THREE.NearestFilter;
+    target.texture.generateMipmaps = false;
+    target.stencilBuffer = false;
+    target.depthBuffer = true;
+    target.depthTexture = new THREE.DepthTexture();
+    target.depthTexture.type = THREE.UnsignedShortType;
+
+    // Our scene
+    scene = new THREE.Scene();
+    setupScene();
+
+    // Setup post-processing step
+    setupPost();
+
+    onWindowResize();
+    window.addEventListener('resize', onWindowResize, false);
+  }
+
+  var postQuad;
+
+  function setupPost() {
+    // Setup post processing stage
+    postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    var postMaterial = new THREE.ShaderMaterial({
+      vertexShader: document.querySelector('#post-vert').textContent.trim(),
+      fragmentShader: document.querySelector('#post-frag').textContent.trim(),
+      uniforms: {
+        cameraNear: {value: camera.near},
+        cameraFar: {value: camera.far},
+        tDiffuse: {value: target.texture},
+        tDepth: {value: target.depthTexture},
+        time: {value: 1.0},
+        space: {value: 0.1}, // 间距
+        offsetS: {value: 0.5}, // 中心点坐标偏移
+        offsetT: {value: 0.5}, // 中心点坐标偏移
+        width: {value: 0.05}, // 环的宽度
+        colorL: {value: new THREE.Color(0.0, 1.0, 0.0)}, // 颜色
+        minBlur: {value: 0.01}, // 环颜色渐变宽度
+        maxBlur: {value: 0.01} // 环颜色渐变宽度
+      }
+    });
+    var postPlane = new THREE.PlaneBufferGeometry(2, 2);
+    postQuad = new THREE.Mesh(postPlane, postMaterial);
+    postScene = new THREE.Scene();
+    postScene.add(postQuad);
+
+    let GUI_controls = new function() {
+      this.space = 0.1; // 间距
+      this.offsetS = 0.5; // 中心点坐标偏移
+      this.offsetT = 0.5; // 中心点坐标偏移
+      this.width = 0.05;// 环的宽度
+      this.colorL = new THREE.Color(0.0, 1.0, 0.0); // 颜色
+      this.minBlur = 0.01;// 环颜色渐变宽度
+      this.maxBlur = 0.01;// 环颜色渐变宽度
+    };
+    var gui = new dat.GUI();
+    gui.add(GUI_controls, "space", 0.0, 1.0, 0.01).name("间距").onChange(function(val) {
+      postQuad.material.uniforms["space"].value = val;
+    });
+    var offset = gui.addFolder("中心点偏移");
+    offset.add(GUI_controls, "offsetS", 0.0, 1.0, 0.01).name("S").onChange(function(val) {
+      postQuad.material.uniforms["offsetS"].value = val;
+    });
+    offset.add(GUI_controls, "offsetT", 0.0, 1.0, 0.01).name("T").onChange(function(val) {
+      postQuad.material.uniforms["offsetT"].value = val;
+    });
+    gui.add(GUI_controls, "width", 0.0, 0.1, 0.001).name("环的宽度").onChange(function(val) {
+      postQuad.material.uniforms["width"].value = val;
+    });
+    gui.addColor(GUI_controls, "colorL").name("颜色").onChange(function(val) {
+      postQuad.material.uniforms["colorL"].value.setRGB(val.r / 255, val.g / 255, val.b / 255);
+    });
+    gui.add(GUI_controls, "minBlur", 0.0, GUI_controls.width/2, 0.001).name("环颜色渐变宽度").onChange(function(val) {
+      postQuad.material.uniforms["minBlur"].value = val;
+    });
+    gui.add(GUI_controls, "maxBlur", 0.0, GUI_controls.width/2, 0.001).name("环颜色渐变宽度").onChange(function(val) {
+      postQuad.material.uniforms["maxBlur"].value = val;
+    });
+  }
+
+  /**
+   * 初始化设置场景物体
+   */
+  function setupScene() {
+
+    // Setup some geometries
+    var geometry = new THREE.TorusKnotBufferGeometry(1, 0.3, 128, 64);
+    var material = new THREE.MeshBasicMaterial({color: 'red'});
+
+    var count = 100;
+    var scale = 5;
+
+    for (var i = 0; i < count; i++) {
+      var r = Math.random() * 2.0 * Math.PI;
+      var z = (Math.random() * 2.0) - 1.0;
+      var zScale = Math.sqrt(1.0 - z * z) * scale;
+      var mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
+      mesh.rotation.set(Math.random(), Math.random(), Math.random());
+      scene.add(mesh);
+    }
+  }
+
+  function onWindowResize() {
+
+    var aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = aspect;
+    camera.updateProjectionMatrix();
+
+    var dpr = renderer.getPixelRatio();
+    target.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+  }
+
+  function animate() {
+
+    if (!supportsExtension) return;
+
+    requestAnimationFrame(animate);
+
+    // render scene into target
+    renderer.setRenderTarget(target);
+    renderer.render(scene, camera);
+
+    var time = performance.now();
+    postQuad.material.uniforms["time"].value = time * 0.0001 * 3;
+
+    // render post FX
+    renderer.setRenderTarget(null);
+    renderer.render(postScene, postCamera);
+
+    stats.update();
+  }
+
+</script>
+
+</body>
+</html>
