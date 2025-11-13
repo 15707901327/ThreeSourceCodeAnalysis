@@ -5,10 +5,10 @@
  */
 function WebGLAnimation() {
 
-	let context = null;
-	let isAnimating = false;
+	let context = null; // 上下文，webXR 会话
+	let isAnimating = false; // 标记正在运行
 	let animationLoop = null;
-	let requestId = null;
+	let requestId = null; // 执行动画ID
 
 	function onAnimationFrame( time, frame ) {
 

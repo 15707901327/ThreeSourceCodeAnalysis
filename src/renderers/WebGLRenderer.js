@@ -64,7 +64,6 @@ import {createCanvasElement} from '../utils.js';
 import {ColorManagement} from '../math/ColorManagement.js';
 
 class WebGLRenderer {
-
     constructor(parameters = {}) {
 
         const {
@@ -2575,25 +2574,19 @@ class WebGLRenderer {
 
         }
 
-        get
-        coordinateSystem()
-        {
+        get coordinateSystem(){
 
             return WebGLCoordinateSystem;
 
         }
 
-        get
-        outputColorSpace()
-        {
+        get outputColorSpace(){
 
             return this._outputColorSpace;
 
         }
 
-        set
-        outputColorSpace(colorSpace)
-        {
+        set outputColorSpace(colorSpace){
 
             this._outputColorSpace = colorSpace;
 
@@ -2603,36 +2596,28 @@ class WebGLRenderer {
 
         }
 
-        get
-        outputEncoding()
-        { // @deprecated, r152
+        get outputEncoding(){ // @deprecated, r152
 
             console.warn('THREE.WebGLRenderer: Property .outputEncoding has been removed. Use .outputColorSpace instead.');
             return this.outputColorSpace === SRGBColorSpace ? sRGBEncoding : LinearEncoding;
 
         }
 
-        set
-        outputEncoding(encoding)
-        { // @deprecated, r152
+        set outputEncoding(encoding){ // @deprecated, r152
 
             console.warn('THREE.WebGLRenderer: Property .outputEncoding has been removed. Use .outputColorSpace instead.');
             this.outputColorSpace = encoding === sRGBEncoding ? SRGBColorSpace : LinearSRGBColorSpace;
 
         }
 
-        get
-        useLegacyLights()
-        { // @deprecated, r155
+        get useLegacyLights(){ // @deprecated, r155
 
             console.warn('THREE.WebGLRenderer: The property .useLegacyLights has been deprecated. Migrate your lighting according to the following guide: https://discourse.threejs.org/t/updates-to-lighting-in-three-js-r155/53733.');
             return this._useLegacyLights;
 
         }
 
-        set
-        useLegacyLights(value)
-        { // @deprecated, r155
+        setuseLegacyLights(value){ // @deprecated, r155
 
             console.warn('THREE.WebGLRenderer: The property .useLegacyLights has been deprecated. Migrate your lighting according to the following guide: https://discourse.threejs.org/t/updates-to-lighting-in-three-js-r155/53733.');
             this._useLegacyLights = value;

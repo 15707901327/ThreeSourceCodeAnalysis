@@ -31,7 +31,7 @@ class WebXRManager extends EventDispatcher {
 
         let session = null; // 会话
 
-        let framebufferScaleFactor = 1.0;
+        let framebufferScaleFactor = 1.0; // 帧缓冲区缩放因子
 
         let referenceSpace = null; // 参考空间
         /**
@@ -44,16 +44,16 @@ class WebXRManager extends EventDispatcher {
          */
         let referenceSpaceType = 'local-floor';
         // Set default foveation to maximum.
-        let foveation = 1.0;
+		let foveation = 1.0; // 用于访问和设置固定注视点渲染级别的属性
         let customReferenceSpace = null; // 用户参考空间
 
         let pose = null;
-        let glBinding = null;
-        let glProjLayer = null;
-        let glBaseLayer = null;
+		let glBinding = null; // XRWebGLBinding 是 WebXR 图层 API 的入口点，用于创建和管理各种类型的 XR 图层，包括基础图层、投影图层、立方体图层等。
+		let glProjLayer = null; // 投影图层
+        let glBaseLayer = null; // 是 WebXR 中专门用于 WebGL 渲染的层，它创建和管理 XR 设备所需的帧缓冲区，处理多视图渲染。
         let xrFrame = null;
         const attributes = gl.getContextAttributes(); // 获取上下文属性
-        let initialRenderTarget = null;
+        let initialRenderTarget = null; //  用于管理 WebXR 渲染的初始输出目标，特别是在处理多视图（左右眼）渲染和后期处理时
         let newRenderTarget = null;
 
         const controllers = [];
@@ -62,7 +62,6 @@ class WebXRManager extends EventDispatcher {
         const currentSize = new Vector2();
         let currentPixelRatio = null;
 
-    /
         const cameraL = new PerspectiveCamera();
         cameraL.layers.enable(1);
         cameraL.viewport = new Vector4();
@@ -287,14 +286,14 @@ class WebXRManager extends EventDispatcher {
 
                 initialRenderTarget = renderer.getRenderTarget();
 
-                session.addEventListener('select', onSessionEvent);
-                session.addEventListener('selectstart', onSessionEvent);
-                session.addEventListener('selectend', onSessionEvent);
-                session.addEventListener('squeeze', onSessionEvent);
-                session.addEventListener('squeezestart', onSessionEvent);
-                session.addEventListener('squeezeend', onSessionEvent);
-                session.addEventListener('end', onSessionEnd);
-                session.addEventListener('inputsourceschange', onInputSourcesChange);
+                session.addEventListener('select', onSessionEvent); // 选择完成
+                session.addEventListener('selectstart', onSessionEvent); // 选择开始
+                session.addEventListener('selectend', onSessionEvent); // 选择结束
+                session.addEventListener('squeeze', onSessionEvent); // 抓握完成
+                session.addEventListener('squeezestart', onSessionEvent); // 抓握开始
+                session.addEventListener('squeezeend', onSessionEvent); // 抓握结束
+                session.addEventListener('end', onSessionEnd); // 会话结束
+                session.addEventListener('inputsourceschange', onInputSourcesChange); // 输入源变化
 
                 if (attributes.xrCompatible !== true) {
 
@@ -308,15 +307,17 @@ class WebXRManager extends EventDispatcher {
                 if ((session.renderState.layers === undefined) || (renderer.capabilities.isWebGL2 === false)) {
 
                     const layerInit = {
-                        antialias: (session.renderState.layers === undefined) ? attributes.antialias : true,
-                        alpha: true,
-                        depth: attributes.depth,
-                        stencil: attributes.stencil,
-                        framebufferScaleFactor: framebufferScaleFactor
+                        antialias: (session.renderState.layers === undefined) ? attributes.antialias : true, // 是否抗锯齿
+                        alpha: true, // 是否透明度
+                        depth: attributes.depth, // 是否深度缓冲
+                        stencil: attributes.stencil, // 是否模板缓冲
+                        framebufferScaleFactor: framebufferScaleFactor // 帧缓冲区缩放因子
                     };
 
+                    //  XRWebGLLayer 是 WebXR 中专门用于 WebGL 渲染的层，它创建和管理 XR 设备所需的帧缓冲区，处理多视图渲染。
                     glBaseLayer = new XRWebGLLayer(session, gl, layerInit);
 
+                    // todo 需要更新用法
                     session.updateRenderState({baseLayer: glBaseLayer});
 
                     renderer.setPixelRatio(1);
@@ -353,6 +354,7 @@ class WebXRManager extends EventDispatcher {
                         scaleFactor: framebufferScaleFactor
                     };
 
+					// XRWebGLBinding 是 WebXR 图层 API 的入口点，用于创建和管理各种类型的 XR 图层，包括基础图层、投影图层、立方体图层等。
                     glBinding = new XRWebGLBinding(session, gl);
 
                     glProjLayer = glBinding.createProjectionLayer(projectionlayerInit);
